@@ -1,0 +1,30 @@
+#ifndef CMAINWINDOW_H
+#define CMAINWINDOW_H
+
+#include <QMainWindow>
+
+class GraphWidget;
+class DarkSynthWidget;
+
+namespace Ui {
+    class CMainWindow;
+}
+
+class CMainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit CMainWindow(QWidget *parent = 0);
+    ~CMainWindow();
+
+    void setGraphWidget(GraphWidget *pObj) { m_pGraphWidget = pObj; };
+    void setDarkSynthWidget(DarkSynthWidget *pObj) { m_pDarkSynthWidget = pObj; };
+private:
+    Ui::CMainWindow *ui;
+
+    GraphWidget *m_pGraphWidget;
+    DarkSynthWidget *m_pDarkSynthWidget;
+};
+
+#endif // CMAINWINDOW_H
