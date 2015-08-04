@@ -50,10 +50,8 @@ void Node::calculateForces() {
         xvel -= vec.x() / weight;
         yvel -= vec.y() / weight;
     }
-
     if (qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1)
         xvel = yvel = 0;
-
     QRectF sceneRect = scene() -> sceneRect();
     newPos = pos() + QPointF(xvel, yvel);
     newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));

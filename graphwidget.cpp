@@ -7,8 +7,8 @@
 
 GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), m_timerId(0) {
     QGraphicsScene *scene = new QGraphicsScene(this);
-    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
+    scene -> setItemIndexMethod(QGraphicsScene::NoIndex);
+    scene -> setSceneRect(-200, -200, 400, 400);
     setScene(scene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -17,6 +17,9 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), m_timerId(0) 
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
     setWindowTitle(tr("Elastic Nodes"));
+
+    // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to 
+    CartesianGraph cartGraph = new CartesianGraph(this, 10, 10);
 
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
