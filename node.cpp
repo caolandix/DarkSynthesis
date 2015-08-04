@@ -16,15 +16,11 @@ Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
 
 void Node::addEdge(Edge *edge) {
     edgeList << edge;
-    edge->adjust();
-}
-
-QList<Edge *> Node::edges() const {
-    return edgeList;
+    edge -> adjust();
 }
 
 void Node::calculateForces() {
-    if (!scene() || scene()->mouseGrabberItem() == this) {
+    if (!scene() || scene() -> mouseGrabberItem() == this) {
         newPos = pos();
         return;
     }
@@ -32,11 +28,10 @@ void Node::calculateForces() {
     // Sum up all forces pushing this item away
     qreal xvel = 0;
     qreal yvel = 0;
-    foreach (QGraphicsItem *item, scene()->items()) {
+    foreach (QGraphicsItem *item, scene() -> items()) {
         Node *node = qgraphicsitem_cast<Node *>(item);
         if (!node)
             continue;
-
         QPointF vec = mapToItem(node, 0, 0);
         qreal dx = vec.x();
         qreal dy = vec.y();
@@ -51,10 +46,7 @@ void Node::calculateForces() {
     double weight = (edgeList.size() + 1) * 10;
     foreach (Edge *edge, edgeList) {
         QPointF vec;
-        if (edge->sourceNode() == this)
-            vec = mapToItem(edge->destNode(), 0, 0);
-        else
-            vec = mapToItem(edge->sourceNode(), 0, 0);
+        vec = (edge -> sourceNode() == this) ? mapToItem(edge -> destNode(), 0, 0) : mapToItem(edge -> sourceNode(), 0, 0);
         xvel -= vec.x() / weight;
         yvel -= vec.y() / weight;
     }

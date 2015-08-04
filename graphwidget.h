@@ -5,19 +5,16 @@
 
 class Node;
 
-class GraphWidget : public QGraphicsView
-{
+class GraphWidget : public QGraphicsView {
     Q_OBJECT
-
 public:
     GraphWidget(QWidget *parent = NULL);
-
     void itemMoved();
 
 public slots:
     void shuffle();
-    void zoomIn();
-    void zoomOut();
+    void zoomIn() { scaleView(qreal(1.2)); };
+    void zoomOut() { scaleView(1 / qreal(1.2)); };
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
@@ -26,9 +23,7 @@ protected:
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
-
     void scaleView(qreal scaleFactor);
-
 private:
     int m_timerId;
     Node *m_pcenterNode;
