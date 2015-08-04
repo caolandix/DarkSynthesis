@@ -5,13 +5,12 @@
 
 class Node;
 
-class Edge : public QGraphicsItem
-{
+class Edge : public QGraphicsItem {
 public:
     Edge(Node *sourceNode, Node *destNode);
 
-    Node *sourceNode() const;
-    Node *destNode() const;
+    Node *Edge::sourceNode() const { return source; };
+    Node *destNode() const { return dest; };
 
     void adjust();
 
