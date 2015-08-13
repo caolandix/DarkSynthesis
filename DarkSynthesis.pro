@@ -17,12 +17,16 @@ SOURCES += main.cpp\
     node.cpp \
     edge.cpp \
     graphwidget.cpp \
-    darksynthwidget.cpp
+    darksynthwidget.cpp \
+    cartesiangraph.cpp \
+    physparticle.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
     edge.h \
     graphwidget.h \
-    darksynthwidget.h
+    darksynthwidget.h \
+    cartesiangraph.h \
+    physparticle.h
 
 FORMS    += cmainwindow.ui

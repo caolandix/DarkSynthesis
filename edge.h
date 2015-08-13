@@ -9,8 +9,8 @@ class Edge : public QGraphicsItem {
 public:
     Edge(Node *sourceNode, Node *destNode);
 
-    Node *Edge::sourceNode() const { return source; };
-    Node *destNode() const { return dest; };
+    Node *sourceNode() const { return source; }
+    Node *destNode() const { return dest; }
 
     void adjust();
 

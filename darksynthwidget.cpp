@@ -1,6 +1,7 @@
 #include "darksynthwidget.h"
 #include "edge.h"
 #include "node.h"
+#include "cartesiangraph.h"
 
 #include <math.h>
 #include <QKeyEvent>
@@ -16,16 +17,20 @@ void DarkSynthWidget::itemMoved() {
 void DarkSynthWidget::keyPressEvent(QKeyEvent *event) {
     switch (event -> key()) {
         case Qt::Key_Up:
-            m_pcenterNode -> moveBy(0, -20);
+            m_pcartGraph -> moveBy(0, -20);
+            //m_pcenterNode -> moveBy(0, -20);
             break;
         case Qt::Key_Down:
-            m_pcenterNode -> moveBy(0, 20);
+            m_pcartGraph -> moveBy(0, 20);
+            //m_pcenterNode -> moveBy(0, 20);
             break;
         case Qt::Key_Left:
-            m_pcenterNode -> moveBy(-20, 0);
+            m_pcartGraph -> moveBy(-20, 0);
+            //m_pcenterNode -> moveBy(-20, 0);
             break;
         case Qt::Key_Right:
-            m_pcenterNode -> moveBy(20, 0);
+            m_pcartGraph -> moveBy(20, 0);
+            //m_pcenterNode -> moveBy(20, 0);
             break;
         case Qt::Key_Plus:
             zoomIn();
@@ -45,7 +50,8 @@ void DarkSynthWidget::keyPressEvent(QKeyEvent *event) {
 void DarkSynthWidget::timerEvent(QTimerEvent *event) {
     Q_UNUSED(event);
 
-    QList<Node *> nodes;
+ /*
+  *    QList<Node *> nodes;
     foreach (QGraphicsItem *item, scene() -> items()) {
         if (Node *node = qgraphicsitem_cast<Node *>(item))
             nodes << node;
@@ -64,16 +70,17 @@ void DarkSynthWidget::timerEvent(QTimerEvent *event) {
         killTimer(m_timerId);
         m_timerId = 0;
     }
+    */
 }
 
 #ifndef QT_NO_WHEELEVENT
 void DarkSynthWidget::wheelEvent(QWheelEvent *event) {
-    scaleView(pow((double)2, -event->delta() / 240.0));
+    scaleView(pow((double)2, -event -> delta() / 240.0));
 }
 #endif
 
 void DarkSynthWidget::drawBackground(QPainter *painter, const QRectF &rect) {
-    Q_UNUSED(rect);
+    //Q_UNUSED(rect);
 
     // Shadow
     QRectF sceneRect = this->sceneRect();

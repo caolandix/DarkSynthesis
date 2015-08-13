@@ -1,6 +1,7 @@
 #include "graphwidget.h"
 #include "edge.h"
 #include "node.h"
+#include "cartesiangraph.h"
 
 #include <math.h>
 #include <QKeyEvent>
@@ -19,7 +20,7 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), m_timerId(0) 
     setWindowTitle(tr("Elastic Nodes"));
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to 
-    CartesianGraph cartGraph = new CartesianGraph(this, 10, 10);
+    CartesianGraph cartGraph(this);
 
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);

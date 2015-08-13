@@ -4,15 +4,13 @@
 #include <QGraphicsView>
 
 class Node;
+class CartesianGraph;
 
 class DarkSynthWidget : public QGraphicsView
 {
-
     Q_OBJECT
-
 public:
     DarkSynthWidget(QWidget *parent = NULL);
-
     void itemMoved();
 
 public slots:
@@ -30,7 +28,8 @@ protected:
     void scaleView(qreal scaleFactor);
 private:
     int m_timerId;
-    Node *m_pcenterNode;
+    //Node *m_pcenterNode;
+    CartesianGraph *m_pcartGraph;
 };
 
 #endif // DARKSYNTHWIDGET_H
