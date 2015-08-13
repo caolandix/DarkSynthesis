@@ -20,6 +20,11 @@ protected:
 private:
     QPointF origin;
     GraphWidget *graph;
+    double m_x_min, m_x_max;
+    double m_y_min, m_y_max;
+    QGraphicsTextItem *m_x_label;
+    QGraphicsTextItem *m_y_label;
+
 };
 
 #endif // CARTESIANGRAPH_H

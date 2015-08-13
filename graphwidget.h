@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 
 class Node;
+class CartesianGraph;
 
 class GraphWidget : public QGraphicsView {
     Q_OBJECT
@@ -26,7 +27,8 @@ protected:
     void scaleView(qreal scaleFactor);
 private:
     int m_timerId;
-    Node *m_pcenterNode;
+    //Node *m_pcenterNode;
+    CartesianGraph *m_pcartGraph;
 };
 
 #endif // GRAPHWIDGET_H

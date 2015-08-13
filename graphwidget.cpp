@@ -17,11 +17,15 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), m_timerId(0) 
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
-    setWindowTitle(tr("Elastic Nodes"));
+    setWindowTitle(tr("Cartesian Graph"));
 
-    // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to 
-    CartesianGraph cartGraph(this);
+    // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
+    // show where the vector drawing occurs and the scales defined.
+    m_pcartGraph = new CartesianGraph(this);
+    scene -> addItem(m_pcartGraph);
+    m_pcartGraph -> setPos(0, 0);
 
+    /*
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
     Node *node3 = new Node(this);
@@ -62,6 +66,7 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), m_timerId(0) 
     node7 -> setPos(-50, 50);
     node8 -> setPos(0, 50);
     node9 -> setPos(50, 50);
+    */
 }
 
 void GraphWidget::itemMoved() {
@@ -72,16 +77,16 @@ void GraphWidget::itemMoved() {
 void GraphWidget::keyPressEvent(QKeyEvent *event) {
     switch (event -> key()) {
     case Qt::Key_Up:
-        m_pcenterNode -> moveBy(0, -20);
+        m_pcartGraph -> moveBy(0, -20);
         break;
     case Qt::Key_Down:
-        m_pcenterNode -> moveBy(0, 20);
+        m_pcartGraph -> moveBy(0, 20);
         break;
     case Qt::Key_Left:
-        m_pcenterNode -> moveBy(-20, 0);
+        m_pcartGraph -> moveBy(-20, 0);
         break;
     case Qt::Key_Right:
-        m_pcenterNode -> moveBy(20, 0);
+        m_pcartGraph -> moveBy(20, 0);
         break;
     case Qt::Key_Plus:
         zoomIn();
@@ -124,7 +129,7 @@ void GraphWidget::timerEvent(QTimerEvent *event) {
 
 #ifndef QT_NO_WHEELEVENT
 void GraphWidget::wheelEvent(QWheelEvent *event) {
-    scaleView(pow((double)2, -event->delta() / 240.0));
+    scaleView(pow((double)2, -event -> delta() / 240.0));
 }
 #endif
 
@@ -132,23 +137,25 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     Q_UNUSED(rect);
 
     // Shadow
-    QRectF sceneRect = this->sceneRect();
+    QRectF sceneRect = this -> sceneRect();
+
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
     QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
     if (rightShadow.intersects(rect) || rightShadow.contains(rect))
-        painter->fillRect(rightShadow, Qt::darkGray);
+        painter -> fillRect(rightShadow, Qt::darkGray);
     if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
-        painter->fillRect(bottomShadow, Qt::darkGray);
+        painter -> fillRect(bottomShadow, Qt::darkGray);
 
     // Fill
     QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
-    gradient.setColorAt(0, Qt::white);
+    gradient.setColorAt(0, Qt::red);
     gradient.setColorAt(1, Qt::lightGray);
-    painter->fillRect(rect.intersected(sceneRect), gradient);
-    painter->setBrush(Qt::NoBrush);
-    painter->drawRect(sceneRect);
+    painter -> fillRect(rect.intersected(sceneRect), gradient);
+    painter -> setBrush(Qt::NoBrush);
+    painter -> drawRect(sceneRect);
 
     // Text
+    /*
     QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4, sceneRect.width() - 4, sceneRect.height() - 4);
     QString message(tr("Click and drag the nodes around, and zoom with the mouse wheel or the '+' and '-' keys"));
 
@@ -160,6 +167,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     painter -> drawText(textRect.translated(2, 2), message);
     painter -> setPen(Qt::black);
     painter -> drawText(textRect, message);
+    */
 }
 
 void GraphWidget::scaleView(qreal scaleFactor) {
