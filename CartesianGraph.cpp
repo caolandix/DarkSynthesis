@@ -5,6 +5,7 @@
 #include <QPen>
 #include <QGraphicsTextItem>
 
+#include "cartesianlabel.h"
 #include "cartesiangraph.h"
 #include "graphwidget.h"
 
@@ -13,8 +14,9 @@ CartesianGraph::CartesianGraph(GraphWidget *graphWidget) : graph(graphWidget) {
     setZValue(-1);
     int borderWidth = 5;
 
-    m_x_label = new QGraphicsTextItem(QString("x: t(s)"), this);
-    m_y_label = new QGraphicsTextItem(QString("y: v(m/s)"), this);
+
+    m_x_label = new CartesianLabel(QString("x: t(s)"), this);
+    m_y_label = new CartesianLabel(QString("y: v(m/s)"), this);
     m_x_label -> setPos(200 + borderWidth, 0);
     m_y_label -> setPos(0, -200 - borderWidth);
 }

@@ -24,7 +24,6 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), m_timerId(0) 
     m_pcartGraph = new CartesianGraph(this);
     scene -> addItem(m_pcartGraph);
     m_pcartGraph -> setPos(0, 0);
-
     /*
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
