@@ -9,11 +9,11 @@
 #include "cartesiangraph.h"
 #include "graphwidget.h"
 
-CartesianGraph::CartesianGraph(GraphWidget *graphWidget) : graph(graphWidget) {
+CartesianGraph::CartesianGraph(GraphWidget *graphWidget) : m_pgraphWidget(graphWidget) {
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     int borderWidth = 5;
-
+    m_tickStep = 10;
 
     m_x_label = new CartesianLabel(QString("x: t(s)"), this);
     m_y_label = new CartesianLabel(QString("y: v(m/s)"), this);
@@ -46,7 +46,7 @@ QVariant CartesianGraph::itemChange(GraphicsItemChange change, const QVariant &v
             /*
              foreach (Edge *edge, edgeList)
                 edge -> adjust();
-            graph -> itemMoved();
+            m_pgraphWidget -> itemMoved();
             */
             break;
         default:

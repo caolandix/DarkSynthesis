@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     darksynthwidget.cpp \
     cartesiangraph.cpp \
     physparticle.cpp \
-    cartesianlabel.cpp
+    cartesianlabel.cpp \
+    cartesiangraphsettingsdlg.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -29,6 +30,8 @@ HEADERS  += cmainwindow.h \
     darksynthwidget.h \
     cartesiangraph.h \
     physparticle.h \
-    cartesianlabel.h
+    cartesianlabel.h \
+    cartesiangraphsettingsdlg.h
 
-FORMS    += cmainwindow.ui
+FORMS    += cmainwindow.ui \
+    cartesiangraphsettingsdlg.ui
