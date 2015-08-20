@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     cartesiangraph.cpp \
     physparticle.cpp \
     cartesianlabel.cpp \
-    cartesiangraphsettingsdlg.cpp
+    cartesiangraphsettingsdlg.cpp \
+    physvector.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -31,7 +32,8 @@ HEADERS  += cmainwindow.h \
     cartesiangraph.h \
     physparticle.h \
     cartesianlabel.h \
-    cartesiangraphsettingsdlg.h
+    cartesiangraphsettingsdlg.h \
+    physvector.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui
