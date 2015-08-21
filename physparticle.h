@@ -7,6 +7,7 @@
 class GraphWidget;
 class QGraphicsSceneMouseEvent;
 class CartesianLabel;
+class PhysVector;
 
 class PhysParticle : public QGraphicsItem {
 public:
@@ -22,7 +23,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
     CartesianLabel *m_pLabel;
-    QList<PhysVector> m_Vectors;
+    QList<PhysVector *> m_Vectors;
 };
 
 #endif // PHYSPARTICLE_H
