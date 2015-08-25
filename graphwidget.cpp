@@ -1,12 +1,10 @@
 #include "graphwidget.h"
-#include "edge.h"
-#include "node.h"
 #include "cartesiangraph.h"
 
 #include <math.h>
 #include <QKeyEvent>
 
-GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), m_timerId(0) {
+GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene -> setItemIndexMethod(QGraphicsScene::NoIndex);
     scene -> setSceneRect(-200, -200, 400, 400);
@@ -24,53 +22,9 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), m_timerId(0) 
     m_pcartGraph = new CartesianGraph(this);
     scene -> addItem(m_pcartGraph);
     m_pcartGraph -> setPos(0, 0);
-    /*
-    Node *node1 = new Node(this);
-    Node *node2 = new Node(this);
-    Node *node3 = new Node(this);
-    Node *node4 = new Node(this);
-    m_pcenterNode = new Node(this);
-    Node *node6 = new Node(this);
-    Node *node7 = new Node(this);
-    Node *node8 = new Node(this);
-    Node *node9 = new Node(this);
-    scene -> addItem(node1);
-    scene -> addItem(node2);
-    scene -> addItem(node3);
-    scene -> addItem(node4);
-    scene -> addItem(m_pcenterNode);
-    scene -> addItem(node6);
-    scene -> addItem(node7);
-    scene -> addItem(node8);
-    scene -> addItem(node9);
-    scene -> addItem(new Edge(node1, node2));
-    scene -> addItem(new Edge(node2, node3));
-    scene -> addItem(new Edge(node2, m_pcenterNode));
-    scene -> addItem(new Edge(node3, node6));
-    scene -> addItem(new Edge(node4, node1));
-    scene -> addItem(new Edge(node4, m_pcenterNode));
-    scene -> addItem(new Edge(m_pcenterNode, node6));
-    scene -> addItem(new Edge(m_pcenterNode, node8));
-    scene -> addItem(new Edge(node6, node9));
-    scene -> addItem(new Edge(node7, node4));
-    scene -> addItem(new Edge(node8, node7));
-    scene -> addItem(new Edge(node9, node8));
-
-    node1 ->setPos(-50, -50);
-    node2 ->setPos(0, -50);
-    node3 ->setPos(50, -50);
-    node4 ->setPos(-50, 0);
-    m_pcenterNode -> setPos(0, 0);
-    node6 -> setPos(50, 0);
-    node7 -> setPos(-50, 50);
-    node8 -> setPos(0, 50);
-    node9 -> setPos(50, 50);
-    */
 }
 
 void GraphWidget::itemMoved() {
-    if (!m_timerId)
-        m_timerId = startTimer(1000 / 25);
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event) {
@@ -95,7 +49,6 @@ void GraphWidget::keyPressEvent(QKeyEvent *event) {
         break;
     case Qt::Key_Space:
     case Qt::Key_Enter:
-        shuffle();
         break;
     default:
         QGraphicsView::keyPressEvent(event);
@@ -104,26 +57,6 @@ void GraphWidget::keyPressEvent(QKeyEvent *event) {
 
 void GraphWidget::timerEvent(QTimerEvent *event) {
     Q_UNUSED(event);
-
-    QList<Node *> nodes;
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (Node *node = qgraphicsitem_cast<Node *>(item))
-            nodes << node;
-    }
-
-    foreach (Node *node, nodes)
-        node -> calculateForces();
-
-    bool itemsMoved = false;
-    foreach (Node *node, nodes) {
-        if (node -> advance())
-            itemsMoved = true;
-    }
-
-    if (!itemsMoved) {
-        killTimer(m_timerId);
-        m_timerId = 0;
-    }
 }
 
 #ifndef QT_NO_WHEELEVENT
@@ -152,21 +85,6 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     painter -> fillRect(rect.intersected(sceneRect), gradient);
     painter -> setBrush(Qt::NoBrush);
     painter -> drawRect(sceneRect);
-
-    // Text
-    /*
-    QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4, sceneRect.width() - 4, sceneRect.height() - 4);
-    QString message(tr("Click and drag the nodes around, and zoom with the mouse wheel or the '+' and '-' keys"));
-
-    QFont font = painter -> font();
-    font.setBold(true);
-    font.setPointSize(14);
-    painter -> setFont(font);
-    painter -> setPen(Qt::lightGray);
-    painter -> drawText(textRect.translated(2, 2), message);
-    painter -> setPen(Qt::black);
-    painter -> drawText(textRect, message);
-    */
 }
 
 void GraphWidget::scaleView(qreal scaleFactor) {
@@ -174,11 +92,4 @@ void GraphWidget::scaleView(qreal scaleFactor) {
     if (factor < 0.07 || factor > 100)
         return;
     scale(scaleFactor, scaleFactor);
-}
-
-void GraphWidget::shuffle() {
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (qgraphicsitem_cast<Node *>(item))
-            item -> setPos(-150 + qrand() % 300, -150 + qrand() % 300);
-    }
 }

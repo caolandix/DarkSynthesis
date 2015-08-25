@@ -15,8 +15,8 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget * = 0);
 
-    Qt::Alignment alignment() const { return m_Flags; };
-    void setAlignment(Qt::Alignment flags) { m_Flags = flags; };
+    Qt::Alignment alignment() const { return m_Flags; }
+    void setAlignment(Qt::Alignment flags) { m_Flags = flags; }
 
     void SetTextInteraction(bool, bool = false);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);

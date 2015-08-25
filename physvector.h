@@ -12,6 +12,13 @@ class PhysParticle;
 static const double PI = 3.141592653589;
 
 class PhysVector : public QGraphicsLineItem {
+private:
+    typedef enum { AXIS_HORIZ = 0, AXIS_VERT } AxisOrientation;
+    struct Theta {
+        double degrees;
+        bool bAboveAxis;
+        AxisOrientation axisOrientation;
+    };
 public:
     PhysVector(PhysParticle *, PhysParticle *, QGraphicsItem *, QGraphicsScene *);
     ~PhysVector();
@@ -22,6 +29,13 @@ public:
 
     // accessors
     double Magnitude() const { return m_magnitude; }
+    Theta theta() const { return m_Theta; }
+    QColor Color() const { return m_Color; }
+    QPolygonF ArrowHead() const { return m_arrowHead; }
+    PhysParticle *StartParticle() const { return m_pStartParticle; }
+    PhysParticle *EndParticle() const { return m_pEndParticle; }
+
+
 protected:
 
     // Qt overrides
@@ -29,21 +43,14 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
-    typedef enum { AXIS_HORIZ = 0, AXIS_VERT } AxisOrientation;
-    struct Theta {
-        double degrees;
-        bool bAboveAxis;
-        AxisOrientation axisOrientation;
-    };
-
     // Member attributes
     CartesianLabel *m_pLabel;
     double m_magnitude;
     Theta m_Theta;
 
-    PhysParticle *m_StartParticle;
-    PhysParticle *m_EndParticle;
+    PhysParticle *m_pStartParticle;
+    PhysParticle *m_pEndParticle;
     QColor m_Color;
-    QPolygonF arrowHead;
+    QPolygonF m_arrowHead;
 };
 #endif // PHYSVECTOR_H

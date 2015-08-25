@@ -9,7 +9,7 @@ class QGraphicsSceneMouseEvent;
 class CartesianLabel;
 class PhysVector;
 
-class PhysParticle : public QGraphicsItem {
+class PhysParticle : public QGraphicsPolygonItem {
 public:
     PhysParticle(GraphWidget *);
     ~PhysParticle();

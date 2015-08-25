@@ -81,9 +81,7 @@ QVariant CartesianLabel::itemChange(QGraphicsItem::GraphicsItemChange change, co
         qDebug("itemChange '%s', selected=%s",
                this -> toPlainText().toStdString().c_str(), value.toString().toStdString().c_str());
     }
-    if (
-        change == QGraphicsItem::ItemSelectedChange &&
-        textInteractionFlags() != Qt::NoTextInteraction && !value.toBool()) {
+    if (change == QGraphicsItem::ItemSelectedChange && textInteractionFlags() != Qt::NoTextInteraction && !value.toBool()) {
 
         // item received SelectedChange event AND is in editor mode AND is about to be deselected:
         SetTextInteraction(false); // leave editor mode
@@ -104,9 +102,9 @@ void CartesianLabel::SetTextInteraction(bool bOn, bool bSelectAll) {
 
          // option to select the whole text (e.g. after creation of the TextItem)
         if (bSelectAll) {
-            QTextCursor c = textCursor();
-            c.select(QTextCursor::Document);
-            setTextCursor(c);
+            QTextCursor cursor = textCursor();
+            cursor.select(QTextCursor::Document);
+            setTextCursor(cursor);
         }
     }
     else if (!bOn && textInteractionFlags() == Qt::TextEditorInteraction) {
@@ -115,9 +113,9 @@ void CartesianLabel::SetTextInteraction(bool bOn, bool bSelectAll) {
         setTextInteractionFlags(Qt::NoTextInteraction);
 
         // deselect text (else it keeps gray shade):
-        QTextCursor c = this -> textCursor();
-        c.clearSelection();
-        this -> setTextCursor(c);
+        QTextCursor cursor = this -> textCursor();
+        cursor.clearSelection();
+        this -> setTextCursor(cursor);
         clearFocus();
     }
 }

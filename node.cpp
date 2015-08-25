@@ -1,6 +1,6 @@
 #include "edge.h"
 #include "node.h"
-#include "graphwidget.h"
+//#include "graphwidget.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
@@ -98,7 +98,8 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value) {
-    switch (change) {
+    /*
+     switch (change) {
         case ItemPositionHasChanged:
             foreach (Edge *edge, edgeList)
                 edge -> adjust();
@@ -107,6 +108,7 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value) {
         default:
             break;
     };
+    */
     return QGraphicsItem::itemChange(change, value);
 }
 
