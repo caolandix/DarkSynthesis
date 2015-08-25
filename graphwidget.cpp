@@ -1,10 +1,17 @@
+#include <math.h>
+#include <QKeyEvent>
+#include <QGraphicsSceneContextMenuEvent>
+#include <QContextMenuEvent>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QMenu>
+#include <QLabel>
+
 #include "graphwidget.h"
 #include "cartesiangraph.h"
 
-#include <math.h>
-#include <QKeyEvent>
-
 GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
+    setContextMenuPolicy(Qt::DefaultContextMenu);
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene -> setItemIndexMethod(QGraphicsScene::NoIndex);
     scene -> setSceneRect(-200, -200, 400, 400);
@@ -22,6 +29,22 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
     m_pcartGraph = new CartesianGraph(this);
     scene -> addItem(m_pcartGraph);
     m_pcartGraph -> setPos(0, 0);
+
+    m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
+    // Create the actions used int he context menus
+    createActions();
+}
+
+void GraphWidget::createVector() {
+    m_pInfoLabel -> setText(tr("Created a new Vector"));
+    m_pcartGraph -> createVector();
+}
+
+void GraphWidget::createActions() {
+    m_actNewVector = new QAction(tr("New &Vector"), this);
+    m_actNewVector -> setShortcut(tr("Ctrl+V"));
+    m_actNewVector -> setStatusTip(tr("Create a new Vector object"));
+    connect(m_actNewVector, SIGNAL(triggered()), this, SLOT(createVector()));
 }
 
 void GraphWidget::itemMoved() {
@@ -92,4 +115,16 @@ void GraphWidget::scaleView(qreal scaleFactor) {
     if (factor < 0.07 || factor > 100)
         return;
     scale(scaleFactor, scaleFactor);
+}
+
+void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
+    QMenu menu(this);
+    menu.addAction(m_actNewVector);
+    menu.exec(event -> globalPos());
+
+    QGraphicsScene *scene = this -> scene();
+    QGraphicsItem *pItem = scene -> focusItem();
+    if (event) {
+        ;
+    }
 }

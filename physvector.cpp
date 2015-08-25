@@ -5,7 +5,7 @@
 #include "physparticle.h"
 #include "cartesianlabel.h"
 
-PhysVector::PhysVector(PhysParticle *pStart, PhysParticle *pEnd, QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsLineItem(parent) {
+PhysVector::PhysVector(QGraphicsItem *parent, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) : QGraphicsLineItem(parent) {
     m_magnitude = 0.0;
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -24,11 +24,9 @@ PhysVector::~PhysVector() {
         delete m_pLabel;
         m_pLabel = NULL;
     }
-
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
 }
-
 
 QRectF PhysVector::boundingRect() const {
     const qreal adjust = 2.0;

@@ -1,12 +1,15 @@
 #include <QGraphicsScene>
+#include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
-#include <QPen>
 #include <QGraphicsTextItem>
+#include <QPainter>
+#include <QPen>
+#include <QStyleOption>
 
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
+#include "physparticle.h"
+#include "physvector.h"
 #include "graphwidget.h"
 
 CartesianGraph::CartesianGraph(GraphWidget *graphWidget) : m_pgraphWidget(graphWidget) {
@@ -19,6 +22,24 @@ CartesianGraph::CartesianGraph(GraphWidget *graphWidget) : m_pgraphWidget(graphW
     m_y_label = new CartesianLabel(QString("y: v(m/s)"), this);
     m_x_label -> setPos(200 + borderWidth, 0);
     m_y_label -> setPos(0, -200 - borderWidth);
+}
+
+CartesianGraph::~CartesianGraph() {
+    delete m_x_label;
+    m_x_label = NULL;
+    delete m_y_label;
+    m_y_label = NULL;
+
+    m_Vectors.clear();
+    m_Particles.clear();
+}
+
+void CartesianGraph::createVector() {
+    m_Vectors.push_back(new PhysVector(this));
+}
+
+void CartesianGraph::createParticle() {
+    m_Particles.push_back(new PhysParticle(this));
 }
 
 QRectF CartesianGraph::boundingRect() const {

@@ -6,7 +6,7 @@
 #include <QStyleOption>
 #include "cartesianlabel.h"
 
-PhysParticle::PhysParticle(GraphWidget *graphWidget) {
+PhysParticle::PhysParticle(QGraphicsItem *parent) : QGraphicsPolygonItem(parent) {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);

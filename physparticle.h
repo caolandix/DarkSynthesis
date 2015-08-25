@@ -11,7 +11,7 @@ class PhysVector;
 
 class PhysParticle : public QGraphicsPolygonItem {
 public:
-    PhysParticle(GraphWidget *);
+    PhysParticle(QGraphicsItem *);
     ~PhysParticle();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;

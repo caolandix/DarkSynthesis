@@ -4,11 +4,14 @@
 #include <QGraphicsItem>
 
 class GraphWidget;
+class PhysVector;
+class PhysParticle;
 
 class CartesianGraph : public QGraphicsItem {
 public:
     CartesianGraph(GraphWidget *);
     CartesianGraph(GraphWidget *, QPointF *, QPointF *);
+    ~CartesianGraph();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
@@ -22,19 +25,22 @@ public:
     double yMax() const { return m_y_max; }
     QPointF origin() const { return m_origin; }
 
+    void createVector();
+    void createParticle();
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
+
+
     QPointF m_origin;
     GraphWidget *m_pgraphWidget;
     double m_tickStep;
-    double m_x_min, m_x_max;
-    double m_y_min, m_y_max;
-    QGraphicsTextItem *m_x_label;
-    QGraphicsTextItem *m_y_label;
-
+    double m_x_min, m_x_max, m_y_min, m_y_max;
+    QGraphicsTextItem *m_x_label, *m_y_label;
+    QList<PhysVector *> m_Vectors;
+    QList<PhysParticle *> m_Particles;
 };
 
 #endif // CARTESIANGRAPH_H

@@ -20,7 +20,7 @@ private:
         AxisOrientation axisOrientation;
     };
 public:
-    PhysVector(PhysParticle *, PhysParticle *, QGraphicsItem *, QGraphicsScene *);
+    PhysVector(QGraphicsItem *, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);
     ~PhysVector();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -34,8 +34,6 @@ public:
     QPolygonF ArrowHead() const { return m_arrowHead; }
     PhysParticle *StartParticle() const { return m_pStartParticle; }
     PhysParticle *EndParticle() const { return m_pEndParticle; }
-
-
 protected:
 
     // Qt overrides
@@ -47,7 +45,6 @@ private:
     CartesianLabel *m_pLabel;
     double m_magnitude;
     Theta m_Theta;
-
     PhysParticle *m_pStartParticle;
     PhysParticle *m_pEndParticle;
     QColor m_Color;
