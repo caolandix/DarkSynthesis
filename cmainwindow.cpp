@@ -1,7 +1,9 @@
 #include <QContextMenuEvent>
 #include <QMessageBox>
+
 #include "cmainwindow.h"
 #include "ui_cmainwindow.h"
+#include "cartesiangraphsettingsdlg.h"
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::CMainWindow) {
     ui -> setupUi(this);
@@ -70,22 +72,6 @@ void CMainWindow::italic() {
     infoLabel->setText(tr("Invoked <b>Edit|Format|Italic</b>"));
 }
 
-void CMainWindow::leftAlign() {
-    infoLabel->setText(tr("Invoked <b>Edit|Format|Left Align</b>"));
-}
-
-void CMainWindow::rightAlign() {
-    infoLabel->setText(tr("Invoked <b>Edit|Format|Right Align</b>"));
-}
-
-void CMainWindow::justify() {
-    infoLabel -> setText(tr("Invoked <b>Edit|Format|Justify</b>"));
-}
-
-void CMainWindow::center() {
-    infoLabel -> setText(tr("Invoked <b>Edit|Format|Center</b>"));
-}
-
 void CMainWindow::setLineSpacing() {
     infoLabel -> setText(tr("Invoked <b>Edit|Format|Set Line Spacing</b>"));
 }
@@ -101,6 +87,16 @@ void CMainWindow::about() {
 
 void CMainWindow::aboutQt() {
     infoLabel -> setText(tr("Invoked <b>Help|About Qt</b>"));
+}
+
+void CMainWindow::cartesianGraphOptions() {
+    CartesianGraphSettingsDlg dlg;
+
+    if (dlg.exec() == QDialog::Accepted) {
+
+        // get values stored
+        bool bVal = false;
+    }
 }
 
 void CMainWindow::createActions() {
@@ -170,6 +166,7 @@ void CMainWindow::createActions() {
     italicAct -> setStatusTip(tr("Make the text italic"));
     connect(italicAct, SIGNAL(triggered()), this, SLOT(italic()));
 
+
     QFont italicFont = italicAct -> font();
     italicFont.setItalic(true);
     italicAct -> setFont(italicFont);
@@ -191,36 +188,10 @@ void CMainWindow::createActions() {
     connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(aboutQt()));
 
-    leftAlignAct = new QAction(tr("&Left Align"), this);
-    leftAlignAct -> setCheckable(true);
-    leftAlignAct -> setShortcut(tr("Ctrl+L"));
-    leftAlignAct -> setStatusTip(tr("Left align the selected text"));
-    connect(leftAlignAct, SIGNAL(triggered()), this, SLOT(leftAlign()));
-
-    rightAlignAct = new QAction(tr("&Right Align"), this);
-    rightAlignAct -> setCheckable(true);
-    rightAlignAct -> setShortcut(tr("Ctrl+R"));
-    rightAlignAct -> setStatusTip(tr("Right align the selected text"));
-    connect(rightAlignAct, SIGNAL(triggered()), this, SLOT(rightAlign()));
-
-    justifyAct = new QAction(tr("&Justify"), this);
-    justifyAct -> setCheckable(true);
-    justifyAct -> setShortcut(tr("Ctrl+J"));
-    justifyAct -> setStatusTip(tr("Justify the selected text"));
-    connect(justifyAct, SIGNAL(triggered()), this, SLOT(justify()));
-
-    centerAct = new QAction(tr("&Center"), this);
-    centerAct -> setCheckable(true);
-    centerAct -> setShortcut(tr("Ctrl+E"));
-    centerAct -> setStatusTip(tr("Center the selected text"));
-    connect(centerAct, SIGNAL(triggered()), this, SLOT(center()));
-
-    alignmentGroup = new QActionGroup(this);
-    alignmentGroup -> addAction(leftAlignAct);
-    alignmentGroup -> addAction(rightAlignAct);
-    alignmentGroup -> addAction(justifyAct);
-    alignmentGroup -> addAction(centerAct);
-    leftAlignAct -> setChecked(true);
+    m_pcartGraphSettings = new QAction(tr("C&artesian Graph Settings..."), this);
+    m_pcartGraphSettings -> setShortcut(tr("Ctrl+A"));
+    m_pcartGraphSettings -> setStatusTip(tr("Allows adjustment of the Cartesian Graph"));
+    connect(m_pcartGraphSettings, SIGNAL(triggered()), this, SLOT(cartesianGraphOptions()));
 }
 
 void CMainWindow::createMenus() {
@@ -233,7 +204,6 @@ void CMainWindow::createMenus() {
     fileMenu -> addAction(exitAct);
 
     editMenu = menuBar() -> addMenu(tr("&Edit"));
-    editMenu -> addAction(undoAct);
     editMenu -> addAction(redoAct);
     editMenu -> addSeparator();
     editMenu -> addAction(cutAct);
@@ -248,12 +218,11 @@ void CMainWindow::createMenus() {
     formatMenu = editMenu -> addMenu(tr("&Format"));
     formatMenu -> addAction(boldAct);
     formatMenu -> addAction(italicAct);
-    formatMenu -> addSeparator() -> setText(tr("Alignment"));
-    formatMenu -> addAction(leftAlignAct);
-    formatMenu -> addAction(rightAlignAct);
-    formatMenu -> addAction(justifyAct);
-    formatMenu -> addAction(centerAct);
     formatMenu -> addSeparator();
     formatMenu -> addAction(setLineSpacingAct);
     formatMenu -> addAction(setParagraphSpacingAct);
+
+    m_pSettingsMenu = menuBar() -> addMenu(tr("&Settings"));
+    m_pSettingsMenu -> addAction(m_pcartGraphSettings);
+    m_pSettingsMenu -> addSeparator();
 }

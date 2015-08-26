@@ -15,6 +15,9 @@ public:
     explicit CartesianGraphSettingsDlg(QWidget *parent = 0);
     ~CartesianGraphSettingsDlg();
 
+protected:
+    void done(int);
+
 private:
     Ui::CartesianGraphSettingsDlg *ui;
 };

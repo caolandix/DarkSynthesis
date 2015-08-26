@@ -24,6 +24,7 @@ private:
 protected:
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 private slots:
+    void cartesianGraphOptions();
     void newFile();
     void open();
     void save();
@@ -35,10 +36,6 @@ private slots:
     void paste();
     void bold();
     void italic();
-    void leftAlign();
-    void rightAlign();
-    void justify();
-    void center();
     void setLineSpacing();
     void setParagraphSpacing();
     void about();
@@ -52,7 +49,8 @@ private:
     QMenu *editMenu;
     QMenu *formatMenu;
     QMenu *helpMenu;
-    QActionGroup *alignmentGroup;
+    QMenu *m_pSettingsMenu;
+    QAction *m_pcartGraphSettings;
     QAction *newAct;
     QAction *openAct;
     QAction *saveAct;
@@ -65,10 +63,6 @@ private:
     QAction *pasteAct;
     QAction *boldAct;
     QAction *italicAct;
-    QAction *leftAlignAct;
-    QAction *rightAlignAct;
-    QAction *justifyAct;
-    QAction *centerAct;
     QAction *setLineSpacingAct;
     QAction *setParagraphSpacingAct;
     QAction *aboutAct;
