@@ -10,7 +10,7 @@ class PhysParticle;
 class CartesianGraph : public QGraphicsItem {
 public:
     CartesianGraph(GraphWidget *);
-    CartesianGraph(GraphWidget *, QPointF *, QPointF *);
+    CartesianGraph(GraphWidget *, QPointF * = NULL, QPointF * = NULL);
     ~CartesianGraph();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -32,8 +32,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
-
-
+    CartesianGraphDataObj *m_pDataObj;
     QPointF m_origin;
     GraphWidget *m_pgraphWidget;
     double m_tickStep;
