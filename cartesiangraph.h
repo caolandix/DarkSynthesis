@@ -6,6 +6,7 @@
 class GraphWidget;
 class PhysVector;
 class PhysParticle;
+class CartesianGraphDataObj;
 
 class CartesianGraph : public QGraphicsItem {
 public:
@@ -18,12 +19,18 @@ public:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
 
     // accessors
-    double tickStep() const { return m_tickStep; }
-    double xMin() const { return m_x_min; }
-    double yMin() const { return m_y_min; }
-    double xMax() const { return m_x_max; }
-    double yMax() const { return m_y_max; }
-    QPointF origin() const { return m_origin; }
+    double tickStep() const { return m_pDataObj -> tickStep(); }
+    double xMin() const { return m_pDataObj ->  xmin(); }
+    double yMin() const { return m_pDataObj -> ymin(); }
+    double xMax() const { return m_pDataObj -> xmax(); }
+    double yMax() const { return m_pDataObj -> ymax(); }
+    QPointF origin() const { return m_pDataObj -> origin(); }
+    QList<PhysVector *> &Vectors() const { return m_pDataObj -> Vectors(); }
+    QList<PhysParticle *> &Particles() const { return m_pDataObj -> Particles(); }
+    CartesianGraphDataObj &DataObj() const { return *m_pDataObj; }
+
+    QString &XAxisLabel() const { return m_x_label -> toPlainText(); }
+    QString &YAxisLabel() const { return m_y_label -> toPlainText(); }
 
     void createVector();
     void createParticle();
@@ -32,14 +39,8 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
-    CartesianGraphDataObj *m_pDataObj;
-    QPointF m_origin;
     GraphWidget *m_pgraphWidget;
-    double m_tickStep;
-    double m_x_min, m_x_max, m_y_min, m_y_max;
-    QGraphicsTextItem *m_x_label, *m_y_label;
-    QList<PhysVector *> m_Vectors;
-    QList<PhysParticle *> m_Particles;
+    CartesianGraphDataObj *m_pDataObj;
 };
 
 #endif // CARTESIANGRAPH_H

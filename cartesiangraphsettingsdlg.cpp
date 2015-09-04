@@ -1,9 +1,12 @@
 #include "cartesiangraphsettingsdlg.h"
 #include "ui_cartesiangraphsettingsdlg.h"
 
-CartesianGraphSettingsDlg::CartesianGraphSettingsDlg(QWidget *parent) : QDialog(parent),
+#include "cartesiangraphdataobj.h"
+
+CartesianGraphSettingsDlg::CartesianGraphSettingsDlg(CartesianGraphDataObj &dataObj, QWidget *parent) : QDialog(parent),
     ui(new Ui::CartesianGraphSettingsDlg) {
     ui -> setupUi(this);
+    m_DataObj = DataObj;
 }
 
 CartesianGraphSettingsDlg::~CartesianGraphSettingsDlg() {

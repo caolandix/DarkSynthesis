@@ -4,6 +4,8 @@
 #include "cmainwindow.h"
 #include "ui_cmainwindow.h"
 #include "cartesiangraphsettingsdlg.h"
+#include "cartesiangraphdataobj.h"
+
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::CMainWindow) {
     ui -> setupUi(this);
@@ -90,7 +92,9 @@ void CMainWindow::aboutQt() {
 }
 
 void CMainWindow::cartesianGraphOptions() {
-    CartesianGraphSettingsDlg dlg;
+    CartesianGraphSettingsDlg dlg();
+
+    CartesianGraphDataObj dataobj = graph_widget -> CartesianGraph() -> DataObj();
 
     if (dlg.exec() == QDialog::Accepted) {
 

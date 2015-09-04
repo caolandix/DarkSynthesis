@@ -3,8 +3,9 @@
 
 #include <QGraphicsView>
 
+#include "cartesiangraph.h"
+
 class Node;
-class CartesianGraph;
 class QAction;
 class QGraphicsScene;
 class QLabel;
@@ -16,6 +17,9 @@ class GraphWidget : public QGraphicsView {
 public:
     GraphWidget(QWidget *parent = NULL);
     void itemMoved();
+
+    CartesianGraph *CartesianGraph() const { return m_pcartGraph; }
+
 
 public slots:
     void zoomIn() { scaleView(qreal(1.2)); }
