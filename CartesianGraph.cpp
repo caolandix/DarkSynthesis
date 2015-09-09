@@ -8,11 +8,14 @@
 
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
+#include "cartesiangraphdataobj.h"
 #include "physparticle.h"
 #include "physvector.h"
 #include "graphwidget.h"
 
-CartesianGraph::CartesianGraph(GraphWidget *graphWidget) : m_pgraphWidget(graphWidget) {
+CartesianGraph(CartesianGraphDataObj *pDataObj, GraphWidget *pGraphWidget, QPointF *pt1, QPointF *pt2) {
+    m_pgraphWidget = pGraphWidget;
+    m_pDataObj = pDataObj;
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     int borderWidth = 5;

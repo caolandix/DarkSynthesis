@@ -2,17 +2,29 @@
 #define CARTESIANGRAPH_H
 
 #include <QGraphicsItem>
+#include "CartesianGraphDataObj.h"
 
 class GraphWidget;
 class PhysVector;
 class PhysParticle;
-class CartesianGraphDataObj;
 
 class CartesianGraph : public QGraphicsItem {
 public:
-    CartesianGraph(GraphWidget *);
-    CartesianGraph(GraphWidget *, QPointF * = NULL, QPointF * = NULL);
+
+    // basic ctor
+    CartesianGraph() {}
+
+    // copy ctor
+    CartesianGraph(const CartesianGraph &);
+
+    // othger ctors
+    CartesianGraph(CartesianGraphDataObj *, GraphWidget *, QPointF * = NULL, QPointF * = NULL);
+
+    // dtor
     ~CartesianGraph();
+
+    // operator overloads
+    CartesianGraph &operator=(const )
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
@@ -20,17 +32,17 @@ public:
 
     // accessors
     double tickStep() const { return m_pDataObj -> tickStep(); }
-    double xMin() const { return m_pDataObj ->  xmin(); }
-    double yMin() const { return m_pDataObj -> ymin(); }
-    double xMax() const { return m_pDataObj -> xmax(); }
-    double yMax() const { return m_pDataObj -> ymax(); }
+    double xMin() const { return m_pDataObj ->  xMin(); }
+    double yMin() const { return m_pDataObj -> yMin(); }
+    double xMax() const { return m_pDataObj -> xMax(); }
+    double yMax() const { return m_pDataObj -> yMax(); }
     QPointF origin() const { return m_pDataObj -> origin(); }
-    QList<PhysVector *> &Vectors() const { return m_pDataObj -> Vectors(); }
-    QList<PhysParticle *> &Particles() const { return m_pDataObj -> Particles(); }
-    CartesianGraphDataObj &DataObj() const { return *m_pDataObj; }
+    QList<PhysVector *> Vectors() const { return m_pDataObj -> Vectors(); }
+    QList<PhysParticle *> Particles() const { return m_pDataObj -> Particles(); }
+    CartesianGraphDataObj *DataObj() const { return m_pDataObj; }
 
-    QString &XAxisLabel() const { return m_x_label -> toPlainText(); }
-    QString &YAxisLabel() const { return m_y_label -> toPlainText(); }
+    QString XAxisLabel() const { return m_pDataObj -> XAxisLabel(); }
+    QString YAxisLabel() const { return m_pDataObj -> YAxisLabel(); }
 
     void createVector();
     void createParticle();

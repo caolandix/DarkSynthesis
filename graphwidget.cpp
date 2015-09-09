@@ -12,10 +12,10 @@
 
 GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
     setContextMenuPolicy(Qt::DefaultContextMenu);
-    QGraphicsScene *scene = new QGraphicsScene(this);
-    scene -> setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene -> setSceneRect(-200, -200, 400, 400);
-    setScene(scene);
+    QGraphicsScene *pScene = new QGraphicsScene(this);
+    pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
+    pScene -> setSceneRect(-200, -200, 400, 400);
+    setScene(pScene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
@@ -26,18 +26,19 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
-    m_pcartGraph = new CartesianGraph(this);
-    scene -> addItem(m_pcartGraph);
-    m_pcartGraph -> setPos(0, 0);
+    m_pCartGraph = new CartesianGraph(this);
+    pScene -> addItem(m_pCartGraph);
+    m_pCartGraph -> setPos(0, 0);
 
     m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
-    // Create the actions used int he context menus
+
+    // Create the actions used in the context menus
     createActions();
 }
 
 void GraphWidget::createVector() {
     m_pInfoLabel -> setText(tr("Created a new Vector"));
-    m_pcartGraph -> createVector();
+    m_pCartGraph -> createVector();
 }
 
 void GraphWidget::createActions() {
@@ -53,16 +54,16 @@ void GraphWidget::itemMoved() {
 void GraphWidget::keyPressEvent(QKeyEvent *event) {
     switch (event -> key()) {
     case Qt::Key_Up:
-        m_pcartGraph -> moveBy(0, -20);
+        m_pCartGraph -> moveBy(0, -20);
         break;
     case Qt::Key_Down:
-        m_pcartGraph -> moveBy(0, 20);
+        m_pCartGraph -> moveBy(0, 20);
         break;
     case Qt::Key_Left:
-        m_pcartGraph -> moveBy(-20, 0);
+        m_pCartGraph -> moveBy(-20, 0);
         break;
     case Qt::Key_Right:
-        m_pcartGraph -> moveBy(20, 0);
+        m_pCartGraph -> moveBy(20, 0);
         break;
     case Qt::Key_Plus:
         zoomIn();

@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-class CartesianGraphDataObj;
+#include "cartesiangraphdataobj.h"
 
 namespace Ui {
 class CartesianGraphSettingsDlg;
@@ -14,18 +14,18 @@ class CartesianGraphSettingsDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit CartesianGraphSettingsDlg(CartesianGraphDataObj &, QWidget *parent = 0);
+    explicit CartesianGraphSettingsDlg(CartesianGraphDataObj *, QWidget *parent = 0);
     ~CartesianGraphSettingsDlg();
 
-    CartesianGraphDataObj &DataObj() const { return m_DataObj; }
-    void DataObj(const CartesianGraphDataObj &obj) { m_DataObj = obj; }
+    CartesianGraphDataObj DataObj() const { return m_DataObj; }
+    void DataObj(CartesianGraphDataObj *pobj) { m_DataObj = *pobj; }
 
 protected:
     void done(int);
 
 private:
     Ui::CartesianGraphSettingsDlg *ui;
-    CartesianGraphDataObj &m_DataObj;
+    CartesianGraphDataObj m_DataObj;
 };
 
 #endif // CARTESIANGRAPHSETTINGSDLG_H

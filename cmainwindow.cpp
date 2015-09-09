@@ -92,10 +92,7 @@ void CMainWindow::aboutQt() {
 }
 
 void CMainWindow::cartesianGraphOptions() {
-    CartesianGraphSettingsDlg dlg();
-
-    CartesianGraphDataObj dataobj = graph_widget -> CartesianGraph() -> DataObj();
-
+    CartesianGraphSettingsDlg dlg(graph_widget -> cartesianGraph() -> DataObj());
     if (dlg.exec() == QDialog::Accepted) {
 
         // get values stored

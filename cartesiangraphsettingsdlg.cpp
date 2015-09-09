@@ -3,10 +3,10 @@
 
 #include "cartesiangraphdataobj.h"
 
-CartesianGraphSettingsDlg::CartesianGraphSettingsDlg(CartesianGraphDataObj &dataObj, QWidget *parent) : QDialog(parent),
+CartesianGraphSettingsDlg::CartesianGraphSettingsDlg(CartesianGraphDataObj *pDataObj, QWidget *parent) : QDialog(parent),
     ui(new Ui::CartesianGraphSettingsDlg) {
     ui -> setupUi(this);
-    m_DataObj = DataObj;
+    m_DataObj = *pDataObj;
 }
 
 CartesianGraphSettingsDlg::~CartesianGraphSettingsDlg() {

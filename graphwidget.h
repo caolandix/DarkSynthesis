@@ -11,6 +11,7 @@ class QGraphicsScene;
 class QLabel;
 class PhysVector;
 class PhysParticle;
+class CartesianGraph;
 
 class GraphWidget : public QGraphicsView {
     Q_OBJECT
@@ -18,7 +19,7 @@ public:
     GraphWidget(QWidget *parent = NULL);
     void itemMoved();
 
-    CartesianGraph *CartesianGraph() const { return m_pcartGraph; }
+    CartesianGraph *cartesianGraph() const { return m_pCartGraph; }
 
 
 public slots:
@@ -40,7 +41,7 @@ private:
     void createActions();
 
 private:
-    CartesianGraph *m_pcartGraph;
+    CartesianGraph *m_pCartGraph;
     QAction *m_actNewVector;
     QLabel *m_pInfoLabel;
 };

@@ -2,6 +2,10 @@
 #define CARTESIANGRAPHDATAOBJ_H
 
 #include <QDataStream>
+#include <QGraphicsTextItem>
+#include <QPointF>
+#include "physvector.h"
+#include "physparticle.h"
 
 class CartesianGraphDataObj {
 public:
@@ -15,17 +19,29 @@ public:
     CartesianGraphDataObj &operator=(const CartesianGraphDataObj &);
     bool operator==(const CartesianGraphDataObj &);
 
-    double tickStep() const { return m_pDataObj -> tickStep(); }
-    double xMin() const { return m_pDataObj ->  xmin(); }
-    double yMin() const { return m_pDataObj -> ymin(); }
-    double xMax() const { return m_pDataObj -> xmax(); }
-    double yMax() const { return m_pDataObj -> ymax(); }
-    QPointF origin() const { return m_pDataObj -> origin(); }
-    QList<PhysVector *> &Vectors() const { return m_pDataObj -> Vectors(); }
-    QList<PhysParticle *> &Particles() const { return m_pDataObj -> Particles(); }
-    QString &XAxisLabel() const { return m_x_label -> toPlainText(); }
-    QString &YAxisLabel() const { return m_y_label -> toPlainText(); }
+    // Accessors -- get
+    double tickStep() const { return m_tickStep; }
+    double xMin() const { return m_x_min; }
+    double yMin() const { return m_y_min; }
+    double xMax() const { return m_x_max; }
+    double yMax() const { return m_y_max; }
+    QPointF origin() const { return m_origin; }
+    QList<PhysVector *> Vectors() const { return m_Vectors; }
+    QList<PhysParticle *> Particles() const { return m_Particles; }
+    QString XAxisLabel() const { return m_x_label -> toPlainText(); }
+    QString YAxisLabel() const { return m_y_label -> toPlainText(); }
 
+    // Accessors -- set
+    void tickStep(const double data) { m_tickStep = data; }
+    void xMin(const double data) { m_x_min = data; }
+    void yMin(const double data) { m_y_min = data; }
+    void xMax(const double data) { m_x_max = data; }
+    void yMax(const double data) { m_y_max = data; }
+    void origin(const QPointF data) { m_origin = data; }
+    void Vectors(const QList<PhysVector *> &data) { m_Vectors = data; }
+    void Particles(QList<PhysParticle *> &data) { m_Particles = data; }
+    void XAxisLabel(const QString data) { m_x_label -> setPlainText(data); }
+    void YAxisLabel(const QString data) { m_y_label -> setPlainText(data); }
 private:
     QPointF m_origin;
     double m_tickStep;

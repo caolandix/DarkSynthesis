@@ -5,7 +5,7 @@
 #include <QActionGroup>
 #include <QLabel>
 
-class GraphWidget;
+#include "graphwidget.h"
 
 namespace Ui {
     class CMainWindow;
