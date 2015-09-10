@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QActionGroup>
 #include <QLabel>
+#include <QFile>
+#include <QXmlStreamReader>
 
 #include "graphwidget.h"
 
@@ -42,9 +44,14 @@ private slots:
     void aboutQt();
 
 private:
+
+    // methods
     void createActions();
     void createMenus();
+    void ReadXMLFile(QXmlStreamReader &, QFile &);
+    void WriteXMLFile(QXmlStreamWriter &, QFile &);
 
+    // properties
     QMenu *fileMenu;
     QMenu *editMenu;
     QMenu *formatMenu;

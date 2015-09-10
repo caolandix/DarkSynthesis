@@ -12,25 +12,26 @@ class CartesianGraph : public QGraphicsItem {
 public:
 
     // basic ctor
-    CartesianGraph() {}
+    CartesianGraph();
 
     // copy ctor
     CartesianGraph(const CartesianGraph &);
 
-    // othger ctors
-    CartesianGraph(CartesianGraphDataObj *, GraphWidget *, QPointF * = NULL, QPointF * = NULL);
+    // other ctors
+    CartesianGraph(GraphWidget *, CartesianGraphDataObj * = NULL);
 
     // dtor
     ~CartesianGraph();
 
     // operator overloads
-    CartesianGraph &operator=(const )
+    CartesianGraph &operator=(const CartesianGraph &);
 
+    // overloaded inherited methods
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
 
-    // accessors
+    // accessors -- get
     double tickStep() const { return m_pDataObj -> tickStep(); }
     double xMin() const { return m_pDataObj ->  xMin(); }
     double yMin() const { return m_pDataObj -> yMin(); }
@@ -40,10 +41,15 @@ public:
     QList<PhysVector *> Vectors() const { return m_pDataObj -> Vectors(); }
     QList<PhysParticle *> Particles() const { return m_pDataObj -> Particles(); }
     CartesianGraphDataObj *DataObj() const { return m_pDataObj; }
+    GraphWidget *graphWidget() const { return m_pGraphWidget; }
+    QString XAxisLabel() const { return m_x_label -> toPlainText(); }
+    QString YAxisLabel() const { return m_y_label -> toPlainText(); }
 
-    QString XAxisLabel() const { return m_pDataObj -> XAxisLabel(); }
-    QString YAxisLabel() const { return m_pDataObj -> YAxisLabel(); }
+    // accessors -- set
+    void XAxisLabel(const QString &data) { m_x_label -> setPlainText(data); }
+    void YAxisLabel(const QString &data) { m_y_label -> setPlainText(data); }
 
+    // Member methods
     void createVector();
     void createParticle();
 protected:
@@ -51,8 +57,10 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
-    GraphWidget *m_pgraphWidget;
+    GraphWidget *m_pGraphWidget;
+    QGraphicsTextItem *m_x_label, *m_y_label;
     CartesianGraphDataObj *m_pDataObj;
+    int m_borderWidth;
 };
 
 #endif // CARTESIANGRAPH_H

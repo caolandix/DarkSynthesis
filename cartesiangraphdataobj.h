@@ -9,11 +9,18 @@
 
 class CartesianGraphDataObj {
 public:
-    CartesianGraphDataObj() {}
+    CartesianGraphDataObj();
+    CartesianGraphDataObj(QPointF origin,
+                          double tickStep,
+                          double x_min,
+                          double x_max,
+                          double y_min,
+                          double y_max);
     virtual ~CartesianGraphDataObj();
 
     // copy ctor and assignment
     CartesianGraphDataObj(const CartesianGraphDataObj &);
+    CartesianGraphDataObj(const CartesianGraphDataObj *);
 
     // operator overloads
     CartesianGraphDataObj &operator=(const CartesianGraphDataObj &);
@@ -28,8 +35,6 @@ public:
     QPointF origin() const { return m_origin; }
     QList<PhysVector *> Vectors() const { return m_Vectors; }
     QList<PhysParticle *> Particles() const { return m_Particles; }
-    QString XAxisLabel() const { return m_x_label -> toPlainText(); }
-    QString YAxisLabel() const { return m_y_label -> toPlainText(); }
 
     // Accessors -- set
     void tickStep(const double data) { m_tickStep = data; }
@@ -40,15 +45,17 @@ public:
     void origin(const QPointF data) { m_origin = data; }
     void Vectors(const QList<PhysVector *> &data) { m_Vectors = data; }
     void Particles(QList<PhysParticle *> &data) { m_Particles = data; }
-    void XAxisLabel(const QString data) { m_x_label -> setPlainText(data); }
-    void YAxisLabel(const QString data) { m_y_label -> setPlainText(data); }
+
+
+    // methods
+    void AddVector(PhysVector *pobj) { m_Vectors.push_back(pobj); }
+    void AddParticle(PhysParticle *pobj) { m_Particles.push_back(pobj); }
 private:
     QPointF m_origin;
     double m_tickStep;
     double m_x_min, m_x_max, m_y_min, m_y_max;
     QList<PhysVector *> m_Vectors;
     QList<PhysParticle *> m_Particles;
-    QGraphicsTextItem *m_x_label, *m_y_label;
 };
 QDataStream &operator<<(QDataStream &out, const CartesianGraphDataObj &obj);
 QDataStream &operator>>(QDataStream &in, CartesianGraphDataObj &obj);

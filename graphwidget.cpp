@@ -12,10 +12,6 @@
 
 GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
     setContextMenuPolicy(Qt::DefaultContextMenu);
-    QGraphicsScene *pScene = new QGraphicsScene(this);
-    pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
-    pScene -> setSceneRect(-200, -200, 400, 400);
-    setScene(pScene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
@@ -26,6 +22,10 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
+    QGraphicsScene *pScene = new QGraphicsScene(this);
+    pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
+    pScene -> setSceneRect(-200, -200, 400, 400);
+    setScene(pScene);
     m_pCartGraph = new CartesianGraph(this);
     pScene -> addItem(m_pCartGraph);
     m_pCartGraph -> setPos(0, 0);
@@ -94,7 +94,6 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
 
     // Shadow
     QRectF sceneRect = this -> sceneRect();
-
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
     QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
     if (rightShadow.intersects(rect) || rightShadow.contains(rect))

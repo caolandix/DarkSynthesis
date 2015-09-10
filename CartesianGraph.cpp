@@ -13,36 +13,63 @@
 #include "physvector.h"
 #include "graphwidget.h"
 
-CartesianGraph(CartesianGraphDataObj *pDataObj, GraphWidget *pGraphWidget, QPointF *pt1, QPointF *pt2) {
-    m_pgraphWidget = pGraphWidget;
-    m_pDataObj = pDataObj;
+CartesianGraph::CartesianGraph() {
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-    int borderWidth = 5;
-    m_tickStep = 10;
-
+    m_borderWidth = 5;
     m_x_label = new CartesianLabel(QString("x: t(s)"), this);
     m_y_label = new CartesianLabel(QString("y: v(m/s)"), this);
-    m_x_label -> setPos(200 + borderWidth, 0);
-    m_y_label -> setPos(0, -200 - borderWidth);
+    m_x_label ->setPos(QPointF(200 + m_borderWidth, 0));
+    m_y_label ->setPos(QPointF(0, -200 - m_borderWidth));
+
+}
+
+
+//CartesianGraph::CartesianGraph(const CartesianGraph &obj) {
+//}
+
+CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, CartesianGraphDataObj *pDataObj) : CartesianGraph() {
+    m_pGraphWidget = pGraphWidget;
+
+    if (pDataObj)
+        m_pDataObj = pDataObj;
+    else
+        m_pDataObj = new CartesianGraphDataObj();
 }
 
 CartesianGraph::~CartesianGraph() {
-    delete m_x_label;
-    m_x_label = NULL;
-    delete m_y_label;
-    m_y_label = NULL;
+    delete m_pDataObj;
+    m_pDataObj = NULL;
+    m_pGraphWidget = NULL;
+    delete m_x_label; m_x_label = NULL;
+    delete m_y_label; m_y_label = NULL;
+}
 
-    m_Vectors.clear();
-    m_Particles.clear();
+
+// operator overloads
+CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
+    // check to see if we're assigning this to itself
+    if (&obj != this) {
+        if (m_pDataObj)
+            delete m_pDataObj;
+        m_pDataObj = new CartesianGraphDataObj(obj.DataObj());
+        m_pGraphWidget = obj.graphWidget();
+        delete m_x_label;
+        delete m_y_label;
+        m_x_label = new CartesianLabel(obj.XAxisLabel(), this);
+        m_y_label = new CartesianLabel(obj.YAxisLabel(), this);
+        m_x_label ->setPos(QPointF(200 + m_borderWidth, 0));
+        m_y_label ->setPos(QPointF(0, -200 - m_borderWidth));
+    }
+    return *this;
 }
 
 void CartesianGraph::createVector() {
-    m_Vectors.push_back(new PhysVector(this));
+    m_pDataObj -> AddVector(new PhysVector(this));
 }
 
 void CartesianGraph::createParticle() {
-    m_Particles.push_back(new PhysParticle(this));
+    m_pDataObj -> AddParticle(new PhysParticle(this));
 }
 
 QRectF CartesianGraph::boundingRect() const {

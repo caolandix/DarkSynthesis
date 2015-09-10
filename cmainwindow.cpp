@@ -1,11 +1,16 @@
 #include <QContextMenuEvent>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QXmlStreamReader>
+
+#include <iostream>
 
 #include "cmainwindow.h"
 #include "ui_cmainwindow.h"
 #include "cartesiangraphsettingsdlg.h"
 #include "cartesiangraphdataobj.h"
 
+using namespace std;
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::CMainWindow) {
     ui -> setupUi(this);
@@ -35,12 +40,95 @@ void CMainWindow::newFile() {
 }
 
 void CMainWindow::open() {
-    infoLabel->setText(tr("Invoked <b>File|Open</b>"));
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open Xml"), ".", tr("Xml files (*.xml)"));
+    QFile file(filename);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        std::cerr << "Error: Cannot read file " <<
+            qPrintable(filename) <<
+            ": " <<
+            qPrintable(file.errorString()) <<
+            std::endl;
+    }
+    QXmlStreamReader XMLReader;
+    XMLReader.setDevice(&file);
+    ReadXMLFile(XMLReader, file);
+    file.close();
+    if (XMLReader.hasError()) {
+        std::cerr <<
+            "Error: Failed to parse file " <<
+            qPrintable(filename) <<
+            ": " <<
+            qPrintable(XMLReader.errorString()) <<
+            std::endl;
+    }
+    else if (file.error() != QFile::NoError) {
+        std::cerr <<
+            "Error: Cannot read file " <<
+            qPrintable(filename) <<
+            ": " <<
+            qPrintable(file.errorString()) <<
+            std::endl;
+    }
+    statusBar() -> showMessage(tr("Xml Opened"));
+    setWindowTitle(filename);
+}
+
+void CMainWindow::ReadXMLFile(QXmlStreamReader &XMLReader, QFile &file) {
+    XMLReader.readNext();
+    while (!XMLReader.atEnd()) {
+        if (XMLReader.isStartElement()) {
+            if (XMLReader.name() == "LAMPS") {
+                XMLReader.readNext();
+            }
+            else if(XMLReader.name() == "LIGHT1") {
+            }
+            else if(XMLReader.name() == "LIGHT2") {
+            }
+            else if(XMLReader.name() == "LIGHT3") {
+            }
+            else if(XMLReader.name() == "LIGHT4") {
+            }
+            else {
+                XMLReader.raiseError(QObject::tr("Not a bookindex file"));
+            }
+        }
+        else {
+            XMLReader.readNext();
+        }
+    }
 }
 
 void CMainWindow::save() {
-    infoLabel->setText(tr("Invoked <b>File|Save</b>"));
+    QString filename = QFileDialog::getSaveFileName(this, tr("Save Xml"), ".", tr("Xml files (*.xml)"));
+    QFile file(filename);
+    QXmlStreamWriter xmlWriter;
+    file.open(QIODevice::WriteOnly);
+    xmlWriter.setDevice(&file);
+    WriteXMLFile(xmlWriter, file);
+    file.close();
+    statusBar() -> showMessage(tr("Xml Saved"));
 }
+
+void CMainWindow::WriteXMLFile(QXmlStreamWriter &xmlWriter, QFile &file) {
+    xmlWriter.setAutoFormatting(true);
+    xmlWriter.writeStartDocument();
+/*
+    xmlWriter.writeStartElement("LAMPS");
+    xmlWriter.writeStartElement("LIGHT1");
+    xmlWriter.writeTextElement("State", ui.pushButton1->isChecked()?"Off":"On" );
+    xmlWriter.writeTextElement("Room",ui.comboBox1->currentText());
+    xmlWriter.writeTextElement("Potencial",QString::number(ui.spinBox1->value()));
+    xmlWriter.writeEndElement();
+    xmlWriter.writeStartElement("LIGHT4");
+    xmlWriter.writeTextElement("State", ui.pushButton4->isChecked()?"Off":"On" );
+    xmlWriter.writeTextElement("Room",ui.comboBox4->currentText());
+    xmlWriter.writeTextElement("Potencial",QString::number(ui.spinBox4->value()));
+    xmlWriter.writeEndElement();
+    xmlWriter.writeEndElement();
+*/
+    xmlWriter.writeEndDocument();
+}
+
 
 void CMainWindow::print() {
     infoLabel->setText(tr("Invoked <b>File|Print</b>"));
