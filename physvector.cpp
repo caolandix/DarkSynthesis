@@ -4,19 +4,22 @@
 #include "physvector.h"
 #include "physparticle.h"
 #include "cartesianlabel.h"
+#include "cartesiangraph.h"
 
-PhysVector::PhysVector(QGraphicsItem *parent, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) : QGraphicsLineItem(parent) {
-    m_magnitude = 0.0;
+PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) : QGraphicsLineItem(pParent) {
+    m_Color = Qt::black;
+    m_magnitude = 50.0;
+    m_arrowSize = 20;
+    m_pLabel = new CartesianLabel(QString("Vector"), this);
+    m_pStartParticle = pStart;
+    m_pEndParticle = pEnd;
+
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-    m_Color = Qt::black;
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-
-    m_pLabel = new CartesianLabel(QString("Vector"), this);
-    m_pStartParticle = pStart;
-    m_pEndParticle = pEnd;
+    setLine(startPos.x(), startPos.y(), startPos.x() + m_magnitude, startPos.y() + m_magnitude);
 }
 
 PhysVector::~PhysVector() {
@@ -40,37 +43,53 @@ QPainterPath PhysVector::shape() const {
 }
 
 void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOption, QWidget *) {
-    if (m_pStartParticle -> collidesWithItem(m_pEndParticle))
-        return;
     QPen myPen = pen();
-    qreal arrowSize = 20;
 
     myPen.setColor(m_Color);
     pPainter -> setPen(myPen);
     pPainter -> setBrush(m_Color);
 
-    QLineF centerLine(m_pStartParticle -> pos(), m_pEndParticle -> pos());
-    QPolygonF endPolygon = m_pEndParticle -> polygon();
-    QPointF p1 = endPolygon.first() + m_pEndParticle -> pos();
-    QPointF p2;
-    QPointF intersectPoint;
-    QLineF polyLine;
+    // If there are two particles to attach to then draw a the vector and attach to them
+    if (m_pStartParticle && m_pEndParticle) {
+        if (m_pStartParticle -> collidesWithItem(m_pEndParticle))
+            return;
+        QLineF centerLine(m_pStartParticle -> pos(), m_pEndParticle -> pos());
+        QPolygonF endPolygon = m_pEndParticle -> polygon();
+        QPointF p1 = endPolygon.first() + m_pEndParticle -> pos();
+        QPointF p2;
+        QPointF intersectPoint;
+        QLineF polyLine;
 
-    for (int i = 1; i < endPolygon.count(); ++i) {
-        p2 = endPolygon.at(i) + m_pEndParticle -> pos();
-        polyLine = QLineF(p1, p2);
-        QLineF::IntersectType intersectType = polyLine.intersect(centerLine, &intersectPoint);
-        if (intersectType == QLineF::BoundedIntersection)
-            break;
-        p1 = p2;
+        for (int i = 1; i < endPolygon.count(); ++i) {
+            p2 = endPolygon.at(i) + m_pEndParticle -> pos();
+            polyLine = QLineF(p1, p2);
+            QLineF::IntersectType intersectType = polyLine.intersect(centerLine, &intersectPoint);
+            if (intersectType == QLineF::BoundedIntersection)
+                break;
+            p1 = p2;
+        }
+        setLine(QLineF(intersectPoint, m_pStartParticle -> pos()));
     }
-    setLine(QLineF(intersectPoint, m_pStartParticle -> pos()));
 
+    // else if there is a starting particle and no ending particle then handle
+    else if (m_pStartParticle && !m_pEndParticle) {
+    }
+
+    // likewise if there is no starting particle but an ending particle, handle
+    else if (!m_pStartParticle && m_pEndParticle) {
+
+    }
+
+    // The default case of NO particles, is just a vector. We do nothing and just drop into the vector draw
+    else {
+    }
+
+    // Draw the vector
     double angle = ::acos(line().dx() / line().length());
     if (line().dy() >= 0)
         angle = (PI * 2) - angle;
-        QPointF arrowP1 = line().p1() + QPointF(sin(angle + PI / 3) * arrowSize, cos(angle + PI / 3) * arrowSize);
-        QPointF arrowP2 = line().p1() + QPointF(sin(angle + PI - PI / 3) * arrowSize, cos(angle + PI - PI / 3) * arrowSize);
+        QPointF arrowP1 = line().p1() + QPointF(sin(angle + PI / 3) * m_arrowSize, cos(angle + PI / 3) * m_arrowSize);
+        QPointF arrowP2 = line().p1() + QPointF(sin(angle + PI - PI / 3) * m_arrowSize, cos(angle + PI - PI / 3) * m_arrowSize);
 
         m_arrowHead.clear();
         m_arrowHead << line().p1() << arrowP1 << arrowP2;

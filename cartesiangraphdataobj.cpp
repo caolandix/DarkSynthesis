@@ -1,7 +1,7 @@
 #include "cartesiangraphdataobj.h"
 
 CartesianGraphDataObj::CartesianGraphDataObj() {
-    m_tickStep = 10;
+    m_tickStep = 10.0;
 }
 
 CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj *pObj) {

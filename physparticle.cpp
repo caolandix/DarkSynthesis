@@ -6,20 +6,21 @@
 #include <QStyleOption>
 #include "cartesianlabel.h"
 
-PhysParticle::PhysParticle(QGraphicsItem *parent) : QGraphicsPolygonItem(parent) {
+PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos) : QGraphicsPolygonItem(pParent) {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
+    setPos(startPos);
     m_pLabel = new CartesianLabel(QString("Particle"), this);
 }
+
 PhysParticle::~PhysParticle() {
     if (m_pLabel) {
         delete m_pLabel;
         m_pLabel = NULL;
     }
 }
-
 
 QRectF PhysParticle::boundingRect() const {
     const qreal adjust = 2.0;

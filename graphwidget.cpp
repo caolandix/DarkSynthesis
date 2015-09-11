@@ -4,8 +4,11 @@
 #include <QContextMenuEvent>
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 #include <QLabel>
+
+#include <QDebug>
 
 #include "graphwidget.h"
 #include "cartesiangraph.h"
@@ -38,7 +41,7 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
 
 void GraphWidget::createVector() {
     m_pInfoLabel -> setText(tr("Created a new Vector"));
-    m_pCartGraph -> createVector();
+    m_pCartGraph -> createVector(m_currClickPos);
 }
 
 void GraphWidget::createActions() {
@@ -121,6 +124,7 @@ void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
     QMenu menu(this);
     menu.addAction(m_actNewVector);
     menu.exec(event -> globalPos());
+    m_currClickPos = event -> pos();
 
     QGraphicsScene *scene = this -> scene();
     QGraphicsItem *pItem = scene -> focusItem();
@@ -128,3 +132,5 @@ void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
         ;
     }
 }
+
+

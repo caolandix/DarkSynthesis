@@ -8,6 +8,7 @@
 class QGraphicsSceneMouseEvent;
 class CartesianLabel;
 class PhysParticle;
+class CartesianGraph;
 
 static const double PI = 3.141592653589;
 
@@ -20,7 +21,7 @@ private:
         AxisOrientation axisOrientation;
     };
 public:
-    PhysVector(QGraphicsItem *, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);
+    PhysVector(CartesianGraph *, const QPointF &, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);
     ~PhysVector();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -49,5 +50,7 @@ private:
     PhysParticle *m_pEndParticle;
     QColor m_Color;
     QPolygonF m_arrowHead;
+    qreal m_arrowSize;
+
 };
 #endif // PHYSVECTOR_H

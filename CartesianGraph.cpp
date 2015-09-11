@@ -19,8 +19,8 @@ CartesianGraph::CartesianGraph() {
     m_borderWidth = 5;
     m_x_label = new CartesianLabel(QString("x: t(s)"), this);
     m_y_label = new CartesianLabel(QString("y: v(m/s)"), this);
-    m_x_label ->setPos(QPointF(200 + m_borderWidth, 0));
-    m_y_label ->setPos(QPointF(0, -200 - m_borderWidth));
+    m_x_label -> setPos(QPointF(200 + m_borderWidth, 0));
+    m_y_label -> setPos(QPointF(0, -200 - m_borderWidth));
 
 }
 
@@ -64,12 +64,12 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
     return *this;
 }
 
-void CartesianGraph::createVector() {
-    m_pDataObj -> AddVector(new PhysVector(this));
+void CartesianGraph::createVector(const QPointF startPos) {
+    m_pDataObj -> AddVector(new PhysVector(this, startPos));
 }
 
-void CartesianGraph::createParticle() {
-    m_pDataObj -> AddParticle(new PhysParticle(this));
+void CartesianGraph::createParticle(const QPointF startPos) {
+    m_pDataObj -> AddParticle(new PhysParticle(this, startPos));
 }
 
 QRectF CartesianGraph::boundingRect() const {

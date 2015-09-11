@@ -50,8 +50,8 @@ public:
     void YAxisLabel(const QString &data) { m_y_label -> setPlainText(data); }
 
     // Member methods
-    void createVector();
-    void createParticle();
+    void createVector(const QPointF startPos);
+    void createParticle(const QPointF startPos);
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
