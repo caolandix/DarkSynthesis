@@ -13,10 +13,11 @@
 #include "graphwidget.h"
 #include "cartesiangraph.h"
 
-GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
+GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     setContextMenuPolicy(Qt::DefaultContextMenu);
     setCacheMode(CacheBackground);
-    setViewportUpdateMode(BoundingRectViewportUpdate);
+    setViewportUpdateMode(FullViewportUpdate);
+    //setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
@@ -25,13 +26,15 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent) {
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
-    QGraphicsScene *pScene = new QGraphicsScene(this);
-    pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
-    pScene -> setSceneRect(-200, -200, 400, 400);
-    setScene(pScene);
+    m_pScene = new QGraphicsScene(this);
+    m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
+    m_pScene -> setSceneRect(-200, -200, 400, 400);
+    setScene(m_pScene);
+
+    // Setup Objects
     m_pCartGraph = new CartesianGraph(this);
-    pScene -> addItem(m_pCartGraph);
     m_pCartGraph -> setPos(0, 0);
+    m_pScene -> addItem(m_pCartGraph);
 
     m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
 
@@ -43,12 +46,21 @@ void GraphWidget::createVector() {
     m_pInfoLabel -> setText(tr("Created a new Vector"));
     m_pCartGraph -> createVector(m_currClickPos);
 }
+void GraphWidget::createParticle() {
+    m_pInfoLabel -> setText(tr("Created a new Particle"));
+    m_pCartGraph -> createParticle(m_currClickPos);
+}
 
 void GraphWidget::createActions() {
     m_actNewVector = new QAction(tr("New &Vector"), this);
     m_actNewVector -> setShortcut(tr("Ctrl+V"));
     m_actNewVector -> setStatusTip(tr("Create a new Vector object"));
     connect(m_actNewVector, SIGNAL(triggered()), this, SLOT(createVector()));
+
+    m_actNewParticle = new QAction(tr("New &Particle"), this);
+    m_actNewParticle -> setShortcut(tr("Ctrl+P"));
+    m_actNewParticle -> setStatusTip(tr("Create a new Particle object"));
+    connect(m_actNewParticle, SIGNAL(triggered()), this, SLOT(createParticle()));
 }
 
 void GraphWidget::itemMoved() {
@@ -123,11 +135,12 @@ void GraphWidget::scaleView(qreal scaleFactor) {
 void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
     QMenu menu(this);
     menu.addAction(m_actNewVector);
-    menu.exec(event -> globalPos());
-    m_currClickPos = event -> pos();
+    menu.addAction(m_actNewParticle);
 
-    QGraphicsScene *scene = this -> scene();
-    QGraphicsItem *pItem = scene -> focusItem();
+    m_currClickPos = event -> pos();
+    menu.exec(event -> globalPos());
+
+    QGraphicsItem *pItem = m_pScene -> focusItem();
     if (event) {
         ;
     }

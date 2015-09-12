@@ -1,18 +1,18 @@
-#include "physparticle.h"
-
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
+
+#include "physparticle.h"
 #include "cartesianlabel.h"
 
-PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos) : QGraphicsPolygonItem(pParent) {
+PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, const QString &Label) : QGraphicsPolygonItem(pParent) {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-    setPos(startPos);
-    m_pLabel = new CartesianLabel(QString("Particle"), this);
+    setPos(0, 0);
+    m_pLabel = new CartesianLabel(Label, this);
 }
 
 PhysParticle::~PhysParticle() {

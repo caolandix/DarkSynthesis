@@ -27,6 +27,7 @@ public slots:
     void zoomOut() { scaleView(1 / qreal(1.2)); }
 private slots:
     void createVector();
+    void createParticle();
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
@@ -43,9 +44,9 @@ private:
 
 private:
     CartesianGraph *m_pCartGraph;
-    QAction *m_actNewVector;
+    QAction *m_actNewVector, *m_actNewParticle;
     QLabel *m_pInfoLabel;
-
+    QGraphicsScene *m_pScene;
     QPointF m_currClickPos;
 };
 

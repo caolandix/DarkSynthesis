@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QStyleOption>
+#include <QTextStream>
 
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
@@ -21,12 +22,7 @@ CartesianGraph::CartesianGraph() {
     m_y_label = new CartesianLabel(QString("y: v(m/s)"), this);
     m_x_label -> setPos(QPointF(200 + m_borderWidth, 0));
     m_y_label -> setPos(QPointF(0, -200 - m_borderWidth));
-
 }
-
-
-//CartesianGraph::CartesianGraph(const CartesianGraph &obj) {
-//}
 
 CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, CartesianGraphDataObj *pDataObj) : CartesianGraph() {
     m_pGraphWidget = pGraphWidget;
@@ -65,11 +61,18 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
 }
 
 void CartesianGraph::createVector(const QPointF startPos) {
-    m_pDataObj -> AddVector(new PhysVector(this, startPos));
+    QString Label;
+    QTextStream(&Label) << "Vector-" << m_pDataObj -> Vectors().length();
+    PhysVector *pobj = new PhysVector(this, startPos, Label);
+    m_pDataObj -> AddVector(pobj);
+    QGraphicsScene *pScene = scene();
+    pScene ->addItem(pobj);
 }
 
 void CartesianGraph::createParticle(const QPointF startPos) {
-    m_pDataObj -> AddParticle(new PhysParticle(this, startPos));
+    QString Label;
+    QTextStream(&Label) << "Particle-" << m_pDataObj -> Vectors().length();
+    m_pDataObj -> AddParticle(new PhysParticle(this, startPos, Label));
 }
 
 QRectF CartesianGraph::boundingRect() const {

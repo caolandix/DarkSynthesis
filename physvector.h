@@ -21,12 +21,13 @@ private:
         AxisOrientation axisOrientation;
     };
 public:
-    PhysVector(CartesianGraph *, const QPointF &, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);
+    PhysVector(CartesianGraph *, const QPointF &, const QString &, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);
     ~PhysVector();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
+    void updatePosition();
 
     // accessors
     double Magnitude() const { return m_magnitude; }

@@ -1,4 +1,5 @@
 #include <QPainter>
+#include <QString>
 #include <math.h>
 
 #include "physvector.h"
@@ -6,20 +7,21 @@
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
 
-PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) : QGraphicsLineItem(pParent) {
+PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) : QGraphicsLineItem(pParent) {
     m_Color = Qt::black;
     m_magnitude = 50.0;
     m_arrowSize = 20;
-    m_pLabel = new CartesianLabel(QString("Vector"), this);
+    m_pLabel = new CartesianLabel(Label, this);
     m_pStartParticle = pStart;
     m_pEndParticle = pEnd;
 
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    setLine(startPos.x(), startPos.y(), startPos.x() + m_magnitude, startPos.y() + m_magnitude);
+    setLine(0, 0, 0 + m_magnitude, 0 + m_magnitude);
 }
 
 PhysVector::~PhysVector() {
@@ -32,8 +34,10 @@ PhysVector::~PhysVector() {
 }
 
 QRectF PhysVector::boundingRect() const {
-    const qreal adjust = 2.0;
-    return QRectF(-10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust);
+    const qreal adjust = (pen().width() + 20) / 2.0;
+    return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(), line().p2().y() - line().p1().y()))
+            .normalized()
+            .adjusted(-adjust, -adjust, adjust, adjust);
 }
 
 QPainterPath PhysVector::shape() const {
@@ -42,12 +46,21 @@ QPainterPath PhysVector::shape() const {
     return path;
 }
 
+void PhysVector::updatePosition() {
+    if (m_pStartParticle && m_pEndParticle) {
+        QLineF line(mapFromItem(m_pStartParticle, 0, 0), mapFromItem(m_pEndParticle, 0, 0));
+        setLine(line);
+    }
+    else {
+    }
+}
+
 void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOption, QWidget *) {
     QPen myPen = pen();
 
-    myPen.setColor(m_Color);
-    pPainter -> setPen(myPen);
-    pPainter -> setBrush(m_Color);
+    //myPen.setColor(m_Color);
+    pPainter -> setPen(pen());
+    //pPainter -> setBrush(m_Color);
 
     // If there are two particles to attach to then draw a the vector and attach to them
     if (m_pStartParticle && m_pEndParticle) {
@@ -85,19 +98,20 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     }
 
     // Draw the vector
-    double angle = ::acos(line().dx() / line().length());
-    if (line().dy() >= 0)
+    QLineF aLine = line();
+    double angle = ::acos(aLine.dx() / aLine.length());
+    if (aLine.dy() >= 0) {
         angle = (PI * 2) - angle;
-        QPointF arrowP1 = line().p1() + QPointF(sin(angle + PI / 3) * m_arrowSize, cos(angle + PI / 3) * m_arrowSize);
-        QPointF arrowP2 = line().p1() + QPointF(sin(angle + PI - PI / 3) * m_arrowSize, cos(angle + PI - PI / 3) * m_arrowSize);
+        QPointF arrowP1 = aLine.p1() + QPointF(sin(angle + PI / 3) * m_arrowSize, cos(angle + PI / 3) * m_arrowSize);
+        QPointF arrowP2 = aLine.p1() + QPointF(sin(angle + PI - PI / 3) * m_arrowSize, cos(angle + PI - PI / 3) * m_arrowSize);
 
         m_arrowHead.clear();
-        m_arrowHead << line().p1() << arrowP1 << arrowP2;
-        pPainter -> drawLine(line());
+        m_arrowHead << aLine.p1() << arrowP1 << arrowP2;
+        pPainter -> drawLine(aLine);
         pPainter -> drawPolygon(m_arrowHead);
-        if (isSelected()) {
+        if (isSelected())
             pPainter -> setPen(QPen(m_Color, 1, Qt::DashLine));
-        QLineF tmpline = line();
+        QLineF tmpline = aLine;
         tmpline.translate(0, 4.0);
         pPainter -> drawLine(tmpline);
         tmpline.translate(0, -8.0);
