@@ -11,6 +11,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     m_Color = Qt::black;
     m_magnitude = 50.0;
     m_arrowSize = 20;
+    m_dragIndex = 0;
     m_pLabel = new CartesianLabel(Label, this);
     m_pStartParticle = pStart;
     m_pEndParticle = pEnd;
@@ -130,11 +131,33 @@ QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value
 }
 
 void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+    const QPointF pos = event -> pos();
+    const qreal line1 = QLineF(pos, line().p1()).length();
+    const qreal line2 = QLineF(pos, line().p2()).length();
+    const qreal threshold = 3.5;
+    if (line1 < line2 && line1 < threshold)
+        m_dragIndex = 1;
+    else if (line2 < line1 && line2 < threshold)
+        m_dragIndex = 0;
+    else
+        m_dragIndex = -1;
+    event -> setAccepted(m_dragIndex != -1);
     update();
     QGraphicsItem::mousePressEvent(event);
 }
 
 void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+    m_dragIndex = -1;
     update();
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
+    if (m_dragIndex != -1) {
+        const QPointF anchor = m_dragIndex == 0 ? line().p1() : line().p2();
+        QLineF ma = QLineF(anchor, event -> pos());
+        ma.setLength(line().length());
+        const QPointF rotated = anchor + QPointF(ma.dx(), ma.dy());
+        setLine(m_dragIndex == 0 ? QLineF(anchor, rotated) : QLineF(rotated, anchor));
+    }
 }

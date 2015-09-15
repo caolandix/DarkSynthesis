@@ -4,8 +4,8 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QList>
+#include <QGraphicsSceneMouseEvent>
 
-class QGraphicsSceneMouseEvent;
 class CartesianLabel;
 class PhysParticle;
 class CartesianGraph;
@@ -42,6 +42,8 @@ protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
+
 private:
     // Member attributes
     CartesianLabel *m_pLabel;
@@ -52,6 +54,7 @@ private:
     QColor m_Color;
     QPolygonF m_arrowHead;
     qreal m_arrowSize;
+    int m_dragIndex;
 
 };
 #endif // PHYSVECTOR_H
