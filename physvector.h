@@ -14,6 +14,7 @@ static const double PI = 3.141592653589;
 
 class PhysVector : public QGraphicsLineItem {
 private:
+    typedef enum { DI_VECTORLINE = -1, DI_VECTORHEAD = 0, DI_VECTORTAIL = 1 } MouseClickLocale;
     typedef enum { AXIS_HORIZ = 0, AXIS_VERT } AxisOrientation;
     struct Theta {
         double degrees;
@@ -54,7 +55,7 @@ private:
     QColor m_Color;
     QPolygonF m_arrowHead;
     qreal m_arrowSize;
-    int m_dragIndex;
+    MouseClickLocale m_dragIndex;
 
 };
 #endif // PHYSVECTOR_H
