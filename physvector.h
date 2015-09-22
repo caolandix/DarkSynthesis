@@ -27,6 +27,7 @@ public:
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
+    void adjust() Q_DECL_OVERRIDE;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
     void updatePosition();
 
@@ -52,6 +53,9 @@ private:
     Theta m_Theta;
     PhysParticle *m_pStartParticle;
     PhysParticle *m_pEndParticle;
+    QPointF m_StartPoint;
+    QPointF m_EndPoint;
+
     QColor m_Color;
     QPolygonF m_arrowHead;
     qreal m_arrowSize;
