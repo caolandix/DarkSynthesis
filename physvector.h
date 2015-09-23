@@ -56,6 +56,7 @@ private:
     PhysParticle *m_pEndParticle;
     QPointF m_StartPoint;
     QPointF m_EndPoint;
+    QPointF m_currPos;
 
     QColor m_Color;
     QPolygonF m_arrowHead;

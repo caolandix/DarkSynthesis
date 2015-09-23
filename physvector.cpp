@@ -176,9 +176,11 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         m_dragIndex = DI_VECTORTAIL;
     else if (line2 < line1 && line2 < threshold)
         m_dragIndex = DI_VECTORHEAD;
-    else
+    else {
         m_dragIndex = DI_VECTORLINE;
-    event -> setAccepted(m_dragIndex != DI_VECTORLINE);
+        m_currPos = event -> pos();
+    }
+    event -> setAccepted(true);//m_dragIndex != DI_VECTORLINE);
     qDebug("mousePressEvent m_dragIndex: '%d'", m_dragIndex);
     update();
     QGraphicsItem::mousePressEvent(event);
@@ -195,18 +197,29 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-    qDebug("mouseMoveEvent m_dragIndex: '%d'", m_dragIndex);
-    const QPointF anchor = (m_dragIndex == DI_VECTORHEAD) ? line().p1() : line().p2();
     if (m_dragIndex != DI_VECTORLINE) {
+        qDebug("mouseMoveEvent m_dragIndex: '%d'", m_dragIndex);
+
+        const QPointF anchor = (m_dragIndex == DI_VECTORHEAD) ? line().p1() : line().p2();
         QLineF ma = QLineF(anchor, event -> pos());
         ma.setLength(line().length());
         const QPointF rotated = anchor + QPointF(ma.dx(), ma.dy());
         setLine(m_dragIndex == DI_VECTORHEAD ? QLineF(anchor, rotated) : QLineF(rotated, anchor));
-        update();
+        //update();
     }
     else if (m_dragIndex == DI_VECTORLINE) {
-        setLine(QLineF(anchor, event -> pos()));
-        update();
+        qDebug("mouseMoveEvent m_dragIndex: '%d'", m_dragIndex);
+        QPointF pt1 = line().p1();
+        QPointF pt2 = line().p2();
+        qreal dx = event -> pos().x() - m_currPos.x();
+        qreal dy = event -> pos().y() - m_currPos.y();
+        pt1.setX(pt1.x() + dx);
+        pt1.setY(pt1.y() + dy);
+        pt2.setX(pt2.x() + dx);
+        pt2.setY(pt2.y() + dy);
+        setLine(QLineF(pt1, pt2));
+        m_currPos = event -> pos();
         QGraphicsItem::mouseMoveEvent(event);
     }
+    update();
 }
