@@ -31,6 +31,7 @@ public:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
     void updatePosition();
 
+
     // accessors
     double Magnitude() const { return m_magnitude; }
     Theta theta() const { return m_Theta; }

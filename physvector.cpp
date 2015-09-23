@@ -36,6 +36,16 @@ PhysVector::~PhysVector() {
     m_pEndParticle = NULL;
 }
 
+QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value) {
+    switch (change) {
+        case ItemPositionHasChanged:
+            break;
+        default:
+            break;
+    };
+    return QGraphicsItem::itemChange(change, value);
+}
+
 void PhysVector::adjust() {
     if (!m_pStartParticle || !m_pEndParticle)
         return;
@@ -46,28 +56,29 @@ void PhysVector::adjust() {
         else if (!m_pStartParticle && m_pEndParticle) {
 
         }
+        else {
+            // QLineF aline(mapFromItem(m_pStartParticle, 0, 0), mapFromItem(m_pEndParticle, 0, 0));
+            qreal length = line().length();
+            QLineF my_line(line().p1(), line().p2());
 
-        QLineF line(mapFromItem(m_pStartParticle, 0, 0), mapFromItem(m_pEndParticle, 0, 0));
-        qreal length = line().length();
-        QLineF my_line(line().p1(), line().p2());
-
-        prepareGeometryChange();
-        if (length > qreal(20.)) {
-            QPointF edgeOffset((my_line.dx() * 10) / length, (my_line.dy() * 10) / length);
-            m_StartPoint = my_line.p1() + edgeOffset;
-            m_EndPoint = my_line.p2() - edgeOffset;
+            prepareGeometryChange();
+            if (length > qreal(20.)) {
+                QPointF edgeOffset((my_line.dx() * 10) / length, (my_line.dy() * 10) / length);
+                m_StartPoint = my_line.p1() + edgeOffset;
+                m_EndPoint = my_line.p2() - edgeOffset;
+            }
+            else
+                m_StartPoint = m_EndPoint = my_line.p1();
         }
-        else
-            m_StartPoint = m_EndPoint = my_line.p1();
     }
 }
 
-QRectF PhysVector::boundingRect() const {\
+QRectF PhysVector::boundingRect() const {
     qreal penWidth = 1;
     qreal extra = (penWidth + m_arrowSize) / 2.0;
-    QPointF p1 = line().p1();
-    QPointF p2 = line().p2();
-    QRectF rcBounding(p1, QSizeF(p2.x() - p1.x(), p2.y() - p1().y()));
+    QPointF pt1 = line().p1();
+    QPointF pt2 = line().p2();
+    QRectF rcBounding(pt1, QSizeF(pt2.x() - pt1.x(), pt2.y() - pt1.y()));
 
     return rcBounding.normalized().adjusted(-extra, -extra, extra, extra);
 }
@@ -155,16 +166,6 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     }
 }
 
-QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value) {
-    switch (change) {
-        case ItemPositionHasChanged:
-            break;
-        default:
-            break;
-    };
-    return QGraphicsItem::itemChange(change, value);
-}
-
 void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     const QPointF pos = event -> pos();
     const qreal line1 = QLineF(pos, line().p1()).length();
@@ -177,7 +178,8 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         m_dragIndex = DI_VECTORHEAD;
     else
         m_dragIndex = DI_VECTORLINE;
-    event -> setAccepted(true);//m_dragIndex != DI_VECTORLINE);
+    event -> setAccepted(m_dragIndex != DI_VECTORLINE);
+    qDebug("mousePressEvent m_dragIndex: '%d'", m_dragIndex);
     update();
     QGraphicsItem::mousePressEvent(event);
 }
@@ -192,17 +194,19 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
+void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+    qDebug("mouseMoveEvent m_dragIndex: '%d'", m_dragIndex);
     const QPointF anchor = (m_dragIndex == DI_VECTORHEAD) ? line().p1() : line().p2();
     if (m_dragIndex != DI_VECTORLINE) {
         QLineF ma = QLineF(anchor, event -> pos());
         ma.setLength(line().length());
         const QPointF rotated = anchor + QPointF(ma.dx(), ma.dy());
         setLine(m_dragIndex == DI_VECTORHEAD ? QLineF(anchor, rotated) : QLineF(rotated, anchor));
+        update();
     }
-    else {
-        setLine(m_dragIndex == DI_VECTORLINE ? QLineF(anchor, event->pos()) : QLineF(event->pos(),anchor));
-        // handle the movement of the entire vector object
-        //QGraphicsItem::mouseMoveEvent(event);
+    else if (m_dragIndex == DI_VECTORLINE) {
+        setLine(QLineF(anchor, event -> pos()));
+        update();
+        QGraphicsItem::mouseMoveEvent(event);
     }
 }
