@@ -63,6 +63,17 @@ void GraphWidget::createActions() {
     connect(m_actNewParticle, SIGNAL(triggered()), this, SLOT(createParticle()));
 }
 
+void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
+    if (event) {
+        QMenu menu(this);
+        m_currClickPos = event -> pos();
+        menu.addAction(m_actNewVector);
+        menu.addAction(m_actNewParticle);
+        menu.exec(event -> globalPos());
+    }
+}
+
+
 void GraphWidget::itemMoved() {
 }
 
@@ -131,19 +142,3 @@ void GraphWidget::scaleView(qreal scaleFactor) {
         return;
     scale(scaleFactor, scaleFactor);
 }
-
-void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
-    QMenu menu(this);
-    menu.addAction(m_actNewVector);
-    menu.addAction(m_actNewParticle);
-
-    m_currClickPos = event -> pos();
-    menu.exec(event -> globalPos());
-
-    QGraphicsItem *pItem = m_pScene -> focusItem();
-    if (event) {
-        ;
-    }
-}
-
-

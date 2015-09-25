@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QList>
 #include <QGraphicsSceneMouseEvent>
+#include <QContextMenuEvent>
 
 class CartesianLabel;
 class PhysParticle;
@@ -31,6 +32,9 @@ public:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
     void updatePosition();
 
+    void vectorPropsDlg();
+    void createActions();
+
 
     // accessors
     double Magnitude() const { return m_magnitude; }
@@ -47,6 +51,8 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *);
+
 private:
     // Member attributes
     CartesianLabel *m_pLabel;
@@ -62,6 +68,8 @@ private:
     QPolygonF m_arrowHead;
     qreal m_arrowSize;
     MouseClickLocale m_dragIndex;
+    CartesianGraph *m_pParent;
+    QAction *m_actVectorProps;
 
 };
 #endif // PHYSVECTOR_H

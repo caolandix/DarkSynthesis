@@ -66,7 +66,7 @@ void CartesianGraph::createVector(const QPointF startPos) {
     PhysVector *pobj = new PhysVector(this, startPos, Label);
     m_pDataObj -> AddVector(pobj);
     QGraphicsScene *pScene = scene();
-    pScene ->addItem(pobj);
+    pScene -> addItem(pobj);
 }
 
 void CartesianGraph::createParticle(const QPointF startPos) {

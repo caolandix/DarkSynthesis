@@ -1,5 +1,7 @@
 #include <QPainter>
 #include <QString>
+#include <QAction>
+#include <QMenu>
 #include <math.h>
 
 #include "physvector.h"
@@ -15,6 +17,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     m_pLabel = new CartesianLabel(Label, this);
     m_pStartParticle = pStart;
     m_pEndParticle = pEnd;
+    m_pParent = pParent;
 
     setFlag(ItemIsMovable);
     setFlag(ItemIsSelectable);
@@ -192,23 +195,32 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     }
     else
         m_dragIndex = DI_VECTORLINE;
+
+    // Now check to see if one of the end points collides with a particle. If so, attach to it
+    QList<PhysParticle *> particles = m_pParent ->Vectors();
+    QPointF pt1 = line().p1();
+    QPointF pt2 = line().p2();
+    for (QList<PhysParticle *>::Iterator iter = particles.begin(); iter != particles.end(); iter++) {
+        PhysParticle *particle = *iter;
+
+        if (collidesWithItem(particle)) {
+        }
+    }
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+    qDebug("mouseMoveEvent m_dragIndex: '%d'", m_dragIndex);
     if (m_dragIndex != DI_VECTORLINE) {
-        qDebug("mouseMoveEvent m_dragIndex: '%d'", m_dragIndex);
 
         const QPointF anchor = (m_dragIndex == DI_VECTORHEAD) ? line().p1() : line().p2();
         QLineF ma = QLineF(anchor, event -> pos());
         ma.setLength(line().length());
         const QPointF rotated = anchor + QPointF(ma.dx(), ma.dy());
         setLine(m_dragIndex == DI_VECTORHEAD ? QLineF(anchor, rotated) : QLineF(rotated, anchor));
-        //update();
     }
-    else if (m_dragIndex == DI_VECTORLINE) {
-        qDebug("mouseMoveEvent m_dragIndex: '%d'", m_dragIndex);
+    else {
         QPointF pt1 = line().p1();
         QPointF pt2 = line().p2();
         qreal dx = event -> pos().x() - m_currPos.x();
@@ -222,4 +234,14 @@ void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         QGraphicsItem::mouseMoveEvent(event);
     }
     update();
+}
+
+void PhysVector::vectorPropsDlg() {
+    qDebug("vectorPropsDlg()");
+}
+
+void PhysVector::createActions() {
+}
+
+void PhysVector::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 }
