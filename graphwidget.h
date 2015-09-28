@@ -19,14 +19,12 @@ public:
     void itemMoved();
 
     CartesianGraph *cartesianGraph() const { return m_pCartGraph; }
-
 public slots:
     void zoomIn() { scaleView(qreal(1.2)); }
     void zoomOut() { scaleView(1 / qreal(1.2)); }
 private slots:
     void createVector();
     void createParticle();
-    void vectorPropsDlg();
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;

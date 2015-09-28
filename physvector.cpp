@@ -197,13 +197,56 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         m_dragIndex = DI_VECTORLINE;
 
     // Now check to see if one of the end points collides with a particle. If so, attach to it
-    QList<PhysParticle *> particles = m_pParent ->Vectors();
+    QList<PhysParticle *> particles = m_pParent -> Particles();
     QPointF pt1 = line().p1();
     QPointF pt2 = line().p2();
-    for (QList<PhysParticle *>::Iterator iter = particles.begin(); iter != particles.end(); iter++) {
-        PhysParticle *particle = *iter;
 
-        if (collidesWithItem(particle)) {
+    // Check to see if the currently assigned particles are still intersected
+    if (m_pStartParticle || m_pEndParticle) {
+        if (m_pStartParticle) {
+            if (collidesWithItem(m_pStartParticle)) {
+                QRectF rcPart = m_pStartParticle -> boundingRect();
+                if (!rcPart.contains(pt1)) {
+                    //  No longer intersecting the start point so disconnect from the particle
+                    m_pStartParticle -> removeVector(this);
+                    m_pStartParticle = NULL;
+                }
+            }
+        }
+
+        // Handle the end point particle
+        else {
+            if (collidesWithItem(m_pEndParticle)) {
+                QRectF rcPart = m_pEndParticle -> boundingRect();
+                if (!rcPart.contains(pt2)) {
+                        //  No longer intersecting the end point so disconnect from the particle
+                        m_pEndParticle -> removeVector(this);
+                        m_pEndParticle = NULL;
+                    }
+                }
+        }
+    }
+    for (QList<PhysParticle *>::Iterator iter = particles.begin(); iter != particles.end(); iter++) {
+        PhysParticle *pParticle = *iter;
+
+        if (collidesWithItem(pParticle)) {
+
+            // Verify that the end points are the only things intersecting
+            QRectF rcPart = pParticle -> boundingRect();
+            if (rcPart.contains(pt1)) {
+                if (m_pStartParticle) {
+                    m_pStartParticle -> removeVector(this);
+                }
+                m_pStartParticle = pParticle;
+                pParticle -> addVector(this);
+            }
+            if (rcPart.contains(pt2)) {
+                if (m_pEndParticle) {
+                    m_pEndParticle -> removeVector(this);
+                }
+                m_pEndParticle = pParticle;
+                pParticle -> addVector(this);
+            }
         }
     }
     update();

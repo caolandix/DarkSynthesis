@@ -23,6 +23,10 @@ private:
         AxisOrientation axisOrientation;
     };
 public:
+
+    enum { Type = UserType + 1 };
+    int type() const Q_DECL_OVERRIDE { return Type; }
+
     PhysVector(CartesianGraph *, const QPointF &, const QString &, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);
     ~PhysVector();
 
@@ -70,6 +74,5 @@ private:
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
     QAction *m_actVectorProps;
-
 };
 #endif // PHYSVECTOR_H

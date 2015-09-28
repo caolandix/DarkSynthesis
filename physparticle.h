@@ -15,9 +15,14 @@ public:
     PhysParticle(QGraphicsItem *, const QPointF &, const QString &);
     ~PhysParticle();
 
+    enum { Type = UserType + 2 };
+    int type() const Q_DECL_OVERRIDE { return Type; }
+
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
+
+    void addVector(const PhysVector *pItem) { m_Vectors.push_back(pItem); }
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
