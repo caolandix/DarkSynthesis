@@ -193,10 +193,15 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 
     // Check to see if the currently assigned particles are still intersected
     if (m_pStartParticle || m_pEndParticle) {
+        QRectF rcPart;
         if (m_pStartParticle) {
-            if (collidesWithItem(m_pStartParticle)) {
-                QRectF rcPart = m_pStartParticle -> boundingRect();
-                if (!rcPart.contains(pt1)) {
+            if (!collidesWithItem(m_pStartParticle)) {
+                rcPart = m_pStartParticle -> boundingRect();
+                QPointF ptPart = m_pStartParticle ->pos();
+                QRectF rcLocalPart(ptPart.x() + rcPart.topLeft().x(), ptPart.y() + rcPart.topLeft().y(),
+                                   ptPart.x() + rcPart.bottomRight().x(), ptPart.y() + rcPart.bottomRight().y());
+
+                if (!rcLocalPart.contains(pt1)) {
                     //  No longer intersecting the start point so disconnect from the particle
                     m_pStartParticle -> removeVector(this);
                     m_pStartParticle = NULL;
@@ -206,8 +211,8 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 
         // Handle the end point particle
         else {
-            if (collidesWithItem(m_pEndParticle)) {
-                QRectF rcPart = m_pEndParticle -> boundingRect();
+            if (!collidesWithItem(m_pEndParticle)) {
+                rcPart = m_pEndParticle -> boundingRect();
                 if (!rcPart.contains(pt2)) {
                         //  No longer intersecting the end point so disconnect from the particle
                         m_pEndParticle -> removeVector(this);

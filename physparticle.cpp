@@ -67,14 +67,11 @@ bool PhysParticle::removeVector(PhysVector *pVector) {
     // Find the pVector. If found, delete from the list, delete the object. return true
     // if not found return false.
     bool bFound = false;
-    for (QList<PhysVector *>::Iterator iter = m_Vectors.begin(); iter != m_Vectors.end(); iter++) {
-        PhysVector *obj = *iter;
 
-        if (pVector == obj) {
-            bFound = true;
-            m_Vectors.erase(obj);
-            delete obj;
-        }
+    int idx = -1;
+    if ((idx = m_Vectors.indexOf(pVector)) != -1) {
+        bFound = true;
+        m_Vectors.removeAt(idx);
     }
     return bFound;
 }

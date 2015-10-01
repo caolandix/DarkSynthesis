@@ -63,16 +63,19 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
 void CartesianGraph::createVector(const QPointF startPos) {
     QString Label;
     QTextStream(&Label) << "Vector-" << m_pDataObj -> Vectors().length();
-    PhysVector *pobj = new PhysVector(this, startPos, Label);
-    m_pDataObj -> AddVector(pobj);
+    PhysVector *pObj = new PhysVector(this, startPos, Label);
+    m_pDataObj -> AddVector(pObj);
     QGraphicsScene *pScene = scene();
-    pScene -> addItem(pobj);
+    pScene -> addItem(pObj);
 }
 
 void CartesianGraph::createParticle(const QPointF startPos) {
     QString Label;
     QTextStream(&Label) << "Particle-" << m_pDataObj -> Vectors().length();
-    m_pDataObj -> AddParticle(new PhysParticle(this, startPos, Label));
+    PhysParticle *pObj = new PhysParticle(this, startPos, Label);
+    m_pDataObj -> AddParticle(pObj);
+    QGraphicsScene *pScene = scene();
+    pScene -> addItem(pObj);
 }
 
 QRectF CartesianGraph::boundingRect() const {
