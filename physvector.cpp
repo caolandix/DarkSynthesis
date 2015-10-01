@@ -157,16 +157,6 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     QBrush brush(QColor("black"));
     tmpPath.addPolygon(m_arrowHead);
     pPainter -> fillPath(tmpPath, brush);
-
-    if (isSelected()) {
-        /*
-        QPolygonF selectionBox;
-        selectionBox.clear();
-
-        pPainter -> setPen(QPen(m_Color, 1, Qt::DashLine));
-        pPainter ->drawPolygon(selectionBox);
-        */
-    }
 }
 
 void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
@@ -183,7 +173,7 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         m_dragIndex = DI_VECTORLINE;
         m_currPos = event -> pos();
     }
-    event -> setAccepted(true);//m_dragIndex != DI_VECTORLINE);
+    event -> setAccepted(true);
     qDebug("mousePressEvent m_dragIndex: '%d'", m_dragIndex);
     update();
     QGraphicsItem::mousePressEvent(event);

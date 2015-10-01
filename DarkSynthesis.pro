@@ -12,8 +12,8 @@ TARGET = DarkSynthesis
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        cmainwindow.cpp \
+SOURCES += main.cpp \
+    cmainwindow.cpp \
     node.cpp \
     edge.cpp \
     graphwidget.cpp \

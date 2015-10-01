@@ -1,16 +1,12 @@
 #ifndef PHYSBASEITEM_H
 #define PHYSBASEITEM_H
 
-#include <QGraphicsItem>
-
-class PhysBaseItem : public QGraphicsItem {
+class PhysBaseItem {
 public:
-    PhysBaseItem() : QGraphicsItem() {}
+    PhysBaseItem() {}
+    ~PhysBaseItem() {}
 
-    enum { VectorType = UserType + 1, ParticleType };
-signals:
-
-public slots:
+    enum { VectorType = 65536 + 1, ParticleType };
 };
 
 #endif // PHYSBASEITEM_H

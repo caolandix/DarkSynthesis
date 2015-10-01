@@ -3,10 +3,12 @@
 #include <QPainter>
 #include <QStyleOption>
 
+#include "physbaseitem.h"
 #include "physparticle.h"
 #include "cartesianlabel.h"
 
-PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, const QString &Label) : QGraphicsPolygonItem(pParent) {
+PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, const QString &Label) :
+    QGraphicsPolygonItem(pParent), PhysBaseItem() {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -52,6 +54,29 @@ void PhysParticle::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOp
     pPainter -> setBrush(gradient);
     pPainter -> setPen(QPen(Qt::black, 0));
     pPainter -> drawEllipse(-10, -10, 20, 20);
+}
+
+bool PhysParticle::addVector(PhysVector *pVector) {
+    m_Vectors.push_back(pVector);
+
+    return true;
+}
+
+bool PhysParticle::removeVector(PhysVector *pVector) {
+
+    // Find the pVector. If found, delete from the list, delete the object. return true
+    // if not found return false.
+    bool bFound = false;
+    for (QList<PhysVector *>::Iterator iter = m_Vectors.begin(); iter != m_Vectors.end(); iter++) {
+        PhysVector *obj = *iter;
+
+        if (pVector == obj) {
+            bFound = true;
+            m_Vectors.erase(obj);
+            delete obj;
+        }
+    }
+    return bFound;
 }
 
 QVariant PhysParticle::itemChange(GraphicsItemChange change, const QVariant &value) {
