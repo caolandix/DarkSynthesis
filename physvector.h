@@ -60,6 +60,7 @@ protected:
 private:
     // Member attributes
     CartesianLabel *m_pLabel;
+    QString m_rawLabel;
     double m_magnitude;
     Theta m_Theta;
     PhysParticle *m_pStartParticle;

@@ -14,7 +14,16 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     m_magnitude = 50.0;
     m_arrowSize = 20;
     m_dragIndex = DI_VECTORLINE;
-    m_pLabel = new CartesianLabel(Label, this);
+
+    m_Theta.bAboveAxis = true;
+    m_Theta.degrees = 45.0;
+    m_Theta.axisOrientation = AXIS_HORIZ;
+
+    m_rawLabel = Label;
+    QString formattedLabel;
+    formattedLabel.sprintf("%s: (%.6f, @=%3.2f", m_rawLabel.toStdString().c_str(), m_magnitude, m_Theta.degrees);
+    m_pLabel = new CartesianLabel(formattedLabel, this);
+
     m_pStartParticle = pStart;
     m_pEndParticle = pEnd;
     m_pParent = pParent;
@@ -27,7 +36,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    setLine(0, 0, 0 + m_magnitude, 0 + m_magnitude);
+    setLine(0 + m_magnitude, 0 - m_magnitude, 0, 0);
 }
 
 PhysVector::~PhysVector() {
@@ -143,18 +152,28 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     // Draw the vector
     QLineF aLine = line();
     QPointF arrowP1, arrowP2;
-    double angle = ::acos(aLine.dx() / aLine.length());
+    double drawAngle, realAngle, Theta;
 
-    angle = (aLine.dy() >= 0) ? (PI * 2) - angle : (PI * 2) + angle;
-    arrowP1 = aLine.p1() + QPointF(sin(angle + PI / 3) * m_arrowSize, cos(angle + PI / 3) * m_arrowSize);
-    arrowP2 = aLine.p1() + QPointF(sin(angle + PI - PI / 3) * m_arrowSize, cos(angle + PI - PI / 3) * m_arrowSize);
+    realAngle = ::acos(aLine.dx() / aLine.length());
+    if (m_Theta.axisOrientation == AXIS_HORIZ) {
+        Theta = -(::atan(aLine.dy() / aLine.dx()) * (180 / PI));
+    }
+    else {
+        Theta = -(::atan(aLine.dx() / aLine.dy()) * (180 / PI));
+    }
+
+    drawAngle = (aLine.dy() >= 0) ? (PI * 2) - realAngle : (PI * 2) + realAngle;
+    arrowP1 = aLine.p1() + QPointF(sin(drawAngle + PI / 3) * m_arrowSize, cos(drawAngle + PI / 3) * m_arrowSize);
+    arrowP2 = aLine.p1() + QPointF(sin(drawAngle + PI - PI / 3) * m_arrowSize, cos(drawAngle + PI - PI / 3) * m_arrowSize);
     m_arrowHead.clear();
     m_arrowHead << line().p1() << arrowP1 << arrowP2;
     pPainter -> drawLine(aLine);
     pPainter -> drawPolygon(m_arrowHead);
 
+    QString formattedLabel;
+    m_pLabel -> setPlainText(formattedLabel.sprintf("%s: (%.6f, @=%3.2f)", m_rawLabel.toStdString().c_str(), m_magnitude, Theta));
     QPainterPath tmpPath;
-    QBrush brush(QColor("black"));
+    QBrush brush(m_Color);
     tmpPath.addPolygon(m_arrowHead);
     pPainter -> fillPath(tmpPath, brush);
 }
