@@ -23,6 +23,11 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
     setWindowTitle(tr("Cartesian Graph"));
+    // Setting the matrix rotates the drawing area to be a normal cartesian plane. Unfortunately
+    // it also means that the original drawing has to be tweaked
+    QTransform trfrm;
+    trfrm.scale(1.0, -1.0);
+    this ->setTransform(trfrm);
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
