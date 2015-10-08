@@ -11,7 +11,7 @@
 CartesianLabel::CartesianLabel(const QString &text, Qt::Alignment flags, QGraphicsItem *pParent)
     : QGraphicsTextItem(text, pParent), m_Flags(flags) {
 
-    setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
+    setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
 }
@@ -19,7 +19,7 @@ CartesianLabel::CartesianLabel(const QString &text, Qt::Alignment flags, QGraphi
 CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent)
     : QGraphicsTextItem(text, pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
 
-    setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
+    setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
 }
@@ -27,7 +27,7 @@ CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent)
 CartesianLabel::CartesianLabel(QGraphicsItem * pParent)
     : QGraphicsTextItem(pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
 
-    setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
+    setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
 }

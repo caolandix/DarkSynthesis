@@ -36,7 +36,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    setLine(0 + m_magnitude, 0 - m_magnitude, 0, 0);
+    setLine(0 + m_magnitude, 0 + m_magnitude, 0, 0);
 }
 
 PhysVector::~PhysVector() {
@@ -74,7 +74,7 @@ void PhysVector::adjust() {
             QLineF my_line(line().p1(), line().p2());
 
             prepareGeometryChange();
-            if (length > qreal(20.)) {
+            if (length > qreal(20.0)) {
                 QPointF edgeOffset((my_line.dx() * 10) / length, (my_line.dy() * 10) / length);
                 m_StartPoint = my_line.p1() + edgeOffset;
                 m_EndPoint = my_line.p2() - edgeOffset;
@@ -156,10 +156,21 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
 
     realAngle = ::acos(aLine.dx() / aLine.length());
     if (m_Theta.axisOrientation == AXIS_HORIZ) {
-        Theta = -(::atan(aLine.dy() / aLine.dx()) * (180 / PI));
-    }
-    else {
-        Theta = -(::atan(aLine.dx() / aLine.dy()) * (180 / PI));
+        QPointF currCoordP1(aLine.p1().x(), aLine.p1().y());
+        Theta = (::atan(aLine.dy() / aLine.dx()) * (180 / PI));
+        qDebug("Line (x, y): (%f, %f)", currCoordP1.x(), currCoordP1.y());
+
+        // if we're in the Quad I (+x, +y) or Quad II (-x, +y)
+        if ((currCoordP1.x() >= 0 && currCoordP1.y() >= 0) || (currCoordP1.x() < 0 && currCoordP1.y() >= 0)) {
+            if (Theta < 0)
+                Theta = -Theta;
+        }
+
+        // Quad III (-x, -y) or Quad IV (+x, -y)
+        else if ((currCoordP1.x() < 0 && currCoordP1.y() < 0) || (currCoordP1.x() >= 0 && currCoordP1.y() < 0)) {
+            if (Theta > 0)
+                Theta = -Theta;
+        }
     }
 
     drawAngle = (aLine.dy() >= 0) ? (PI * 2) - realAngle : (PI * 2) + realAngle;

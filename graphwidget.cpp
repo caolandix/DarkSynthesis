@@ -27,7 +27,7 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     // it also means that the original drawing has to be tweaked
     QTransform trfrm;
     trfrm.scale(1.0, -1.0);
-    this ->setTransform(trfrm);
+    setTransform(trfrm);
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
