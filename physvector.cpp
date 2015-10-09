@@ -172,6 +172,7 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
                 Theta = -Theta;
         }
     }
+    m_Theta.degrees = Theta;
 
     drawAngle = (aLine.dy() >= 0) ? (PI * 2) - realAngle : (PI * 2) + realAngle;
     arrowP1 = aLine.p1() + QPointF(sin(drawAngle + PI / 3) * m_arrowSize, cos(drawAngle + PI / 3) * m_arrowSize);
