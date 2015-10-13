@@ -58,6 +58,12 @@ void GraphWidget::createParticle() {
     m_pCartGraph -> createParticle(m_currClickPos);
 }
 
+void GraphWidget::particleProps() {
+}
+
+void GraphWidget::vectorProps() {
+}
+
 void GraphWidget::createActions() {
     m_actNewVector = new QAction(tr("New &Vector"), this);
     m_actNewVector -> setShortcut(tr("Ctrl+V"));
@@ -69,39 +75,55 @@ void GraphWidget::createActions() {
     m_actNewParticle -> setStatusTip(tr("Create a new Particle object"));
     connect(m_actNewParticle, SIGNAL(triggered()), this, SLOT(createParticle()));
 
+    m_actVectorProps = new QAction(tr("Vector Properties"), this);
+    m_actVectorProps -> setStatusTip(tr("Adjust the Default properties of a vector"));
+    connect(m_actVectorProps, SIGNAL(triggered()), this, SLOT(vectorProps()));
+
+    m_actParticleProps = new QAction(tr("Particle Properties"), this);
+    m_actParticleProps -> setStatusTip(tr("Adjust the Default properties of a particle"));
+    connect(m_actParticleProps, SIGNAL(triggered()), this, SLOT(particleProps()));
+
+    // Hook up the custom Context menu handler
     connect(this,
-            SIGNAL(customContextMenuRequested(const QPoint&)),
-            SLOT(onCustomContextMenuRequested(const QPoint&)));
+            SIGNAL(customContextMenuRequested(const QPoint &)),
+            SLOT(onCustomContextMenuRequested(const QPoint &)));
 }
 
-void GraphWidget::onCustomContextMenuRequested(const QPoint& pos) {
+void GraphWidget::onCustomContextMenuRequested(const QPoint &pos) {
     QGraphicsItem *pItem = itemAt(pos);
 
     if (pItem) {
         // Note: We must map the point to global from the viewport to
         // account for the header.
-        showContextMenu(pItem, viewport() -> mapToGlobal(pos));
+        showPhysObjContextMenu(pItem, viewport() -> mapToGlobal(pos));
     }
     else {
-        QMenu menu(this);
-        menu.addAction(m_actNewVector);
-        menu.addAction(m_actNewParticle);
-        menu.exec(mapToGlobal(pos));
+        showWidgetContextMenu(pos);
     }
 }
 
-void GraphWidget::showContextMenu(QGraphicsItem *pItem, const QPoint& globalPos) {
+void GraphWidget::showWidgetContextMenu(const QPoint& globalPos) {
+    QMenu menu(this);
+    menu.addAction(m_actNewVector);
+    menu.addAction(m_actNewParticle);
+    menu.exec(mapToGlobal(globalPos));
+}
+
+void GraphWidget::showPhysObjContextMenu(QGraphicsItem *pItem, const QPoint& globalPos) {
     QMenu menu;
     switch (pItem -> type()) {
         case PhysBaseItem::VectorType:
-            menu.addAction("This is a VectorType");
+            menu.addAction(m_actVectorProps);
             break;
 
         case PhysBaseItem::ParticleType:
-            menu.addAction("This is a ParticleType");
+            menu.addAction(m_actParticleProps);
             break;
     }
-    menu.exec(globalPos);
+    QAction *pAction = menu.exec(globalPos);
+    if (pAction) {
+
+    }
 }
 
 void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {

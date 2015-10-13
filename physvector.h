@@ -36,10 +36,6 @@ public:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
     void updatePosition();
 
-    void vectorPropsDlg();
-    void createActions();
-
-
     // accessors
     double Magnitude() const { return m_magnitude; }
     Theta theta() const { return m_Theta; }
@@ -54,9 +50,6 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
-
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *);
-
 private:
     // Member attributes
     CartesianLabel *m_pLabel;
@@ -74,6 +67,5 @@ private:
     qreal m_arrowSize;
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
-    QAction *m_actVectorProps;
 };
 #endif // PHYSVECTOR_H

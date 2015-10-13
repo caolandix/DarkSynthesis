@@ -26,6 +26,8 @@ public slots:
 private slots:
     void createVector();
     void createParticle();
+    void particleProps();
+    void vectorProps();
     void onCustomContextMenuRequested(const QPoint& pos);
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
@@ -41,10 +43,12 @@ protected:
 
 private:
     void createActions();
-    void showContextMenu(QGraphicsItem *, const QPoint &);
+    void showPhysObjContextMenu(QGraphicsItem *, const QPoint &);
+    void showWidgetContextMenu(const QPoint &);
 private:
     CartesianGraph *m_pCartGraph;
     QAction *m_actNewVector, *m_actNewParticle;
+    QAction *m_actVectorProps, *m_actParticleProps;
     QLabel *m_pInfoLabel;
     QGraphicsScene *m_pScene;
     QPointF m_currClickPos;

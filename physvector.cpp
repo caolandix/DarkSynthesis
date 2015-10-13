@@ -205,7 +205,7 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         m_currPos = event -> pos();
     }
     event -> setAccepted(true);
-    qDebug("mousePressEvent m_dragIndex: '%d'", m_dragIndex);
+    // qDebug("mousePressEvent m_dragIndex: '%d'", m_dragIndex);
     update();
     QGraphicsItem::mousePressEvent(event);
 }
@@ -303,14 +303,4 @@ void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         QGraphicsItem::mouseMoveEvent(event);
     }
     update();
-}
-
-void PhysVector::vectorPropsDlg() {
-    qDebug("vectorPropsDlg()");
-}
-
-void PhysVector::createActions() {
-}
-
-void PhysVector::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 }
