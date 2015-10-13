@@ -19,12 +19,14 @@ public:
     void itemMoved();
 
     CartesianGraph *cartesianGraph() const { return m_pCartGraph; }
+
 public slots:
     void zoomIn() { scaleView(qreal(1.2)); }
     void zoomOut() { scaleView(1 / qreal(1.2)); }
 private slots:
     void createVector();
     void createParticle();
+    void onCustomContextMenuRequested(const QPoint& pos);
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
@@ -34,11 +36,12 @@ protected:
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
-    void scaleView(qreal scaleFactor);
+    void scaleView(qreal scaleFactor);\
+
 
 private:
     void createActions();
-
+    void showContextMenu(QGraphicsItem *, const QPoint &);
 private:
     CartesianGraph *m_pCartGraph;
     QAction *m_actNewVector, *m_actNewParticle;

@@ -2,6 +2,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
+#include <QMenu>
 
 #include "physbaseitem.h"
 #include "physparticle.h"

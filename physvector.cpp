@@ -160,7 +160,7 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
         Theta = (::atan(aLine.dy() / aLine.dx()) * (180 / PI));
         qDebug("Line (x, y): (%f, %f)", currCoordP1.x(), currCoordP1.y());
 
-        // if we're in the Quad I (+x, +y) or Quad II (-x, +y)
+        // If we're in the Quad I (+x, +y) or Quad II (-x, +y)
         if ((currCoordP1.x() >= 0 && currCoordP1.y() >= 0) || (currCoordP1.x() < 0 && currCoordP1.y() >= 0)) {
             if (Theta < 0)
                 Theta = -Theta;

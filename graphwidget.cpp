@@ -12,9 +12,11 @@
 
 #include "graphwidget.h"
 #include "cartesiangraph.h"
+#include "physbaseitem.h"
 
 GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
-    setContextMenuPolicy(Qt::DefaultContextMenu);
+    // setContextMenuPolicy(Qt::DefaultContextMenu);
+    setContextMenuPolicy(Qt::CustomContextMenu);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(FullViewportUpdate);
     //setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -66,6 +68,40 @@ void GraphWidget::createActions() {
     m_actNewParticle -> setShortcut(tr("Ctrl+P"));
     m_actNewParticle -> setStatusTip(tr("Create a new Particle object"));
     connect(m_actNewParticle, SIGNAL(triggered()), this, SLOT(createParticle()));
+
+    connect(this,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            SLOT(onCustomContextMenuRequested(const QPoint&)));
+}
+
+void GraphWidget::onCustomContextMenuRequested(const QPoint& pos) {
+    QGraphicsItem *pItem = itemAt(pos);
+
+    if (pItem) {
+        // Note: We must map the point to global from the viewport to
+        // account for the header.
+        showContextMenu(pItem, viewport() -> mapToGlobal(pos));
+    }
+    else {
+        QMenu menu(this);
+        menu.addAction(m_actNewVector);
+        menu.addAction(m_actNewParticle);
+        menu.exec(mapToGlobal(pos));
+    }
+}
+
+void GraphWidget::showContextMenu(QGraphicsItem *pItem, const QPoint& globalPos) {
+    QMenu menu;
+    switch (pItem -> type()) {
+        case PhysBaseItem::VectorType:
+            menu.addAction("This is a VectorType");
+            break;
+
+        case PhysBaseItem::ParticleType:
+            menu.addAction("This is a ParticleType");
+            break;
+    }
+    menu.exec(globalPos);
 }
 
 void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
