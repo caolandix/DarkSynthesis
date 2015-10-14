@@ -29,10 +29,6 @@ CMainWindow::~CMainWindow() {
 
 void CMainWindow::contextMenuEvent(QContextMenuEvent *event) {
     QMenu menu(this);
-    menu.addAction(cutAct);
-    menu.addAction(copyAct);
-    menu.addAction(pasteAct);
-    menu.exec(event -> globalPos());
 }
 
 void CMainWindow::newFile() {
@@ -129,45 +125,8 @@ void CMainWindow::WriteXMLFile(QXmlStreamWriter &xmlWriter, QFile &file) {
     xmlWriter.writeEndDocument();
 }
 
-
 void CMainWindow::print() {
     infoLabel->setText(tr("Invoked <b>File|Print</b>"));
-}
-
-void CMainWindow::undo() {
-    infoLabel->setText(tr("Invoked <b>Edit|Undo</b>"));
-}
-
-void CMainWindow::redo() {
-    infoLabel->setText(tr("Invoked <b>Edit|Redo</b>"));
-}
-
-void CMainWindow::cut() {
-    infoLabel->setText(tr("Invoked <b>Edit|Cut</b>"));
-}
-
-void CMainWindow::copy() {
-    infoLabel->setText(tr("Invoked <b>Edit|Copy</b>"));
-}
-
-void CMainWindow::paste() {
-    infoLabel->setText(tr("Invoked <b>Edit|Paste</b>"));
-}
-
-void CMainWindow::bold() {
-    infoLabel->setText(tr("Invoked <b>Edit|Format|Bold</b>"));
-}
-
-void CMainWindow::italic() {
-    infoLabel->setText(tr("Invoked <b>Edit|Format|Italic</b>"));
-}
-
-void CMainWindow::setLineSpacing() {
-    infoLabel -> setText(tr("Invoked <b>Edit|Format|Set Line Spacing</b>"));
-}
-
-void CMainWindow::setParagraphSpacing() {
-    infoLabel -> setText(tr("Invoked <b>Edit|Format|Set Paragraph Spacing</b>"));
 }
 
 void CMainWindow::about() {
@@ -214,60 +173,6 @@ void CMainWindow::createActions() {
     exitAct -> setStatusTip(tr("Exit the application"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-    undoAct = new QAction(tr("&Undo"), this);
-    undoAct -> setShortcuts(QKeySequence::Undo);
-    undoAct -> setStatusTip(tr("Undo the last operation"));
-    connect(undoAct, SIGNAL(triggered()), this, SLOT(undo()));
-
-    redoAct = new QAction(tr("&Redo"), this);
-    redoAct -> setShortcuts(QKeySequence::Redo);
-    redoAct -> setStatusTip(tr("Redo the last operation"));
-    connect(redoAct, SIGNAL(triggered()), this, SLOT(redo()));
-
-    cutAct = new QAction(tr("Cu&t"), this);
-    cutAct -> setShortcuts(QKeySequence::Cut);
-    cutAct -> setStatusTip(tr("Cut the current selection's contents to the clipboard"));
-    connect(cutAct, SIGNAL(triggered()), this, SLOT(cut()));
-
-    copyAct = new QAction(tr("&Copy"), this);
-    copyAct -> setShortcuts(QKeySequence::Copy);
-    copyAct -> setStatusTip(tr("Copy the current selection's contents to the clipboard"));
-    connect(copyAct, SIGNAL(triggered()), this, SLOT(copy()));
-
-    pasteAct = new QAction(tr("&Paste"), this);
-    pasteAct -> setShortcuts(QKeySequence::Paste);
-    pasteAct -> setStatusTip(tr("Paste the clipboard's contents into the current selection"));
-    connect(pasteAct, SIGNAL(triggered()), this, SLOT(paste()));
-
-    boldAct = new QAction(tr("&Bold"), this);
-    boldAct -> setCheckable(true);
-    boldAct -> setShortcut(QKeySequence::Bold);
-    boldAct -> setStatusTip(tr("Make the text bold"));
-    connect(boldAct, SIGNAL(triggered()), this, SLOT(bold()));
-
-    QFont boldFont = boldAct->font();
-    boldFont.setBold(true);
-    boldAct->setFont(boldFont);
-
-    italicAct = new QAction(tr("&Italic"), this);
-    italicAct -> setCheckable(true);
-    italicAct -> setShortcut(QKeySequence::Italic);
-    italicAct -> setStatusTip(tr("Make the text italic"));
-    connect(italicAct, SIGNAL(triggered()), this, SLOT(italic()));
-
-
-    QFont italicFont = italicAct -> font();
-    italicFont.setItalic(true);
-    italicAct -> setFont(italicFont);
-
-    setLineSpacingAct = new QAction(tr("Set &Line Spacing..."), this);
-    setLineSpacingAct -> setStatusTip(tr("Change the gap between the lines of a paragraph"));
-    connect(setLineSpacingAct, SIGNAL(triggered()), this, SLOT(setLineSpacing()));
-
-    setParagraphSpacingAct = new QAction(tr("Set &Paragraph Spacing..."), this);
-    setParagraphSpacingAct -> setStatusTip(tr("Change the gap between paragraphs"));
-    connect(setParagraphSpacingAct, SIGNAL(triggered()), this, SLOT(setParagraphSpacing()));
-
     aboutAct = new QAction(tr("&About"), this);
     aboutAct -> setStatusTip(tr("Show the application's About box"));
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
@@ -293,23 +198,10 @@ void CMainWindow::createMenus() {
     fileMenu -> addAction(exitAct);
 
     editMenu = menuBar() -> addMenu(tr("&Edit"));
-    editMenu -> addAction(redoAct);
-    editMenu -> addSeparator();
-    editMenu -> addAction(cutAct);
-    editMenu -> addAction(copyAct);
-    editMenu -> addAction(pasteAct);
-    editMenu -> addSeparator();
 
     helpMenu = menuBar() -> addMenu(tr("&Help"));
     helpMenu -> addAction(aboutAct);
     helpMenu -> addAction(aboutQtAct);
-
-    formatMenu = editMenu -> addMenu(tr("&Format"));
-    formatMenu -> addAction(boldAct);
-    formatMenu -> addAction(italicAct);
-    formatMenu -> addSeparator();
-    formatMenu -> addAction(setLineSpacingAct);
-    formatMenu -> addAction(setParagraphSpacingAct);
 
     m_pSettingsMenu = menuBar() -> addMenu(tr("&Settings"));
     m_pSettingsMenu -> addAction(m_pcartGraphSettings);
