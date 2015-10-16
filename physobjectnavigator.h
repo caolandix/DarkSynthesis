@@ -6,7 +6,7 @@
 
 class PhysObjectNavigator : public QTreeView {
 public:
-    PhysObjectNavigator(QWidget *pParent = NULL);
+    PhysObjectNavigator(QWidget * = NULL);
 
 signals:
 public slots:

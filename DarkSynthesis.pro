@@ -26,7 +26,9 @@ SOURCES += main.cpp \
     physbaseitem.cpp \
     physobjectnavigator.cpp \
     comboboxdelegate.cpp \
-    spinboxdelegate.cpp
+    spinboxdelegate.cpp \
+    physmodulenavigator.cpp \
+    physoutputnavigator.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -41,7 +43,9 @@ HEADERS  += cmainwindow.h \
     physbaseitem.h \
     physobjectnavigator.h \
     comboboxdelegate.h \
-    spinboxdelegate.h
+    spinboxdelegate.h \
+    physmodulenavigator.h \
+    physoutputnavigator.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui

@@ -11,6 +11,8 @@
 #include "cartesiangraphsettingsdlg.h"
 #include "cartesiangraphdataobj.h"
 #include "physobjectnavigator.h"
+#include "physmodulenavigator.h"
+#include "physoutputnavigator.h"
 
 using namespace std;
 
@@ -226,9 +228,31 @@ void CMainWindow::createStatusBar() {
 }
 
 void CMainWindow::createDockWindows() {
+
+    // Create the right side
     QDockWidget *pDock = new QDockWidget(tr("Physics Objects"), this);
-    pDock -> setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    PhysObjectNavigator *pPhysObjNavigator = new PhysObjectNavigator(pDock);
+    pDock -> setWidget(pPhysObjNavigator);
+    pDock -> setAllowedAreas(Qt::RightDockWidgetArea);
     addDockWidget(Qt::RightDockWidgetArea, pDock);
-    PhysObjectNavigator *pPhysNavigator = new PhysObjectNavigator(pDock);
-    pDock -> setWidget(pPhysNavigator);
+
+    pDock = new QDockWidget(tr("Physics Properties"), this);
+    PhysObjectNavigator *pBlerg = new PhysObjectNavigator(pDock);
+    pDock -> setWidget(pBlerg);
+    pDock -> setAllowedAreas(Qt::RightDockWidgetArea);
+    addDockWidget(Qt::RightDockWidgetArea, pDock);
+
+    // Create the left side
+    pDock = new QDockWidget(tr("Physics Modules"), this);
+    PhysModuleNavigator *pPhysModNavigator = new PhysModuleNavigator(pDock);
+    pDock -> setWidget(pPhysModNavigator);
+    pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
+    addDockWidget(Qt::LeftDockWidgetArea, pDock);
+
+    // Create the Bottom area
+    pDock = new QDockWidget(tr("Output"), this);
+    PhysOutputNavigator *pPhysOutputNavigator = new PhysOutputNavigator(pDock);
+    pDock -> setWidget(pPhysOutputNavigator);
+    pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
+    addDockWidget(Qt::BottomDockWidgetArea, pDock);
 }
