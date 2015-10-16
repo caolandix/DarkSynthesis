@@ -39,24 +39,26 @@ private:
     // methods
     void createActions();
     void createMenus();
+    void createToolBars();
+    void createStatusBar();
+    void createDockWindows();
     void ReadXMLFile(QXmlStreamReader &, QFile &);
     void WriteXMLFile(QXmlStreamWriter &, QFile &);
 
     // properties
-    QMenu *fileMenu;
-    QMenu *editMenu;
-    QMenu *formatMenu;
-    QMenu *helpMenu;
+    QMenu *m_pFileMenu;
+    QMenu *m_pEditMenu;
+    QMenu *m_pHelpMenu;
     QMenu *m_pSettingsMenu;
     QAction *m_pcartGraphSettings;
-    QAction *newAct;
-    QAction *openAct;
-    QAction *saveAct;
-    QAction *printAct;
-    QAction *exitAct;
-    QAction *aboutAct;
-    QAction *aboutQtAct;
-    QLabel *infoLabel;
+    QAction *m_pactNew;
+    QAction *m_pactOpen;
+    QAction *m_pactSave;
+    QAction *m_pactPrint;
+    QAction *m_pactExit;
+    QAction *m_pactAbout;
+    QAction *m_pactAboutQt;
+    QLabel *m_infoLabel;
 };
 
 #endif // CMAINWINDOW_H

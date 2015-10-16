@@ -23,7 +23,10 @@ SOURCES += main.cpp \
     cartesiangraphsettingsdlg.cpp \
     physvector.cpp \
     cartesiangraphdataobj.cpp \
-    physbaseitem.cpp
+    physbaseitem.cpp \
+    physobjectnavigator.cpp \
+    comboboxdelegate.cpp \
+    spinboxdelegate.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -35,7 +38,10 @@ HEADERS  += cmainwindow.h \
     cartesiangraphsettingsdlg.h \
     physvector.h \
     cartesiangraphdataobj.h \
-    physbaseitem.h
+    physbaseitem.h \
+    physobjectnavigator.h \
+    comboboxdelegate.h \
+    spinboxdelegate.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui

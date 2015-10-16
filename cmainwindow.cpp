@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QXmlStreamReader>
+#include <QDockWidget>
 
 #include <iostream>
 
@@ -9,17 +10,21 @@
 #include "ui_cmainwindow.h"
 #include "cartesiangraphsettingsdlg.h"
 #include "cartesiangraphdataobj.h"
+#include "physobjectnavigator.h"
 
 using namespace std;
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::CMainWindow) {
     ui -> setupUi(this);
 
-    infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
-    infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-    infoLabel -> setAlignment(Qt::AlignCenter);
+    m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
+    m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    m_infoLabel -> setAlignment(Qt::AlignCenter);
     createActions();
     createMenus();
+    createToolBars();
+    createStatusBar();
+    createDockWindows();
 }
 
 CMainWindow::~CMainWindow() {
@@ -32,7 +37,7 @@ void CMainWindow::contextMenuEvent(QContextMenuEvent *event) {
 }
 
 void CMainWindow::newFile() {
-    infoLabel -> setText(tr("Invoked <b>File|New</b>"));
+    m_infoLabel -> setText(tr("Invoked <b>File|New</b>"));
 }
 
 void CMainWindow::open() {
@@ -126,16 +131,16 @@ void CMainWindow::WriteXMLFile(QXmlStreamWriter &xmlWriter, QFile &file) {
 }
 
 void CMainWindow::print() {
-    infoLabel->setText(tr("Invoked <b>File|Print</b>"));
+    m_infoLabel->setText(tr("Invoked <b>File|Print</b>"));
 }
 
 void CMainWindow::about() {
-    infoLabel -> setText(tr("Invoked <b>Help|About</b>"));
+    m_infoLabel -> setText(tr("Invoked <b>Help|About</b>"));
     QMessageBox::about(this, tr("About Menu"), tr("The <b>Menu</b> example shows how to create menu-bar menus and context menus."));
 }
 
 void CMainWindow::aboutQt() {
-    infoLabel -> setText(tr("Invoked <b>Help|About Qt</b>"));
+    m_infoLabel -> setText(tr("Invoked <b>Help|About Qt</b>"));
 }
 
 void CMainWindow::cartesianGraphOptions() {
@@ -148,39 +153,39 @@ void CMainWindow::cartesianGraphOptions() {
 }
 
 void CMainWindow::createActions() {
-    newAct = new QAction(tr("&New"), this);
-    newAct -> setShortcuts(QKeySequence::New);
-    newAct -> setStatusTip(tr("Create a new file"));
-    connect(newAct, SIGNAL(triggered()), this, SLOT(newFile()));
+    m_pactNew = new QAction(tr("&New"), this);
+    m_pactNew -> setShortcuts(QKeySequence::New);
+    m_pactNew -> setStatusTip(tr("Create a new file"));
+    connect(m_pactNew, SIGNAL(triggered()), this, SLOT(newFile()));
 
-    openAct = new QAction(tr("&Open..."), this);
-    openAct -> setShortcuts(QKeySequence::Open);
-    openAct -> setStatusTip(tr("Open an existing file"));
-    connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
+    m_pactOpen = new QAction(tr("&Open..."), this);
+    m_pactOpen -> setShortcuts(QKeySequence::Open);
+    m_pactOpen -> setStatusTip(tr("Open an existing file"));
+    connect(m_pactOpen, SIGNAL(triggered()), this, SLOT(open()));
 
-    saveAct = new QAction(tr("&Save"), this);
-    saveAct -> setShortcuts(QKeySequence::Save);
-    saveAct -> setStatusTip(tr("Save the document to disk"));
-    connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+    m_pactSave = new QAction(tr("&Save"), this);
+    m_pactSave -> setShortcuts(QKeySequence::Save);
+    m_pactSave -> setStatusTip(tr("Save the document to disk"));
+    connect(m_pactSave, SIGNAL(triggered()), this, SLOT(save()));
 
-    printAct = new QAction(tr("&Print..."), this);
-    printAct -> setShortcuts(QKeySequence::Print);
-    printAct -> setStatusTip(tr("Print the document"));
-    connect(printAct, SIGNAL(triggered()), this, SLOT(print()));
+    m_pactPrint = new QAction(tr("&Print..."), this);
+    m_pactPrint -> setShortcuts(QKeySequence::Print);
+    m_pactPrint -> setStatusTip(tr("Print the document"));
+    connect(m_pactPrint, SIGNAL(triggered()), this, SLOT(print()));
 
-    exitAct = new QAction(tr("E&xit"), this);
-    exitAct -> setShortcuts(QKeySequence::Quit);
-    exitAct -> setStatusTip(tr("Exit the application"));
-    connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
+    m_pactExit = new QAction(tr("E&xit"), this);
+    m_pactExit -> setShortcuts(QKeySequence::Quit);
+    m_pactExit -> setStatusTip(tr("Exit the application"));
+    connect(m_pactExit, SIGNAL(triggered()), this, SLOT(close()));
 
-    aboutAct = new QAction(tr("&About"), this);
-    aboutAct -> setStatusTip(tr("Show the application's About box"));
-    connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+    m_pactAbout = new QAction(tr("&About"), this);
+    m_pactAbout -> setStatusTip(tr("Show the application's About box"));
+    connect(m_pactAbout, SIGNAL(triggered()), this, SLOT(about()));
 
-    aboutQtAct = new QAction(tr("About &Qt"), this);
-    aboutQtAct -> setStatusTip(tr("Show the Qt library's About box"));
-    connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-    connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(aboutQt()));
+    m_pactAboutQt = new QAction(tr("About &Qt"), this);
+    m_pactAboutQt -> setStatusTip(tr("Show the Qt library's About box"));
+    connect(m_pactAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    connect(m_pactAboutQt, SIGNAL(triggered()), this, SLOT(aboutQt()));
 
     m_pcartGraphSettings = new QAction(tr("C&artesian Graph Settings..."), this);
     m_pcartGraphSettings -> setShortcut(tr("Ctrl+A"));
@@ -189,21 +194,41 @@ void CMainWindow::createActions() {
 }
 
 void CMainWindow::createMenus() {
-    fileMenu = menuBar() -> addMenu(tr("&File"));
-    fileMenu -> addAction(newAct);
-    fileMenu -> addAction(openAct);
-    fileMenu -> addAction(saveAct);
-    fileMenu -> addAction(printAct);
-    fileMenu -> addSeparator();
-    fileMenu -> addAction(exitAct);
+    // The file menu
+    m_pFileMenu = menuBar() -> addMenu(tr("&File"));
+    m_pFileMenu -> addAction(m_pactNew);
+    m_pFileMenu -> addAction(m_pactOpen);
+    m_pFileMenu -> addAction(m_pactSave);
+    m_pFileMenu -> addAction(m_pactPrint);
+    m_pFileMenu -> addSeparator();
+    m_pFileMenu -> addAction(m_pactExit);
 
-    editMenu = menuBar() -> addMenu(tr("&Edit"));
+    // The Edit menu
+    m_pEditMenu = menuBar() -> addMenu(tr("&Edit"));
 
-    helpMenu = menuBar() -> addMenu(tr("&Help"));
-    helpMenu -> addAction(aboutAct);
-    helpMenu -> addAction(aboutQtAct);
-
+    // The Settings menu
     m_pSettingsMenu = menuBar() -> addMenu(tr("&Settings"));
     m_pSettingsMenu -> addAction(m_pcartGraphSettings);
     m_pSettingsMenu -> addSeparator();
+
+    // The Help Menu
+    m_pHelpMenu = menuBar() -> addMenu(tr("&Help"));
+    m_pHelpMenu -> addAction(m_pactAbout);
+    m_pHelpMenu -> addAction(m_pactAboutQt);
+}
+
+void CMainWindow::createToolBars() {
+
+}
+
+void CMainWindow::createStatusBar() {
+    QStatusBar *pBar = new QStatusBar();
+}
+
+void CMainWindow::createDockWindows() {
+    QDockWidget *pDock = new QDockWidget(tr("Physics Objects"), this);
+    pDock -> setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    addDockWidget(Qt::RightDockWidgetArea, pDock);
+    PhysObjectNavigator *pPhysNavigator = new PhysObjectNavigator(pDock);
+    pDock -> setWidget(pPhysNavigator);
 }
