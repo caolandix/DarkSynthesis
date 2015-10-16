@@ -14,8 +14,9 @@
 #include "physvector.h"
 #include "graphwidget.h"
 
-CartesianGraph::CartesianGraph() {
+CartesianGraph::CartesianGraph(const QString &Name) {
     setCacheMode(DeviceCoordinateCache);
+    m_Name = Name;
     setZValue(-1);
     m_borderWidth = 5;
     m_x_label = new CartesianLabel(QString("x: t(s)"), this);
@@ -24,7 +25,7 @@ CartesianGraph::CartesianGraph() {
     m_y_label -> setPos(QPointF(0, -200 - m_borderWidth));
 }
 
-CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, CartesianGraphDataObj *pDataObj) : CartesianGraph() {
+CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj) : CartesianGraph(Name) {
     m_pGraphWidget = pGraphWidget;
 
     if (pDataObj)
@@ -48,7 +49,7 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
     if (&obj != this) {
         if (m_pDataObj)
             delete m_pDataObj;
-        m_pDataObj = new CartesianGraphDataObj(obj.DataObj());
+        // m_pDataObj = new CartesianGraphDataObj(obj.DataObj());
         m_pGraphWidget = obj.graphWidget();
         delete m_x_label;
         delete m_y_label;

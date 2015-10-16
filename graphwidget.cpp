@@ -15,11 +15,9 @@
 #include "physbaseitem.h"
 
 GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
-    // setContextMenuPolicy(Qt::DefaultContextMenu);
     setContextMenuPolicy(Qt::CustomContextMenu);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(FullViewportUpdate);
-    //setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
@@ -39,14 +37,31 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     setScene(m_pScene);
 
     // Setup Objects
+    createBaseObjects();
+
+    // Create the actions used in the context menus
+    createActions();
+
+    m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
+}
+
+void GraphWidget::createBaseObjects() {
+    createCartesianGraph();
+}
+
+void GraphWidget::addPhysObjectToUI(QGraphicsItem *pItem) {
+
+}
+
+void GraphWidget::createCartesianGraph() {
+
+    // Create the object
     m_pCartGraph = new CartesianGraph(this);
     m_pCartGraph -> setPos(0, 0);
     m_pScene -> addItem(m_pCartGraph);
 
-    m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
-
-    // Create the actions used in the context menus
-    createActions();
+    // Insert into the PhysObjectNavigator, highlight it there, and then populate the
+    emit addPhysObjectToUI(m_pCartGraph);
 }
 
 void GraphWidget::createVector() {

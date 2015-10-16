@@ -6,7 +6,7 @@
 CartesianGraphSettingsDlg::CartesianGraphSettingsDlg(CartesianGraphDataObj *pDataObj, QWidget *parent) : QDialog(parent),
     ui(new Ui::CartesianGraphSettingsDlg) {
     ui -> setupUi(this);
-    m_DataObj = pDataObj;
+    //m_DataObj = pDataObj;
 }
 
 CartesianGraphSettingsDlg::~CartesianGraphSettingsDlg() {

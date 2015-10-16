@@ -26,6 +26,7 @@ private:
 protected:
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 private slots:
+    void addPhysObjectToUI(QGraphicsItem *);
     void cartesianGraphOptions();
     void newFile();
     void open();

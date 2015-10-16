@@ -38,6 +38,14 @@ void CMainWindow::contextMenuEvent(QContextMenuEvent *event) {
     QMenu menu(this);
 }
 
+void CMainWindow::addPhysObjectToUI() {
+    m_infoLabel -> setText(tr("Invoked code to add object to PhysObjNavigator"));
+}
+
+void CMainWindow::updateUI() {
+    connect(searchWidget, SIGNAL(addPhysObjectToUI()), this, SLOT(addPhysObjectToUI()));
+}
+
 void CMainWindow::newFile() {
     m_infoLabel -> setText(tr("Invoked <b>File|New</b>"));
 }
@@ -196,6 +204,7 @@ void CMainWindow::createActions() {
 }
 
 void CMainWindow::createMenus() {
+
     // The file menu
     m_pFileMenu = menuBar() -> addMenu(tr("&File"));
     m_pFileMenu -> addAction(m_pactNew);
@@ -220,11 +229,11 @@ void CMainWindow::createMenus() {
 }
 
 void CMainWindow::createToolBars() {
-
+    QToolBar *pToolBar = new QToolBar(tr("Main"), this);
+    pToolBar -> addSeparator();
 }
 
 void CMainWindow::createStatusBar() {
-    QStatusBar *pBar = new QStatusBar();
 }
 
 void CMainWindow::createDockWindows() {

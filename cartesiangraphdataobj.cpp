@@ -4,9 +4,23 @@ CartesianGraphDataObj::CartesianGraphDataObj() {
     m_tickStep = 10.0;
 }
 
-CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj *pObj) {
-    if (pObj != this) {
+CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj &Obj) {
+    m_origin = Obj.m_origin;
+    m_tickStep = Obj.m_tickStep;
+    m_x_min = Obj.m_x_min;
+    m_x_max = Obj.m_x_max;
+    m_y_min = Obj.m_y_min;
+    m_y_max = Obj.m_y_max;
+
+    /*
+    for (int idx1 = 0; idx1 < Obj.m_Vectors.size(); idx1++) {
+        PhysVector *pObj = new PhysVector(Obj.m_Vectors.at(idx1));
+        m_Vectors.push_back(pObj);
     }
+
+    QList<PhysVector *> m_Vectors;
+    QList<PhysParticle *> m_Particles;
+    */
 }
 
 CartesianGraphDataObj::CartesianGraphDataObj(

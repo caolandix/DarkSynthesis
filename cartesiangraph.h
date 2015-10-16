@@ -12,13 +12,13 @@ class CartesianGraph : public QGraphicsItem {
 public:
 
     // basic ctor
-    CartesianGraph();
+    CartesianGraph(const QString & = "Cartesian Plane");
 
     // copy ctor
     CartesianGraph(const CartesianGraph &);
 
     // other ctors
-    CartesianGraph(GraphWidget *, CartesianGraphDataObj * = NULL);
+    CartesianGraph(GraphWidget *, const QString & = "Cartesian Plane", CartesianGraphDataObj * = NULL);
 
     // dtor
     ~CartesianGraph();
@@ -44,14 +44,17 @@ public:
     GraphWidget *graphWidget() const { return m_pGraphWidget; }
     QString XAxisLabel() const { return m_x_label -> toPlainText(); }
     QString YAxisLabel() const { return m_y_label -> toPlainText(); }
+    QString Name() const { return m_Name; }
 
     // accessors -- set
     void XAxisLabel(const QString &data) { m_x_label -> setPlainText(data); }
     void YAxisLabel(const QString &data) { m_y_label -> setPlainText(data); }
+    void Name(const QString &obj) { m_Name = obj; }
 
     // Member methods
     void createVector(const QPointF startPos);
     void createParticle(const QPointF startPos);
+
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
@@ -61,6 +64,7 @@ private:
     QGraphicsTextItem *m_x_label, *m_y_label;
     CartesianGraphDataObj *m_pDataObj;
     int m_borderWidth;
+    QString m_Name;
 };
 
 #endif // CARTESIANGRAPH_H
