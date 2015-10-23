@@ -4,12 +4,15 @@
 #include <QMenu>
 #include <math.h>
 
+#include "physbaseitem.h"
 #include "physvector.h"
 #include "physparticle.h"
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
 
-PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) : QGraphicsLineItem(pParent) {
+PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
+    QGraphicsLineItem(pParent), PhysBaseItem() {
+
     m_Color = Qt::black;
     m_magnitude = 50.0;
     m_arrowSize = 20;

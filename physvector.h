@@ -7,13 +7,15 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QContextMenuEvent>
 
+#include "physbaseitem.h"
+
 class CartesianLabel;
 class PhysParticle;
 class CartesianGraph;
 
 static const double PI = 3.141592653589;
 
-class PhysVector : public QGraphicsLineItem {
+class PhysVector : public QGraphicsLineItem, public PhysBaseItem {
 private:
     typedef enum { DI_VECTORLINE = -1, DI_VECTORHEAD = 0, DI_VECTORTAIL = 1 } MouseClickLocale;
     typedef enum { AXIS_HORIZ = 0, AXIS_VERT } AxisOrientation;
@@ -24,7 +26,7 @@ private:
     };
 public:
 
-    enum { Type = UserType + 1 };
+    enum { Type = PhysBaseItem::VectorType };
     int type() const Q_DECL_OVERRIDE { return Type; }
 
     PhysVector(CartesianGraph *, const QPointF &, const QString &, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);

@@ -19,15 +19,20 @@ public:
     void itemMoved();
 
     CartesianGraph *cartesianGraph() const { return m_pCartGraph; }
-
+signals:
+    void createPhysObj(QGraphicsItem *);
 public slots:
     void zoomIn() { scaleView(qreal(1.2)); }
     void zoomOut() { scaleView(1 / qreal(1.2)); }
 private slots:
     void createVector();
     void createParticle();
+    PhysVector *createVector(const QPointF &);
+    PhysParticle *createParticle(const QPointF &);
+
     void particleProps();
     void vectorProps();
+    void newPhysObj(QGraphicsItem *);
     void onCustomContextMenuRequested(const QPoint& pos);
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
@@ -43,6 +48,8 @@ protected:
 
 private:
     void createActions();
+    void createBaseObjects();
+    void createCartesianGraph();
     void showPhysObjContextMenu(QGraphicsItem *, const QPoint &);
     void showWidgetContextMenu(const QPoint &);
 private:

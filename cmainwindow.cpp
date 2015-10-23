@@ -13,11 +13,12 @@
 #include "physobjectnavigator.h"
 #include "physmodulenavigator.h"
 #include "physoutputnavigator.h"
+#include "physobjectpropsnavigator.h"
 
 using namespace std;
 
-CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::CMainWindow) {
-    ui -> setupUi(this);
+CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::CMainWindow) {
+    m_pUI -> setupUi(this);
 
     m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
     m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
@@ -27,23 +28,15 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::CMai
     createToolBars();
     createStatusBar();
     createDockWindows();
+    createViewSlotCxns();
 }
 
 CMainWindow::~CMainWindow() {
-    delete ui;
+    delete m_pUI;
 }
-
 
 void CMainWindow::contextMenuEvent(QContextMenuEvent *event) {
     QMenu menu(this);
-}
-
-void CMainWindow::addPhysObjectToUI() {
-    m_infoLabel -> setText(tr("Invoked code to add object to PhysObjNavigator"));
-}
-
-void CMainWindow::updateUI() {
-    connect(searchWidget, SIGNAL(addPhysObjectToUI()), this, SLOT(addPhysObjectToUI()));
 }
 
 void CMainWindow::newFile() {
@@ -154,7 +147,7 @@ void CMainWindow::aboutQt() {
 }
 
 void CMainWindow::cartesianGraphOptions() {
-    CartesianGraphSettingsDlg dlg(graph_widget -> cartesianGraph() -> DataObj());
+    CartesianGraphSettingsDlg dlg(m_pGraphWidget -> cartesianGraph() -> DataObj());
     if (dlg.exec() == QDialog::Accepted) {
 
         // get values stored
@@ -240,28 +233,33 @@ void CMainWindow::createDockWindows() {
 
     // Create the right side
     QDockWidget *pDock = new QDockWidget(tr("Physics Objects"), this);
-    PhysObjectNavigator *pPhysObjNavigator = new PhysObjectNavigator(pDock);
-    pDock -> setWidget(pPhysObjNavigator);
+    m_pPhysObjNavigator = new PhysObjectNavigator(pDock);
+    pDock -> setWidget(m_pPhysObjNavigator);
     pDock -> setAllowedAreas(Qt::RightDockWidgetArea);
     addDockWidget(Qt::RightDockWidgetArea, pDock);
 
     pDock = new QDockWidget(tr("Physics Properties"), this);
-    PhysObjectNavigator *pBlerg = new PhysObjectNavigator(pDock);
-    pDock -> setWidget(pBlerg);
+    m_pPhysObjPropsNavigator = new PhysObjectPropsNavigator(pDock);
+    pDock -> setWidget(m_pPhysObjPropsNavigator);
     pDock -> setAllowedAreas(Qt::RightDockWidgetArea);
     addDockWidget(Qt::RightDockWidgetArea, pDock);
 
     // Create the left side
     pDock = new QDockWidget(tr("Physics Modules"), this);
-    PhysModuleNavigator *pPhysModNavigator = new PhysModuleNavigator(pDock);
-    pDock -> setWidget(pPhysModNavigator);
+    m_pPhysModNavigator = new PhysModuleNavigator(pDock);
+    pDock -> setWidget(m_pPhysModNavigator);
     pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
     addDockWidget(Qt::LeftDockWidgetArea, pDock);
 
     // Create the Bottom area
     pDock = new QDockWidget(tr("Output"), this);
-    PhysOutputNavigator *pPhysOutputNavigator = new PhysOutputNavigator(pDock);
-    pDock -> setWidget(pPhysOutputNavigator);
+    m_pPhysOutputNavigator = new PhysOutputNavigator(pDock);
+    pDock -> setWidget(m_pPhysOutputNavigator);
     pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
     addDockWidget(Qt::BottomDockWidgetArea, pDock);
+}
+
+void CMainWindow::createViewSlotCxns() {
+    connect(m_pGraphWidget, SIGNAL(newPhysObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(newPhysObj(QGraphicsItem *)));
+    connect(m_pactAbout, SIGNAL(triggered()), this, SLOT(about()));
 }

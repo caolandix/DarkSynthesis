@@ -8,7 +8,7 @@ class GraphWidget;
 class PhysVector;
 class PhysParticle;
 
-class CartesianGraph : public QGraphicsItem {
+class CartesianGraph : public QGraphicsItem, public PhysBaseItem {
 public:
 
     // basic ctor
@@ -51,9 +51,6 @@ public:
     void YAxisLabel(const QString &data) { m_y_label -> setPlainText(data); }
     void Name(const QString &obj) { m_Name = obj; }
 
-    // Member methods
-    void createVector(const QPointF startPos);
-    void createParticle(const QPointF startPos);
 
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;

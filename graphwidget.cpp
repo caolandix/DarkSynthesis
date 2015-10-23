@@ -49,9 +49,6 @@ void GraphWidget::createBaseObjects() {
     createCartesianGraph();
 }
 
-void GraphWidget::addPhysObjectToUI(QGraphicsItem *pItem) {
-
-}
 
 void GraphWidget::createCartesianGraph() {
 
@@ -61,16 +58,54 @@ void GraphWidget::createCartesianGraph() {
     m_pScene -> addItem(m_pCartGraph);
 
     // Insert into the PhysObjectNavigator, highlight it there, and then populate the
-    emit addPhysObjectToUI(m_pCartGraph);
+    emit newPhysObj(m_pCartGraph);
+}
+
+
+PhysVector *GraphWidget::createVector(const QPointF &startPos) {
+    QGraphicsScene *pScene = scene();
+    QString Label;
+    QTextStream(&Label) << "Vector-" << m_pCartGraph -> DataObj() -> Vectors().length();
+    PhysVector *pObj = new PhysVector(m_pCartGraph, startPos, Label);
+
+    m_pCartGraph -> DataObj() -> AddVector(pObj);
+    pScene -> addItem(pObj);
+    return pObj;
+}
+
+PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
+    QGraphicsScene *pScene = scene();
+    QString Label;
+    QTextStream(&Label) << "Particle-" << m_pCartGraph -> DataObj() -> Vectors().length();
+    PhysParticle *pObj = new PhysParticle(m_pCartGraph, startPos, Label);
+
+    m_pCartGraph -> DataObj() -> AddParticle(pObj);
+    pScene -> addItem(pObj);
+    return pObj;
+}
+
+void GraphWidget::createPhysObj(QGraphicsItem *pItem) {
+    switch (pItem ->type()) {
+    case PhysBaseItem::CartesianGraphType:
+        break;
+    case PhysBaseItem::ParticleType:
+        break;
+    case PhysBaseItem::VectorType:
+        break;
+    }
+}
+
+void GraphWidget::newPhysObj(QGraphicsItem *pItem) {
+    qDebug("GraphWidget::newPhysObj signal");
 }
 
 void GraphWidget::createVector() {
     m_pInfoLabel -> setText(tr("Created a new Vector"));
-    m_pCartGraph -> createVector(m_currClickPos);
+    createVector(m_currClickPos);
 }
 void GraphWidget::createParticle() {
     m_pInfoLabel -> setText(tr("Created a new Particle"));
-    m_pCartGraph -> createParticle(m_currClickPos);
+    createParticle(m_currClickPos);
 }
 
 void GraphWidget::particleProps() {

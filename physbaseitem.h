@@ -6,7 +6,7 @@ public:
     PhysBaseItem() {}
     ~PhysBaseItem() {}
 
-    enum { VectorType = 65536 + 1, ParticleType };
+    enum { VectorType = 65536 + 1, ParticleType, CartesianGraphType } ;
 };
 
 #endif // PHYSBASEITEM_H

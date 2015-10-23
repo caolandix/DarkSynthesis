@@ -2,6 +2,7 @@
 #define PHYSOBJECTNAVIGATOR_H
 
 #include <QTreeView>
+#include <QGraphicsItem>
 
 
 class PhysObjectNavigator : public QTreeView {
@@ -10,6 +11,7 @@ public:
 
 signals:
 public slots:
+    void newPhysObj(QGraphicsItem *);
 private:
 
 };

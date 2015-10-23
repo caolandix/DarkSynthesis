@@ -9,6 +9,12 @@
 
 #include "graphwidget.h"
 
+class PhysObjectNavigator;
+class PhysObjectPropsNavigator;
+class PhysModuleNavigator;
+class PhysOutputNavigator;
+
+
 namespace Ui {
     class CMainWindow;
 }
@@ -19,14 +25,18 @@ public:
     explicit CMainWindow(QWidget *parent = 0);
     ~CMainWindow();
 
-    void setGraphWidget(GraphWidget *pObj) { graph_widget = pObj; }
+    void setGraphWidget(GraphWidget *pObj) { m_pGraphWidget = pObj; }
+
+    PhysObjectNavigator *getPhysObjNavigator() const { return m_pPhysObjNavigator; }
+    PhysObjectPropsNavigator *getPhysObjPropsNavigator() const { return m_pPhysObjPropsNavigator; }
+    PhysModuleNavigator *getPhysModuleNavigator() const { return m_pPhysModNavigator; }
+    PhysOutputNavigator *getPhysOutputNavigator() const { return m_pPhysOutputNavigator; }
 private:
-    Ui::CMainWindow *ui;
-    GraphWidget *graph_widget;
+    Ui::CMainWindow *m_pUI;
+    GraphWidget *m_pGraphWidget;
 protected:
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 private slots:
-    void addPhysObjectToUI(QGraphicsItem *);
     void cartesianGraphOptions();
     void newFile();
     void open();
@@ -43,8 +53,10 @@ private:
     void createToolBars();
     void createStatusBar();
     void createDockWindows();
+    void createViewSlotCxns();
     void ReadXMLFile(QXmlStreamReader &, QFile &);
     void WriteXMLFile(QXmlStreamWriter &, QFile &);
+    void connectWindowsWithPhysObjects();
 
     // properties
     QMenu *m_pFileMenu;
@@ -60,6 +72,12 @@ private:
     QAction *m_pactAbout;
     QAction *m_pactAboutQt;
     QLabel *m_infoLabel;
+
+    PhysObjectNavigator *m_pPhysObjNavigator;
+    PhysObjectPropsNavigator *m_pPhysObjPropsNavigator;
+    PhysModuleNavigator *m_pPhysModNavigator;
+    PhysOutputNavigator *m_pPhysOutputNavigator;
+
 };
 
 #endif // CMAINWINDOW_H
