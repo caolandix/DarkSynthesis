@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTabWidget>
+#include <QGraphicsItem>
 
 class PhysOutputNavigator : public QTabWidget {
 public:
@@ -11,6 +12,7 @@ public:
 signals:
 
 public slots:
+    void onCreateObj(QGraphicsItem *);
 };
 
 #endif // PHYSOUTPUTNAVIGATOR_H

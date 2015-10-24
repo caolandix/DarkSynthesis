@@ -9,9 +9,8 @@ class PhysObjectNavigator : public QTreeView {
 public:
     PhysObjectNavigator(QWidget * = NULL);
 
-signals:
 public slots:
-    void newPhysObj(QGraphicsItem *);
+    void onCreateObj(QGraphicsItem *);
 private:
 
 };

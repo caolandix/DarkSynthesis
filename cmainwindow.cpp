@@ -28,7 +28,7 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     createToolBars();
     createStatusBar();
     createDockWindows();
-    createViewSlotCxns();
+    createSignalSlots();
 }
 
 CMainWindow::~CMainWindow() {
@@ -259,7 +259,8 @@ void CMainWindow::createDockWindows() {
     addDockWidget(Qt::BottomDockWidgetArea, pDock);
 }
 
-void CMainWindow::createViewSlotCxns() {
-    connect(m_pGraphWidget, SIGNAL(newPhysObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(newPhysObj(QGraphicsItem *)));
-    connect(m_pactAbout, SIGNAL(triggered()), this, SLOT(about()));
+void CMainWindow::createSignalSlots() {
+    QMetaObject::Connection val = connect(m_pGraphWidget, SIGNAL(createObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onCreateObj(QGraphicsItem *)));
+    int i = 1;
+    i++;
 }

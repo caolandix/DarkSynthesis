@@ -7,7 +7,8 @@
 PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeView(pParent) {
 }
 
-void PhysObjectNavigator::newPhysObj(QGraphicsItem *pObj) {
+void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
+    qDebug("PhysObjectNavigator::onCreateObj called");
     if (pObj) {
         switch (pObj -> type()) {
             case PhysBaseItem::VectorType:

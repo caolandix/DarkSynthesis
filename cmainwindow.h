@@ -53,7 +53,7 @@ private:
     void createToolBars();
     void createStatusBar();
     void createDockWindows();
-    void createViewSlotCxns();
+    void createSignalSlots();
     void ReadXMLFile(QXmlStreamReader &, QFile &);
     void WriteXMLFile(QXmlStreamWriter &, QFile &);
     void connectWindowsWithPhysObjects();

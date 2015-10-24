@@ -49,18 +49,14 @@ void GraphWidget::createBaseObjects() {
     createCartesianGraph();
 }
 
-
 void GraphWidget::createCartesianGraph() {
 
     // Create the object
     m_pCartGraph = new CartesianGraph(this);
     m_pCartGraph -> setPos(0, 0);
     m_pScene -> addItem(m_pCartGraph);
-
-    // Insert into the PhysObjectNavigator, highlight it there, and then populate the
-    emit newPhysObj(m_pCartGraph);
+    emit createObj(m_pCartGraph);
 }
-
 
 PhysVector *GraphWidget::createVector(const QPointF &startPos) {
     QGraphicsScene *pScene = scene();
@@ -84,6 +80,7 @@ PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
     return pObj;
 }
 
+/*
 void GraphWidget::createPhysObj(QGraphicsItem *pItem) {
     switch (pItem ->type()) {
     case PhysBaseItem::CartesianGraphType:
@@ -94,10 +91,7 @@ void GraphWidget::createPhysObj(QGraphicsItem *pItem) {
         break;
     }
 }
-
-void GraphWidget::newPhysObj(QGraphicsItem *pItem) {
-    qDebug("GraphWidget::newPhysObj signal");
-}
+*/
 
 void GraphWidget::createVector() {
     m_pInfoLabel -> setText(tr("Created a new Vector"));
