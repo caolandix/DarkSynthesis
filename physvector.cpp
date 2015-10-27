@@ -13,6 +13,11 @@
 PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
     QGraphicsLineItem(pParent), PhysBaseItem() {
 
+    m_pLabel = NULL;
+    m_pStartParticle = NULL;
+    m_pEndParticle = NULL;
+    m_pParent = NULL;
+
     m_Color = Qt::black;
     m_magnitude = 50.0;
     m_arrowSize = 20;

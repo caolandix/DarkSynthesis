@@ -17,6 +17,7 @@ class GraphWidget : public QGraphicsView {
 public:
     GraphWidget(QWidget *parent = NULL);
     void itemMoved();
+    void createCartesianGraph();
 
     CartesianGraph *cartesianGraph() const { return m_pCartGraph; }
 signals:
@@ -50,7 +51,6 @@ protected:
 private:
     void createActions();
     void createBaseObjects();
-    void createCartesianGraph();
     void showPhysObjContextMenu(QGraphicsItem *, const QPoint &);
     void showWidgetContextMenu(const QPoint &);
 private:

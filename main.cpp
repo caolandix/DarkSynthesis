@@ -13,6 +13,8 @@ int main(int argc, char *argv[]) {
 
     mainWindow.setGraphWidget(pgraph);
     mainWindow.setCentralWidget(pgraph);
+    mainWindow.createSignalSlots();
+    mainWindow.createBaseObjects();
     mainWindow.show();
     return app.exec();
 }

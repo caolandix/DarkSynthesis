@@ -17,9 +17,10 @@
 
 using namespace std;
 
-CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::CMainWindow) {
+CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
+    init();
+    // setGraphWidget(m_pGraphWidget);
     m_pUI -> setupUi(this);
-
     m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
     m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     m_infoLabel -> setAlignment(Qt::AlignCenter);
@@ -28,11 +29,32 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     createToolBars();
     createStatusBar();
     createDockWindows();
-    createSignalSlots();
 }
 
 CMainWindow::~CMainWindow() {
     delete m_pUI;
+}
+
+void CMainWindow::init() {
+    m_pUI = new Ui::CMainWindow();
+    // m_pGraphWidget = new GraphWidget();
+    m_pFileMenu = NULL;
+    m_pEditMenu = NULL;
+    m_pHelpMenu = NULL;
+    m_pSettingsMenu = NULL;
+    m_pcartGraphSettings = NULL;
+    m_pactNew = NULL;
+    m_pactOpen = NULL;
+    m_pactSave = NULL;
+    m_pactPrint = NULL;
+    m_pactExit = NULL;
+    m_pactAbout = NULL;
+    m_pactAboutQt = NULL;
+    m_infoLabel = NULL;
+    m_pPhysObjNavigator = NULL;
+    m_pPhysObjPropsNavigator = NULL;
+    m_pPhysModNavigator = NULL;
+    m_pPhysOutputNavigator = NULL;
 }
 
 void CMainWindow::contextMenuEvent(QContextMenuEvent *event) {
@@ -261,6 +283,10 @@ void CMainWindow::createDockWindows() {
 
 void CMainWindow::createSignalSlots() {
     QMetaObject::Connection val = connect(m_pGraphWidget, SIGNAL(createObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onCreateObj(QGraphicsItem *)));
-    int i = 1;
-    i++;
+}
+
+void CMainWindow::createBaseObjects() {
+    if (m_pGraphWidget) {
+        m_pGraphWidget -> createCartesianGraph();
+    }
 }

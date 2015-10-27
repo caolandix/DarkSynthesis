@@ -4,6 +4,7 @@
 #include <QTableView>
 
 class PhysObjectPropsNavigator : public QTableView {
+    Q_OBJECT
 public:
     PhysObjectPropsNavigator(QWidget * = NULL);
 

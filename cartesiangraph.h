@@ -11,16 +11,9 @@ class PhysParticle;
 class CartesianGraph : public QGraphicsItem, public PhysBaseItem {
 public:
 
-    // basic ctor
-    CartesianGraph(const QString & = "Cartesian Plane");
-
-    // copy ctor
-    CartesianGraph(const CartesianGraph &);
-
-    // other ctors
+    // ctors/dtor
     CartesianGraph(GraphWidget *, const QString & = "Cartesian Plane", CartesianGraphDataObj * = NULL);
-
-    // dtor
+    CartesianGraph(const CartesianGraph &);
     ~CartesianGraph();
 
     // operator overloads
@@ -50,6 +43,9 @@ public:
     void XAxisLabel(const QString &data) { m_x_label -> setPlainText(data); }
     void YAxisLabel(const QString &data) { m_y_label -> setPlainText(data); }
     void Name(const QString &obj) { m_Name = obj; }
+
+    enum { Type = PhysBaseItem::CartesianGraphType };
+    int type() const Q_DECL_OVERRIDE { return Type; }
 
 
 protected:

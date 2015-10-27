@@ -10,6 +10,7 @@
 
 PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, const QString &Label) :
     QGraphicsPolygonItem(pParent), PhysBaseItem() {
+
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);

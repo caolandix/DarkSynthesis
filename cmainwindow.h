@@ -31,6 +31,10 @@ public:
     PhysObjectPropsNavigator *getPhysObjPropsNavigator() const { return m_pPhysObjPropsNavigator; }
     PhysModuleNavigator *getPhysModuleNavigator() const { return m_pPhysModNavigator; }
     PhysOutputNavigator *getPhysOutputNavigator() const { return m_pPhysOutputNavigator; }
+    GraphWidget *getGraphWidget() const { return m_pGraphWidget; }
+
+    void createSignalSlots();
+    void createBaseObjects();
 private:
     Ui::CMainWindow *m_pUI;
     GraphWidget *m_pGraphWidget;
@@ -48,12 +52,12 @@ private slots:
 private:
 
     // methods
+    void init();
     void createActions();
     void createMenus();
     void createToolBars();
     void createStatusBar();
     void createDockWindows();
-    void createSignalSlots();
     void ReadXMLFile(QXmlStreamReader &, QFile &);
     void WriteXMLFile(QXmlStreamWriter &, QFile &);
     void connectWindowsWithPhysObjects();

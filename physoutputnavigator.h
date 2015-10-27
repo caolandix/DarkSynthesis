@@ -6,6 +6,7 @@
 #include <QGraphicsItem>
 
 class PhysOutputNavigator : public QTabWidget {
+    Q_OBJECT
 public:
     PhysOutputNavigator(QWidget * = NULL);
 

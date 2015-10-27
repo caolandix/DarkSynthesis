@@ -5,6 +5,7 @@
 #include <QTreeView>
 
 class PhysModuleNavigator : public QTreeView {
+    Q_OBJECT
 public:
     PhysModuleNavigator(QWidget * = NULL);
 

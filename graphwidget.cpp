@@ -15,6 +15,15 @@
 #include "physbaseitem.h"
 
 GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
+
+    m_pCartGraph = NULL;
+    m_actNewVector = NULL;
+    m_actNewParticle = NULL;
+    m_actVectorProps = NULL;
+    m_actParticleProps = NULL;
+    m_pInfoLabel = NULL;
+    m_pScene = NULL;
+
     setContextMenuPolicy(Qt::CustomContextMenu);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(FullViewportUpdate);
@@ -46,7 +55,7 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
 }
 
 void GraphWidget::createBaseObjects() {
-    createCartesianGraph();
+    // createCartesianGraph();
 }
 
 void GraphWidget::createCartesianGraph() {

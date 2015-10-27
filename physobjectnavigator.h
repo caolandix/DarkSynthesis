@@ -6,6 +6,7 @@
 
 
 class PhysObjectNavigator : public QTreeView {
+    Q_OBJECT
 public:
     PhysObjectNavigator(QWidget * = NULL);
 

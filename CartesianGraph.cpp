@@ -7,6 +7,7 @@
 #include <QStyleOption>
 #include <QTextStream>
 
+#include "physbaseitem.h"
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
 #include "cartesiangraphdataobj.h"
@@ -14,19 +15,18 @@
 #include "physvector.h"
 #include "graphwidget.h"
 
-CartesianGraph::CartesianGraph(const QString &Name) {
+CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj) {
+    m_pGraphWidget = pGraphWidget;
+    m_pDataObj = NULL;
+
     setCacheMode(DeviceCoordinateCache);
-    m_Name = Name;
     setZValue(-1);
     m_borderWidth = 5;
+    m_Name = Name;
     m_x_label = new CartesianLabel(QString("x: t(s)"), this);
     m_y_label = new CartesianLabel(QString("y: v(m/s)"), this);
     m_x_label -> setPos(QPointF(200 + m_borderWidth, 0));
-    m_y_label -> setPos(QPointF(0, -200 - m_borderWidth));
-}
-
-CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj) : CartesianGraph(Name) {
-    m_pGraphWidget = pGraphWidget;
+    m_y_label -> setPos(QPointF(0, 200 + m_borderWidth));
 
     if (pDataObj)
         m_pDataObj = pDataObj;
