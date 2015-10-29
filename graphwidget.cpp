@@ -45,17 +45,10 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     m_pScene -> setSceneRect(-200, -200, 400, 400);
     setScene(m_pScene);
 
-    // Setup Objects
-    createBaseObjects();
-
     // Create the actions used in the context menus
     createActions();
 
     m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
-}
-
-void GraphWidget::createBaseObjects() {
-    // createCartesianGraph();
 }
 
 void GraphWidget::createCartesianGraph() {
@@ -75,32 +68,21 @@ PhysVector *GraphWidget::createVector(const QPointF &startPos) {
 
     m_pCartGraph -> DataObj() -> AddVector(pObj);
     pScene -> addItem(pObj);
+    emit createObj(pObj);
     return pObj;
 }
 
 PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
     QGraphicsScene *pScene = scene();
     QString Label;
-    QTextStream(&Label) << "Particle-" << m_pCartGraph -> DataObj() -> Vectors().length();
+    QTextStream(&Label) << "Particle-" << m_pCartGraph -> DataObj() -> Particles().length();
     PhysParticle *pObj = new PhysParticle(m_pCartGraph, startPos, Label);
 
     m_pCartGraph -> DataObj() -> AddParticle(pObj);
     pScene -> addItem(pObj);
+    emit createObj(pObj);
     return pObj;
 }
-
-/*
-void GraphWidget::createPhysObj(QGraphicsItem *pItem) {
-    switch (pItem ->type()) {
-    case PhysBaseItem::CartesianGraphType:
-        break;
-    case PhysBaseItem::ParticleType:
-        break;
-    case PhysBaseItem::VectorType:
-        break;
-    }
-}
-*/
 
 void GraphWidget::createVector() {
     m_pInfoLabel -> setText(tr("Created a new Vector"));

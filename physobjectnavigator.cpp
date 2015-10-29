@@ -38,9 +38,39 @@ void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
 }
 
 void PhysObjectNavigator::insertVector(PhysVector *pObj) {
+    QTreeWidgetItem *pParentItem = topLevelItem(0);
+
+    if (pParentItem) {
+        QTreeWidgetItem *pChildItem = NULL;
+        if (!pObj ->StartParticle() && !pObj -> EndParticle())
+            pChildItem = new QTreeWidgetItem(pParentItem);
+        else {
+            QString strParticle = (pObj -> StartParticle()) ?
+                        pObj -> StartParticle() -> Name() :
+                        pObj ->EndParticle() ->Name();
+            QList<QTreeWidgetItem *> itemList = findItems(strParticle, Qt::MatchExactly);
+            if (itemList.count() > 0) {
+                pParentItem = itemList.at(0);
+                pChildItem = new QTreeWidgetItem(pParentItem);
+            }
+        }
+        QString str = pObj -> Name();
+        pChildItem -> setText(0, pObj -> Name());
+        pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
+        pParentItem ->addChild(pChildItem);
+    }
 }
 
 void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
+    QTreeWidgetItem *pTopLevelItem = topLevelItem(0);
+
+    if (pTopLevelItem) {
+        QTreeWidgetItem *pChildItem = new QTreeWidgetItem(pTopLevelItem);
+        QString str = pObj -> Name();
+        pChildItem -> setText(0, pObj -> Name());
+        pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
+        pTopLevelItem ->addChild(pChildItem);
+    }
 }
 
 void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {

@@ -50,7 +50,6 @@ protected:
 
 private:
     void createActions();
-    void createBaseObjects();
     void showPhysObjContextMenu(QGraphicsItem *, const QPoint &);
     void showWidgetContextMenu(const QPoint &);
 private:

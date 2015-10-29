@@ -3,12 +3,12 @@
 
 #include <QGraphicsItem>
 #include <QList>
+#include <QGraphicsSceneMouseEvent>
 
 #include "physbaseitem.h"
+#include "cartesianlabel.h"
 
 class GraphWidget;
-class QGraphicsSceneMouseEvent;
-class CartesianLabel;
 class PhysVector;
 
 class PhysParticle : public QGraphicsPolygonItem, public PhysBaseItem {
@@ -26,6 +26,7 @@ public:
 
     bool addVector(PhysVector *);
     bool removeVector(PhysVector *);
+    QString Name() const { return m_pLabel -> toPlainText(); }
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;

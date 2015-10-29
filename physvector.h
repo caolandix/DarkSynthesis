@@ -8,8 +8,8 @@
 #include <QContextMenuEvent>
 
 #include "physbaseitem.h"
+#include "cartesianlabel.h"
 
-class CartesianLabel;
 class PhysParticle;
 class CartesianGraph;
 
@@ -45,6 +45,7 @@ public:
     QPolygonF ArrowHead() const { return m_arrowHead; }
     PhysParticle *StartParticle() const { return m_pStartParticle; }
     PhysParticle *EndParticle() const { return m_pEndParticle; }
+    QString Name() const { return m_pLabel -> toPlainText(); }
 protected:
 
     // Qt overrides
