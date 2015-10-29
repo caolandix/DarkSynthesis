@@ -9,7 +9,9 @@ class PhysObjectPropsNavigator : public QTableWidget {
 public:
     PhysObjectPropsNavigator(QWidget * = NULL);
 
-    void buildPropertyTable(QGraphicsItem *);
+    void buildCartesianGraphTable(QGraphicsItem *);
+    void buildVectorTable(QGraphicsItem *);
+    void buildParticleTable(QGraphicsItem *);
 signals:
 
 public slots:

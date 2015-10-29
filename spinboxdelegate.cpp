@@ -2,7 +2,7 @@
 
 #include "spinboxdelegate.h"
 
-SpinBoxDelegate::SpinBoxDelegate(QObject *parent) : QStyledItemDelegate(parent) {
+SpinBoxDelegate::SpinBoxDelegate(QObject *pParent) : QStyledItemDelegate(pParent) {
 }
 
 QWidget *SpinBoxDelegate::createEditor(QWidget *pParent, const QStyleOptionViewItem &styleOption, const QModelIndex &modelIndex) const {
