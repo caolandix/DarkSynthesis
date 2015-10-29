@@ -42,12 +42,12 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
 
     if (pParentItem) {
         QTreeWidgetItem *pChildItem = NULL;
-        if (!pObj ->StartParticle() && !pObj -> EndParticle())
+        if (!pObj -> StartParticle() && !pObj -> EndParticle())
             pChildItem = new QTreeWidgetItem(pParentItem);
         else {
             QString strParticle = (pObj -> StartParticle()) ?
                         pObj -> StartParticle() -> Name() :
-                        pObj ->EndParticle() ->Name();
+                        pObj -> EndParticle() -> Name();
             QList<QTreeWidgetItem *> itemList = findItems(strParticle, Qt::MatchExactly);
             if (itemList.count() > 0) {
                 pParentItem = itemList.at(0);
@@ -57,7 +57,9 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
         QString str = pObj -> Name();
         pChildItem -> setText(0, pObj -> Name());
         pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
-        pParentItem ->addChild(pChildItem);
+        pParentItem -> addChild(pChildItem);
+        setCurrentItem(pChildItem);
+        emit changeObj(pObj);
     }
 }
 
@@ -69,24 +71,21 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
         QString str = pObj -> Name();
         pChildItem -> setText(0, pObj -> Name());
         pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
-        pTopLevelItem ->addChild(pChildItem);
+        pTopLevelItem -> addChild(pChildItem);
+        setCurrentItem(pChildItem);
+        emit changeObj(pObj);
     }
 }
 
 void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {
     QTreeWidgetItem *pTopLevelItem = topLevelItem(0);
 
-    if (!pTopLevelItem) {
-        pTopLevelItem = new QTreeWidgetItem(this);
-        pTopLevelItem -> setText(0, pObj -> Name());
-        pTopLevelItem -> setText(1, pObj -> TypeName(pObj -> type()));
-        addTopLevelItem(pTopLevelItem);
-        setCurrentItem(pTopLevelItem);
-        emit changeObj(pObj);
-    }
-
-    // Top level item exists so delete the current and rebuild
-    else {
+    if (pTopLevelItem)
         removeItemWidget(pTopLevelItem, 0);
-    }
+    pTopLevelItem = new QTreeWidgetItem(this);
+    pTopLevelItem -> setText(0, pObj -> Name());
+    pTopLevelItem -> setText(1, pObj -> TypeName(pObj -> type()));
+    addTopLevelItem(pTopLevelItem);
+    setCurrentItem(pTopLevelItem);
+    emit changeObj(pObj);
 }

@@ -22,8 +22,10 @@ void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj) {
 
     switch (pObj -> type()) {
     case PhysBaseItem::VectorType:
+        buildVectorTable(pObj);
         break;
     case PhysBaseItem::ParticleType:
+        buildParticleTable(pObj);
         break;
     case PhysBaseItem::CartesianGraphType:
         buildCartesianGraphTable(pObj);
