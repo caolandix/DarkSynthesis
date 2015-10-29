@@ -7,7 +7,7 @@ PhysBaseItem::PhysBaseItem() {
     m_Types[CartesianGraphType] = QString("CartesianGraphType");
 }
 
-QString &PhysBaseItem::TypeName(int Type) const {
+QString PhysBaseItem::TypeName(int Type) const {
     map<int, QString>::const_iterator iter = m_Types.find(Type);
     QString value;
     if (iter == m_Types.end()) {

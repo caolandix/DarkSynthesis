@@ -12,7 +12,7 @@ public:
 
     enum { VectorType = 65536 + 1, ParticleType, CartesianGraphType } ;
 
-    QString &TypeName(int Type) const;
+    QString TypeName(int Type) const;
 
 private:
     map<int, QString> m_Types;

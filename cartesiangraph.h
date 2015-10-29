@@ -2,7 +2,7 @@
 #define CARTESIANGRAPH_H
 
 #include <QGraphicsItem>
-#include "CartesianGraphDataObj.h"
+#include "cartesiangraphdataobj.h"
 
 class GraphWidget;
 class PhysVector;
