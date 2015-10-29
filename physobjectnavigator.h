@@ -3,6 +3,8 @@
 
 #include <QTreeWidget>
 #include <QGraphicsItem>
+#include <QTreeWidgetItem>
+#include <QItemSelection>
 
 #include "cartesiangraph.h"
 #include "physvector.h"
@@ -21,6 +23,7 @@ signals:
     void changeObj(QGraphicsItem *);
 public slots:
     void onCreateObj(QGraphicsItem *);
+    void onSelectionChanged(QItemSelection &, QItemSelection &);
 private:
 
 };

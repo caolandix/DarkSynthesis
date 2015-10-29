@@ -1,6 +1,8 @@
 #include <QTreeWidget>
 #include <QGraphicsItem>
+#include <QItemSelection>
 #include <QTreeWidgetItem>
+
 
 #include "physbaseitem.h"
 #include "physobjectnavigator.h"
@@ -13,9 +15,11 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent
     setRootIsDecorated(true);
 
     QStringList colLabels;
-    colLabels.push_back("PhysObject Name");
-    colLabels.push_back("PhysObject Type");
+    colLabels << "PhysObject Name" << "PhysObject Type";
     setHeaderLabels(colLabels);
+
+    // Hook up signal/slots
+    connect(this, SIGNAL(selectionChanged(QItemSelection &, QItemSelection &)), this, SLOT(onSelectionChanged(QItemSelection &, QItemSelection &)));
 }
 
 void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
@@ -35,6 +39,10 @@ void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
                 break;
        }
     }
+}
+
+void PhysObjectNavigator::onSelectionChanged(QItemSelection &current, QItemSelection &previous) {
+    qDebug("PhysObjectNavigator::onCurrentItemChanged");
 }
 
 void PhysObjectNavigator::insertVector(PhysVector *pObj) {
