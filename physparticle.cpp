@@ -17,6 +17,9 @@ PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, cons
     setZValue(-1);
     setPos(0, 0);
     m_pLabel = new CartesianLabel(Label, this);
+
+    // Physical attributes
+    m_mass = 1.0; // 1kg is default
 }
 
 PhysParticle::~PhysParticle() {

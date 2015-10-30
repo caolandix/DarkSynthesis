@@ -5,6 +5,7 @@
 #include <QGraphicsItem>
 #include <QDoubleSpinBox>
 #include <QComboBox>
+#include <QLineEdit>
 
 #include "cartesiangraph.h"
 #include "physparticle.h"
@@ -34,6 +35,7 @@ private:
     QDoubleSpinBox *m_pVectorMag;
     QDoubleSpinBox *m_pVectorThetaAngle;
     QComboBox *m_pVectorThetaAxisOrient;
+    QLineEdit *m_pVectorAssocParticle;
 
     // Particles
 

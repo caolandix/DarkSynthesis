@@ -9,6 +9,7 @@
 #include "physparticle.h"
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
+#include "physscience.h"
 
 PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
     QGraphicsLineItem(pParent), PhysBaseItem() {
@@ -165,7 +166,7 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     realAngle = ::acos(aLine.dx() / aLine.length());
     if (m_Theta.axisOrientation == AXIS_HORIZ) {
         QPointF currCoordP1(aLine.p1().x(), aLine.p1().y());
-        Theta = (::atan(aLine.dy() / aLine.dx()) * (180 / PI));
+        Theta = (::atan(aLine.dy() / aLine.dx()) * (180 / PhysConsts::PI));
         qDebug("Line (x, y): (%f, %f)", currCoordP1.x(), currCoordP1.y());
 
         // If we're in the Quad I (+x, +y) or Quad II (-x, +y)
@@ -182,9 +183,9 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     }
     m_Theta.degrees = Theta;
 
-    drawAngle = (aLine.dy() >= 0) ? (PI * 2) - realAngle : (PI * 2) + realAngle;
-    arrowP1 = aLine.p1() + QPointF(sin(drawAngle + PI / 3) * m_arrowSize, cos(drawAngle + PI / 3) * m_arrowSize);
-    arrowP2 = aLine.p1() + QPointF(sin(drawAngle + PI - PI / 3) * m_arrowSize, cos(drawAngle + PI - PI / 3) * m_arrowSize);
+    drawAngle = (aLine.dy() >= 0) ? (PhysConsts::PI * 2) - realAngle : (PhysConsts::PI * 2) + realAngle;
+    arrowP1 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI / 3) * m_arrowSize);
+    arrowP2 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
     m_arrowHead.clear();
     m_arrowHead << line().p1() << arrowP1 << arrowP2;
     pPainter -> drawLine(aLine);

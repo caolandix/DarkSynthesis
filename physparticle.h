@@ -18,7 +18,7 @@ public:
     ~PhysParticle();
 
     enum { Type = ParticleType };
-    int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
@@ -27,6 +27,8 @@ public:
     bool addVector(PhysVector *);
     bool removeVector(PhysVector *);
     QString Name() const { return m_pLabel -> toPlainText(); }
+
+    double mass() const { return m_mass; }
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
@@ -34,6 +36,9 @@ protected:
 private:
     CartesianLabel *m_pLabel;
     QList<PhysVector *> m_Vectors;
+
+    // Physical attributes
+    double m_mass;
 };
 
 #endif // PHYSPARTICLE_H

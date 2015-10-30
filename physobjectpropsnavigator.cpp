@@ -38,13 +38,13 @@ void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj) {
 
     switch (pObj -> type()) {
     case PhysBaseItem::VectorType:
-        buildVectorTable(pObj);
+        buildVectorTable(static_cast<PhysVector *>(pObj));
         break;
     case PhysBaseItem::ParticleType:
-        buildParticleTable(pObj);
+        buildParticleTable(static_cast<PhysParticle *>(pObj));
         break;
     case PhysBaseItem::CartesianGraphType:
-        buildCartesianGraphTable(pObj);
+        buildCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
         break;
     default:
         qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
@@ -60,9 +60,15 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj) {
     if (rowCount()) {
         for (int i = 0; i < rowCount(); i++)
             removeRow(i);
-        delete m_pXaxisTickInc; m_pXaxisTickInc = NULL;
-        delete m_pXaxisExtent; m_pXaxisExtent = NULL;
-        delete m_pYaxisExtent; m_pYaxisExtent = NULL;
+        if (m_pXaxisTickInc) {
+            delete m_pXaxisTickInc; m_pXaxisTickInc = NULL;
+        }
+        if (m_pXaxisExtent) {
+            delete m_pXaxisExtent; m_pXaxisExtent = NULL;
+        }
+        if (m_pYaxisExtent) {
+            delete m_pYaxisExtent; m_pYaxisExtent = NULL;
+        }
     }
 
     // X/Y axis labels (edit controls)
@@ -103,10 +109,18 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj) {
     if (rowCount()) {
         for (int i = 0; i < rowCount(); i++)
             removeRow(i);
-        delete m_pVectorMag; m_pVectorMag = NULL;
-        delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL;
-        delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL;
-        delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL;
+        if (m_pVectorMag) {
+            delete m_pVectorMag; m_pVectorMag = NULL;
+        }
+        if (m_pVectorThetaAngle) {
+            delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL;
+        }
+        if (m_pVectorThetaAxisOrient) {
+            delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL;
+        }
+        if (m_pVectorAssocParticle) {
+            delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL;
+        }
 
     }
 
@@ -139,6 +153,14 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj) {
         for (int i = 0; i < rowCount(); i++)
             removeRow(i);
     }
+
+    // Column 0
+    QTableWidgetItem *pItem = new QTableWidgetItem("Name");
+    insertRow(0);
+    setItem(0, 0, pItem);
+    pItem = new QTableWidgetItem("Mass");
+    insertRow(1);
+    setItem(1, 0, pItem);
 }
 
 

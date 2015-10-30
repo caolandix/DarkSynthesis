@@ -13,7 +13,7 @@
 class PhysParticle;
 class CartesianGraph;
 
-static const double PI = 3.141592653589;
+// static const double PI = 3.141592653589;
 
 class PhysVector : public QGraphicsLineItem, public PhysBaseItem {
 private:
