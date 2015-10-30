@@ -19,7 +19,7 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent
     setHeaderLabels(colLabels);
 
     // Hook up signal/slots
-    connect(this, SIGNAL(selectionChanged(QItemSelection &, QItemSelection &)), this, SLOT(onSelectionChanged(QItemSelection &, QItemSelection &)));
+    // connect(this, SIGNAL(currentChanged(QModelIndex &, QModelIndex &)), this, SLOT(onCurrentChanged(QModelIndex &, QModelIndex &)));
 }
 
 void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
@@ -41,8 +41,8 @@ void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
     }
 }
 
-void PhysObjectNavigator::onSelectionChanged(QItemSelection &current, QItemSelection &previous) {
-    qDebug("PhysObjectNavigator::onCurrentItemChanged");
+void PhysObjectNavigator::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+    qDebug("PhysObjectNavigator::currentChanged");
 }
 
 void PhysObjectNavigator::insertVector(PhysVector *pObj) {

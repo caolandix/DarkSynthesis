@@ -14,6 +14,8 @@ class PhysObjectNavigator : public QTreeWidget {
     Q_OBJECT
 public:
     PhysObjectNavigator(QWidget * = NULL);
+protected:
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
 private:
     void insertCartesianGraph(CartesianGraph *);
     void insertVector(PhysVector *);
@@ -23,7 +25,6 @@ signals:
     void changeObj(QGraphicsItem *);
 public slots:
     void onCreateObj(QGraphicsItem *);
-    void onSelectionChanged(QItemSelection &, QItemSelection &);
 private:
 
 };
