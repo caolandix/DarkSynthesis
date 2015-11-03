@@ -13,6 +13,9 @@
 PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent) {
     setColumnCount(2);
     setRootIsDecorated(true);
+    setAcceptDrops(true);
+    setDragEnabled(true);
+    setDragDropMode(QAbstractItemView::InternalMove);
 
     QStringList colLabels;
     colLabels << "PhysObject Name" << "PhysObject Type";
@@ -45,6 +48,15 @@ void PhysObjectNavigator::currentChanged(const QModelIndex &current, const QMode
     qDebug("PhysObjectNavigator::currentChanged");
 }
 
+void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
+    QModelIndex dropIndex = indexAt(pEvent -> pos());
+
+    // The object must have a parent to be dropped
+    if (dropIndex.parent().isValid()) {
+        QTreeWidget::dropEvent(pEvent);
+    }
+}
+
 void PhysObjectNavigator::insertVector(PhysVector *pObj) {
     QTreeWidgetItem *pParentItem = topLevelItem(0);
 
@@ -62,12 +74,15 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
                 pChildItem = new QTreeWidgetItem(pParentItem);
             }
         }
-        QString str = pObj -> Name();
-        pChildItem -> setText(0, pObj -> Name());
-        pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
-        pParentItem -> addChild(pChildItem);
-        setCurrentItem(pChildItem);
-        emit changeObj(pObj);
+        if (pChildItem) {
+            QString str = pObj -> Name();
+            pChildItem ->setFlags(Qt::ItemIsDragEnabled);
+            pChildItem -> setText(0, pObj -> Name());
+            pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
+            pParentItem -> addChild(pChildItem);
+            setCurrentItem(pChildItem);
+            emit changeObj(pObj);
+        }
     }
 }
 
@@ -77,6 +92,7 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
     if (pTopLevelItem) {
         QTreeWidgetItem *pChildItem = new QTreeWidgetItem(pTopLevelItem);
         QString str = pObj -> Name();
+        pChildItem ->setFlags(Qt::ItemIsDragEnabled);
         pChildItem -> setText(0, pObj -> Name());
         pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
         pTopLevelItem -> addChild(pChildItem);

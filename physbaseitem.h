@@ -17,5 +17,4 @@ public:
 private:
     map<int, QString> m_Types;
 };
-
 #endif // PHYSBASEITEM_H

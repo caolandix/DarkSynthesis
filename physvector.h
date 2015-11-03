@@ -13,8 +13,6 @@
 class PhysParticle;
 class CartesianGraph;
 
-// static const double PI = 3.141592653589;
-
 class PhysVector : public QGraphicsLineItem, public PhysBaseItem {
 private:
     typedef enum { DI_VECTORLINE = -1, DI_VECTORHEAD = 0, DI_VECTORTAIL = 1 } MouseClickLocale;

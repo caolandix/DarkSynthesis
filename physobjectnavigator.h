@@ -5,6 +5,7 @@
 #include <QGraphicsItem>
 #include <QTreeWidgetItem>
 #include <QItemSelection>
+#include <QDropEvent>
 
 #include "cartesiangraph.h"
 #include "physvector.h"
@@ -15,7 +16,8 @@ class PhysObjectNavigator : public QTreeWidget {
 public:
     PhysObjectNavigator(QWidget * = NULL);
 protected:
-    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    virtual void currentChanged(const QModelIndex &, const QModelIndex &);
+    void dropEvent(QDropEvent *);
 private:
     void insertCartesianGraph(CartesianGraph *);
     void insertVector(PhysVector *);
