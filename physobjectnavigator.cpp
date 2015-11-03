@@ -79,6 +79,11 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
             pChildItem ->setFlags(Qt::ItemIsDragEnabled);
             pChildItem -> setText(0, pObj -> Name());
             pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
+
+            QVariant var;
+            var.setValue(pObj);
+            pChildItem -> setData(0, Qt::UserRole, var);
+
             pParentItem -> addChild(pChildItem);
             setCurrentItem(pChildItem);
             emit changeObj(pObj);
@@ -109,6 +114,7 @@ void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {
     pTopLevelItem = new QTreeWidgetItem(this);
     pTopLevelItem -> setText(0, pObj -> Name());
     pTopLevelItem -> setText(1, pObj -> TypeName(pObj -> type()));
+
     addTopLevelItem(pTopLevelItem);
     setCurrentItem(pTopLevelItem);
     emit changeObj(pObj);

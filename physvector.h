@@ -69,4 +69,5 @@ private:
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
 };
+Q_DECLARE_METATYPE(PhysVector *)
 #endif // PHYSVECTOR_H
