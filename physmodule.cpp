@@ -12,4 +12,8 @@ PhysModule::~PhysModule() {
 }
 
 PhysModule& PhysModule::operator=(const PhysModule &obj) {
+    if (&obj != this) {
+        m_Name = obj.Name();
+    }
+    return *this;
 }
