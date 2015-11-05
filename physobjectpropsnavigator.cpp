@@ -20,13 +20,15 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableWid
     m_pVectorThetaAngle = NULL;
     m_pVectorThetaAxisOrient = NULL;
     m_pVectorAssocParticle = NULL;
+    m_pCartesianGraphName = NULL;
+    m_pVectorName = NULL;
+    m_pParticleName = NULL;
 
     setShowGrid(true);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
     setColumnCount(2);
     verticalHeader() -> setVisible(false);
-
 
     QStringList tableHeader;
     tableHeader << "Property" << "Value";
@@ -50,6 +52,35 @@ void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj) {
         qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
         break;
     }
+}
+
+void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
+    qDebug("PhysObjectPropsNavigator::onChangeObj()");
+
+    switch (pObj -> type()) {
+    case PhysBaseItem::VectorType:
+        updateVectorTable(static_cast<PhysVector *>(pObj));
+        break;
+    case PhysBaseItem::ParticleType:
+        updateParticleTable(static_cast<PhysParticle *>(pObj));
+        break;
+    case PhysBaseItem::CartesianGraphType:
+        updateCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
+        break;
+    default:
+        qDebug("PhysObjectPropsNavigator::onUpdateObj(): not a valid Object type");
+        break;
+    }
+}
+
+void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
+
+}
+void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
+
+}
+void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
+
 }
 
 void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj) {

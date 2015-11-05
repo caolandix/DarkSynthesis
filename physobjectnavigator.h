@@ -25,6 +25,7 @@ private:
 
 signals:
     void changeObj(QGraphicsItem *);
+    void updateObj(QGraphicsItem *);
 public slots:
     void onCreateObj(QGraphicsItem *);
 private:

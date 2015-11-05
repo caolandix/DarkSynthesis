@@ -19,25 +19,32 @@ public:
     void buildCartesianGraphTable(CartesianGraph *);
     void buildVectorTable(PhysVector *);
     void buildParticleTable(PhysParticle *);
+
+    void updateVectorTable(PhysVector *);
+    void updateParticleTable(PhysParticle *);
+    void updateCartesianGraphTable(CartesianGraph *);
 signals:
 
 public slots:
     void onChangeObj(QGraphicsItem *);
-
+    void onUpdateObj(QGraphicsItem *);
 private:
 
-    // CartesianPlane
+    // CartesianGraph
     QDoubleSpinBox *m_pXaxisTickInc;
     QDoubleSpinBox *m_pXaxisExtent;
     QDoubleSpinBox *m_pYaxisExtent;
+    QLineEdit *m_pCartesianGraphName;
 
-    // Vectors
+    // PhysVectors
     QDoubleSpinBox *m_pVectorMag;
     QDoubleSpinBox *m_pVectorThetaAngle;
     QComboBox *m_pVectorThetaAxisOrient;
     QLineEdit *m_pVectorAssocParticle;
+    QLineEdit *m_pVectorName;
 
-    // Particles
+    // PhysParticles
+    QLineEdit *m_pParticleName;
 
 };
 

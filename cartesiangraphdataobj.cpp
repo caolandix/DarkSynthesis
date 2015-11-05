@@ -2,6 +2,11 @@
 
 CartesianGraphDataObj::CartesianGraphDataObj() {
     m_tickStep = 10.0;
+    m_origin = QPointF(0.0, 0.0);
+    m_x_min = -100;
+    m_x_max = 100;
+    m_y_min = -100;
+    m_y_max = 100;
 }
 
 CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj &Obj) {

@@ -20,9 +20,6 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent
     QStringList colLabels;
     colLabels << "PhysObject Name" << "PhysObject Type";
     setHeaderLabels(colLabels);
-
-    // Hook up signal/slots
-    // connect(this, SIGNAL(currentChanged(QModelIndex &, QModelIndex &)), this, SLOT(onCurrentChanged(QModelIndex &, QModelIndex &)));
 }
 
 void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
@@ -46,6 +43,18 @@ void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
 
 void PhysObjectNavigator::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
     qDebug("PhysObjectNavigator::currentChanged");
+    QVariant varCurrent = current.data(Qt::UserRole);
+    QVariant varPrev = previous.data(Qt::UserRole);
+
+    QGraphicsItem *pCurrObj = qvariant_cast<QGraphicsItem *>(varCurrent);
+    QGraphicsItem *pPrevObj = qvariant_cast<QGraphicsItem *>(varPrev);
+
+    if (pPrevObj ->type() != pCurrObj ->type()) {
+        emit changeObj(pCurrObj);
+    }
+    else {
+        emit updateObj(pCurrObj);
+    }
 }
 
 void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {

@@ -17,10 +17,7 @@
 
 CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj) {
     m_pGraphWidget = pGraphWidget;
-    m_pDataObj = NULL;
-
-    setCacheMode(DeviceCoordinateCache);
-    setZValue(-1);
+    m_pDataObj = (pDataObj) ? pDataObj : new CartesianGraphDataObj();
     m_borderWidth = 5;
     m_Name = Name;
     m_x_label = new CartesianLabel(QString("x: t(s)"), this);
@@ -28,10 +25,23 @@ CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, C
     m_x_label -> setPos(QPointF(200 + m_borderWidth, 0));
     m_y_label -> setPos(QPointF(0, 200 + m_borderWidth));
 
-    if (pDataObj)
-        m_pDataObj = pDataObj;
-    else
-        m_pDataObj = new CartesianGraphDataObj();
+    setCacheMode(DeviceCoordinateCache);
+    setZValue(-1);
+}
+
+CartesianGraph::CartesianGraph(const CartesianGraph &obj) {
+    if (&obj != this) {
+        if (m_pDataObj)
+            delete m_pDataObj;
+        m_pDataObj = new CartesianGraphDataObj(obj.DataObj());
+        m_pGraphWidget = obj.graphWidget();
+        delete m_x_label;
+        delete m_y_label;
+        m_x_label = new CartesianLabel(obj.XAxisLabel(), this);
+        m_y_label = new CartesianLabel(obj.YAxisLabel(), this);
+        m_x_label ->setPos(QPointF(200 + m_borderWidth, 0));
+        m_y_label ->setPos(QPointF(0, -200 - m_borderWidth));
+    }
 }
 
 CartesianGraph::~CartesianGraph() {
@@ -75,7 +85,6 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter -> setPen(Qt::NoPen);
     painter -> setBrush(Qt::darkGray);
     painter -> setPen(QPen(Qt::black, 2));
-
     painter -> drawLine(QLine(0, 200, 0, -200));
     painter -> drawLine(QLine(-200, 0, 200, 0));
 }
