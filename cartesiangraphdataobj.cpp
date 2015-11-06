@@ -9,6 +9,15 @@ CartesianGraphDataObj::CartesianGraphDataObj() {
     m_y_max = 100;
 }
 
+CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj *pObj) {
+    m_origin = pObj -> origin();
+    m_tickStep = pObj -> tickStep();
+    m_x_min = pObj -> xMin();
+    m_x_max = pObj -> xMax();
+    m_y_min = pObj -> yMin();
+    m_y_max = pObj -> yMax();
+}
+
 CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj &Obj) {
     m_origin = Obj.m_origin;
     m_tickStep = Obj.m_tickStep;

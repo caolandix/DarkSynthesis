@@ -37,161 +37,180 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableWid
 
 void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj) {
     qDebug("PhysObjectPropsNavigator::onChangeObj()");
-
-    switch (pObj -> type()) {
-    case PhysBaseItem::VectorType:
-        buildVectorTable(static_cast<PhysVector *>(pObj));
-        break;
-    case PhysBaseItem::ParticleType:
-        buildParticleTable(static_cast<PhysParticle *>(pObj));
-        break;
-    case PhysBaseItem::CartesianGraphType:
-        buildCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
-        break;
-    default:
-        qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
-        break;
+    if (pObj) {
+        switch (pObj -> type()) {
+        case PhysBaseItem::VectorType:
+            buildVectorTable(static_cast<PhysVector *>(pObj));
+            break;
+        case PhysBaseItem::ParticleType:
+            buildParticleTable(static_cast<PhysParticle *>(pObj));
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            buildCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
+            break;
+        default:
+            qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
+            break;
+        }
     }
 }
 
 void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
     qDebug("PhysObjectPropsNavigator::onChangeObj()");
-
-    switch (pObj -> type()) {
-    case PhysBaseItem::VectorType:
-        updateVectorTable(static_cast<PhysVector *>(pObj));
-        break;
-    case PhysBaseItem::ParticleType:
-        updateParticleTable(static_cast<PhysParticle *>(pObj));
-        break;
-    case PhysBaseItem::CartesianGraphType:
-        updateCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
-        break;
-    default:
-        qDebug("PhysObjectPropsNavigator::onUpdateObj(): not a valid Object type");
-        break;
+    if (pObj) {
+        switch (pObj -> type()) {
+        case PhysBaseItem::VectorType:
+            updateVectorTable(static_cast<PhysVector *>(pObj));
+            break;
+        case PhysBaseItem::ParticleType:
+            updateParticleTable(static_cast<PhysParticle *>(pObj));
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            updateCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
+            break;
+        default:
+            qDebug("PhysObjectPropsNavigator::onUpdateObj(): not a valid Object type");
+            break;
+        }
     }
 }
 
 void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
+    if (pObj) {
+
+    }
 
 }
 void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
+    if (pObj) {
+
+    }
 
 }
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
+    if (pObj) {
+
+    }
 
 }
 
 void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj) {
     qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
 
+    if (pObj) {
 
-    // If there are rows in the table, clear them out and rebuild
-    if (rowCount()) {
-        for (int i = 0; i < rowCount(); i++)
-            removeRow(i);
-        if (m_pXaxisTickInc) {
-            delete m_pXaxisTickInc; m_pXaxisTickInc = NULL;
+        // If there are rows in the table, clear them out and rebuild
+        if (rowCount()) {
+            for (int i = 0; i < rowCount(); i++)
+                removeRow(i);
+            if (m_pXaxisTickInc) {
+                delete m_pXaxisTickInc; m_pXaxisTickInc = NULL;
+            }
+            if (m_pXaxisExtent) {
+                delete m_pXaxisExtent; m_pXaxisExtent = NULL;
+            }
+            if (m_pYaxisExtent) {
+                delete m_pYaxisExtent; m_pYaxisExtent = NULL;
+            }
         }
-        if (m_pXaxisExtent) {
-            delete m_pXaxisExtent; m_pXaxisExtent = NULL;
-        }
-        if (m_pYaxisExtent) {
-            delete m_pYaxisExtent; m_pYaxisExtent = NULL;
-        }
+
+        // X/Y axis labels (edit controls)
+        // Axis tick increment (SpinboxDelegate)
+        // Axis extents (SpinboxDelegates)
+
+        // Column 0 - Property Names
+        QTableWidgetItem *pItem = new QTableWidgetItem("X-Axis Label");
+        insertRow(0);
+        setItem(0, 0, pItem);
+
+        pItem = new QTableWidgetItem("Y-Axis Label");
+        insertRow(1);
+        setItem(1, 0, pItem);
+
+        pItem = new QTableWidgetItem("Axis Tick Increment");
+        insertRow(2);
+        setItem(2, 0, pItem);
+
+        pItem = new QTableWidgetItem("X-Axis Extent");
+        insertRow(3);
+        setItem(3, 0, pItem);
+
+        pItem = new QTableWidgetItem("Y-Axis Extent");
+        insertRow(4);
+        setItem(4, 0, pItem);
+
+        // Column 1 specialties
+        setCellWidget(2, 1, m_pXaxisTickInc = new QDoubleSpinBox(this));
+        setCellWidget(3, 1, m_pXaxisExtent = new QDoubleSpinBox(this));
+        setCellWidget(4, 1, m_pYaxisExtent = new QDoubleSpinBox(this));\
     }
-
-    // X/Y axis labels (edit controls)
-    // Axis tick increment (SpinboxDelegate)
-    // Axis extents (SpinboxDelegates)
-
-    // Column 0 - Property Names
-    QTableWidgetItem *pItem = new QTableWidgetItem("X-Axis Label");
-    insertRow(0);
-    setItem(0, 0, pItem);
-
-    pItem = new QTableWidgetItem("Y-Axis Label");
-    insertRow(1);
-    setItem(1, 0, pItem);
-
-    pItem = new QTableWidgetItem("Axis Tick Increment");
-    insertRow(2);
-    setItem(2, 0, pItem);
-
-    pItem = new QTableWidgetItem("X-Axis Extent");
-    insertRow(3);
-    setItem(3, 0, pItem);
-
-    pItem = new QTableWidgetItem("Y-Axis Extent");
-    insertRow(4);
-    setItem(4, 0, pItem);
-
-    // Column 1 specialties
-    setCellWidget(2, 1, m_pXaxisTickInc = new QDoubleSpinBox(this));
-    setCellWidget(3, 1, m_pXaxisExtent = new QDoubleSpinBox(this));
-    setCellWidget(4, 1, m_pYaxisExtent = new QDoubleSpinBox(this));
 }
 
 void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj) {
     qDebug("PhysObjectPropsNavigator::buildVectorTable()");
 
-    // If there are rows in the table, clear them out and rebuild
-    if (rowCount()) {
-        for (int i = 0; i < rowCount(); i++)
-            removeRow(i);
-        if (m_pVectorMag) {
-            delete m_pVectorMag; m_pVectorMag = NULL;
+    if (pObj) {
+
+        // If there are rows in the table, clear them out and rebuild
+        if (rowCount()) {
+            for (int i = 0; i < rowCount(); i++)
+                removeRow(i);
+            if (m_pVectorMag) {
+                delete m_pVectorMag; m_pVectorMag = NULL;
+            }
+            if (m_pVectorThetaAngle) {
+                delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL;
+            }
+            if (m_pVectorThetaAxisOrient) {
+                delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL;
+            }
+            if (m_pVectorAssocParticle) {
+                delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL;
+            }
+
         }
-        if (m_pVectorThetaAngle) {
-            delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL;
-        }
-        if (m_pVectorThetaAxisOrient) {
-            delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL;
-        }
-        if (m_pVectorAssocParticle) {
-            delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL;
-        }
+
+        // Column 0
+        QTableWidgetItem *pItem = new QTableWidgetItem("Magnitude");
+        insertRow(0);
+        setItem(0, 0, pItem);
+        pItem = new QTableWidgetItem("Theta - Angle");
+        insertRow(1);
+        setItem(1, 0, pItem);
+        pItem = new QTableWidgetItem("Theta - Axis Orientation");
+        insertRow(2);
+        setItem(2, 0, pItem);
+        pItem = new QTableWidgetItem("Associated Particle");
+        insertRow(2);
+        setItem(2, 0, pItem);
+
+        // Column 1
+        setCellWidget(0, 1, m_pVectorMag = new QDoubleSpinBox(this));
+        setCellWidget(1, 1, m_pVectorMag = new QDoubleSpinBox(this));
+        setCellWidget(2, 1, m_pVectorThetaAngle = new QDoubleSpinBox(this));
+        setCellWidget(3, 1, m_pVectorAssocParticle = new QLineEdit(this));
 
     }
-
-    // Column 0
-    QTableWidgetItem *pItem = new QTableWidgetItem("Magnitude");
-    insertRow(0);
-    setItem(0, 0, pItem);
-    pItem = new QTableWidgetItem("Theta - Angle");
-    insertRow(1);
-    setItem(1, 0, pItem);
-    pItem = new QTableWidgetItem("Theta - Axis Orientation");
-    insertRow(2);
-    setItem(2, 0, pItem);
-    pItem = new QTableWidgetItem("Associated Particle");
-    insertRow(2);
-    setItem(2, 0, pItem);
-
-    // Column 1
-    setCellWidget(0, 1, m_pVectorMag = new QDoubleSpinBox(this));
-    setCellWidget(1, 1, m_pVectorMag = new QDoubleSpinBox(this));
-    setCellWidget(2, 1, m_pVectorThetaAngle = new QDoubleSpinBox(this));
-    setCellWidget(3, 1, m_pVectorAssocParticle = new QLineEdit(this));
 }
 
 void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj) {
     qDebug("PhysObjectPropsNavigator::buildParticleTable()");
 
-    // If there are rows in the table, clear them out and rebuild
-    if (rowCount()) {
-        for (int i = 0; i < rowCount(); i++)
-            removeRow(i);
-    }
+    if (pObj) {
+        // If there are rows in the table, clear them out and rebuild
+        if (rowCount()) {
+            for (int i = 0; i < rowCount(); i++)
+                removeRow(i);
+        }
 
-    // Column 0
-    QTableWidgetItem *pItem = new QTableWidgetItem("Name");
-    insertRow(0);
-    setItem(0, 0, pItem);
-    pItem = new QTableWidgetItem("Mass");
-    insertRow(1);
-    setItem(1, 0, pItem);
+        // Column 0
+        QTableWidgetItem *pItem = new QTableWidgetItem("Name");
+        insertRow(0);
+        setItem(0, 0, pItem);
+        pItem = new QTableWidgetItem("Mass");
+        insertRow(1);
+        setItem(1, 0, pItem);
+    }
 }
 
 

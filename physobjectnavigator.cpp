@@ -49,11 +49,15 @@ void PhysObjectNavigator::currentChanged(const QModelIndex &current, const QMode
     QGraphicsItem *pCurrObj = qvariant_cast<QGraphicsItem *>(varCurrent);
     QGraphicsItem *pPrevObj = qvariant_cast<QGraphicsItem *>(varPrev);
 
-    if (pPrevObj ->type() != pCurrObj ->type()) {
+    // Changing the currentitem
+    // If we're brand new then there is no pPrevObj
+    if (!pPrevObj)
         emit changeObj(pCurrObj);
-    }
     else {
-        emit updateObj(pCurrObj);
+        if (pPrevObj ->type() != pCurrObj ->type())
+            emit changeObj(pCurrObj);
+        else
+            emit updateObj(pCurrObj);
     }
 }
 
