@@ -30,7 +30,11 @@ SOURCES += main.cpp \
     physmodulenavigator.cpp \
     physoutputnavigator.cpp \
     physobjectpropsnavigator.cpp \
-    physmodule.cpp
+    physmodule.cpp \
+    physeqsolver.cpp \
+    physprintview.cpp \
+    physeqsolverdelegate.cpp \
+    physeqsolveritem.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -50,7 +54,11 @@ HEADERS  += cmainwindow.h \
     physoutputnavigator.h \
     physobjectpropsnavigator.h \
     physmodule.h \
-    physscience.h
+    physscience.h \
+    physeqsolver.h \
+    physprintview.h \
+    physeqsolverdelegate.h \
+    physeqsolveritem.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui
