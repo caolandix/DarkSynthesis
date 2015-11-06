@@ -14,6 +14,7 @@
 #include "physmodulenavigator.h"
 #include "physoutputnavigator.h"
 #include "physobjectpropsnavigator.h"
+#include "physeqsolver.h"
 
 using namespace std;
 
@@ -279,6 +280,13 @@ void CMainWindow::createDockWindows() {
     pDock -> setWidget(m_pPhysOutputNavigator);
     pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
     addDockWidget(Qt::BottomDockWidgetArea, pDock);
+
+    pDock = new QDockWidget(tr("Output"), this);
+    m_pPhysEqSolver = new PhysEqSolver(10, 6, pDock);
+    pDock -> setWidget(m_pPhysEqSolver);
+    pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
+    addDockWidget(Qt::BottomDockWidgetArea, pDock);
+
 }
 
 void CMainWindow::createSignalSlots() {

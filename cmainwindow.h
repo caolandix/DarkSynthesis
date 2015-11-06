@@ -13,7 +13,7 @@ class PhysObjectNavigator;
 class PhysObjectPropsNavigator;
 class PhysModuleNavigator;
 class PhysOutputNavigator;
-
+class PhysEqSolver;
 
 namespace Ui {
     class CMainWindow;
@@ -81,7 +81,7 @@ private:
     PhysObjectPropsNavigator *m_pPhysObjPropsNavigator;
     PhysModuleNavigator *m_pPhysModNavigator;
     PhysOutputNavigator *m_pPhysOutputNavigator;
-
+    PhysEqSolver *m_pPhysEqSolver;
 };
 
 #endif // CMAINWINDOW_H
