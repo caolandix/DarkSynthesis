@@ -1,8 +1,9 @@
 #include <QtWidgets>
+
 #include "physeqsolverdelegate.h"
 
 
-PhysEqSolverDelegate::PhysEqSolverDelegate(QObject *parent) : QItemDelegate(parent) {}
+PhysEqSolverDelegate::PhysEqSolverDelegate(QObject *pParent) : QItemDelegate(pParent) {}
 
 QWidget *PhysEqSolverDelegate::createEditor(QWidget *pParent, const QStyleOptionViewItem &viewItem, const QModelIndex &index) const {
     if (index.column() == 1) {

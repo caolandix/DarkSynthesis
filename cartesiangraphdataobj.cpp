@@ -9,6 +9,15 @@ CartesianGraphDataObj::CartesianGraphDataObj() {
     m_y_max = 100;
 }
 
+CartesianGraphDataObj::CartesianGraphDataObj(QPointF origin, double tickStep, double x_min, double x_max, double y_min, double y_max) {
+    m_origin = origin;
+    m_tickStep = tickStep;
+    m_x_min = x_min;
+    m_x_max = x_max;
+    m_y_min = y_min;
+    m_y_max = y_max;
+}
+
 CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj *pObj) {
     m_origin = pObj -> origin();
     m_tickStep = pObj -> tickStep();
@@ -35,21 +44,6 @@ CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj &Obj) {
     QList<PhysVector *> m_Vectors;
     QList<PhysParticle *> m_Particles;
     */
-}
-
-CartesianGraphDataObj::CartesianGraphDataObj(
-        QPointF origin,
-        double tickStep,
-        double x_min,
-        double x_max,
-        double y_min,
-        double y_max) {
-    m_origin = origin;
-    m_tickStep = tickStep;
-    m_x_min = x_min;
-    m_x_max = x_max;
-    m_y_min = y_min;
-    m_y_max = y_max;
 }
 
 CartesianGraphDataObj::~CartesianGraphDataObj() {
