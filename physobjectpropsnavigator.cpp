@@ -94,7 +94,7 @@ void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
 
 }
 
-void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj) {
+void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QGraphicsItem *pPrev) {
     qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
 
     if (pObj) {
@@ -146,7 +146,7 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj) {
     }
 }
 
-void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj) {
+void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem *pPrev) {
     qDebug("PhysObjectPropsNavigator::buildVectorTable()");
 
     if (pObj) {
