@@ -89,7 +89,7 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
         }
         if (pChildItem) {
             QString str = pObj -> Name();
-            pChildItem ->setFlags(Qt::ItemIsDragEnabled);
+            pChildItem -> setFlags(Qt::ItemIsDragEnabled);
             pChildItem -> setText(0, pObj -> Name());
             pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
 
@@ -113,6 +113,11 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
         pChildItem ->setFlags(Qt::ItemIsDragEnabled);
         pChildItem -> setText(0, pObj -> Name());
         pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
+
+        QVariant var;
+        var.setValue(pObj);
+        pChildItem -> setData(0, Qt::UserRole, var);
+
         pTopLevelItem -> addChild(pChildItem);
         setCurrentItem(pChildItem);
         emit changeObj(pObj);
@@ -125,8 +130,13 @@ void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {
     if (pTopLevelItem)
         removeItemWidget(pTopLevelItem, 0);
     pTopLevelItem = new QTreeWidgetItem(this);
+    pTopLevelItem -> setFlags(Qt::ItemIsDragEnabled);
     pTopLevelItem -> setText(0, pObj -> Name());
     pTopLevelItem -> setText(1, pObj -> TypeName(pObj -> type()));
+
+    QVariant var;
+    var.setValue(pObj);
+    pTopLevelItem -> setData(0, Qt::UserRole, var);
 
     addTopLevelItem(pTopLevelItem);
     setCurrentItem(pTopLevelItem);

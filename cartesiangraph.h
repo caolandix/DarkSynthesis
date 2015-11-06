@@ -59,5 +59,5 @@ private:
     int m_borderWidth;
     QString m_Name;
 };
-
+Q_DECLARE_METATYPE(CartesianGraph *)
 #endif // CARTESIANGRAPH_H

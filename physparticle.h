@@ -40,5 +40,5 @@ private:
     // Physical attributes
     double m_mass;
 };
-
+Q_DECLARE_METATYPE(PhysParticle *)
 #endif // PHYSPARTICLE_H
