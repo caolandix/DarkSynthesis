@@ -34,7 +34,9 @@ SOURCES += main.cpp \
     physeqsolver.cpp \
     physprintview.cpp \
     physeqsolverdelegate.cpp \
-    physeqsolveritem.cpp
+    physeqsolveritem.cpp \
+    physvectordataobj.cpp \
+    physparticledataobj.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -58,7 +60,9 @@ HEADERS  += cmainwindow.h \
     physeqsolver.h \
     physprintview.h \
     physeqsolverdelegate.h \
-    physeqsolveritem.h
+    physeqsolveritem.h \
+    physvectordataobj.h \
+    physparticledataobj.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui
