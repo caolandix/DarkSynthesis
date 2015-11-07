@@ -24,7 +24,7 @@ private:
     void insertParticle(PhysParticle *);
 
 signals:
-    void changeObj(QGraphicsItem *);
+    void changeObj(QGraphicsItem *, QGraphicsItem *);
     void updateObj(QGraphicsItem *);
 public slots:
     void onCreateObj(QGraphicsItem *);

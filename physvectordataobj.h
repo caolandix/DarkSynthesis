@@ -6,10 +6,6 @@ class PhysVectorDataObj
 {
 public:
     PhysVectorDataObj();
-
-signals:
-
-public slots:
 };
 
 #endif // PHYSVECTORDATAOBJ_H

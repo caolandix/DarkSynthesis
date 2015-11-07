@@ -52,10 +52,10 @@ void PhysObjectNavigator::currentChanged(const QModelIndex &current, const QMode
     // Changing the currentitem
     // If we're brand new then there is no pPrevObj
     if (!pPrevObj)
-        emit changeObj(pCurrObj);
+        emit changeObj(pCurrObj, pPrevObj);
     else {
         if (pPrevObj ->type() != pCurrObj ->type())
-            emit changeObj(pCurrObj);
+            emit changeObj(pCurrObj, pPrevObj);
         else
             emit updateObj(pCurrObj);
     }
@@ -89,7 +89,6 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
         }
         if (pChildItem) {
             QString str = pObj -> Name();
-            pChildItem -> setFlags(Qt::ItemIsDragEnabled);
             pChildItem -> setText(0, pObj -> Name());
             pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
 
@@ -98,8 +97,13 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
             pChildItem -> setData(0, Qt::UserRole, var);
 
             pParentItem -> addChild(pChildItem);
+            QTreeWidgetItem *pCurrentItem = currentItem();
+
+            var = pCurrentItem -> data(0, Qt::UserRole);
+            QGraphicsItem *pCurrItemDataObj = var.value<QGraphicsItem *>();
+
             setCurrentItem(pChildItem);
-            emit changeObj(pObj);
+            emit changeObj(pObj, pCurrItemDataObj);
         }
     }
 }
@@ -110,7 +114,6 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
     if (pTopLevelItem) {
         QTreeWidgetItem *pChildItem = new QTreeWidgetItem(pTopLevelItem);
         QString str = pObj -> Name();
-        pChildItem ->setFlags(Qt::ItemIsDragEnabled);
         pChildItem -> setText(0, pObj -> Name());
         pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
 
@@ -120,7 +123,12 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
 
         pTopLevelItem -> addChild(pChildItem);
         setCurrentItem(pChildItem);
-        emit changeObj(pObj);
+
+        QTreeWidgetItem *pCurrentItem = currentItem();
+        var = pCurrentItem -> data(1, Qt::UserRole);
+        QGraphicsItem *pCurrItemDataObj = var.value<QGraphicsItem *>();
+        setCurrentItem(pChildItem);
+        emit changeObj(pObj, pCurrItemDataObj);
     }
 }
 
@@ -130,15 +138,15 @@ void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {
     if (pTopLevelItem)
         removeItemWidget(pTopLevelItem, 0);
     pTopLevelItem = new QTreeWidgetItem(this);
-    pTopLevelItem -> setFlags(Qt::ItemIsDragEnabled);
     pTopLevelItem -> setText(0, pObj -> Name());
     pTopLevelItem -> setText(1, pObj -> TypeName(pObj -> type()));
 
     QVariant var;
     var.setValue(pObj);
     pTopLevelItem -> setData(0, Qt::UserRole, var);
-
     addTopLevelItem(pTopLevelItem);
-    setCurrentItem(pTopLevelItem);
-    emit changeObj(pObj);
+
+    // There are currently only one of these being created.
+    // When 2D kinematics are supported we'll add in support for two.
+    emit changeObj(pObj, NULL);
 }

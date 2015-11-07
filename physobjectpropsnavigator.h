@@ -16,17 +16,19 @@ class PhysObjectPropsNavigator : public QTableWidget {
 public:
     PhysObjectPropsNavigator(QWidget * = NULL);
 
-    void buildCartesianGraphTable(CartesianGraph *);
-    void buildVectorTable(PhysVector *);
-    void buildParticleTable(PhysParticle *);
+    void buildCartesianGraphTable(CartesianGraph *, QGraphicsItem *);
+    void buildVectorTable(PhysVector *, QGraphicsItem *);
+    void buildParticleTable(PhysParticle *, QGraphicsItem *);
 
     void updateVectorTable(PhysVector *);
     void updateParticleTable(PhysParticle *);
     void updateCartesianGraphTable(CartesianGraph *);
+
+    void destroyPrevTable(QGraphicsItem *);
 signals:
 
 public slots:
-    void onChangeObj(QGraphicsItem *);
+    void onChangeObj(QGraphicsItem *, QGraphicsItem *);
     void onUpdateObj(QGraphicsItem *);
 private:
 

@@ -1,7 +1,6 @@
 #include "physvectordataobj.h"
 
-PhysVectorDataObj::PhysVectorDataObj()
-{
+PhysVectorDataObj::PhysVectorDataObj() {
 
 }
 

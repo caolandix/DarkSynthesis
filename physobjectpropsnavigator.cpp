@@ -35,18 +35,18 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableWid
     setHorizontalHeaderLabels(tableHeader);
 }
 
-void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj) {
+void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *pPrevious) {
     qDebug("PhysObjectPropsNavigator::onChangeObj()");
     if (pObj) {
         switch (pObj -> type()) {
         case PhysBaseItem::VectorType:
-            buildVectorTable(static_cast<PhysVector *>(pObj));
+            buildVectorTable(static_cast<PhysVector *>(pObj), pPrevious);
             break;
         case PhysBaseItem::ParticleType:
-            buildParticleTable(static_cast<PhysParticle *>(pObj));
+            buildParticleTable(static_cast<PhysParticle *>(pObj), pPrevious);
             break;
         case PhysBaseItem::CartesianGraphType:
-            buildCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
+            buildCartesianGraphTable(static_cast<CartesianGraph *>(pObj), pPrevious);
             break;
         default:
             qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
@@ -98,21 +98,7 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
     qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
 
     if (pObj) {
-
-        // If there are rows in the table, clear them out and rebuild
-        if (rowCount()) {
-            for (int i = 0; i < rowCount(); i++)
-                removeRow(i);
-            if (m_pXaxisTickInc) {
-                delete m_pXaxisTickInc; m_pXaxisTickInc = NULL;
-            }
-            if (m_pXaxisExtent) {
-                delete m_pXaxisExtent; m_pXaxisExtent = NULL;
-            }
-            if (m_pYaxisExtent) {
-                delete m_pYaxisExtent; m_pYaxisExtent = NULL;
-            }
-        }
+        destroyPrevTable(pPrev);
 
         // X/Y axis labels (edit controls)
         // Axis tick increment (SpinboxDelegate)
@@ -150,25 +136,7 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
     qDebug("PhysObjectPropsNavigator::buildVectorTable()");
 
     if (pObj) {
-
-        // If there are rows in the table, clear them out and rebuild
-        if (rowCount()) {
-            for (int i = 0; i < rowCount(); i++)
-                removeRow(i);
-            if (m_pVectorMag) {
-                delete m_pVectorMag; m_pVectorMag = NULL;
-            }
-            if (m_pVectorThetaAngle) {
-                delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL;
-            }
-            if (m_pVectorThetaAxisOrient) {
-                delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL;
-            }
-            if (m_pVectorAssocParticle) {
-                delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL;
-            }
-
-        }
+        destroyPrevTable(pPrev);
 
         // Column 0
         QTableWidgetItem *pItem = new QTableWidgetItem("Magnitude");
@@ -193,15 +161,11 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
     }
 }
 
-void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj) {
+void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsItem *pPrevious) {
     qDebug("PhysObjectPropsNavigator::buildParticleTable()");
 
     if (pObj) {
-        // If there are rows in the table, clear them out and rebuild
-        if (rowCount()) {
-            for (int i = 0; i < rowCount(); i++)
-                removeRow(i);
-        }
+        destroyPrevTable(pPrevious);
 
         // Column 0
         QTableWidgetItem *pItem = new QTableWidgetItem("Name");
@@ -213,4 +177,47 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj) {
     }
 }
 
+void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
+    if (!pObj) {
+        qDebug("PhysObjectPropsNavigator::destroyPrevTable() -- The pObj is NULL");
+        return;
+    }
 
+    // If there are rows in the table, clear them out
+    if (rowCount()) {
+        for (int i = 0; i < rowCount(); i++)
+            removeRow(i);
+        switch (pObj -> type()) {
+        case PhysBaseItem::VectorType:
+            if (m_pVectorMag) {
+                delete m_pVectorMag; m_pVectorMag = NULL;
+            }
+            if (m_pVectorThetaAngle) {
+                delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL;
+            }
+            if (m_pVectorThetaAxisOrient) {
+                delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL;
+            }
+            if (m_pVectorAssocParticle) {
+                delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL;
+            }
+            break;
+        case PhysBaseItem::ParticleType:
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            if (m_pXaxisTickInc) {
+                delete m_pXaxisTickInc; m_pXaxisTickInc = NULL;
+            }
+            if (m_pXaxisExtent) {
+                delete m_pXaxisExtent; m_pXaxisExtent = NULL;
+            }
+            if (m_pYaxisExtent) {
+                delete m_pYaxisExtent; m_pYaxisExtent = NULL;
+            }
+            break;
+        default:
+            qDebug("PhysObjectPropsNavigator::destroyPrevTable(): not a valid Object type");
+            break;
+        }
+    }
+}

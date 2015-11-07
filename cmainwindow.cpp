@@ -291,7 +291,7 @@ void CMainWindow::createDockWindows() {
 
 void CMainWindow::createSignalSlots() {
     QMetaObject::Connection val = connect(m_pGraphWidget, SIGNAL(createObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onCreateObj(QGraphicsItem *)));
-    val = connect(m_pPhysObjNavigator, SIGNAL(changeObj(QGraphicsItem *)), m_pPhysObjPropsNavigator, SLOT(onChangeObj(QGraphicsItem *)));
+    val = connect(m_pPhysObjNavigator, SIGNAL(changeObj(QGraphicsItem *, QGraphicsItem *)), m_pPhysObjPropsNavigator, SLOT(onChangeObj(QGraphicsItem *, QGraphicsItem *)));
 }
 
 void CMainWindow::createBaseObjects() {
