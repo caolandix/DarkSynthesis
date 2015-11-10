@@ -55,7 +55,14 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
     GraphWidget *m_pGraphWidget;
-    QGraphicsTextItem *m_x_label, *m_y_label;
+    CartesianLabel *m_x_label, *m_y_label;
+
+    CartesianLabel *m_pXMin;
+    CartesianLabel *m_pXMax;
+    CartesianLabel *m_pYMin;
+    CartesianLabel *m_pYMax;
+
+
     CartesianGraphDataObj *m_pDataObj;
     int m_borderWidth;
     QString m_Name;
