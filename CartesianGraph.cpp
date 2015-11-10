@@ -25,6 +25,16 @@ CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, C
     m_x_label -> setPos(QPointF(200 + m_borderWidth, 0));
     m_y_label -> setPos(QPointF(0, 200 + m_borderWidth));
 
+    // Draw the text for the extents
+    QRectF rc = boundingRect();
+    m_pXMin = new CartesianLabel(QString::number(m_pDataObj -> xMin()), this);
+    m_pXMax = new CartesianLabel(QString::number(m_pDataObj -> xMax()), this);
+    m_pYMin = new CartesianLabel(QString::number(m_pDataObj -> yMin()), this);
+    m_pYMax = new CartesianLabel(QString::number(m_pDataObj -> yMax()), this);
+    m_pXMin -> setPos(QPointF(rc.x() - (m_pXMin -> boundingRect().width() / 2), -(m_pXMin -> boundingRect().height() / 2)));
+    m_pXMax -> setPos(QPointF(rc.width() - (m_pXMax -> boundingRect().width() / 2), -(m_pXMax -> boundingRect().height() / 2)));
+    m_pYMin -> setPos(QPointF(m_pYMin -> boundingRect().width() / 2, rc.y() + (m_pYMin -> boundingRect().height() / 2)));
+    m_pYMax -> setPos(QPointF(m_pYMax -> boundingRect().width() / 2, rc.height() + (m_pYMax -> boundingRect().height() / 2)));
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
 }
@@ -88,16 +98,14 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter -> drawLine(QLine(0, 200, 0, -200));    // vertical axis
     painter -> drawLine(QLine(-200, 0, 200, 0));    // horizontal axis
 
-    CartesianGraphDataObj *pDataObj = DataObj();
-
     // Draw the tickmarks
     int tickDrawLength = 5;
-    double tickStep = pDataObj -> tickStep();
+    double tickStep = m_pDataObj -> tickStep();
     QRectF rc = boundingRect();
 
     // Figure out the number of ticks
-    int numTicksX = (pDataObj -> xMax() / tickStep) * 2;    // *2 because of both sides +/- sides to axis
-    int numTicksY = (pDataObj -> yMax() / tickStep) * 2;
+    int numTicksX = (m_pDataObj -> xMax() / tickStep) * 2;    // *2 because of both sides +/- sides to axis
+    int numTicksY = (m_pDataObj -> yMax() / tickStep) * 2;
 
     // The width of coordinate space between ticks - x-axis
     int pxPerTickX = rc.width() / numTicksX;
