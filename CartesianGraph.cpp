@@ -85,8 +85,49 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter -> setPen(Qt::NoPen);
     painter -> setBrush(Qt::darkGray);
     painter -> setPen(QPen(Qt::black, 2));
-    painter -> drawLine(QLine(0, 200, 0, -200));
-    painter -> drawLine(QLine(-200, 0, 200, 0));
+    painter -> drawLine(QLine(0, 200, 0, -200));    // vertical axis
+    painter -> drawLine(QLine(-200, 0, 200, 0));    // horizontal axis
+
+    CartesianGraphDataObj *pDataObj = DataObj();
+    QRectF rc = boundingRect();
+    int tickDrawLength = 5;
+
+    // Figure out the number of ticks
+    int numTicksX = (pDataObj -> xMax() / tickStep) * 2;    // *2 because of both sides +/- sides to axis
+    int numTicksY = (pDataObj -> yMax() / tickStep) * 2;
+
+    // The width of coordinate space between ticks - x-axis
+    int pxPerTickX = rc.width() / numTicksX;
+
+    // The width of coordinate space between ticks - y-axis
+    int pxPerTickY = rc.width() / numTicksY;
+
+    // Do vertical lines... Draw left to right
+    int axisStartPoint = rc.x();
+    for (int i = 1; i < numTicksX; i++) {
+        if (axisStartPoint + pxPerTickX * i == 0)
+            continue;
+        painter -> drawLine(QLine(axisStartPoint + pxPerTickX * i, tickDrawLength, axisStartPoint + pxPerTickX * i, -tickDrawLength));
+    }
+
+    // Do Horizontal lines... Draw left to right
+    axisStartPoint = rc.y();
+    for (int j = 1; j < numTicksY; j++) {
+        if (axisStartPoint + pxPerTickY * j == 0)
+            continue;
+        painter -> drawLine(QLine(tickDrawLength, axisStartPoint + pxPerTickY * j, -tickDrawLength, axisStartPoint + pxPerTickY * j));
+    }
+
+    // Draw the end ticks of axis' along with the extent text
+    painter -> setPen(QPen(Qt::black, 4));
+
+    // x-axis
+    painter ->drawLine(QLine(rc.x(), tickDrawLength + 5, rc.x(), -tickDrawLength - 5));
+    painter ->drawLine(QLine(rc.width(), tickDrawLength + 5, rc.width(), -tickDrawLength - 5));
+
+    // y-axis
+    painter -> drawLine(QLine(tickDrawLength + 5, rc.y(), -tickDrawLength - 5, rc.y()));
+    painter -> drawLine(QLine(tickDrawLength + 5, rc.height(), -tickDrawLength - 5, rc.height()));
 }
 
 QVariant CartesianGraph::itemChange(GraphicsItemChange change, const QVariant &value) {
