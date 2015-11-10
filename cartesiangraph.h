@@ -8,7 +8,8 @@ class GraphWidget;
 class PhysVector;
 class PhysParticle;
 
-class CartesianGraph : public QGraphicsItem, public PhysBaseItem {
+class CartesianGraph : public PhysBaseItem, public QGraphicsItem {
+    Q_OBJECT
 public:
 
     // ctors/dtor
