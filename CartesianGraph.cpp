@@ -89,8 +89,11 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter -> drawLine(QLine(-200, 0, 200, 0));    // horizontal axis
 
     CartesianGraphDataObj *pDataObj = DataObj();
-    QRectF rc = boundingRect();
+
+    // Draw the tickmarks
     int tickDrawLength = 5;
+    double tickStep = pDataObj -> tickStep();
+    QRectF rc = boundingRect();
 
     // Figure out the number of ticks
     int numTicksX = (pDataObj -> xMax() / tickStep) * 2;    // *2 because of both sides +/- sides to axis
@@ -120,12 +123,8 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     // Draw the end ticks of axis' along with the extent text
     painter -> setPen(QPen(Qt::black, 4));
-
-    // x-axis
-    painter ->drawLine(QLine(rc.x(), tickDrawLength + 5, rc.x(), -tickDrawLength - 5));
-    painter ->drawLine(QLine(rc.width(), tickDrawLength + 5, rc.width(), -tickDrawLength - 5));
-
-    // y-axis
+    painter -> drawLine(QLine(rc.x(), tickDrawLength + 5, rc.x(), -tickDrawLength - 5));
+    painter -> drawLine(QLine(rc.width(), tickDrawLength + 5, rc.width(), -tickDrawLength - 5));
     painter -> drawLine(QLine(tickDrawLength + 5, rc.y(), -tickDrawLength - 5, rc.y()));
     painter -> drawLine(QLine(tickDrawLength + 5, rc.height(), -tickDrawLength - 5, rc.height()));
 }
