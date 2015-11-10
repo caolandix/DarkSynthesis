@@ -98,7 +98,8 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
     qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
 
     if (pObj) {
-        destroyPrevTable(pPrev);
+        if (pPrev)
+            destroyPrevTable(pPrev);
 
         // X/Y axis labels (edit controls)
         // Axis tick increment (SpinboxDelegate)

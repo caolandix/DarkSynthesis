@@ -42,13 +42,13 @@ void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
     }
 }
 
-void PhysObjectNavigator::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-    qDebug("PhysObjectNavigator::currentChanged()");
-    QVariant varCurrent = current.data(Qt::UserRole);
-    QVariant varPrev = previous.data(Qt::UserRole);
+void PhysObjectNavigator::selectionChanged(
+        const QItemSelection & selected,
+        const QItemSelection & deselected) {
+    qDebug("PhysObjectNavigator::selectionChanged()");
 
-    QGraphicsItem *pCurrObj = qvariant_cast<QGraphicsItem *>(varCurrent);
-    QGraphicsItem *pPrevObj = qvariant_cast<QGraphicsItem *>(varPrev);
+    QGraphicsItem *pCurrObj = NULL;
+    QGraphicsItem *pPrevObj = NULL;
 
     if (!pCurrObj && !pPrevObj)
         return;
