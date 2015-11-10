@@ -2,10 +2,12 @@
 #define PHYSBASEITEM_H
 
 #include <map>
+#include <QObject>
 
 using namespace std;
 
-class PhysBaseItem {
+class PhysBaseItem : public QObject {
+    Q_OBJECT
 public:
     PhysBaseItem();
     ~PhysBaseItem() {}

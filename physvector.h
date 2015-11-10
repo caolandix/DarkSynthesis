@@ -13,7 +13,8 @@
 class PhysParticle;
 class CartesianGraph;
 
-class PhysVector : public QGraphicsLineItem, public PhysBaseItem {
+class PhysVector : public PhysBaseItem, public QGraphicsLineItem {
+    Q_OBJECT
 private:
     typedef enum { DI_VECTORLINE = -1, DI_VECTORHEAD = 0, DI_VECTORTAIL = 1 } MouseClickLocale;
     typedef enum { AXIS_HORIZ = 0, AXIS_VERT } AxisOrientation;

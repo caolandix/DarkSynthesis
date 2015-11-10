@@ -23,6 +23,7 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent
 }
 
 void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
+    qDebug("PhysObjectNavigator::onCreateObj()");
     if (pObj) {
         switch (pObj -> type()) {
             case PhysBaseItem::VectorType:
@@ -42,12 +43,15 @@ void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
 }
 
 void PhysObjectNavigator::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-    qDebug("PhysObjectNavigator::currentChanged");
+    qDebug("PhysObjectNavigator::currentChanged()");
     QVariant varCurrent = current.data(Qt::UserRole);
     QVariant varPrev = previous.data(Qt::UserRole);
 
     QGraphicsItem *pCurrObj = qvariant_cast<QGraphicsItem *>(varCurrent);
     QGraphicsItem *pPrevObj = qvariant_cast<QGraphicsItem *>(varPrev);
+
+    if (!pCurrObj && !pPrevObj)
+        return;
 
     // Changing the currentitem
     // If we're brand new then there is no pPrevObj
@@ -71,6 +75,7 @@ void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
 }
 
 void PhysObjectNavigator::insertVector(PhysVector *pObj) {
+    qDebug("PhysObjectNavigator::insertVector()");
     QTreeWidgetItem *pParentItem = topLevelItem(0);
 
     if (pParentItem) {
@@ -109,8 +114,9 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
 }
 
 void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
-    QTreeWidgetItem *pTopLevelItem = topLevelItem(0);
+    qDebug("PhysObjectNavigator::insertVector()");
 
+    QTreeWidgetItem *pTopLevelItem = topLevelItem(0);
     if (pTopLevelItem) {
         QTreeWidgetItem *pChildItem = new QTreeWidgetItem(pTopLevelItem);
         QString str = pObj -> Name();
@@ -122,11 +128,11 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
         pChildItem -> setData(0, Qt::UserRole, var);
 
         pTopLevelItem -> addChild(pChildItem);
-        setCurrentItem(pChildItem);
+
 
         QTreeWidgetItem *pCurrentItem = currentItem();
-        var = pCurrentItem -> data(1, Qt::UserRole);
-        QGraphicsItem *pCurrItemDataObj = var.value<QGraphicsItem *>();
+        var = pCurrentItem -> data(0, Qt::UserRole);
+        QGraphicsItem *pCurrItemDataObj = (QGraphicsItem *) var.value<void *>();
         setCurrentItem(pChildItem);
         emit changeObj(pObj, pCurrItemDataObj);
     }

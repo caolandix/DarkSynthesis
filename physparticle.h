@@ -11,7 +11,8 @@
 class GraphWidget;
 class PhysVector;
 
-class PhysParticle : public QGraphicsPolygonItem, public PhysBaseItem {
+class PhysParticle : public PhysBaseItem, public QGraphicsPolygonItem {
+    Q_OBJECT
 public:
     PhysParticle(QGraphicsItem *);
     PhysParticle(QGraphicsItem *, const QPointF &, const QString &);
