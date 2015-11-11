@@ -25,6 +25,8 @@ public:
     void updateCartesianGraphTable(CartesianGraph *);
 
     void destroyPrevTable(QGraphicsItem *);
+private:
+    QTableWidgetItem *createRowItem(const QString &);
 signals:
 
 public slots:

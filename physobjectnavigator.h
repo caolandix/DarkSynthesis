@@ -15,11 +15,12 @@ class PhysObjectNavigator : public QTreeWidget {
     Q_OBJECT
 public:
     PhysObjectNavigator(QWidget * = NULL);
+
+    QGraphicsItem *currObj() const { return m_pCurrObj; }
+    QGraphicsItem *prevObj() const { return m_pPrevObj; }
 protected:
-    //virtual void currentChanged(const QModelIndex &, const QModelIndex &);
-    void selectionChanged(
-            const QItemSelection & selected,
-            const QItemSelection & deselected);
+    void currentChanged(const QModelIndex &, const QModelIndex &);
+    void selectionChanged(const QItemSelection &, const QItemSelection &);
     void dropEvent(QDropEvent *);
 private:
     void insertCartesianGraph(CartesianGraph *);
@@ -32,6 +33,8 @@ signals:
 public slots:
     void onCreateObj(QGraphicsItem *);
 private:
+
+    QGraphicsItem *m_pCurrObj, *m_pPrevObj;
 
 };
 

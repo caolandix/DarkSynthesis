@@ -106,25 +106,16 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         // Axis extents (SpinboxDelegates)
 
         // Column 0 - Property Names
-        QTableWidgetItem *pItem = new QTableWidgetItem("X-Axis Label");
         insertRow(0);
-        setItem(0, 0, pItem);
-
-        pItem = new QTableWidgetItem("Y-Axis Label");
+        setItem(0, 0, createRowItem(QString("X-Axis Label")));
         insertRow(1);
-        setItem(1, 0, pItem);
-
-        pItem = new QTableWidgetItem("Axis Tick Increment");
+        setItem(1, 0, createRowItem(QString("Y-Axis Label")));
         insertRow(2);
-        setItem(2, 0, pItem);
-
-        pItem = new QTableWidgetItem("X-Axis Extent");
+        setItem(2, 0, createRowItem(QString("Axis Tick Increment")));
         insertRow(3);
-        setItem(3, 0, pItem);
-
-        pItem = new QTableWidgetItem("Y-Axis Extent");
+        setItem(3, 0, createRowItem(QString("X-Axis Extent")));
         insertRow(4);
-        setItem(4, 0, pItem);
+        setItem(4, 0, createRowItem(QString("Y-Axis Extent")));
 
         // Column 1 specialties
         setCellWidget(2, 1, m_pXaxisTickInc = new QDoubleSpinBox(this));
@@ -137,7 +128,8 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
     qDebug("PhysObjectPropsNavigator::buildVectorTable()");
 
     if (pObj) {
-        destroyPrevTable(pPrev);
+        if (pPrev)
+            destroyPrevTable(pPrev);
 
         // Column 0
         QTableWidgetItem *pItem = new QTableWidgetItem("Magnitude");
@@ -162,11 +154,12 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
     }
 }
 
-void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsItem *pPrevious) {
+void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsItem *pPrev) {
     qDebug("PhysObjectPropsNavigator::buildParticleTable()");
 
     if (pObj) {
-        destroyPrevTable(pPrevious);
+        if (pPrev)
+            destroyPrevTable(pPrev);
 
         // Column 0
         QTableWidgetItem *pItem = new QTableWidgetItem("Name");
@@ -186,8 +179,8 @@ void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
 
     // If there are rows in the table, clear them out
     if (rowCount()) {
-        for (int i = 0; i < rowCount(); i++)
-            removeRow(i);
+        while (rowCount() > 0)
+            removeRow(0);
         switch (pObj -> type()) {
         case PhysBaseItem::VectorType:
             if (m_pVectorMag) {
@@ -221,4 +214,10 @@ void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
             break;
         }
     }
+}
+
+QTableWidgetItem *PhysObjectPropsNavigator::createRowItem(const QString &strLabel) {
+    QTableWidgetItem *pItem = new QTableWidgetItem(strLabel);
+    pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
+    return pItem;
 }
