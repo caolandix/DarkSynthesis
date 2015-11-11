@@ -4,13 +4,13 @@
 #include <QStyleOption>
 #include <QMenu>
 
+#include "physscience.h"
 #include "physbaseitem.h"
 #include "physparticle.h"
 #include "cartesianlabel.h"
 
 PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, const QString &Label) :
-    QGraphicsPolygonItem(pParent), PhysBaseItem() {
-
+    PhysBaseItem(), QGraphicsPolygonItem(pParent) {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -19,7 +19,7 @@ PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, cons
     m_pLabel = new CartesianLabel(Label, this);
 
     // Physical attributes
-    m_mass = 1.0; // 1kg is default
+    m_mass = PhysConsts::DefaultMass; // 1kg is default
 }
 
 PhysParticle::~PhysParticle() {
