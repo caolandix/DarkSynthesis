@@ -10,6 +10,7 @@ class PhysParticle;
 
 class CartesianGraph : public PhysBaseItem, public QGraphicsItem {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 public:
 
     // ctors/dtor

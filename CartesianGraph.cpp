@@ -15,7 +15,7 @@
 #include "physvector.h"
 #include "graphwidget.h"
 
-CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj) {
+CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj)  : QGraphicsItem() {
     m_pGraphWidget = pGraphWidget;
     m_pDataObj = (pDataObj) ? pDataObj : new CartesianGraphDataObj();
     m_borderWidth = 5;
@@ -39,7 +39,7 @@ CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, C
     setZValue(-1);
 }
 
-CartesianGraph::CartesianGraph(const CartesianGraph &obj) {
+CartesianGraph::CartesianGraph(const CartesianGraph &obj) : QGraphicsItem() {
     if (&obj != this) {
         if (m_pDataObj)
             delete m_pDataObj;
