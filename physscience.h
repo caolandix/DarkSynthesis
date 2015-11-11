@@ -2,7 +2,8 @@
 #define PHYSSCIENCE_H
 
 namespace PhysConsts {
-    const double PI = 3.141592653589;
+    static const double PI = 3.14159265358979323846264338327950288419717;
+    static const double DefaultMass = 1.0;  // 1kg
 }
 
 #endif // PHYSSCIENCE_H
