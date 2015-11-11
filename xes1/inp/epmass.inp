@@ -1,0 +1,35 @@
+ELECTRON ION PAIR
+
+A cold electron and a cold ion (mass ratio Mi/Me = 1000) are loaded at
+different spacial positions and given a drift together.  The resulting
+'atom' oscillates nearly periodically, with the pair translating due to
+the massive ion.
+
+nsp-----------l---------dt----------nt----mmax-----l/a---accum
+2        6.283185307    0.20        30     3	   0	0
+ng----iw--ec--epsi-------a1------a2------E0------w0
+32     2  0   1.00       0.00    0.00	 0	    0
+
+SPECIES 1: Cold Drifting Ion
+
+n----nv2---nlg---mode
+1      0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   1.00   0.00   0.00  0.50
+x1----v1---thetax--thetav
+0.01  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+
+
+SPECIES 2: Cold Drifting Electron
+
+n----nv2---nlg---mode
+1      0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+0.001 0.00   -1.00  0.00   0.00  -1.50
+x1----v1---thetax--thetav
+0.01  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+

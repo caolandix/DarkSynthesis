@@ -1,0 +1,47 @@
+THREE STREAM INSTABILITY
+
+Three cold electron species, one stationary and two drifting in opposite
+directions.  The densities of the drifting species are perturbed in the
+fundamental mode (the fastest growing mode), and the plasma species is
+unperturbed.
+
+nsp-----------l---------dt----------nt-----mmax----l/a----accum
+3        6.283185307    0.20        600     3	   0	   1
+ng----iw--ec---epsi-------a1------a2-------E0-----w0
+64     2  0   1.00       0.00    0.00	  0	    0
+
+SPECIES 1: Cold Electron Beam
+
+n----nv2---nlg---mode
+128    0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.00  1.00
+x1----v1---thetax--thetav
+0.01  0.00   0.00    0.00
+--nbins---vlower---vupper
+50    	    0		0
+
+
+SPECIES 2: Cold Electron Beam
+
+n----nv2---nlg---mode
+128    0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.00  -1.00
+x1----v1---thetax--thetav
+0.01  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+
+
+SPECIES 3: Cold Electron Plasma
+
+n----nv2---nlg---mode
+128    0     1      0
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.00  0.00
+x1----v1---thetax--thetav
+0.00  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        -1.0      1.0
+

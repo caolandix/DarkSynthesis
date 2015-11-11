@@ -1,0 +1,33 @@
+BEAM CYCLOTRON INSTABILITY
+
+A cold ion beam (mass ratio Mi/Me = 400) is drifting in a cold electron
+plasma.  The electron plasma density is perturbed in the fundamental mode.
+
+nsp----------l---------dt----------nt----mmax-----l/a---accum
+2        4.188790      0.20        600     3	  0	1
+ng----iw--ec--epsi-------a1------a2------E0------w0
+64     2  0   1.00       0.00    0.00	 0	    0
+
+SPECIES 1: Cold Electron Plasma
+
+n----nv2---nlg---mode
+512     0     1     1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  -1.00  -1.00  0.00   0.00  0.00
+x1----v1---thetax--thetav
+0.001 0.00   0.00    0.00
+--nbins---vlower---vupper
+50        -2.0      2.0
+
+
+SPECIES 2: Cold Ion Beam
+
+n----nv2---nlg---mode
+128    0     1      0
+wp----wc-----qm-----vt1----vt2---v0
+0.10  0.00   0.01   0.00   0.00  1.00
+x1----v1---thetax--thetav
+0.00  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        -2.0      2.0
+

@@ -1,0 +1,24 @@
+LANDAU DAMPING
+
+A warm electron plasma is loaded and then perturbed to initiate an
+electrostatic wave.  The wave is damped by particles with velocity near
+the phase velocity.  The potential is smoothed with a2 to eliminate short
+wavelength noise in the thermal loader; also the particles are loaded
+using the bit reversed loader to fill phase space more evenly.
+
+nsp-----------l---------dt----------nt----mmax----l/a---accum
+1        6.283185307    0.20        300    3	  0	1
+ng----iw-ec---epsi-------a1------a2---------E0-----w0
+32     2 0   1.00       0.00    1000.00	    0	 0
+
+SPECIES 1: Warm Electron Plasma
+
+n----nv2---nlg---mode
+16000  0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.40  -1.2
+x1----v1---thetax--thetav
+0.1   0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+

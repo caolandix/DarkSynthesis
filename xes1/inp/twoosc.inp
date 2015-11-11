@@ -1,0 +1,23 @@
+TWO PARTICLE OSCILATIONS
+
+Two ions are loaded evenly in space and given a velocity together.
+Depending on the velocity perturbation, the particles will either
+oscillate in the potential well or undergo coulomb scattering, passing
+through eachother.
+
+nsp-----------l---------dt----------nt----mmax-----l/a---accum
+1        6.283185307    0.10        1000   3	   0	0
+ng----iw--ec--epsi-------a1------a2------E0------w0
+32     2  0   1.00       0.00    0.00	 0	    0
+
+SPECIES 1: Cold Ions
+
+n----nv2---nlg---mode
+2      0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   1.00   0.00   0.00  0.00
+x1----v1---thetax--thetav
+0.00  0.9    0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+

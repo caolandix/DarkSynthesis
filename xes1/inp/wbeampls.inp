@@ -1,0 +1,33 @@
+BEAM PLASMA INSTABILITY
+
+A warm electron beam is drifting through a cold unperturbed plasma.
+The small temperature of the beam avoids the non-physical cold beam
+instability, so the only phenomenon is the growth of the physical beam
+plasma instability.
+
+nsp----------l---------dt----------nt----mmax-----l/a----accum
+2        62.83185307  0.05        1000    18	  0	 0
+ng----iw-ec---epsi-------a1------a2-----E0-----w0
+128    2 0   1.00       0.00    0.00   0      0
+
+SPECIES 1: Warm Electron Beam
+
+n----nv2---nlg---mode
+512    0     1    10
+wp----wc-----qm-----vt1----vt2---v0
+0.1  0.00  -1.00   0.0    0.05  1.00
+x1----v1---thetax--thetav
+0.0001  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+
+SPECIES 2: Warm non-drifting electrons
+
+n----nv2---nlg---mode
+512    0     1      0
+wp----wc-----qm-----vt1----vt2---v0
+1.0  0.00  -1.00   0.00   0.20  0.00
+x1----v1---thetax--thetav
+0.0  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0

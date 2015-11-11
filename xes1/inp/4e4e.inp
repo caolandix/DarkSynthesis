@@ -1,0 +1,33 @@
+EIGHT PARTICLE TWO STREAM INSTABILITY
+
+Two cold electron beams are drifting in opposite directions.  The beam
+densities are perturbed in the fundamental mode (fastest growing).
+
+nsp-----------l---------dt----------nt----mmax----l/a----accum
+2        6.283185307    0.20        300     3	  0	  0
+ng----iw--ec---epsi-------a1------a2------E0----w0
+32     2  0    1.00       0.00    0.00	 0	  0
+
+SPECIES 1: Cold Electron Beam
+
+n----nv2---nlg---mode
+4      0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.00  1.0
+x1----v1---thetax--thetav
+0.01  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+
+
+SPECIES 2: Cold Electron Beam
+
+n----nv2---nlg---mode
+4      0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.00  -1.0
+x1----v1---thetax--thetav
+0.01  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+

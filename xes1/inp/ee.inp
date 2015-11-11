@@ -1,0 +1,34 @@
+2 PARTICLE TWO STREAM INSTABILITY
+
+Two cold electron beams consisting of 1 particle each are loaded with
+opposite drifts.  Both beam densities are perturbed in fundamental mode;
+one in +x direction, the other in the -x direction.
+
+nsp-----------l---------dt----------nt----mmax----l/a---accum
+2        6.283185307    0.10        300    3	  0	0
+ng----iw---ec--epsi-------a1------a2-----E0-----w0
+128     2  0   1.00       0.00    0.00	0	  0
+
+SPECIES 1: Cold Electron Beam
+
+n----nv2---nlg---mode
+1      0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.00  0.2
+x1----v1---thetax--thetav
+0.01  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+
+
+SPECIES 2: Cold Electron Beam
+
+n----nv2---nlg---mode
+1      0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.00  -0.2
+x1----v1---thetax--thetav
+-0.01 0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+

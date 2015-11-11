@@ -1,0 +1,23 @@
+HYBRID OSCILLATIONS
+
+A cold electron plasma is loaded in a uniform magnetic field to
+observe oscillations at the hybrid frequency. Mode 1 is excited at
+small amplitudes by velocity modulation, small enough so that the gyro
+orbits do not cross.
+
+nsp-----------l---------dt----------nt----mmax----l/a----accum
+ 1        6.283185307   0.10       150     3       0	0
+ng----iw-ec---epsi-------a1------a2------E0------w0
+512    1 0    1.00      0.00   1000.00    0       0
+
+SPECIES 1: Cold Electron Plasma
+
+n----nv2---nlg---mode
+128   0     1     1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  -1.00  -1.00  0.0    0.00  0.00
+x1----v1---thetax--thetav
+0.00  0.02    0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+

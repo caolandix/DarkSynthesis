@@ -1,0 +1,20 @@
+TWO PARTICLE OSCILLATION - JUST COLLIDING
+
+Two ions are loaded evenly in space and pushed at
+eachother with a velocity such that they just collide.
+
+nsp-----------l---------dt----------nt----mmax-----l/a----accum
+1        6.283185307    0.1         800    3	   0	  0
+ng----iw--ec--epsi-------a1------a2------E0------w0
+16     2  0   1.00       0.00    0.00	 0     0
+
+SPECIES 1: Cold Drifting Electrons
+
+n----nv2---nlg---mode
+2      0     1      1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   1.00   0.00   0.00  0.00
+x1----v1---thetax--thetav
+0.00  1.435  0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0

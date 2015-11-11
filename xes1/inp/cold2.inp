@@ -1,0 +1,22 @@
+COLD PLASMA OSCILLATIONS
+
+Oscillations can be observed in a cold electron plasma in a neutralizing
+nonmobile ion background.  The oscillations are initiated by perturbing
+the density of the electrons in the fundamental mode.
+
+nsp-----------l---------dt----------nt------mmax-----l/a----accum
+1        6.283185307    0.2        150000	      14      0		0
+ng----iw--ec--epsi-------a1------a2-------E0-------w0
+32     3  0   1.00      0.00    0.00	  0	 0
+
+SPECIES 1: Cold Electron Plasma
+
+n----nv2---nlg---mode
+64     0     1    1
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00  0.00  0.00
+x1----v1---thetax--theta
+0.001  0.0   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+

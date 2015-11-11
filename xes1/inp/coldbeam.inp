@@ -1,0 +1,22 @@
+COLD BEAM INSTABILITY
+
+A cold unperturbed electron beam is loaded to demonstrate the numerical
+cold beam instability.  Note that the instability quenches when the beam
+has warmed up.
+
+nsp----------l---------dt----------nt----mmax-----l/a---accum
+1        6.283185307   0.20        600    3	  0	0
+ng----iw--ec--epsi-------a1------a2------E0------w0
+16     2  0   1.00       0.00    0.00	 0    0
+
+SPECIES 1: Cold Electron Beam
+
+n----nv2---nlg---mode
+128    0     1      0
+wp----wc-----qm-----vt1----vt2---v0
+1.00  0.00   -1.00  0.00   0.00  1.00
+x1----v1---thetax--thetav
+0.00  0.00   0.00    0.00
+--nbins---vlower---vupper
+50        0.0      0.0
+
