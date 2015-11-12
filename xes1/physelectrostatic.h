@@ -8,8 +8,6 @@ class PhysElectroStatic : public QObject {
     Q_OBJECT
 public:
     PhysElectroStatic();
-    PhysElectroStatic(int *, int *, const double, const double, const double, const double, int *, int *,
-                      const double, const double, int *);
     void start(int, char *);
 private:
 

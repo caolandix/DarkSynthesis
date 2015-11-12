@@ -2,23 +2,53 @@
 #include "physelectrostatic.h"
 #include "physscience.h"
 
-PhysElectroStatic::PhysElectroStatic(int *il1, int *il2, const double m, const double q, const double t,
-                                     const double nm, int *vbin1, int *vbin2, const double dvb, const double vstart,
-                                     int *nvbin) {
+PhysElectroStatic::PhysElectroStatic() {
 
     // Setting the global parameters to their default values.
     l = 6.283185307;
     dt = 0.2;
     nsp = 1;
-
     epsi = 1.0;
     ng = 32;
     iw = 2;
     ec = 0;
-
     ins[1] = 1;
     vbins[1] = 1;  // sets up the start of vbin.
     interval = 1;
+}
+
+PhysElectroStatic::~PhysElectroStatic() {
+    if (nms) { delete [] nms; nms = NULL; }
+    if (ms) { delete [] ms; ms = NULL; }
+    if (qs) { delete [] qs; qs = NULL; }
+    if (ts) { delete [] ts; ts = NULL; }
+    if (x_array) { delete [] x_array; x_array = NULL; }
+    if (rho) { delete [] rho; rho = NULL; }
+    if (phi) { delete [] phi; phi = NULL; }
+    if (phik) { delete [] phik; phik = NULL; }
+    if (e) { delete [] e; e = NULL; }
+    if (acc) { delete [] acc; acc = NULL; }
+    if (t_array) { delete [] t_array; t_array = NULL; }
+    if (ese) { delete [] ese; ese = NULL; }
+    if (ke) { delete [] ke; ke = NULL; }
+    if (te) { delete [] te; te = NULL; }
+    if (kes_hist) { delete [] kes_hist; kes_hist = NULL; }
+    if (pxs_hist) { delete [] pxs_hist; pxs_hist = NULL; }
+    if (esem_hist) { delete [] esem_hist; esem_hist = NULL; }
+    if (x) { delete [] x; x = NULL; }
+    if (vx) { delete [] vx; vx = NULL; }
+    if (vy) { delete [] vy; vy = NULL; }
+    if (vbint) { delete [] vbint; vbint = NULL; }
+    if (vbin) { delete [] vbin; vbin = NULL; }
+    if (vbin_inst) { delete [] vbin_inst; vbin_inst = NULL; }
+    if (dvbin) { delete [] dvbin; dvbin = NULL; }
+    if (vbinstart) { delete [] vbinstart; vbinstart = NULL; }
+    if (v_array) { delete [] v_array; v_array = NULL; }
+
+    // arrays of pointers
+    if (nms) { delete [] kes; kes = NULL; }
+    if (nms) { delete [] pxs; pxs = NULL; }
+    if (nms) { delete [] esem; esem = NULL; }
 }
 
 void PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t,
@@ -247,91 +277,57 @@ void PhysElectroStatic::start(int argc, char *argv) {
         k_hi = ng / 2;
 
         // Allocating space for arrays
-        // nms = (float *)malloc((nsp + 1)*sizeof(float));
         nms = new double[nsp + 1];
-        // ms = (float *)malloc((nsp+1)*sizeof(float));
         ms = new double[nsp + 1];
-        //qs = (float *)malloc((nsp+1)*sizeof(float));
         qs = new double[nsp + 1];
-        // ts = (float *)malloc((nsp+1)*sizeof(float));
         ts = new double[nsp + 1];
 
-        // x_array= (float *)malloc((ng+1)*sizeof(float));
         x_array = new double[ng + 1];
         for (int i = 0; i <= ng; i++)
             x_array[i] = i * dx;
 
-        //rho = (float *)malloc((ng+3)*sizeof(float));
         rho = new double[ng + 3];
-        //phi = (float *)malloc((ng+2)*sizeof(float));
         phi = new double[ng + 2];
-        //phik =(float *)malloc((ng+2)*sizeof(float));
         phik = new double[ng + 2];
-
-        //k_array = (float *)malloc(ng*sizeof(float));
-        phik = new double[ng];
+        k_array = new double[ng];
         for (int i = 0; i < k_hi; i++)
             k_array[i] = i * 2 * PhysConsts::PI / l;
-        // e = (float *)malloc((ng+2)*sizeof(float));
         e = new double[ng + 2];
-        // acc = (float *)malloc((ng+3)*sizeof(float));
         acc = new double[ng + 3];
 
-        // t_array= (float *)malloc(HISTMAX*sizeof(float));
         t_array = new double[HISTMAX];
-        // ese= (float *)malloc(HISTMAX*sizeof(float));
         ese = new double[HISTMAX];
-        // ke = (float *)malloc(HISTMAX*sizeof(float));
         ke = new double[HISTMAX];
-        // te = (float *)malloc(HISTMAX*sizeof(float));
         te = new double[HISTMAX];
 
-        // kes_hist= (float *)malloc((nsp+1)*sizeof(float));
         kes_hist = new double[nsp+1];
-        // pxs_hist= (float *)malloc((nsp+1)*sizeof(float));
         pxs_hist = new double[nsp+1];
-        // esem_hist=(float *)malloc((mmax+1)*sizeof(float));
         esem_hist = new double[mmax+1];
 
-        // kes = (float **)malloc(nsp*sizeof(float *));
         kes = new double*[nsp];
         for (int i = 0; i < nsp; i++)
-            // kes[i] = (float *)malloc(HISTMAX*sizeof(float));
             kes[i] = new double[HISTMAX];
 
-        // pxs = (float **)malloc(nsp*sizeof(float *));
         pxs = new double*[nsp];
         for (int i=0; i< nsp; i++)
-            // pxs[i] = (float *)malloc(HISTMAX*sizeof(float));
             pxs[i] = new double[HISTMAX];
 
-        // esem = (float **)malloc(mmax*sizeof(float *));
         esem = new double*[mmax];
         for (int i=0; i< mmax; i++)
-            // esem[i] = (float *)malloc(HISTMAX*sizeof(float));
             esem[i] = new double[HISTMAX];
 
-        // x  = (float *)malloc(MAXPARTICLES*sizeof(float));
         x = new double[MAXPARTICLES];
-        // vx = (float *)malloc(MAXPARTICLES*sizeof(float));
-        x = new double[MAXPARTICLES];
-        // vy = (float *)malloc(MAXPARTICLES*sizeof(float));
-        x = new double[MAXPARTICLES];
+        vx = new double[MAXPARTICLES];
+        vy = new double[MAXPARTICLES];
 
-        // vbint = (float *)malloc(NVBINMAX*sizeof(float));
         vbint = new double[NVBINMAX];
-        // vbin = (float *)malloc(nsp*NVBINMAX*sizeof(float));
         vbin = new double[nsp * NVBINMAX];
-        // vbin_inst = (float *)malloc(nsp*NVBINMAX*sizeof(float));
         vbin_inst = new double[nsp * NVBINMAX];
-        // dvbin = (float *)malloc((nsp+1)*sizeof(float));
-        dvbin = new double[nsp + 1];
-        // vbinstart = (float *)malloc((nsp+1)*sizeof(float));
-        vbinstart = new double[nsp + 1];
-        // v_array = (float *)malloc( NVBINMAX*nsp * sizeof(float));
-        v_array = new double[NVBINMAX * nsp];
         for (int i = 0; i < nsp * NVBINMAX; i++)
             vbin_inst[i]= 0.0;
+        dvbin = new double[nsp + 1];
+        vbinstart = new double[nsp + 1];
+        v_array = new double[NVBINMAX * nsp];
 
         if (!x || !vx || !vy || !vbint || !vbin_inst || !dvbin || !v_array ) {
             qDebug("START: Could not get enough memory for x or v's.");
