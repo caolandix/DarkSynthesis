@@ -131,26 +131,28 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
         if (pPrev)
             destroyPrevTable(pPrev);
 
-        // Column 0
+        // Column 0, row 0
         QTableWidgetItem *pItem = new QTableWidgetItem("Magnitude");
         insertRow(0);
         setItem(0, 0, pItem);
+        // Column 0, row 1
         pItem = new QTableWidgetItem("Theta - Angle");
         insertRow(1);
         setItem(1, 0, pItem);
+        // Column 0, row 2
         pItem = new QTableWidgetItem("Theta - Axis Orientation");
         insertRow(2);
         setItem(2, 0, pItem);
+        // Column 0, row 3
         pItem = new QTableWidgetItem("Associated Particle");
-        insertRow(2);
-        setItem(2, 0, pItem);
+        insertRow(3);
+        setItem(3, 0, pItem);
 
         // Column 1
         setCellWidget(0, 1, m_pVectorMag = new QDoubleSpinBox(this));
-        setCellWidget(1, 1, m_pVectorMag = new QDoubleSpinBox(this));
+        setCellWidget(1, 1, m_pVectorThetaAngle = new QDoubleSpinBox(this));
         setCellWidget(2, 1, m_pVectorThetaAngle = new QDoubleSpinBox(this));
         setCellWidget(3, 1, m_pVectorAssocParticle = new QLineEdit(this));
-
     }
 }
 
