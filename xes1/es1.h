@@ -51,4 +51,7 @@ GLOBAL int it, nt, ith, ithl, hist_hi, interval, nsp, localnsp, accum,
 
 
 GLOBAL float frand();
+
+// Prototypes
+void accel(int, int, double, double, double, double, double);
 #undef GLOBAL

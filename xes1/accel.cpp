@@ -1,4 +1,5 @@
-#include "es1.h"
+/*
+ #include "es1.h"
 
 #define Zero_Order   0
 #define First_Order  1
@@ -21,7 +22,7 @@ float q, m, t, *p, *ke;
 {
   int il,iu,j,ng1,i;
   float a,b,c,xii,dxdt,ae,tem,v1s,v2s,vo,vn,s,aa,vyy,vxx;
-  float jxii;  /*  this is j-xii, which is used a lot, this will save additions.*/
+  float jxii;  // this is j-xii, which is used a lot, this will save additions.
   
   il = ilp;
   iu = iup;
@@ -32,7 +33,7 @@ float q, m, t, *p, *ke;
 if (ae != ael)
     { 
     ng1 = ng + 1;
-/*    tem = ae/ael;  this does nothing, is not used later */
+    // tem = ae/ael;  this does nothing, is not used later
     for (j=1;j<=ng1;j++) acc[j] = e[j]*ae; 
 
     acc[0]=ae*e[ng];
@@ -48,7 +49,7 @@ if (ae != ael)
        v1s = v2s = 0.0;
        for (i=il;i<=iu;i++) 
        {
-	 j = x[i] +0.5 - ecconst;  /*  ecconst is .5 for energy conserving, 0 for momentum conserving.  */
+     j = x[i] +0.5 - ecconst;  // ecconst is .5 for energy conserving, 0 for momentum conserving.
 	 vo = vx[i];
 	 vn = vo + acc[j+1]; 
 	 v1s += vn;
@@ -76,7 +77,7 @@ if (ae != ael)
 		in which the truncation causes it to truncate UP
 		instead of round down when 0<= x[i] <0.5.  The modification
 		ensures that it gets set to the right value.  */
-           
+         /*
 	   aa = acc[j+1] + (xii - j)*(acc[j+2] - acc[j+1]);  
 	   vyy = vy[i];
 	   vxx = vx[i] - t*vyy + aa;
@@ -101,7 +102,7 @@ if (ae != ael)
 		in which the truncation causes it to truncate UP
 		instead of round down when 0<= x[i] <0.5.  The modification
 		ensures that it gets set to the right value.  */
-
+/*
 	   vo = vx[i];
 	   vn = vo + acc[j+1] + (xii - j) * (acc[j+2] - acc[j+1]); 
 	   v1s += vn;
@@ -118,10 +119,9 @@ if (ae != ael)
        for (i=il;i<=iu;i++)
 	 {
 	   
-	   xii=x[i]-ecconst;   /*  Grab the value of x[i] so we don't have to keep
-			    dereferencing a pointer  */
-	   j=xii+0.5;   /*  Grab the nearest grid point.  */
-	   vo=vx[i];    /*  Grab the value of the current velocity  */
+       xii=x[i]-ecconst;  // Grab the value of x[i] so we don't have to keep dereferencing a pointer
+       j=xii+0.5;   // Grab the nearest grid point.
+       vo=vx[i];    // Grab the value of the current velocity
 
 
 
@@ -151,24 +151,24 @@ if (ae != ael)
 /*  The commented assignments are unoptimized.  The uncommented assignments
    below are optimized to reduce the number of multiplications, etc... */
 
-/*	       a=.5*cub(jxii)-sqr(jxii)+.6666666667;  */
+/*	       a=.5*cub(jxii)-sqr(jxii)+.6666666667;
 	       a=twothirds + jxii*jxii*( -1.0 + 0.5*jxii); 
-/*	       b= -.5*cub(jxii-1)-sqr(jxii-1)+.6666666667;  */
+/*	       b= -.5*cub(jxii-1)-sqr(jxii-1)+.6666666667;
 	       b=onesix+ 0.5*jxii*(1.0+jxii*(1.0 - jxii));
-/*	       c= -cub(jxii+1)/6.0+sqr(jxii+1)-2*(jxii+1)+1.3333333;  */
+/*	       c= -cub(jxii+1)/6.0+sqr(jxii+1)-2*(jxii+1)+1.3333333;
                c=onesix + onesix*jxii*(-3.0+jxii*(3.0-jxii));  
 	       vn =vo+a*acc[j+1]+b*acc[j]+c*acc[j+2]+(1.0-a-b-c)*acc[j-1];
 	     }
 	   else 
 	     { 
 
-/*	       a= -.5*cub(jxii)-sqr(jxii)+.6666666667;  */
+/*	       a= -.5*cub(jxii)-sqr(jxii)+.6666666667;
                a=twothirds -jxii*jxii*( 1.0 + 0.5*jxii);
 
-/*	       b=.5*cub(jxii+1)-sqr(jxii+1)+.6666666667;  */
+/*	       b=.5*cub(jxii+1)-sqr(jxii+1)+.6666666667;
 	       b=onesix + 0.5 * jxii*(-1.0 + jxii*( 1.0 + jxii));
 
-/*	       c= cub(jxii-1)/6.0+sqr(jxii-1)+2*(jxii-1)+1.3333333;  */
+/*	       c= cub(jxii-1)/6.0+sqr(jxii-1)+2*(jxii-1)+1.3333333;
 	       c=onesix+ onesix*jxii*(3+jxii*(3+jxii));
 
 	       vn =vo+a*acc[j+1]+b*acc[j+2]+c*acc[j]+(1.0-a-b-c)*acc[j+3];
@@ -189,3 +189,4 @@ if (ae != ael)
        break;
   }
 }
+*/

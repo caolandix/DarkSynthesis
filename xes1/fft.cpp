@@ -1,10 +1,13 @@
 /* n must be a power of two. For most PC c's, an int is 16 bits,signed.
    In practice, then, n < 2**15 .                                     */
 
+/*
 #define FALSE 0
 #define TRUE  1
-#include <math.h>
 
+#include <math.h>
+*/
+/*
 cpft(r,i,n,incp,signp)
 float r[], i[], signp;
 int n,incp;
@@ -199,6 +202,7 @@ int n,incp;
     } while (lp < lm);
   }
 }
+  */
 
 
 

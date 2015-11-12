@@ -36,7 +36,16 @@ SOURCES += main.cpp \
     physeqsolverdelegate.cpp \
     physeqsolveritem.cpp \
     physvectordataobj.cpp \
-    physparticledataobj.cpp
+    physparticledataobj.cpp \
+    xes1/es1.cpp \
+    xes1/fft.cpp \
+    xes1/fields.cpp \
+    xes1/init.cpp \
+    xes1/initwin.cpp \
+    xes1/move.cpp \
+    xes1/set.cpp \
+    xes1/physelectrostatic.cpp \
+    xes1/accel.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -62,7 +71,9 @@ HEADERS  += cmainwindow.h \
     physeqsolverdelegate.h \
     physeqsolveritem.h \
     physvectordataobj.h \
-    physparticledataobj.h
+    physparticledataobj.h \
+    xes1/es1.h \
+    xes1/physelectrostatic.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui

@@ -1,4 +1,6 @@
-#include "es1.h"
+// #include "es1.h"
+
+/*
 
 #define Zero_Order           0
 #define First_Order          1
@@ -9,10 +11,10 @@
 
 #define sqr(x) ((x)*(x))
 
+*/
 
-
-#define AKPERP               2.405
-
+// #define AKPERP               2.405
+/*
 fields (ith) 
 int ith; 
 {
@@ -27,14 +29,14 @@ int ith;
     ksqi = (double *)malloc((ng2+1)*sizeof(double));
     sm = (double *)malloc((ng2+1)*sizeof(double));
     ng1 = ng + 1;
-    kperp2 = AKPERP*AKPERP*(la/l*la/l); /* a = charge disk radius*/
+    kperp2 = AKPERP*AKPERP*(la/l*la/l); // a = charge disk radius
     for (k=1;k<=ng2;k++) {
       kdx2 = (PI/ng)*k;
       if ((a1 != 0.0) || (a2 != 0.0)) {
 	if (k < ng2) temp = tan(kdx2);
 	else         temp = 10000.0;
 	temp *= temp;
-	temp *= temp; /* suspect overflows at k=ng2 */
+    temp *= temp; // suspect overflows at k=ng2
 	temp1 = sin(kdx2);
 	temp1 *= temp1;
 	sm[k] = exp(a1*temp1 - a2*temp);
@@ -117,5 +119,4 @@ int ith;
   }
   ael = 1.0;
 }
-
-
+*/

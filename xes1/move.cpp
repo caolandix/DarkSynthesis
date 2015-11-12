@@ -1,5 +1,5 @@
-#include "es1.h"
-
+// #include "es1.h"
+/*
 #define Zero_Order   0
 #define First_Order  1
 #define Quadratic_Spline 2
@@ -24,7 +24,7 @@ float q;
   register int i, j;
   float xn,qdx,drho;
   float a,b,c,xii;
-  float jxii;  /*  = j-xii:  we use it so much it's worth defining it.  */
+  float jxii;  // = j-xii:  we use it so much it's worth defining it.
   
   il = ilp;
   iu = iup;
@@ -62,20 +62,16 @@ float q;
       x[i] += vx[i];
       if (x[i] < 0.0) x[i] += xn;
       else if (x[i] >= xn) x[i] -= xn;
-      xii=x[i];     /*  By looking up x[i] and storing it in xii, I save
-			three additions--I must do an addition every
-			time I use a subscript!  */
+      xii=x[i];     // By looking up x[i] and storing it in xii, I save three additions --
+            // I must do an addition every time I use a subscript!
 
 
-      j = xii + 0.5;     /*  Extract the nearest grid point:
-			      using truncation to do rounding- j is int. */
+      j = xii + 0.5;     // Extract the nearest grid point: using truncation to do rounding- j is int.
 
-      a=0.75 - sqr(j - xii);  /*  Get the coefficient for the nearest 
-				grid point.  It's a function of the distance.*/
+      a=0.75 - sqr(j - xii); // Get the coefficient for the nearest  grid point.  It's a function of the distance.
 
       b=0.5 * sqr( 0.5 - j + xii );
-                           /*  Get the coefficient for the grid location
-			       one to the right. */
+                           // Get the coefficient for the grid location one to the right.
                             
       rho[j+1]+=a * qdx;
       rho[j+2]+=b * qdx;
@@ -98,14 +94,14 @@ float q;
            if ((jxii)>=0) 
              {
 
-/*  Below, the commented out assignments were the original weighting functions.
-   the actual assignments are optimized versions of the comment assignments.*/
-/*	         a=.5*cub(jxii)-sqr(jxii)+twothirds;  */
+// Below, the commented out assignments were the original weighting functions.
+// the actual assignments are optimized versions of the comment assignments.
+// a=.5*cub(jxii)-sqr(jxii)+twothirds;
 	       a=twothirds + jxii*jxii*( -1.0 + 0.5*jxii); 
 
-/*               b= -.5*cub(jxii-1)-sqr(jxii-1)+twothirds;*/
+//               b= -.5*cub(jxii-1)-sqr(jxii-1)+twothirds;
 	       b=onesix+ 0.5*jxii*(1.0+jxii*(1.0 - jxii));
-/*		 c= -cub(jxii+1)/6.0+sqr(jxii+1)-2*(jxii+1)+1.3333333; */
+//		 c= -cub(jxii+1)/6.0+sqr(jxii+1)-2*(jxii+1)+1.3333333;
                c=onesix + onesix*jxii*(-3.0+jxii*(3.0-jxii));  
 
  	       rho[j+1]+=a*qdx;
@@ -115,11 +111,11 @@ float q;
              }
            else
              { 
-/*               a= -.5*cub(jxii)-sqr(jxii)+twothirds;  */
+//               a= -.5*cub(jxii)-sqr(jxii)+twothirds;
                a=twothirds -jxii*jxii*( 1.0 + 0.5*jxii);
-/*               b=.5*cub(jxii+1)-sqr(jxii+1)+twothirds;*/
+//               b=.5*cub(jxii+1)-sqr(jxii+1)+twothirds;
 	       b=onesix + 0.5 * jxii*(-1.0 + jxii*( 1.0 + jxii));
-/*               c= cub(jxii-1)/6.0+sqr(jxii-1)+2*(jxii-1)+1.3333333; */
+//               c= cub(jxii-1)/6.0+sqr(jxii-1)+2*(jxii-1)+1.3333333;
 	       c=onesix+ onesix*jxii*(3+jxii*(3+jxii));
 
  	       rho[j+1]+=a*qdx;
@@ -139,16 +135,4 @@ float q;
     break;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/

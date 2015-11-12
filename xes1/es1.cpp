@@ -34,33 +34,27 @@
 **          Keith Cartwright and Peter Mardahl
 **
 */ 
-
+/*
 #define GLOBALORIGIN
 #include "es1.h"
 #undef GLOBALORIGIN
 #include <xgrafix.h>
 
-main(argc, argv)
-int argc;
-char *argv[];
-{
-  int i;
-  char outfilename[100];
-  int J;
-  float Vmax;
+main(int argc, char **argv) {
+    int i;
+    char outfilename[100];
+    int J;
+    float Vmax;
 
-  FILE * outfile;
-  display_title();
+    FILE * outfile;
+    display_title();
 
-  /*********************************************************/
-  /* Read input file, and initialize params and vars. This */
-  /* function calls SPECIES and LOAD or Restore            */
-  XGInit(argc, argv, &t);
-  Start(argc,argv);
-  InitWindows(argc, argv);    
-/*  history();*/
-  XGStart();
-
+    // Read input file, and initialize params and vars. This function calls SPECIES and LOAD or Restore
+    XGInit(argc, argv, &t);
+    Start(argc,argv);
+    InitWindows(argc, argv);
+    history();
+    XGStart();
 }
 
 
@@ -73,9 +67,7 @@ void XGMainLoop()
 
   FILE * outfile;
 
-  /*********************************************************/
-  /* If collisions are included in the simulation load the */
-  /* ion and electron-neutral collision cros-sections     */
+  // If collisions are included in the simulation load the ion and electron-neutral collision cros-sections
 
 
 
@@ -87,7 +79,7 @@ void XGMainLoop()
     }
     for (i=1;i <= ng;i++) rho[i] = rho0;  
     rho[ng1] = 0.0;
-    rho[ng+2]=rho[0]=0.0;    /* ch:zeroing all extra points */
+    rho[ng+2]=rho[0]=0.0;    // ch:zeroing all extra points
     
     for (i=1; i <= nsp; i++) move(ins[i],ins[i+1]-1,qs[i]);
 
@@ -110,9 +102,6 @@ void XGMainLoop()
 
 }
 
-
-/****************************************************************/
-
 display_title()
 {
   printf("\n\nES1 - Electrostatic 1 Dimensional Code\n");
@@ -122,8 +111,6 @@ display_title()
   printf("University of California - Berkeley\n");
 }
 
-/****************************************************************/
-
 Start(argc,argv) 
 int argc;
 char *argv[];
@@ -131,8 +118,7 @@ char *argv[];
   char a_char[80];
   int i, j;
   
-  /**********************************************************/
-  /* Setting the global parameters to their default values. */
+  // Setting the global parameters to their default values.
   
   l=6.283185307;
   dt=0.2;
@@ -144,23 +130,12 @@ char *argv[];
   ec=0;
   
   ins[1] = 1;
-  vbins[1] = 1;  /*  sets up the start of vbin.  */
+  vbins[1] = 1;  // sets up the start of vbin.
   interval=1;
-  /***********************************************************/
   
   if (!WasInputFileGiven) InputDeck = fopen("es1data","r");
   else InputDeck = fopen(theInputFile,"r");
   
-/*  if (argc >1 && !InputDeck)
-  {
-    for (i=0; argv[1][i] != 0; i++) a_char[i] = argv[1][i];
-    a_char[i++] = '.';		
-    a_char[i++] = 'i';
-    a_char[i++] = 'n';
-    a_char[i++] = 'p';
-    a_char[i++] = 0;
-    InputDeck = fopen(a_char,"r");
-  } */
   if (!InputDeck)
   {
     printf("\nCan't find input file %s\n",argv[1]);
@@ -168,12 +143,12 @@ char *argv[];
     exit(-1);
   }
   
-  /* read lines until we get to numbers */
+  // read lines until we get to numbers
   
   while (fscanf(InputDeck,"%d %g %g %d %d %g %d",
 		&nsp, &l, &dt, &nt, &mmax, &la, &accum) <7)
     fscanf(InputDeck, "%s", a_char);
-  /* note: la is l/a */
+  // note: la is l/a
   
   while (fscanf(InputDeck," %d %d %d %g %g %g %g %g",
 		&ng, &iw, &ec, &epsi, &a1, &a2, &e0, &w0) < 8)
@@ -216,9 +191,7 @@ char *argv[];
   ng1= ng+1;
   k_hi= ng/2; 
   
-  /*******************************/
-  /* Allocating space for arrays */
-  
+  // Allocating space for arrays
   nms= (float *)malloc((nsp+1)*sizeof(float));
   ms = (float *)malloc((nsp+1)*sizeof(float));
   qs = (float *)malloc((nsp+1)*sizeof(float));
@@ -270,8 +243,7 @@ char *argv[];
   v_array = (float *)malloc( NVBINMAX*nsp * sizeof(float));
   for(i=0; i<nsp*NVBINMAX; i++) vbin_inst[i]= 0.0;
 
-  if (!x || !vx || !vy || !vbint || !vbin_inst || !dvbin || !v_array )
-  {
+  if (!x || !vx || !vy || !vbint || !vbin_inst || !dvbin || !v_array ) {
     printf("START: Could not get enough memory for x or v's.\n");
     exit(1);
   }
@@ -283,7 +255,7 @@ char *argv[];
   
   for (i=1;i <= nsp;i++) 
     init(&ins[i],&ins[i+1],&ms[i],&qs[i],&ts[i],&nms[i],&vbins[i],&vbins[i+1],&dvbin[i],&vbinstart[i],&nvbin[i]);
-  /* added vbins to param list */
+  // added vbins to param list
   fclose(InputDeck);
   
   for (i=1; i<= nsp; i++) np[i]= ins[i+1] -ins[i];
@@ -296,7 +268,7 @@ char *argv[];
       pxs[i][j] = 0.0;
     }
   }
-  rho[1]+=rho[ng1];   /*  These resolve the periodic boundary conditions.  */
+  rho[1]+=rho[ng1];   // These resolve the periodic boundary conditions.
   rho[2]+=rho[ng+2];
   rho[ng]+=rho[0];
   rho[0]=rho[ng];
@@ -306,22 +278,22 @@ char *argv[];
   
   for (i=1; i <= nsp; i++) {
     setv(ins[i], ins[i+1]-1, qs[i], ms[i], ts[i], &pxs_hist[i], &kes_hist[i]);
-    /*  scale all the velocities  properly */
+
+    // scale all the velocities  properly
     dvbin[i] *= dt/dx;
     vbinstart[i] *= dt/dx;  
   }
   startvel();
 }
-
-/**************************************************************/
-
+*/
+/*
 history()
 {
   int i, j, k;
   static int count=1;
   
-  if (--count) return;				/* only accum every interval steps */
-  if (hist_hi >= HISTMAX)			/* comb time histories */
+  if (--count) return;				// only accum every interval steps
+  if (hist_hi >= HISTMAX)			// comb time histories
   {
     for (j=0; j< nsp; j++)
     {
@@ -376,23 +348,19 @@ history()
 
 
 **************************************************************/
-
+/*
 velocity()
 {
   int  s,nbinmaxi;
   register int i,j;
   static int count=5;
   float pval;
-  float *vsps; 	  /*  vsps is a pointer to the part of the
-		      velocity bin array where the species 
-		      starts  */
-  
-  float vst,dvt;		/*  this is the vstart[isp],dv[isp]  */
-  
-  if(!accum) return; /* if the accum is set to zero, don't bother making
-			a current velocity distribution profile.  */
+  float *vsps; 	  // vsps is a pointer to the part of the velocity bin array where the species starts
+  float vst,dvt;	// this is the vstart[isp],dv[isp]
+  if(!accum) return; // if the accum is set to zero, don't bother making a current velocity distribution profile.
   pval=1.0/accum;
-  /*  This code does the velocity-distribution stuff.  */
+
+  // This code does the velocity-distribution stuff.
   count--;
   if(!count ) {
     for (j=0; j<=nvbin[1];j++) vbint[j]=0.0;
@@ -419,6 +387,7 @@ velocity()
       }	
   }
 }
+  */
   
 /************************************************************************/
 /* frand() returns values 0 through 1.                                  */
@@ -436,7 +405,7 @@ velocity()
 /* seed = q*hi + lo.  Then                                              */
 /* a*seed = a*q*hi + lo = (m - r)*hi + a*lo = (a*lo - r*hi) + m*hi,     */
 /* and new seed = a*lo - r*hi unless negative; if so, then add m.       */
-
+/*
 float frand()
 {
   long a = 16807, m = 2147483647, q = 127773, r = 2836;
@@ -447,11 +416,11 @@ float frand()
   hi = seed/q;
   lo = seed - q*hi;
   seed = a*lo - r*hi;
-  /* "seed" will always be a legal integer of 32 bits (including sign). */
+  // "seed" will always be a legal integer of 32 bits (including sign).
   if(seed <= 0) seed = seed + m;
   fnumb = seed/2147483646.0;
 
   return(fnumb);
 }
-
+/*
 /***********************************************************************/

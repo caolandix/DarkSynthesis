@@ -1,6 +1,7 @@
-#include "es1.h"
+// #include "es1.h"
   
-/*  I removed rho0, since it is not used.*/
+// I removed rho0, since it is not used.
+/*
 init(il1,il2,m,q,t,nm,vbin1,vbin2,dvb,vstart,nvbin)
      int *il1,*il2,*vbin1,*vbin2,*nvbin;
      float *m,*q,*t,*nm,*dvb,*vstart;
@@ -13,10 +14,10 @@ init(il1,il2,m,q,t,nm,vbin1,vbin2,dvb,vstart,nvbin)
   char a_char[80];
 
 
-  *dvb=1.0;  /*  this is a huge default.  */
+  *dvb=1.0;  // this is a huge default.
 
   printf("\n");
-  while (fscanf(InputDeck, "%d %d %d %d ", &n, &nv2, &nlg, &mode) < 4)  /*  added nbins  */
+  while (fscanf(InputDeck, "%d %d %d %d ", &n, &nv2, &nlg, &mode) < 4)  // added nbins
     fscanf(InputDeck,"%s",a_char);
   while (fscanf(InputDeck, "%g %g %g %g %g %g", &wp, &wc, &qm, &vt1, &vt2, &v0) < 6)
     fscanf(InputDeck,"%s",a_char);
@@ -67,8 +68,7 @@ init(il1,il2,m,q,t,nm,vbin1,vbin2,dvb,vstart,nvbin)
   if(vt1 + vt2 > 0.0) 
   {
     *vstart= v0 - 5.0*(vt1 + vt2);  
-    *dvb = 10.0* (vt1 + vt2) / nbins;  /*  so that the distribution goes from
-				      v0-5*vt to v0+5*vt  */
+    *dvb = 10.0* (vt1 + vt2) / nbins;  // so that the distribution goes from v0-5*vt to v0+5*vt
    }
   else if (fabs(v0)>0)
   {
@@ -87,7 +87,7 @@ init(il1,il2,m,q,t,nm,vbin1,vbin2,dvb,vstart,nvbin)
     *dvb=1/nbins;
   }
   
-  /*  setup v_array for this species  */
+  // setup v_array for this species
   for(i= *vbin1;i< *vbin2;i++)
 	v_array[i]= (*vstart + (i-*vbin1+0.5)*(*dvb));
 
@@ -193,20 +193,17 @@ init(il1,il2,m,q,t,nm,vbin1,vbin2,dvb,vstart,nvbin)
 }
 
 
-/*  all this function does is set up the initial velocity distribution diagnostic
-  to reflect the startup values.  */
+// all this function does is set up the initial velocity distribution diagnostic to reflect the startup values.
 startvel()
 {
   int i,j,s,nbinmaxi;
-  float *vsps;          /*  vsps is a pointer to the part of the
-                        velocity bin array where the species
-                        starts  */
+  float *vsps;          // vsps is a pointer to the part of the velocity bin array where the species starts
 
-  float vst,dvt;        /*  this is the vstart[isp],dv[isp]  */
+  float vst,dvt;        // this is the vstart[isp],dv[isp]
   float *temp;
 
 
-  /*  This code does the velocity-distribution stuff.  */
+  // This code does the velocity-distribution stuff.
   for(i=1;i<=nsp;i++) {
     vsps = & (vbin[vbins[i]] );
     vst=vbinstart[i];
@@ -220,3 +217,4 @@ startvel()
       }   
   }
 }
+*/

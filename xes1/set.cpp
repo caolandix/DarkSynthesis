@@ -1,6 +1,6 @@
 
-#include "es1.h"
-
+// #include "es1.h"
+/*
 #define Zero_Order   0
 #define First_Order  1
 #define Quadratic_Spline 2
@@ -62,22 +62,18 @@ float q,rhos;
 			    if (x[i] < 0.0) x[i] += xn;
 			    else if (x[i] >= xn) x[i] -= xn;
 			    xii=x[i];
-			    /*  By looking up x[i] and storing it in xii, save
-				three additions--I must do an addition every
-				time I use a subscript!  */
+                // By looking up x[i] and storing it in xii, save three additions --
+                //  I must do an addition every time I use a subscript!
 
 			    j = xii + 0.5;    
-			    /*  Extract the nearest grid point:
-				using truncation to do rounding- j is int. */
+                // Extract the nearest grid point: using truncation to do rounding- j is int.
 
 			    a=0.75 - sqr(j - xii);  
-			    /*  Get the coefficient for the nearest 
-				grid point.  It's a function of the distance.*/
+                // Get the coefficient for the nearest grid point.  It's a function of the distance.
 			    
 			    b=0.5 * sqr( 1.5 -  (j+1) + xii );
-			    /*  Get the coefficient for the grid location
-				one to the right.  Since (j+2)-xii is aways
-				postive the fabs doesn`t need to be there. */
+                // Get the coefficient for the grid location one to the right.  Since (j+2)-xii is aways
+                // postive the fabs doesn`t need to be there.
 			    
                             
 			    rho[j+1]+=a * qdx;
@@ -127,8 +123,6 @@ float q,rhos;
 		      }
 }
 
-/****************************************************************/
-
 setv(il, iu, q, m, t, p, ke)
 int il, iu;
 float q, m, t, *p, *ke;
@@ -153,15 +147,4 @@ float q, m, t, *p, *ke;
 	  vx[i] *= dtdx;
 	accel(il, iu, -0.5*q, m, 0.0, p, ke);
 }
-
-
-
-
-
-
-
-
-
-
-
-
+*/
