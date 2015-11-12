@@ -44,48 +44,21 @@ void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
     }
 }
 
-void PhysObjectNavigator::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-    qDebug("PhysObjectNavigator::currentChanged()");
-
-    int prevRow = previous.row();
-    int currRow = current.row();
-/*
-    QGraphicsItem *pCurrObj = NULL;
-    QGraphicsItem *pPrevObj = NULL;
-
-    if (!pCurrObj && !pPrevObj)
-        return;
-
-    // Changing the currentitem
-    // If we're brand new then there is no pPrevObj
-    if (!pPrevObj)
-        emit changeObj(pCurrObj, pPrevObj);
-    else {
-        if (pPrevObj ->type() != pCurrObj ->type())
-            emit changeObj(pCurrObj, pPrevObj);
-        else
-            emit updateObj(pCurrObj);
-    }
-*/
-}
-
 void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) {
     qDebug("PhysObjectNavigator::selectionChanged()");
     QModelIndex index;
     QModelIndexList items = selected.indexes();
 
-
     index = items.at(0);
     QTreeWidgetItem *pItem = itemFromIndex(index);
     if (pItem) {
         QVariant itemData = pItem ->data(0, Qt::UserRole);
-
-        bool bVal = true;
+        QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
+        m_pPrevObj = m_pCurrObj;
+        m_pCurrObj = pObj;
     }
 
     // Changing the currentitem
-    /*
-
     // If we're brand new then there is no pPrevObj
     if (!m_pPrevObj)
         emit changeObj(m_pCurrObj, m_pPrevObj);
@@ -95,7 +68,6 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
         else
             emit updateObj(m_pCurrObj);
     }
-    */
 }
 
 void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
@@ -131,7 +103,7 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
             pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
 
             QVariant var;
-            var.setValue(pObj);
+            var.setValue(static_cast<QGraphicsItem *>(pObj));
             pChildItem -> setData(0, Qt::UserRole, var);
             pParentItem -> addChild(pChildItem);
             m_pPrevObj = m_pCurrObj;
@@ -154,10 +126,9 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
         pChildItem -> setText(1, pObj -> TypeName(pObj -> type()));
 
         QVariant var;
-        var.setValue(pObj);
+        var.setValue(static_cast<QGraphicsItem *>(pObj));
         pChildItem -> setData(0, Qt::UserRole, var);
         pTopLevelItem -> addChild(pChildItem);
-
         m_pPrevObj = m_pCurrObj;
         m_pCurrObj = pObj;
         setCurrentItem(pChildItem);
@@ -175,7 +146,7 @@ void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {
     pTopLevelItem -> setText(1, pObj -> TypeName(pObj -> type()));
 
     QVariant var;
-    var.setValue(pObj);
+    var.setValue(static_cast<QGraphicsItem *>(pObj));
     pTopLevelItem -> setData(0, Qt::UserRole, var);
     addTopLevelItem(pTopLevelItem);
 

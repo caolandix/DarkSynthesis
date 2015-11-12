@@ -19,7 +19,6 @@ public:
     QGraphicsItem *currObj() const { return m_pCurrObj; }
     QGraphicsItem *prevObj() const { return m_pPrevObj; }
 protected:
-    void currentChanged(const QModelIndex &, const QModelIndex &);
     void selectionChanged(const QItemSelection &, const QItemSelection &);
     void dropEvent(QDropEvent *);
 private:
