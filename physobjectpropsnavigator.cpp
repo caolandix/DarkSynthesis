@@ -132,21 +132,17 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
             destroyPrevTable(pPrev);
 
         // Column 0, row 0
-        QTableWidgetItem *pItem = new QTableWidgetItem("Magnitude");
         insertRow(0);
-        setItem(0, 0, pItem);
+        setItem(0, 0, createRowItem(QString("Magnitude")));
         // Column 0, row 1
-        pItem = new QTableWidgetItem("Theta - Angle");
         insertRow(1);
-        setItem(1, 0, pItem);
+        setItem(1, 0, createRowItem(QString("Theta - Angle")));
         // Column 0, row 2
-        pItem = new QTableWidgetItem("Theta - Axis Orientation");
         insertRow(2);
-        setItem(2, 0, pItem);
+        setItem(2, 0, createRowItem(QString("Theta - Axis Orientation")));
         // Column 0, row 3
-        pItem = new QTableWidgetItem("Associated Particle");
         insertRow(3);
-        setItem(3, 0, pItem);
+        setItem(3, 0, createRowItem(QString("Associated Particle")));
 
         // Column 1
         setCellWidget(0, 1, m_pVectorMag = new QDoubleSpinBox(this));
@@ -162,14 +158,14 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
     if (pObj) {
         if (pPrev)
             destroyPrevTable(pPrev);
-
+        QTableWidgetItem *pItem = NULL;
         // Column 0
-        QTableWidgetItem *pItem = new QTableWidgetItem("Name");
         insertRow(0);
-        setItem(0, 0, pItem);
-        pItem = new QTableWidgetItem("Mass");
+        setItem(0, 0, pItem = createRowItem(QString("Name")));
+        pItem << pObj ->Name();
         insertRow(1);
-        setItem(1, 0, pItem);
+        setItem(1, 0, pItem = createRowItem(QString("Mass")));
+        pItem << QString::number(pObj ->mass());
     }
 }
 
@@ -199,6 +195,7 @@ void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
             }
             break;
         case PhysBaseItem::ParticleType:
+            if (m_pParticleName) { delete m_pParticleName; m_pParticleName = NULL; }
             break;
         case PhysBaseItem::CartesianGraphType:
             if (m_pXaxisTickInc) {
