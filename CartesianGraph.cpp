@@ -81,6 +81,12 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
     return *this;
 }
 
+void CartesianGraph::onPropChange(const QString &str) {
+    qDebug("CartesianGraph::onPropChange(): updating info");
+
+    update();
+}
+
 QRectF CartesianGraph::boundingRect() const {
     return QRectF(-200, -200, 400, 400);
 }

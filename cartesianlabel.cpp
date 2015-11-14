@@ -91,6 +91,7 @@ QVariant CartesianLabel::itemChange(QGraphicsItem::GraphicsItemChange change, co
 
 void CartesianLabel::SetTextInteraction(bool bOn, bool bSelectAll) {
     if (bOn && textInteractionFlags() == Qt::NoTextInteraction) {
+
         // switch on editor mode:
         setTextInteractionFlags(Qt::TextEditorInteraction);
 

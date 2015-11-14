@@ -1,3 +1,5 @@
+#include <QTime>
+
 #include <math.h>
 #include "physelectrostatic.h"
 #include "physscience.h"
@@ -1093,15 +1095,15 @@ void PhysElectroStatic::velocity() {
     // This code does the velocity-distribution stuff.
     count--;
     if (!count) {
-        for (int j=0; j<=nvbin[1];j++)
-            vbint[j]=0.0;
-        for(int i=1;i<=nsp;i++) {
-            for (int j=vbins[i];j<=vbins[i]+nvbin[i];j++) {
-                vbin[j]=ms[i]*vbin_inst[j];
-                vbin_inst[j]=0.0;
+        for (int j = 0; j <= nvbin[1]; j++)
+            vbint[j] = 0.0;
+        for(int i = 1; i <= nsp; i++) {
+            for (int j = vbins[i]; j <= vbins[i] + nvbin[i]; j++) {
+                vbin[j] = ms[i] * vbin_inst[j];
+                vbin_inst[j] = 0.0;
             }
-            for (int j=0; j<=nvbin[1];j++)
-                vbint[j]+= vbin[j+vbins[i]];
+            for (int j = 0; j <= nvbin[1]; j++)
+                vbint[j] += vbin[j + vbins[i]];
         }
     }
     if (!count)
@@ -1110,8 +1112,8 @@ void PhysElectroStatic::velocity() {
         vsps = & (vbin_inst[vbins[i]]);
         vst = vbinstart[i];
         dvt = dvbin[i];
-        nbinmaxi=nvbin[i];
-        if (nbinmaxi>0) {
+        nbinmaxi = nvbin[i];
+        if (nbinmaxi > 0) {
             for (int j = ins[i]; j < ins[i + 1]; j++) {
                 s = (vx[j] - vst) / dvt;
                 if (s >= 0 && s < nbinmaxi)
@@ -1150,10 +1152,10 @@ void PhysElectroStatic::history() {
         hist_hi = i;
         interval *= 4;
     }
-    t_array[hist_hi]= t;
-    for (int i = 0; i< mmax; i++)
+    t_array[hist_hi] = t;
+    for (int i = 0; i < mmax; i++)
         esem[i][hist_hi] = fabs(esem_hist[i + 1]) + 1e-30;
-    ke[hist_hi]= 1e-30;
+    ke[hist_hi] = 1e-30;
     for (int j = 0; j < nsp; j++) {
         kes[j][hist_hi] = kes_hist[j + 1];
         ke[hist_hi] += kes_hist[j + 1];
@@ -1166,6 +1168,11 @@ void PhysElectroStatic::history() {
 }
 
 double PhysElectroStatic::frand() {
+
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+
+    return static_cast<qreal>(qrand()) / RAND_MAX ;
+    /*
     long a = 16807, m = 2147483647, q = 127773, r = 2836;
     long hi, lo;
     static long seed = 31207321;
@@ -1180,4 +1187,5 @@ double PhysElectroStatic::frand() {
         seed += m;
     fnumb = seed / 2147483646.0;
     return(fnumb);
+    */
 }

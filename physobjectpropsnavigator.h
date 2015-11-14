@@ -10,6 +10,7 @@
 #include "cartesiangraph.h"
 #include "physparticle.h"
 #include "physvector.h"
+#include "physctrllineedit.h"
 
 class PhysObjectPropsNavigator : public QTableWidget {
     Q_OBJECT
@@ -38,17 +39,18 @@ private:
     QDoubleSpinBox *m_pXaxisTickInc;
     QDoubleSpinBox *m_pXaxisExtent;
     QDoubleSpinBox *m_pYaxisExtent;
-    QLineEdit *m_pCartesianGraphName;
+    PhysCtrlLineEdit *m_pCartesianGraphName;
 
     // PhysVectors
     QDoubleSpinBox *m_pVectorMag;
     QDoubleSpinBox *m_pVectorThetaAngle;
     QComboBox *m_pVectorThetaAxisOrient;
-    QLineEdit *m_pVectorAssocParticle;
-    QLineEdit *m_pVectorName;
+    PhysCtrlLineEdit *m_pVectorAssocParticle;
+    PhysCtrlLineEdit *m_pVectorName;
 
     // PhysParticles
-    QLineEdit *m_pParticleName;
+    PhysCtrlLineEdit *m_pParticleName;
+    PhysCtrlLineEdit *m_pParticleMass;
 
 };
 

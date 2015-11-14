@@ -148,7 +148,9 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
         setCellWidget(0, 1, m_pVectorMag = new QDoubleSpinBox(this));
         setCellWidget(1, 1, m_pVectorThetaAngle = new QDoubleSpinBox(this));
         setCellWidget(2, 1, m_pVectorThetaAngle = new QDoubleSpinBox(this));
-        setCellWidget(3, 1, m_pVectorAssocParticle = new QLineEdit(this));
+        setCellWidget(3, 1, m_pVectorAssocParticle = new PhysCtrlLineEdit(this));
+
+        // set data
     }
 }
 
@@ -162,10 +164,14 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
         // Column 0
         insertRow(0);
         setItem(0, 0, pItem = createRowItem(QString("Name")));
-        pItem << pObj ->Name();
         insertRow(1);
         setItem(1, 0, pItem = createRowItem(QString("Mass")));
-        pItem << QString::number(pObj ->mass());
+
+        // column 1
+        setCellWidget(0, 1, m_pParticleName = new PhysCtrlLineEdit(this));
+        setCellWidget(1, 1, m_pParticleMass = new PhysCtrlLineEdit(this));
+        m_pParticleName ->setText(pObj ->Name());
+        m_pParticleMass ->setText(QString("%1").arg(pObj -> mass(), 0, 'f', 6));
     }
 }
 

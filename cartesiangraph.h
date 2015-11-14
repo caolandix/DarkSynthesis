@@ -67,6 +67,8 @@ private:
     CartesianGraphDataObj *m_pDataObj;
     int m_borderWidth;
     QString m_Name;
+public slots:
+    void onPropChange(const QString &);
 };
 Q_DECLARE_METATYPE(CartesianGraph *)
 #endif // CARTESIANGRAPH_H
