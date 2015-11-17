@@ -14,19 +14,21 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *parent) : QTableView(par
     m_pFormulaInput = new QLineEdit();
 
 /*
-    cellLabel = new QLabel(parent ->toolBar);
-    cellLabel -> setMinimumSize(80, 0);
+    m_pCellLabel = new QLabel(parent ->toolBar);
+    m_pCellLabel -> setMinimumSize(80, 0);
 
-    toolBar -> addWidget(cellLabel);
+    toolBar -> addWidget(m_pCellLabel);
     toolBar -> addWidget(m_pFormulaInput);
 */
+
+    m_pActAppendTimeColumn = m_pActInsertTimeColumn = m_pActRemoveTimeColumn = NULL;
+
     m_pTable = new QTableWidget(rows, cols, this);
     m_pTable -> setSizeAdjustPolicy(QTableWidget::AdjustToContents);
     for (int c = 0; c < cols; ++c) {
         QString character(QChar('A' + c));
         m_pTable -> setHorizontalHeaderItem(c, new QTableWidgetItem(character));
     }
-
     m_pTable -> setItemPrototype(m_pTable -> item(rows - 1, cols - 1));
     m_pTable -> setItemDelegate(new PhysEqSolverDelegate());
 
@@ -35,7 +37,6 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *parent) : QTableView(par
     setupMenuBar();
     setupContents();
     setupContextMenu();
-    // setCentralWidget(m_pTable);
 
     // statusBar();
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateStatus(QTableWidgetItem *)));
@@ -48,52 +49,27 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *parent) : QTableView(par
 }
 
 void PhysEqSolver::createActions() {
-    cell_sumAction = new QAction(tr("Sum"), this);
-    connect(cell_sumAction, SIGNAL(triggered()), this, SLOT(actionSum()));
+    m_pActAppendTimeColumn = new QAction(tr("Append Time Column"), this);
+    connect(m_pActAppendTimeColumn, SIGNAL(triggered()), this, SLOT(actionAppendTimeColumn()));
+    m_pActInsertTimeColumn = new QAction(tr("Insert Time Column"), this);
+    connect(m_pActInsertTimeColumn, SIGNAL(triggered()), this, SLOT(actionInsertTimeColumn()));
+    m_pActRemoveTimeColumn = new QAction(tr("Remove Time Column"), this);
+    connect(m_pActRemoveTimeColumn, SIGNAL(triggered()), this, SLOT(actionRemoveTimeColumn()));
+}
 
-    cell_addAction = new QAction(tr("&Add"), this);
-    cell_addAction->setShortcut(Qt::CTRL | Qt::Key_Plus);
-    connect(cell_addAction, SIGNAL(triggered()), this, SLOT(actionAdd()));
 
-    cell_subAction = new QAction(tr("&Subtract"), this);
-    cell_subAction->setShortcut(Qt::CTRL | Qt::Key_Minus);
-    connect(cell_subAction, SIGNAL(triggered()), this, SLOT(actionSubtract()));
+void PhysEqSolver::actionAppendTimeColumn() {
+}
 
-    cell_mulAction = new QAction(tr("&Multiply"), this);
-    cell_mulAction->setShortcut(Qt::CTRL | Qt::Key_multiply);
-    connect(cell_mulAction, SIGNAL(triggered()), this, SLOT(actionMultiply()));
+void PhysEqSolver::actionInsertTimeColumn() {
+}
 
-    cell_divAction = new QAction(tr("&Divide"), this);
-    cell_divAction->setShortcut(Qt::CTRL | Qt::Key_division);
-    connect(cell_divAction, SIGNAL(triggered()), this, SLOT(actionDivide()));
-
-    fontAction = new QAction(tr("Font..."), this);
-    fontAction->setShortcut(Qt::CTRL | Qt::Key_F);
-    connect(fontAction, SIGNAL(triggered()), this, SLOT(selectFont()));
-
-    colorAction = new QAction(QPixmap(16, 16), tr("Background &Color..."), this);
-    connect(colorAction, SIGNAL(triggered()), this, SLOT(selectColor()));
-
-    clearAction = new QAction(tr("Clear"), this);
-    clearAction->setShortcut(Qt::Key_Delete);
-    connect(clearAction, SIGNAL(triggered()), this, SLOT(clear()));
-
-    exitAction = new QAction(tr("E&xit"), this);
-    connect(exitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-
-    printAction = new QAction(tr("&Print"), this);
-    connect(printAction, SIGNAL(triggered()), this, SLOT(print()));
-
-    firstSeparator = new QAction(this);
-    firstSeparator -> setSeparator(true);
-
-    secondSeparator = new QAction(this);
-    secondSeparator -> setSeparator(true);
+void PhysEqSolver::actionRemoveTimeColumn() {
 }
 
 void PhysEqSolver::setupMenuBar() {
     /*
-    QMenu *pFileMenu = menuBar() -> addMenu(tr("&File"));
+    QMenu *pFileMenu = menuBar() -> -> addMenu(tr("&File"));
     pFileMenu -> addAction(printAction);
     pFileMenu -> addAction(exitAction);
 
@@ -110,12 +86,8 @@ void PhysEqSolver::setupMenuBar() {
 }
 
 void PhysEqSolver::updateStatus(QTableWidgetItem *pItem) {
-    /*
-    if (pItem && pItem == m_pTable -> currentItem()) {
-        statusBar() -> showMessage(pItem -> data(Qt::StatusTipRole).toString(), 1000);
-        cellLabel -> setText(tr("Cell: (%1)").arg(encode_pos(m_pTable -> row(pItem), m_pTable -> column(pItem))));
-    }
-    */
+    if (pItem && pItem == m_pTable -> currentItem())
+        m_pCellLabel -> setText(tr("Cell: (%1)").arg(encode_pos(m_pTable -> row(pItem), m_pTable -> column(pItem))));
 }
 
 void PhysEqSolver::updateColor(QTableWidgetItem *pItem) {
@@ -398,11 +370,11 @@ void PhysEqSolver::setupContents() {
     titleFont.setBold(true);
 
     // column 0
-    m_pTable -> setItem(0, 0, new PhysEqSolverItem("Item"));
+    m_pTable -> setItem(0, 0, new PhysEqSolverItem("t0"));
     m_pTable -> item(0, 0) -> setBackgroundColor(titleBackground);
-    m_pTable -> item(0, 0) -> setToolTip("This column shows the purchased item/service");
+    m_pTable -> item(0, 0) -> setToolTip("This column shows the values at a specific time slice");
     m_pTable -> item(0, 0) -> setFont(titleFont);
-
+/*
     m_pTable -> setItem(1, 0, new PhysEqSolverItem("AirportBus"));
     m_pTable -> setItem(2, 0, new PhysEqSolverItem("Flight (Munich)"));
     m_pTable -> setItem(3, 0, new PhysEqSolverItem("Lunch"));
@@ -415,13 +387,14 @@ void PhysEqSolver::setupContents() {
 
     m_pTable -> item(9, 0) -> setFont(titleFont);
     m_pTable -> item(9, 0) -> setBackgroundColor(Qt::lightGray);
+*/
 
     // column 1
-    m_pTable -> setItem(0, 1, new PhysEqSolverItem("Date"));
+    m_pTable -> setItem(0, 1, new PhysEqSolverItem("t1"));
     m_pTable -> item(0, 1) -> setBackgroundColor(titleBackground);
     m_pTable -> item(0, 1) -> setToolTip("This column shows the purchase date, double click to change");
     m_pTable -> item(0, 1) -> setFont(titleFont);
-
+/*
     m_pTable -> setItem(1, 1, new PhysEqSolverItem("15/6/2006"));
     m_pTable -> setItem(2, 1, new PhysEqSolverItem("15/6/2006"));
     m_pTable -> setItem(3, 1, new PhysEqSolverItem("15/6/2006"));
@@ -433,77 +406,8 @@ void PhysEqSolver::setupContents() {
 
     m_pTable -> setItem(9, 1, new PhysEqSolverItem());
     m_pTable -> item(9, 1) -> setBackgroundColor(Qt::lightGray);
+    */
 
-    // column 2
-    m_pTable -> setItem(0, 2, new PhysEqSolverItem("Price"));
-    m_pTable -> item(0, 2) -> setBackgroundColor(titleBackground);
-    m_pTable -> item(0, 2) -> setToolTip("This column shows the price of the purchase");
-    m_pTable -> item(0, 2) -> setFont(titleFont);
-
-    m_pTable -> setItem(1, 2, new PhysEqSolverItem("150"));
-    m_pTable -> setItem(2, 2, new PhysEqSolverItem("2350"));
-    m_pTable -> setItem(3, 2, new PhysEqSolverItem("-14"));
-    m_pTable -> setItem(4, 2, new PhysEqSolverItem("980"));
-    m_pTable -> setItem(5, 2, new PhysEqSolverItem("5"));
-    m_pTable -> setItem(6, 2, new PhysEqSolverItem("120"));
-    m_pTable -> setItem(7, 2, new PhysEqSolverItem("300"));
-    m_pTable -> setItem(8, 2, new PhysEqSolverItem("1240"));
-
-    m_pTable -> setItem(9, 2, new PhysEqSolverItem());
-    m_pTable -> item(9, 2) -> setBackgroundColor(Qt::lightGray);
-
-    // column 3
-    m_pTable -> setItem(0, 3, new PhysEqSolverItem("Currency"));
-    m_pTable -> item(0, 3)-> setBackgroundColor(titleBackground);
-    m_pTable -> item(0, 3)-> setToolTip("This column shows the currency");
-    m_pTable -> item(0, 3)-> setFont(titleFont);
-
-    m_pTable -> setItem(1, 3, new PhysEqSolverItem("NOK"));
-    m_pTable -> setItem(2, 3, new PhysEqSolverItem("NOK"));
-    m_pTable -> setItem(3, 3, new PhysEqSolverItem("EUR"));
-    m_pTable -> setItem(4, 3, new PhysEqSolverItem("EUR"));
-    m_pTable -> setItem(5, 3, new PhysEqSolverItem("USD"));
-    m_pTable -> setItem(6, 3, new PhysEqSolverItem("USD"));
-    m_pTable -> setItem(7, 3, new PhysEqSolverItem("USD"));
-    m_pTable -> setItem(8, 3, new PhysEqSolverItem("USD"));
-
-    m_pTable -> setItem(9, 3, new PhysEqSolverItem());
-    m_pTable -> item(9,3)->setBackgroundColor(Qt::lightGray);
-
-    // column 4
-    m_pTable -> setItem(0, 4, new PhysEqSolverItem("Ex. Rate"));
-    m_pTable -> item(0, 4) -> setBackgroundColor(titleBackground);
-    m_pTable -> item(0, 4) -> setToolTip("This column shows the exchange rate to NOK");
-    m_pTable -> item(0, 4) -> setFont(titleFont);
-
-    m_pTable -> setItem(1, 4, new PhysEqSolverItem("1"));
-    m_pTable -> setItem(2, 4, new PhysEqSolverItem("1"));
-    m_pTable -> setItem(3, 4, new PhysEqSolverItem("8"));
-    m_pTable -> setItem(4, 4, new PhysEqSolverItem("8"));
-    m_pTable -> setItem(5, 4, new PhysEqSolverItem("7"));
-    m_pTable -> setItem(6, 4, new PhysEqSolverItem("7"));
-    m_pTable -> setItem(7, 4, new PhysEqSolverItem("7"));
-    m_pTable -> setItem(8, 4, new PhysEqSolverItem("7"));
-
-    m_pTable -> setItem(9, 4, new PhysEqSolverItem());
-    m_pTable -> item(9,4) -> setBackgroundColor(Qt::lightGray);
-
-    // column 5
-    m_pTable -> setItem(0, 5, new PhysEqSolverItem("NOK"));
-    m_pTable -> item(0, 5) -> setBackgroundColor(titleBackground);
-    m_pTable -> item(0, 5) -> setToolTip("This column shows the expenses in NOK");
-    m_pTable -> item(0, 5) -> setFont(titleFont);
-
-    m_pTable -> setItem(1, 5, new PhysEqSolverItem("* C2 E2"));
-    m_pTable -> setItem(2, 5, new PhysEqSolverItem("* C3 E3"));
-    m_pTable -> setItem(3, 5, new PhysEqSolverItem("* C4 E4"));
-    m_pTable -> setItem(4, 5, new PhysEqSolverItem("* C5 E5"));
-    m_pTable -> setItem(5, 5, new PhysEqSolverItem("* C6 E6"));
-    m_pTable -> setItem(6, 5, new PhysEqSolverItem("* C7 E7"));
-    m_pTable -> setItem(7, 5, new PhysEqSolverItem("* C8 E8"));
-    m_pTable -> setItem(8, 5, new PhysEqSolverItem("* C9 E9"));
-    m_pTable -> setItem(9, 5, new PhysEqSolverItem("sum F2 F9"));
-    m_pTable -> item(9, 5) -> setBackgroundColor(Qt::lightGray);
 }
 
 const char *htmlText =

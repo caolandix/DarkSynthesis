@@ -29,6 +29,10 @@ public slots:
     void actionAdd();
     void actionMultiply();
     void actionDivide();
+
+    void actionAppendTimeColumn();
+    void actionInsertTimeColumn();
+    void actionRemoveTimeColumn();
 protected:
     void setupContextMenu();
     void setupContents();
@@ -50,10 +54,13 @@ private:
     QAction *secondSeparator;
     QAction *clearAction;
     QAction *exitAction;
-
     QAction *printAction;
 
-    QLabel *cellLabel;
+    QAction *m_pActAppendTimeColumn;
+    QAction *m_pActInsertTimeColumn;
+    QAction *m_pActRemoveTimeColumn;
+
+    QLabel *m_pCellLabel;
     QTableWidget *m_pTable;
     QLineEdit *m_pFormulaInput;
 
