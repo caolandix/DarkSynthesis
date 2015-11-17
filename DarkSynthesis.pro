@@ -46,7 +46,8 @@ SOURCES += main.cpp \
     xes1/set.cpp \
     xes1/physelectrostatic.cpp \
     xes1/accel.cpp \
-    physctrllineedit.cpp
+    physctrllineedit.cpp \
+    physctrldoublespinbox.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -75,7 +76,8 @@ HEADERS  += cmainwindow.h \
     physparticledataobj.h \
     xes1/es1.h \
     xes1/physelectrostatic.h \
-    physctrllineedit.h
+    physctrllineedit.h \
+    physctrldoublespinbox.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui

@@ -11,11 +11,13 @@
 #include "physparticle.h"
 #include "physvector.h"
 #include "physctrllineedit.h"
+#include "physctrldoublespinbox.h"
 
 class PhysObjectPropsNavigator : public QTableWidget {
     Q_OBJECT
 public:
     PhysObjectPropsNavigator(QWidget * = NULL);
+    virtual ~PhysObjectPropsNavigator();
 
     void buildCartesianGraphTable(CartesianGraph *, QGraphicsItem *);
     void buildVectorTable(PhysVector *, QGraphicsItem *);
@@ -36,14 +38,16 @@ public slots:
 private:
 
     // CartesianGraph
-    QDoubleSpinBox *m_pXaxisTickInc;
-    QDoubleSpinBox *m_pXaxisExtent;
-    QDoubleSpinBox *m_pYaxisExtent;
+    PhysCtrlLineEdit *m_pXaxisLabel;
+    PhysCtrlLineEdit *m_pYaxisLabel;
+    PhysCtrlDoubleSpinBox *m_pAxisTickInc;
+    PhysCtrlDoubleSpinBox *m_pXaxisExtent;
+    PhysCtrlDoubleSpinBox *m_pYaxisExtent;
     PhysCtrlLineEdit *m_pCartesianGraphName;
 
     // PhysVectors
-    QDoubleSpinBox *m_pVectorMag;
-    QDoubleSpinBox *m_pVectorThetaAngle;
+    PhysCtrlDoubleSpinBox *m_pVectorMag;
+    PhysCtrlDoubleSpinBox *m_pVectorThetaAngle;
     QComboBox *m_pVectorThetaAxisOrient;
     PhysCtrlLineEdit *m_pVectorAssocParticle;
     PhysCtrlLineEdit *m_pVectorName;

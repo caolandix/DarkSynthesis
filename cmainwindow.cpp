@@ -70,32 +70,17 @@ void CMainWindow::open() {
     QString filename = QFileDialog::getOpenFileName(this, tr("Open Xml"), ".", tr("Xml files (*.xml)"));
     QFile file(filename);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        std::cerr << "Error: Cannot read file " <<
-            qPrintable(filename) <<
-            ": " <<
-            qPrintable(file.errorString()) <<
-            std::endl;
+        cerr << "Error: Cannot read file " <<
+                qPrintable(filename) << ": " << qPrintable(file.errorString()) << endl;
     }
     QXmlStreamReader XMLReader;
     XMLReader.setDevice(&file);
     ReadXMLFile(XMLReader, file);
     file.close();
-    if (XMLReader.hasError()) {
-        std::cerr <<
-            "Error: Failed to parse file " <<
-            qPrintable(filename) <<
-            ": " <<
-            qPrintable(XMLReader.errorString()) <<
-            std::endl;
-    }
-    else if (file.error() != QFile::NoError) {
-        std::cerr <<
-            "Error: Cannot read file " <<
-            qPrintable(filename) <<
-            ": " <<
-            qPrintable(file.errorString()) <<
-            std::endl;
-    }
+    if (XMLReader.hasError())
+        cerr << "Error: Failed to parse file " << qPrintable(filename) << ": " << qPrintable(XMLReader.errorString()) << endl;
+    else if (file.error() != QFile::NoError)
+        cerr << "Error: Cannot read file " << qPrintable(filename) << ": " << qPrintable(file.errorString()) << endl;
     statusBar() -> showMessage(tr("Xml Opened"));
     setWindowTitle(filename);
 }
@@ -103,24 +88,23 @@ void CMainWindow::open() {
 void CMainWindow::ReadXMLFile(QXmlStreamReader &XMLReader, QFile &file) {
     XMLReader.readNext();
     while (!XMLReader.atEnd()) {
-        if (XMLReader.isStartElement()) {
+        if (!XMLReader.isStartElement())
+            XMLReader.readNext();
+        else {
             if (XMLReader.name() == "LAMPS") {
                 XMLReader.readNext();
             }
-            else if(XMLReader.name() == "LIGHT1") {
+            else if (XMLReader.name() == "LIGHT1") {
             }
-            else if(XMLReader.name() == "LIGHT2") {
+            else if (XMLReader.name() == "LIGHT2") {
             }
-            else if(XMLReader.name() == "LIGHT3") {
+            else if (XMLReader.name() == "LIGHT3") {
             }
-            else if(XMLReader.name() == "LIGHT4") {
+            else if (XMLReader.name() == "LIGHT4") {
             }
             else {
                 XMLReader.raiseError(QObject::tr("Not a bookindex file"));
             }
-        }
-        else {
-            XMLReader.readNext();
         }
     }
 }

@@ -11,9 +11,12 @@
 #include "cartesiangraph.h"
 #include "physparticle.h"
 #include "physvector.h"
+#include "physctrldoublespinbox.h"
 
 PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableWidget(pParent) {
-    m_pXaxisTickInc = NULL;
+    m_pXaxisLabel = NULL;
+    m_pYaxisLabel = NULL;
+    m_pAxisTickInc = NULL;
     m_pXaxisExtent = NULL;
     m_pYaxisExtent = NULL;
     m_pVectorMag = NULL;
@@ -33,6 +36,20 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableWid
     QStringList tableHeader;
     tableHeader << "Property" << "Value";
     setHorizontalHeaderLabels(tableHeader);
+}
+PhysObjectPropsNavigator::~PhysObjectPropsNavigator() {
+    if (m_pXaxisLabel) { delete m_pXaxisLabel; m_pXaxisLabel= NULL; };
+    if (m_pYaxisLabel) { delete m_pYaxisLabel; m_pYaxisLabel= NULL; };
+    if (m_pAxisTickInc) { delete m_pAxisTickInc; m_pAxisTickInc= NULL; };
+    if (m_pXaxisExtent) { delete m_pXaxisExtent; m_pXaxisExtent= NULL; };
+    if (m_pYaxisExtent) { delete m_pYaxisExtent; m_pYaxisExtent= NULL; };
+    if (m_pVectorMag) { delete m_pVectorMag; m_pVectorMag= NULL; };
+    if (m_pVectorThetaAngle) { delete m_pVectorThetaAngle; m_pVectorThetaAngle= NULL; };
+    if (m_pVectorThetaAxisOrient) { delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient= NULL; };
+    if (m_pVectorAssocParticle) { delete m_pVectorAssocParticle; m_pVectorAssocParticle= NULL; };
+    if (m_pCartesianGraphName) { delete m_pCartesianGraphName; m_pCartesianGraphName= NULL; };
+    if (m_pVectorName) { delete m_pVectorName; m_pVectorName= NULL; };
+    if (m_pParticleName) { delete m_pParticleName; m_pParticleName= NULL; };
 }
 
 void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *pPrevious) {
@@ -118,9 +135,20 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         setItem(4, 0, createRowItem(QString("Y-Axis Extent")));
 
         // Column 1 specialties
-        setCellWidget(2, 1, m_pXaxisTickInc = new QDoubleSpinBox(this));
-        setCellWidget(3, 1, m_pXaxisExtent = new QDoubleSpinBox(this));
-        setCellWidget(4, 1, m_pYaxisExtent = new QDoubleSpinBox(this));\
+        setCellWidget(0, 1, m_pXaxisLabel = new PhysCtrlLineEdit(this));
+        setCellWidget(1, 1, m_pYaxisLabel = new PhysCtrlLineEdit(this));
+        setCellWidget(2, 1, m_pAxisTickInc = new PhysCtrlDoubleSpinBox(this));
+        setCellWidget(3, 1, m_pXaxisExtent = new PhysCtrlDoubleSpinBox(this));
+        setCellWidget(4, 1, m_pYaxisExtent = new PhysCtrlDoubleSpinBox(this));
+
+        // set data
+        m_pXaxisLabel ->setText(pObj -> XAxisLabel());
+        m_pYaxisLabel ->setText(pObj -> YAxisLabel());
+        m_pAxisTickInc ->setValue(pObj ->tickStep());
+
+        m_pXaxisExtent ->setRange(-pObj ->xMax(), pObj ->xMax());
+        m_pXaxisExtent ->setValue(pObj ->xMax());
+        m_pYaxisExtent ->setValue(pObj ->yMax());
     }
 }
 
@@ -145,12 +173,27 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
         setItem(3, 0, createRowItem(QString("Associated Particle")));
 
         // Column 1
-        setCellWidget(0, 1, m_pVectorMag = new QDoubleSpinBox(this));
-        setCellWidget(1, 1, m_pVectorThetaAngle = new QDoubleSpinBox(this));
-        setCellWidget(2, 1, m_pVectorThetaAngle = new QDoubleSpinBox(this));
+        setCellWidget(0, 1, m_pVectorMag = new PhysCtrlDoubleSpinBox(this));
+        setCellWidget(1, 1, m_pVectorThetaAngle = new PhysCtrlDoubleSpinBox(this));
+        setCellWidget(2, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
         setCellWidget(3, 1, m_pVectorAssocParticle = new PhysCtrlLineEdit(this));
 
         // set data
+        m_pVectorMag ->setValue(pObj ->Magnitude());
+        m_pVectorThetaAngle ->setValue(pObj ->theta().degrees);
+
+        // Populate the combobox control with possible values...
+        QStringList items;
+        items << pObj -> OrientationLabelMap().at(PhysVector::AXIS_HORIZ) << pObj ->OrientationLabelMap().at(PhysVector::AXIS_VERT);
+        m_pVectorThetaAxisOrient -> addItems(items);
+
+        // ... now set the value to what the vector object is assigned to.
+        m_pVectorThetaAxisOrient ->setCurrentIndex(pObj ->theta().axisOrientation);
+
+        if (pObj ->StartParticle())
+            m_pVectorAssocParticle ->setText(QString(pObj -> StartParticle() -> Name()));
+        else
+            m_pVectorAssocParticle ->setText(QString("None"));
     }
 }
 
@@ -170,8 +213,8 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
         // column 1
         setCellWidget(0, 1, m_pParticleName = new PhysCtrlLineEdit(this));
         setCellWidget(1, 1, m_pParticleMass = new PhysCtrlLineEdit(this));
-        m_pParticleName ->setText(pObj ->Name());
-        m_pParticleMass ->setText(QString("%1").arg(pObj -> mass(), 0, 'f', 6));
+        m_pParticleName -> setText(pObj ->Name());
+        m_pParticleMass -> setText(QString("%1").arg(pObj -> mass(), 0, 'f', 6));
     }
 }
 
@@ -204,8 +247,8 @@ void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
             if (m_pParticleName) { delete m_pParticleName; m_pParticleName = NULL; }
             break;
         case PhysBaseItem::CartesianGraphType:
-            if (m_pXaxisTickInc) {
-                delete m_pXaxisTickInc; m_pXaxisTickInc = NULL;
+            if (m_pAxisTickInc) {
+                delete m_pAxisTickInc; m_pAxisTickInc = NULL;
             }
             if (m_pXaxisExtent) {
                 delete m_pXaxisExtent; m_pXaxisExtent = NULL;
