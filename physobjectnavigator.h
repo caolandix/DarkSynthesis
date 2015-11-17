@@ -25,15 +25,21 @@ private:
     void insertCartesianGraph(CartesianGraph *);
     void insertVector(PhysVector *);
     void insertParticle(PhysParticle *);
-
+    void createContextMenu();
 signals:
     void changeObj(QGraphicsItem *, QGraphicsItem *);
     void updateObj(QGraphicsItem *);
 public slots:
     void onCreateObj(QGraphicsItem *);
-private:
+    void onCustomContextMenu(const QPoint &);
 
+    void createObject();
+    void cloneObject();
+    void deleteObject();
+    void resetObject();
+private:
     QGraphicsItem *m_pCurrObj, *m_pPrevObj;
+    QAction *m_pActNewItem, *m_pActCloneItem, *m_pActDeleteItem, *m_pActResetItem;
 
 };
 

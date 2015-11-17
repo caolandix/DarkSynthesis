@@ -2,6 +2,9 @@
 #include <QGraphicsItem>
 #include <QItemSelection>
 #include <QTreeWidgetItem>
+#include <QMenu>
+#include <QModelIndex>
+#include <QVariant>
 
 
 #include "physbaseitem.h"
@@ -16,13 +19,87 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent
     setAcceptDrops(true);
     setDragEnabled(true);
     setDragDropMode(QAbstractItemView::InternalMove);
+    setContextMenuPolicy(Qt::CustomContextMenu);
 
     QStringList colLabels;
     colLabels << "PhysObject Name" << "PhysObject Type";
     setHeaderLabels(colLabels);
 
     m_pCurrObj = m_pPrevObj = NULL;
+
+
+    // Setup the context Menu
+    createContextMenu();
 }
+
+void PhysObjectNavigator::createContextMenu() {
+    /*
+    m_pActNewItem = new QAction(tr("New Item"), this);
+    m_pActNewItem -> setStatusTip(tr("Create a new Physics object"));
+    connect(m_pActNewItem, SIGNAL(triggered()), this, SLOT(createObject()));
+
+    m_pActCloneItem = new QAction(tr("Clone Item"), this);
+    m_pActCloneItem -> setStatusTip(tr("Create an identical Physics object"));
+    connect(m_pActCloneItem, SIGNAL(triggered()), this, SLOT(cloneObject()));
+
+    m_pActDeleteItem = new QAction(tr("Delete Item"), this);
+    m_pActDeleteItem -> setStatusTip(tr("Removes the Physics object"));
+    connect(m_pActDeleteItem, SIGNAL(triggered()), this, SLOT(deleteObject()));
+
+    m_pActResetItem = new QAction(tr("Reset Item"), this);
+    m_pActResetItem -> setStatusTip(tr("Resets the Physics object to default values"));
+    connect(m_pActResetItem, SIGNAL(triggered()), this, SLOT(resetObject()));
+
+    */
+    // Hook up the custom Context menu handler
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(onCustomContextMenu(const QPoint &)));
+}
+
+void PhysObjectNavigator::createObject() {
+}
+void PhysObjectNavigator::cloneObject() {
+}
+void PhysObjectNavigator::deleteObject() {
+}
+void PhysObjectNavigator::resetObject() {
+}
+
+void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
+    QMenu contextMenu(this);
+    QModelIndex index = indexAt(pos);
+
+    if (index.isValid()) {
+        QTreeWidgetItem *pItem = itemFromIndex(indexAt(pos));
+        QVariant itemData = pItem ->data(0, Qt::UserRole);
+        QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
+
+        m_pActNewItem = new QAction(tr("New Item"), this);
+        m_pActNewItem ->setData(itemData);
+        m_pActNewItem -> setStatusTip(tr("Create a new Physics object"));
+        connect(m_pActNewItem, SIGNAL(triggered()), this, SLOT(createObject()));
+
+        m_pActCloneItem = new QAction(tr("Clone Item"), this);
+        m_pActCloneItem -> setStatusTip(tr("Create an identical Physics object"));
+        connect(m_pActCloneItem, SIGNAL(triggered()), this, SLOT(cloneObject()));
+
+        m_pActDeleteItem = new QAction(tr("Delete Item"), this);
+        m_pActDeleteItem -> setStatusTip(tr("Removes the Physics object"));
+        connect(m_pActDeleteItem, SIGNAL(triggered()), this, SLOT(deleteObject()));
+
+        m_pActResetItem = new QAction(tr("Reset Item"), this);
+        m_pActResetItem -> setStatusTip(tr("Resets the Physics object to default values"));
+        connect(m_pActResetItem, SIGNAL(triggered()), this, SLOT(resetObject()));
+
+        contextMenu.addAction(m_pActNewItem);
+        contextMenu.addAction(m_pActCloneItem);
+        contextMenu.addAction(m_pActDeleteItem);
+        contextMenu.addAction(m_pActResetItem);
+
+        QAction *pAction = contextMenu.exec(mapToGlobal(pos));
+    }
+}
+
 
 void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
     qDebug("PhysObjectNavigator::onCreateObj()");
