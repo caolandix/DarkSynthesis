@@ -2,9 +2,13 @@
 #define PHYSMODULE_H
 
 #include <QString>
+#include <QObject>
 
-class PhysModule {
+class PhysModule : public QObject {
+    Q_OBJECT
 public:
+    int type() const;
+
     PhysModule(const QString &);
     PhysModule(const PhysModule &);
     virtual ~PhysModule();

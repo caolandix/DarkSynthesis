@@ -33,7 +33,6 @@ public slots:
     void onCreateObj(QGraphicsItem *);
     void onCustomContextMenu(const QPoint &);
 
-    void createObject();
     void cloneObject();
     void deleteObject();
     void resetObject();

@@ -63,12 +63,12 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pP
 void PhysEqSolver::createActions() {
     m_pActAppendTimeColumn = new QAction(tr("Append Time Column"), this);
     connect(m_pActAppendTimeColumn, SIGNAL(triggered()), this, SLOT(actionAppendTimeColumn()));
+
     m_pActInsertTimeColumn = new QAction(tr("Insert Time Column"), this);
     connect(m_pActInsertTimeColumn, SIGNAL(triggered()), this, SLOT(actionInsertTimeColumn()));
+
     m_pActRemoveTimeColumn = new QAction(tr("Remove Time Column"), this);
     connect(m_pActRemoveTimeColumn, SIGNAL(triggered()), this, SLOT(actionRemoveTimeColumn()));
-
-
 
     m_pActCellSum = new QAction(tr("Sum"), this);
     connect(m_pActCellSum, SIGNAL(triggered()), this, SLOT(actionSum()));
@@ -416,12 +416,12 @@ void PhysEqSolver::setupContents() {
     QFont titleFont = m_pTable -> font();
     titleFont.setBold(true);
 
-    // column 0
-    /*
+    // row 0
     m_pTable -> setItem(0, 0, new PhysEqSolverItem("t0"));
     m_pTable -> item(0, 0) -> setBackgroundColor(titleBackground);
-    m_pTable -> item(0, 0) -> setToolTip("This column shows the values at a specific time slice");
     m_pTable -> item(0, 0) -> setFont(titleFont);
+
+    /*
     m_pTable -> setItem(1, 0, new PhysEqSolverItem("AirportBus"));
     m_pTable -> setItem(2, 0, new PhysEqSolverItem("Flight (Munich)"));
     m_pTable -> setItem(3, 0, new PhysEqSolverItem("Lunch"));

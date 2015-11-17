@@ -56,6 +56,10 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     setLine(0 + m_magnitude, 0 + m_magnitude, 0, 0);
 }
 
+PhysVector::PhysVector(const PhysVector &obj) : PhysBaseItem(obj), QGraphicsLineItem(obj) {
+
+}
+
 PhysVector::~PhysVector() {
     if (m_pLabel) {
         delete m_pLabel;

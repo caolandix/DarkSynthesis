@@ -6,7 +6,6 @@
 #include <QModelIndex>
 #include <QVariant>
 
-
 #include "physbaseitem.h"
 #include "physobjectnavigator.h"
 #include "cartesiangraph.h"
@@ -40,27 +39,6 @@ void PhysObjectNavigator::createContextMenu() {
             this, SLOT(onCustomContextMenu(const QPoint &)));
 }
 
-void PhysObjectNavigator::createObject(void) {
-    QAction *act = qobject_cast<QAction *>(sender());
-    QVariant itemData = act ->data();
-    QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
-
-    if (!pObj)
-        qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
-    else {
-        switch (pObj ->type()) {
-        case PhysBaseItem::VectorType:
-            break;
-        case PhysBaseItem::ParticleType:
-            break;
-        case PhysBaseItem::CartesianGraphType:
-            break;
-        default:
-            qDebug("PhysObjectNavigator::createObject: not a supported object type: %d", pObj -> type());
-            break;
-        }
-    }
-}
 void PhysObjectNavigator::cloneObject(void) {
     QAction *act = qobject_cast<QAction *>(sender());
     QVariant itemData = act ->data();
@@ -71,6 +49,7 @@ void PhysObjectNavigator::cloneObject(void) {
     else {
         switch (pObj ->type()) {
         case PhysBaseItem::VectorType:
+            onCreateObj(new PhysVector(static_cast<PhysVector &>(*pObj)));
             break;
         case PhysBaseItem::ParticleType:
             break;
@@ -135,11 +114,6 @@ void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
         QVariant itemData = pItem ->data(0, Qt::UserRole);
         QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
 
-        m_pActNewItem = new QAction(tr("New Item"), this);
-        m_pActNewItem ->setData(itemData);
-        m_pActNewItem -> setStatusTip(tr("Create a new Physics object"));
-        connect(m_pActNewItem, SIGNAL(triggered()), this, SLOT(createObject()));
-
         m_pActCloneItem = new QAction(tr("Clone Item"), this);
         m_pActCloneItem -> setStatusTip(tr("Create an identical Physics object"));
         connect(m_pActCloneItem, SIGNAL(triggered()), this, SLOT(cloneObject()));
@@ -152,7 +126,6 @@ void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
         m_pActResetItem -> setStatusTip(tr("Resets the Physics object to default values"));
         connect(m_pActResetItem, SIGNAL(triggered()), this, SLOT(resetObject()));
 
-        contextMenu.addAction(m_pActNewItem);
         contextMenu.addAction(m_pActCloneItem);
         contextMenu.addAction(m_pActDeleteItem);
         contextMenu.addAction(m_pActResetItem);
