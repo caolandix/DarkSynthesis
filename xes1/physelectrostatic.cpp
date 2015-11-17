@@ -4,6 +4,18 @@
 #include "physelectrostatic.h"
 #include "physscience.h"
 
+
+const double PhysElectroStatic::onesix = 0.16666666667;
+const double PhysElectroStatic::twothirds = 0.6666666667;
+const double PhysElectroStatic::AKPERP = 2.405;
+const int PhysElectroStatic::K8 = 8192;
+const int PhysElectroStatic::NGMAX = K8;
+const int PhysElectroStatic::NXV = K8;
+const int PhysElectroStatic::NVY = NXV / 2;
+const int PhysElectroStatic::HISTMAX = 512;
+const int PhysElectroStatic::NVBINMAX = 1024;
+const int PhysElectroStatic::MAXPARTICLES = 920001;
+
 PhysElectroStatic::PhysElectroStatic() {
 
     // Setting the global parameters to their default values.

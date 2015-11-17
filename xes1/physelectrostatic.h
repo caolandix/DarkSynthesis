@@ -15,17 +15,18 @@ private:
     enum { Zero_Order = 0, First_Order, Quadratic_Spline, Cubic_Spline };
     enum { Momentum_Conserving = 0, Energy_Conserving };
 
-    static const double onesix = 0.16666666667;
-    static const double twothirds = 0.6666666667;
-    static const double AKPERP = 2.405;
-    static const int K8 = 8192;
-    static const int NGMAX = K8;
-    static const int NXV = K8;
-    static const int NVY = NXV/2;
+    static const double onesix;
+    static const double twothirds;
+    static const double AKPERP;
+
+    static const int K8;
+    static const int NGMAX;
+    static const int NXV;
+    static const int NVY;
     static const int NSPM = 8;
-    static const int HISTMAX = 512;
-    static const int NVBINMAX = 1024;
-    static const int MAXPARTICLES = 920001;
+    static const int HISTMAX;
+    static const int NVBINMAX;
+    static const int MAXPARTICLES;
 
     // member methods
     void init(int *, int *, double *, double *, double *, double *, int *, int *, double *, double *, int *);
