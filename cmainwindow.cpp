@@ -20,7 +20,6 @@ using namespace std;
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     init();
-    // setGraphWidget(m_pGraphWidget);
     m_pUI -> setupUi(this);
     m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
     m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
@@ -30,6 +29,7 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     createToolBars();
     createStatusBar();
     createDockWindows();
+    setWindowTitle(tr("The Physicist's Workbench"));
 }
 
 CMainWindow::~CMainWindow() {
@@ -156,9 +156,6 @@ void CMainWindow::aboutQt() {
 void CMainWindow::cartesianGraphOptions() {
     CartesianGraphSettingsDlg dlg(m_pGraphWidget -> cartesianGraph() -> DataObj());
     if (dlg.exec() == QDialog::Accepted) {
-
-        // get values stored
-        bool bVal = false;
     }
 }
 
