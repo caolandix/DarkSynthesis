@@ -42,23 +42,20 @@ protected:
     bool runInputDialog(const QString &, const QString &, const QString &, const QString &,
                         const QString &, QString *, QString *, QString *);
 private:
-    QToolBar *toolBar;
-    QAction *colorAction;
-    QAction *fontAction;
-    QAction *firstSeparator;
-    QAction *cell_sumAction;
-    QAction *cell_addAction;
-    QAction *cell_subAction;
-    QAction *cell_mulAction;
-    QAction *cell_divAction;
-    QAction *secondSeparator;
-    QAction *clearAction;
-    QAction *exitAction;
-    QAction *printAction;
-
+    QToolBar *m_pPhysEqToolBar;
+    QAction *m_pActColor;
+    QAction *m_pActFont;
+    QAction *m_pActClear;
+    QAction *m_pActExit;
+    QAction *m_pActPrint;
     QAction *m_pActAppendTimeColumn;
     QAction *m_pActInsertTimeColumn;
     QAction *m_pActRemoveTimeColumn;
+    QAction *m_pActCellSum;
+    QAction *m_pActCellAdd;
+    QAction *m_pActCellSubtract;
+    QAction *m_pActCellMultiply;
+    QAction *m_pActCellDivide;
 
     QLabel *m_pCellLabel;
     QTableWidget *m_pTable;

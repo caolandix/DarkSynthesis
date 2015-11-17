@@ -8,7 +8,7 @@ PhysEqSolverDelegate::PhysEqSolverDelegate(QObject *pParent) : QItemDelegate(pPa
 QWidget *PhysEqSolverDelegate::createEditor(QWidget *pParent, const QStyleOptionViewItem &viewItem, const QModelIndex &index) const {
     if (index.column() == 1) {
         QDateTimeEdit *pDateEditor = new QDateTimeEdit(pParent);
-        pDateEditor -> setDisplayFormat("dd/M/yyyy");
+        pDateEditor -> setDisplayFormat("yyyy/MM/dd");
         pDateEditor -> setCalendarPopup(true);
         return pDateEditor;
     }
