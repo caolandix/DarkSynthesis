@@ -25,10 +25,17 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *parent) : QTableView(par
 
     m_pTable = new QTableWidget(rows, cols, this);
     m_pTable -> setSizeAdjustPolicy(QTableWidget::AdjustToContents);
+
+    QStringList tableHeader;
+    tableHeader << "t0" << "t1";
+    m_pTable -> setHorizontalHeaderLabels(tableHeader);
+
+    /*
     for (int c = 0; c < cols; ++c) {
         QString character(QChar('A' + c));
         m_pTable -> setHorizontalHeaderItem(c, new QTableWidgetItem(character));
     }
+    */
     m_pTable -> setItemPrototype(m_pTable -> item(rows - 1, cols - 1));
     m_pTable -> setItemDelegate(new PhysEqSolverDelegate());
 
@@ -55,6 +62,50 @@ void PhysEqSolver::createActions() {
     connect(m_pActInsertTimeColumn, SIGNAL(triggered()), this, SLOT(actionInsertTimeColumn()));
     m_pActRemoveTimeColumn = new QAction(tr("Remove Time Column"), this);
     connect(m_pActRemoveTimeColumn, SIGNAL(triggered()), this, SLOT(actionRemoveTimeColumn()));
+
+
+
+    cell_sumAction = new QAction(tr("Sum"), this);
+    connect(cell_sumAction, SIGNAL(triggered()), this, SLOT(actionSum()));
+
+    cell_addAction = new QAction(tr("&Add"), this);
+    cell_addAction->setShortcut(Qt::CTRL | Qt::Key_Plus);
+    connect(cell_addAction, SIGNAL(triggered()), this, SLOT(actionAdd()));
+
+    cell_subAction = new QAction(tr("&Subtract"), this);
+    cell_subAction->setShortcut(Qt::CTRL | Qt::Key_Minus);
+    connect(cell_subAction, SIGNAL(triggered()), this, SLOT(actionSubtract()));
+
+    cell_mulAction = new QAction(tr("&Multiply"), this);
+    cell_mulAction->setShortcut(Qt::CTRL | Qt::Key_multiply);
+    connect(cell_mulAction, SIGNAL(triggered()), this, SLOT(actionMultiply()));
+
+    cell_divAction = new QAction(tr("&Divide"), this);
+    cell_divAction->setShortcut(Qt::CTRL | Qt::Key_division);
+    connect(cell_divAction, SIGNAL(triggered()), this, SLOT(actionDivide()));
+
+    fontAction = new QAction(tr("Font..."), this);
+    fontAction->setShortcut(Qt::CTRL | Qt::Key_F);
+    connect(fontAction, SIGNAL(triggered()), this, SLOT(selectFont()));
+
+    colorAction = new QAction(QPixmap(16, 16), tr("Background &Color..."), this);
+    connect(colorAction, SIGNAL(triggered()), this, SLOT(selectColor()));
+
+    clearAction = new QAction(tr("Clear"), this);
+    clearAction->setShortcut(Qt::Key_Delete);
+    connect(clearAction, SIGNAL(triggered()), this, SLOT(clear()));
+
+    exitAction = new QAction(tr("E&xit"), this);
+    connect(exitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    printAction = new QAction(tr("&Print"), this);
+    connect(printAction, SIGNAL(triggered()), this, SLOT(print()));
+
+    firstSeparator = new QAction(this);
+    firstSeparator -> setSeparator(true);
+
+    secondSeparator = new QAction(this);
+    secondSeparator -> setSeparator(true);
 }
 
 
@@ -370,11 +421,11 @@ void PhysEqSolver::setupContents() {
     titleFont.setBold(true);
 
     // column 0
+    /*
     m_pTable -> setItem(0, 0, new PhysEqSolverItem("t0"));
     m_pTable -> item(0, 0) -> setBackgroundColor(titleBackground);
     m_pTable -> item(0, 0) -> setToolTip("This column shows the values at a specific time slice");
     m_pTable -> item(0, 0) -> setFont(titleFont);
-/*
     m_pTable -> setItem(1, 0, new PhysEqSolverItem("AirportBus"));
     m_pTable -> setItem(2, 0, new PhysEqSolverItem("Flight (Munich)"));
     m_pTable -> setItem(3, 0, new PhysEqSolverItem("Lunch"));
@@ -389,12 +440,12 @@ void PhysEqSolver::setupContents() {
     m_pTable -> item(9, 0) -> setBackgroundColor(Qt::lightGray);
 */
 
+    /*
     // column 1
     m_pTable -> setItem(0, 1, new PhysEqSolverItem("t1"));
     m_pTable -> item(0, 1) -> setBackgroundColor(titleBackground);
     m_pTable -> item(0, 1) -> setToolTip("This column shows the purchase date, double click to change");
     m_pTable -> item(0, 1) -> setFont(titleFont);
-/*
     m_pTable -> setItem(1, 1, new PhysEqSolverItem("15/6/2006"));
     m_pTable -> setItem(2, 1, new PhysEqSolverItem("15/6/2006"));
     m_pTable -> setItem(3, 1, new PhysEqSolverItem("15/6/2006"));
