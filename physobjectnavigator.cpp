@@ -14,6 +14,11 @@
 #include "physparticle.h"
 
 PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent) {
+
+    // Initialise privates
+    m_pCurrObj = m_pPrevObj = NULL;
+
+    // Setup widget
     setColumnCount(2);
     setRootIsDecorated(true);
     setAcceptDrops(true);
@@ -25,44 +30,100 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent
     colLabels << "PhysObject Name" << "PhysObject Type";
     setHeaderLabels(colLabels);
 
-    m_pCurrObj = m_pPrevObj = NULL;
-
-
     // Setup the context Menu
     createContextMenu();
 }
 
 void PhysObjectNavigator::createContextMenu() {
-    /*
-    m_pActNewItem = new QAction(tr("New Item"), this);
-    m_pActNewItem -> setStatusTip(tr("Create a new Physics object"));
-    connect(m_pActNewItem, SIGNAL(triggered()), this, SLOT(createObject()));
-
-    m_pActCloneItem = new QAction(tr("Clone Item"), this);
-    m_pActCloneItem -> setStatusTip(tr("Create an identical Physics object"));
-    connect(m_pActCloneItem, SIGNAL(triggered()), this, SLOT(cloneObject()));
-
-    m_pActDeleteItem = new QAction(tr("Delete Item"), this);
-    m_pActDeleteItem -> setStatusTip(tr("Removes the Physics object"));
-    connect(m_pActDeleteItem, SIGNAL(triggered()), this, SLOT(deleteObject()));
-
-    m_pActResetItem = new QAction(tr("Reset Item"), this);
-    m_pActResetItem -> setStatusTip(tr("Resets the Physics object to default values"));
-    connect(m_pActResetItem, SIGNAL(triggered()), this, SLOT(resetObject()));
-
-    */
     // Hook up the custom Context menu handler
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(onCustomContextMenu(const QPoint &)));
 }
 
-void PhysObjectNavigator::createObject() {
+void PhysObjectNavigator::createObject(void) {
+    QAction *act = qobject_cast<QAction *>(sender());
+    QVariant itemData = act ->data();
+    QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
+
+    if (!pObj)
+        qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
+    else {
+        switch (pObj ->type()) {
+        case PhysBaseItem::VectorType:
+            break;
+        case PhysBaseItem::ParticleType:
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            break;
+        default:
+            qDebug("PhysObjectNavigator::createObject: not a supported object type: %d", pObj -> type());
+            break;
+        }
+    }
 }
-void PhysObjectNavigator::cloneObject() {
+void PhysObjectNavigator::cloneObject(void) {
+    QAction *act = qobject_cast<QAction *>(sender());
+    QVariant itemData = act ->data();
+    QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
+
+    if (!pObj)
+        qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
+    else {
+        switch (pObj ->type()) {
+        case PhysBaseItem::VectorType:
+            break;
+        case PhysBaseItem::ParticleType:
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            break;
+        default:
+            qDebug("PhysObjectNavigator::cloneObject: not a supported object type: %d", pObj -> type());
+            break;
+        }
+    }
 }
-void PhysObjectNavigator::deleteObject() {
+void PhysObjectNavigator::deleteObject(void) {
+    QAction *act = qobject_cast<QAction *>(sender());
+    QVariant itemData = act ->data();
+    QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
+
+    if (!pObj)
+        qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
+    else {
+        switch (pObj ->type()) {
+        case PhysBaseItem::VectorType:
+            break;
+        case PhysBaseItem::ParticleType:
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            break;
+        default:
+            qDebug("PhysObjectNavigator::deleteObject: not a supported object type: %d", pObj -> type());
+            break;
+        }
+    }
 }
-void PhysObjectNavigator::resetObject() {
+void PhysObjectNavigator::resetObject(void) {
+    QAction *act = qobject_cast<QAction *>(sender());
+    QVariant itemData = act ->data();
+    QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
+
+    if (!pObj)
+        qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
+    else {
+        switch (pObj ->type()) {
+        case PhysBaseItem::VectorType:
+            break;
+        case PhysBaseItem::ParticleType:
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            break;
+        default:
+            qDebug("PhysObjectNavigator::resetObject: not a supported object type: %d", pObj -> type());
+            break;
+        }
+    }
+
 }
 
 void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
@@ -96,7 +157,7 @@ void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
         contextMenu.addAction(m_pActDeleteItem);
         contextMenu.addAction(m_pActResetItem);
 
-        QAction *pAction = contextMenu.exec(mapToGlobal(pos));
+        contextMenu.exec(mapToGlobal(pos));
     }
 }
 
@@ -105,18 +166,18 @@ void PhysObjectNavigator::onCreateObj(QGraphicsItem *pObj) {
     qDebug("PhysObjectNavigator::onCreateObj()");
     if (pObj) {
         switch (pObj -> type()) {
-            case PhysBaseItem::VectorType:
-                insertVector(static_cast<PhysVector *>(pObj));
-                break;
-            case PhysBaseItem::ParticleType:
-                insertParticle(static_cast<PhysParticle *>(pObj));
-                break;
-            case PhysBaseItem::CartesianGraphType:
-                insertCartesianGraph(static_cast<CartesianGraph *>(pObj));
-                break;
-            default:
-                qDebug("PhysObjectNavigator::onCreateObj: not a supported object type: %d", pObj -> type());
-                break;
+        case PhysBaseItem::VectorType:
+            insertVector(static_cast<PhysVector *>(pObj));
+            break;
+        case PhysBaseItem::ParticleType:
+            insertParticle(static_cast<PhysParticle *>(pObj));
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            insertCartesianGraph(static_cast<CartesianGraph *>(pObj));
+            break;
+        default:
+            qDebug("PhysObjectNavigator::onCreateObj: not a supported object type: %d", pObj -> type());
+            break;
        }
     }
 }
