@@ -3,6 +3,7 @@
 #include <QAction>
 #include <QMenu>
 #include <math.h>
+#include <map>
 
 #include "physbaseitem.h"
 #include "physvector.h"
@@ -11,9 +12,16 @@
 #include "cartesiangraph.h"
 #include "physscience.h"
 
+const map<PhysVector::AxisOrientation, QString> PhysVector::createMap() {
+    std::map<PhysVector::AxisOrientation, QString> mMap;
+    mMap.insert(std::make_pair(AXIS_HORIZ, QString("Horizontal")));
+    mMap.insert(std::make_pair(AXIS_VERT, QString("Vertical")) );
+    return mMap;
+}
+const std::map<PhysVector::AxisOrientation, QString> PhysVector::m_OrientationLabelMap = PhysVector::createMap();
+
 PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
     QGraphicsLineItem(pParent), PhysBaseItem() {
-
     m_pLabel = NULL;
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;

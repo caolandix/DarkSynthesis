@@ -6,6 +6,8 @@
 #include <QList>
 #include <QGraphicsSceneMouseEvent>
 #include <QContextMenuEvent>
+#include <QStringList>
+#include <map>
 
 #include "physbaseitem.h"
 #include "cartesianlabel.h"
@@ -15,16 +17,19 @@ class CartesianGraph;
 
 class PhysVector : public PhysBaseItem, public QGraphicsLineItem {
     Q_OBJECT
+public:
+    typedef enum { AXIS_HORIZ = 0, AXIS_VERT } AxisOrientation;
 private:
     typedef enum { DI_VECTORLINE = -1, DI_VECTORHEAD = 0, DI_VECTORTAIL = 1 } MouseClickLocale;
-    typedef enum { AXIS_HORIZ = 0, AXIS_VERT } AxisOrientation;
     struct Theta {
         double degrees;
         bool bAboveAxis;
         AxisOrientation axisOrientation;
     };
-public:
+    static const map<AxisOrientation, QString> m_OrientationLabelMap;
+    static const map<AxisOrientation, QString> createMap();
 
+public:
     enum { Type = PhysBaseItem::VectorType };
     int type() const Q_DECL_OVERRIDE { return Type; }
 
@@ -45,6 +50,7 @@ public:
     PhysParticle *StartParticle() const { return m_pStartParticle; }
     PhysParticle *EndParticle() const { return m_pEndParticle; }
     QString Name() const { return m_pLabel -> toPlainText(); }
+    map<AxisOrientation, QString> OrientationLabelMap() const { return m_OrientationLabelMap;}
 protected:
 
     // Qt overrides
@@ -70,5 +76,6 @@ private:
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
 };
+
 Q_DECLARE_METATYPE(PhysVector *)
 #endif // PHYSVECTOR_H
