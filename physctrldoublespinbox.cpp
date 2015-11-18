@@ -2,7 +2,7 @@
 #include <QDoubleSpinBox>
 #include "physctrldoublespinbox.h"
 
-PhysCtrlDoubleSpinBox::PhysCtrlDoubleSpinBox(QWidget *pParent) : QDoubleSpinBox(pParent) {
-
+PhysCtrlDoubleSpinBox::PhysCtrlDoubleSpinBox(const int precision, QWidget *pParent) : QDoubleSpinBox(pParent) {
+    setDecimals(precision);
 }
 
