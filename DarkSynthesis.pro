@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = DarkSynthesis
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES += main.cpp \
     cmainwindow.cpp \
@@ -48,7 +49,6 @@ SOURCES += main.cpp \
     xes1/accel.cpp \
     physctrllineedit.cpp \
     physctrldoublespinbox.cpp \
-    jumpdrive/main/main.cpp \
     jumpdrive/CustomFunction.cpp \
     jumpdrive/CustomOperator.cpp \
     jumpdrive/ExpressionBuilder.cpp \
