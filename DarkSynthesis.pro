@@ -48,7 +48,6 @@ SOURCES += main.cpp \
     xes1/accel.cpp \
     physctrllineedit.cpp \
     physctrldoublespinbox.cpp \
-    jumpdrive/src/main/main.cpp \
     jumpdrive/main/main.cpp \
     jumpdrive/CustomFunction.cpp \
     jumpdrive/CustomOperator.cpp \
