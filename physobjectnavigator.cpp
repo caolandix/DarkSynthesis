@@ -49,7 +49,6 @@ void PhysObjectNavigator::cloneObject(void) {
     else {
         switch (pObj ->type()) {
         case PhysBaseItem::VectorType:
-            onCreateObj(new PhysVector(static_cast<PhysVector &>(*pObj)));
             break;
         case PhysBaseItem::ParticleType:
             break;

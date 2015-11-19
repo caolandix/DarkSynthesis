@@ -6,7 +6,7 @@
 class PhysCtrlDoubleSpinBox : public QDoubleSpinBox {
     Q_OBJECT
 public:
-    PhysCtrlDoubleSpinBox(QWidget * = NULL);
+    PhysCtrlDoubleSpinBox(const int precision = 6, QWidget * = NULL);
 private:
 
 signals:

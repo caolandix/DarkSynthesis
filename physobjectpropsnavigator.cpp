@@ -137,9 +137,9 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         // Column 1 specialties
         setCellWidget(0, 1, m_pXaxisLabel = new PhysCtrlLineEdit(this));
         setCellWidget(1, 1, m_pYaxisLabel = new PhysCtrlLineEdit(this));
-        setCellWidget(2, 1, m_pAxisTickInc = new PhysCtrlDoubleSpinBox(this));
-        setCellWidget(3, 1, m_pXaxisExtent = new PhysCtrlDoubleSpinBox(this));
-        setCellWidget(4, 1, m_pYaxisExtent = new PhysCtrlDoubleSpinBox(this));
+        setCellWidget(2, 1, m_pAxisTickInc = new PhysCtrlDoubleSpinBox(6, this));
+        setCellWidget(3, 1, m_pXaxisExtent = new PhysCtrlDoubleSpinBox(6, this));
+        setCellWidget(4, 1, m_pYaxisExtent = new PhysCtrlDoubleSpinBox(6, this));
 
         // set data
         m_pXaxisLabel ->setText(pObj -> XAxisLabel());
@@ -173,8 +173,8 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
         setItem(3, 0, createRowItem(QString("Associated Particle")));
 
         // Column 1
-        setCellWidget(0, 1, m_pVectorMag = new PhysCtrlDoubleSpinBox(this));
-        setCellWidget(1, 1, m_pVectorThetaAngle = new PhysCtrlDoubleSpinBox(this));
+        setCellWidget(0, 1, m_pVectorMag = new PhysCtrlDoubleSpinBox(6, this));
+        setCellWidget(1, 1, m_pVectorThetaAngle = new PhysCtrlDoubleSpinBox(6, this));
         setCellWidget(2, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
         setCellWidget(3, 1, m_pVectorAssocParticle = new PhysCtrlLineEdit(this));
 
