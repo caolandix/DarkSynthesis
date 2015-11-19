@@ -16,6 +16,7 @@ public:
 
     inline QString formula() const  { return QTableWidgetItem::data(Qt::DisplayRole).toString(); }
     static QVariant computeFormula(const QString &, const QTableWidget *, const QTableWidgetItem * = NULL);
+    QVariant resolveSigFigs(const QVariant &);
 private:
     mutable bool isResolving;
 };
