@@ -27,6 +27,9 @@ public:
 
     bool addVector(PhysVector *);
     bool removeVector(PhysVector *);
+    PhysParticle *copy() {}
+
+
     QString Name() const { return m_pLabel -> toPlainText(); }
 
     double mass() const { return m_mass; }

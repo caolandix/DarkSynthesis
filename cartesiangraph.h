@@ -49,6 +49,8 @@ public:
     enum { Type = PhysBaseItem::CartesianGraphType };
     int type() const Q_DECL_OVERRIDE { return Type; }
 
+    CartesianGraph *copy() {}
+
 
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;

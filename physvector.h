@@ -34,7 +34,6 @@ public:
     int type() const Q_DECL_OVERRIDE { return Type; }
 
     PhysVector(CartesianGraph *, const QPointF &, const QString &, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);
-    PhysVector(const PhysVector &);
     ~PhysVector();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -42,6 +41,9 @@ public:
     void adjust();
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
     void updatePosition();
+
+    PhysVector *copy() {}
+
 
     // accessors
     double Magnitude() const { return m_magnitude; }
