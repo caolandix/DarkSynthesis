@@ -67,9 +67,19 @@ PhysVector *GraphWidget::createVector(const QPointF &startPos) {
     PhysVector *pObj = new PhysVector(m_pCartGraph, startPos, Label);
 
     m_pCartGraph -> DataObj() -> AddVector(pObj);
+
     pScene -> addItem(pObj);
     emit createObj(pObj);
     return pObj;
+}
+
+// Cloning just sets up the parent and scene ownership. Actual cloning of the object takes place
+// in it's overloaded copy() method.
+void GraphWidget::onClonePhysObj(QGraphicsItem *pNewObj) {
+    pNewObj -> setParentItem(m_pCartGraph);
+    m_pCartGraph -> DataObj() -> AddVector(static_cast<PhysVector *>(pNewObj));
+    scene() -> addItem(pNewObj);
+    emit createObj(pNewObj);
 }
 
 PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
