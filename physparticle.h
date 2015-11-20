@@ -27,9 +27,11 @@ public:
 
     bool addVector(PhysVector *);
     bool removeVector(PhysVector *);
+    void Vectors(const QList<PhysVector *> vectors);
+    void DataObj(const PhysParticleDataObj &obj) { m_DataObj = obj; }
     PhysParticle *copy();
 
-    QString Name() const { return m_pLabel -> toPlainText(); }
+    QString Name() const { return m_Name; }
 
     double mass() const { return m_DataObj.mass(); }
 protected:
@@ -38,6 +40,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
     CartesianLabel *m_pLabel;
+    QString m_Name;
     QList<PhysVector *> m_Vectors;
     PhysParticleDataObj m_DataObj;
 };

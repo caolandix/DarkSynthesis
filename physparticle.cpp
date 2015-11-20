@@ -3,11 +3,13 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QMenu>
+#include <QListIterator>
 
 #include "physscience.h"
 #include "physbaseitem.h"
 #include "physparticle.h"
 #include "cartesianlabel.h"
+#include "cartesiangraph.h"
 
 PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, const QString &Label) :
     PhysBaseItem(), QGraphicsPolygonItem(pParent) {
@@ -17,9 +19,7 @@ PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, cons
     setZValue(-1);
     setPos(0, 0);
     m_pLabel = new CartesianLabel(Label, this);
-
-    // Physical attributes
-    m_mass = PhysConsts::DefaultMass; // 1kg is default
+    m_Name = Label;
 }
 
 PhysParticle::~PhysParticle() {
@@ -29,9 +29,17 @@ PhysParticle::~PhysParticle() {
     }
 }
 
+void PhysParticle::Vectors(const QList<PhysVector *> vectorList) {
+    QListIterator<PhysVector *> itr(vectorList);
+    while (itr.hasNext())
+        m_Vectors.push_back(itr.next());
+}
+
 PhysParticle *PhysParticle::copy() {
     PhysParticle *pNewObj = NULL;
-
+    pNewObj = new PhysParticle(static_cast<CartesianGraph *>(parentItem()), pos(), Name());
+    pNewObj ->Vectors(m_Vectors);
+    pNewObj ->DataObj(m_DataObj);
     return pNewObj;
 }
 
