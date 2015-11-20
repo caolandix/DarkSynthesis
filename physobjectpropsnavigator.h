@@ -17,7 +17,6 @@ class PhysObjectPropsNavigator : public QTableWidget {
     Q_OBJECT
 public:
     PhysObjectPropsNavigator(QWidget * = NULL);
-    virtual ~PhysObjectPropsNavigator();
 
     void buildCartesianGraphTable(CartesianGraph *, QGraphicsItem *);
     void buildVectorTable(PhysVector *, QGraphicsItem *);
@@ -28,6 +27,7 @@ public:
     void updateCartesianGraphTable(CartesianGraph *);
 
     void destroyPrevTable(QGraphicsItem *);
+    void deleteControls();
 private:
     QTableWidgetItem *createRowItem(const QString &);
 signals:

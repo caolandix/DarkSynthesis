@@ -37,7 +37,8 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableWid
     tableHeader << "Property" << "Value";
     setHorizontalHeaderLabels(tableHeader);
 }
-PhysObjectPropsNavigator::~PhysObjectPropsNavigator() {
+
+void PhysObjectPropsNavigator::deleteControls() {
     if (m_pXaxisLabel) { delete m_pXaxisLabel; m_pXaxisLabel= NULL; };
     if (m_pYaxisLabel) { delete m_pYaxisLabel; m_pYaxisLabel= NULL; };
     if (m_pAxisTickInc) { delete m_pAxisTickInc; m_pAxisTickInc= NULL; };
