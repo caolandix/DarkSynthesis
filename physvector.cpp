@@ -7,6 +7,7 @@
 
 #include "physbaseitem.h"
 #include "physvector.h"
+#include "physvectordataobj.h"
 #include "physparticle.h"
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
@@ -64,6 +65,24 @@ PhysVector::~PhysVector() {
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
 }
+
+PhysVector *PhysVector::copy() {
+    PhysVector *pObj = NULL;
+    pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), pos(), Name(), StartParticle(), EndParticle());
+    pObj ->theta(theta());
+
+    return pObj;
+}
+
+void PhysVector::StartParticle(PhysParticle *pObj) {
+    m_pStartParticle = pObj;
+    m_pStartParticle -> addVector(this);
+}
+void PhysVector::EndParticle(PhysParticle *pObj) {
+    m_pStartParticle = pObj;
+    m_pStartParticle -> addVector(this);
+}
+
 
 QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value) {
     switch (change) {

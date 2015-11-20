@@ -7,8 +7,8 @@
 
 #include "physbaseitem.h"
 #include "cartesianlabel.h"
+#include "physparticledataobj.h"
 
-class GraphWidget;
 class PhysVector;
 
 class PhysParticle : public PhysBaseItem, public QGraphicsPolygonItem {
@@ -27,12 +27,11 @@ public:
 
     bool addVector(PhysVector *);
     bool removeVector(PhysVector *);
-    PhysParticle *copy() {}
-
+    PhysParticle *copy();
 
     QString Name() const { return m_pLabel -> toPlainText(); }
 
-    double mass() const { return m_mass; }
+    double mass() const { return m_DataObj.mass(); }
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
@@ -40,9 +39,7 @@ protected:
 private:
     CartesianLabel *m_pLabel;
     QList<PhysVector *> m_Vectors;
-
-    // Physical attributes
-    double m_mass;
+    PhysParticleDataObj m_DataObj;
 };
 Q_DECLARE_METATYPE(PhysParticle *)
 #endif // PHYSPARTICLE_H

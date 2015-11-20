@@ -40,15 +40,23 @@ void PhysObjectNavigator::createContextMenu() {
 }
 
 void PhysObjectNavigator::cloneObject(void) {
-    QAction *act = qobject_cast<QAction *>(sender());
-    QVariant itemData = act ->data();
+    QAction *pAction = qobject_cast<QAction *>(sender());
+    QVariant itemData = pAction -> data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
+
+    // Copy the object to a new one
+    QGraphicsItem *pNewObj = NULL;
 
     if (!pObj)
         qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
     else {
-        switch (pObj ->type()) {
+        switch (pObj -> type()) {
         case PhysBaseItem::VectorType:
+            /*
+            PhysVector *pCurrVector = static_cast<PhysVector *>(pObj);
+            PhysVector *pNewVector = pObj ->copy();
+            pNewObj = static_cast<QGraphicsItem *>(pNewVector);
+            */
             break;
         case PhysBaseItem::ParticleType:
             break;
@@ -59,6 +67,7 @@ void PhysObjectNavigator::cloneObject(void) {
             break;
         }
     }
+    emit clonePhysObj(pNewObj);
 }
 void PhysObjectNavigator::deleteObject(void) {
     QAction *act = qobject_cast<QAction *>(sender());

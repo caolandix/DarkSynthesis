@@ -11,9 +11,10 @@
 
 #include "physbaseitem.h"
 #include "cartesianlabel.h"
+#include "physvectordataobj.h"
 
-class PhysParticle;
 class CartesianGraph;
+class PhysParticle;
 
 class PhysVector : public PhysBaseItem, public QGraphicsLineItem {
     Q_OBJECT
@@ -42,8 +43,7 @@ public:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
     void updatePosition();
 
-    PhysVector *copy() {}
-
+    PhysVector *copy();
 
     // accessors
     double Magnitude() const { return m_magnitude; }
@@ -54,6 +54,14 @@ public:
     PhysParticle *EndParticle() const { return m_pEndParticle; }
     QString Name() const { return m_pLabel -> toPlainText(); }
     map<AxisOrientation, QString> OrientationLabelMap() const { return m_OrientationLabelMap;}
+
+    void theta(const Theta &val) { m_Theta = val; }
+    void StartParticle(PhysParticle *);
+    void EndParticle(PhysParticle *);
+    void StartPoint(const QPointF &pt) { m_StartPoint = pt; }
+    void EndPoint(const QPointF &pt) { m_EndPoint = pt; }
+    void CurrPos(const QPointF &pt) { m_currPos = pt; }
+    void Magnitude(const double val) { m_magnitude = val; }
 protected:
 
     // Qt overrides
@@ -63,6 +71,8 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
     // Member attributes
+
+    // Data Specific (should be pulled out into a separate DataObject like CartesianGraph has
     CartesianLabel *m_pLabel;
     QString m_rawLabel;
     double m_magnitude;
@@ -73,11 +83,14 @@ private:
     QPointF m_EndPoint;
     QPointF m_currPos;
 
+    // Drawing specific.
     QColor m_Color;
     QPolygonF m_arrowHead;
     qreal m_arrowSize;
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
+
+    PhysVectorDataObj m_DataObj;
 };
 
 Q_DECLARE_METATYPE(PhysVector *)

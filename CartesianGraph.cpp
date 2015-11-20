@@ -81,6 +81,14 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
     return *this;
 }
 
+CartesianGraph *CartesianGraph::copy() {
+    CartesianGraph *pObj = NULL;
+
+    return pObj;
+
+}
+
+
 void CartesianGraph::onPropChange(const QString &str) {
     qDebug("CartesianGraph::onPropChange(): updating info");
 

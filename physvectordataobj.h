@@ -2,10 +2,13 @@
 #define PHYSVECTORDATAOBJ_H
 
 
-class PhysVectorDataObj
-{
+class PhysVectorDataObj {
 public:
     PhysVectorDataObj();
+    PhysVectorDataObj(const PhysVectorDataObj &);
+    ~PhysVectorDataObj();
+    PhysVectorDataObj &operator=(const PhysVectorDataObj &);
+private:
 };
 
 #endif // PHYSVECTORDATAOBJ_H

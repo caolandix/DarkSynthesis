@@ -2,11 +2,16 @@
 #define CARTESIANGRAPH_H
 
 #include <QGraphicsItem>
+/*
+#include "physparticle.h"
+#include "physvector.h"
+*/
 #include "cartesiangraphdataobj.h"
 
 class GraphWidget;
 class PhysVector;
 class PhysParticle;
+// class CartesianGraphDataObj;
 
 class CartesianGraph : public PhysBaseItem, public QGraphicsItem {
     Q_OBJECT
@@ -49,7 +54,7 @@ public:
     enum { Type = PhysBaseItem::CartesianGraphType };
     int type() const Q_DECL_OVERRIDE { return Type; }
 
-    CartesianGraph *copy() {}
+    CartesianGraph *copy();
 
 
 protected:

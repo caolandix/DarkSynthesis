@@ -29,6 +29,12 @@ PhysParticle::~PhysParticle() {
     }
 }
 
+PhysParticle *PhysParticle::copy() {
+    PhysParticle *pNewObj = NULL;
+
+    return pNewObj;
+}
+
 QRectF PhysParticle::boundingRect() const {
     const qreal adjust = 2.0;
     return QRectF(-10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust);
