@@ -39,7 +39,7 @@ void PhysObjectNavigator::createContextMenu() {
             this, SLOT(onCustomContextMenu(const QPoint &)));
 }
 
-void PhysObjectNavigator::cloneObject(void) {
+void PhysObjectNavigator::cloneObject() {
     QAction *pAction = qobject_cast<QAction *>(sender());
     QVariant itemData = pAction -> data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
@@ -51,25 +51,27 @@ void PhysObjectNavigator::cloneObject(void) {
         qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
     else {
         switch (pObj -> type()) {
-        case PhysBaseItem::VectorType:
-            /*
-            PhysVector *pCurrVector = static_cast<PhysVector *>(pObj);
-            PhysVector *pNewVector = pObj ->copy();
-            pNewObj = static_cast<QGraphicsItem *>(pNewVector);
-            */
+        case PhysBaseItem::VectorType: {
+            PhysVector *pCurr = static_cast<PhysVector *>(pObj);
+            PhysVector *pNew = pCurr ->copy();
+            pNewObj = static_cast<QGraphicsItem *>(pNew);
             break;
-        case PhysBaseItem::ParticleType:
+        }
+        case PhysBaseItem::ParticleType: {
+            PhysParticle *pCurr = static_cast<PhysParticle *>(pObj);
+            PhysParticle *pNew = pCurr ->copy();
+            pNewObj = static_cast<QGraphicsItem *>(pNew);
             break;
-        case PhysBaseItem::CartesianGraphType:
-            break;
+        }
         default:
             qDebug("PhysObjectNavigator::cloneObject: not a supported object type: %d", pObj -> type());
             break;
         }
+        if (pNewObj)
+            emit clonePhysObj(pNewObj);
     }
-    emit clonePhysObj(pNewObj);
 }
-void PhysObjectNavigator::deleteObject(void) {
+void PhysObjectNavigator::deleteObject() {
     QAction *act = qobject_cast<QAction *>(sender());
     QVariant itemData = act ->data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
@@ -90,7 +92,7 @@ void PhysObjectNavigator::deleteObject(void) {
         }
     }
 }
-void PhysObjectNavigator::resetObject(void) {
+void PhysObjectNavigator::resetObject() {
     QAction *act = qobject_cast<QAction *>(sender());
     QVariant itemData = act ->data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
@@ -125,14 +127,17 @@ void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
         m_pActCloneItem = new QAction(tr("Clone Item"), this);
         m_pActCloneItem -> setStatusTip(tr("Create an identical Physics object"));
         connect(m_pActCloneItem, SIGNAL(triggered()), this, SLOT(cloneObject()));
+        m_pActCloneItem ->setData(itemData);
 
         m_pActDeleteItem = new QAction(tr("Delete Item"), this);
         m_pActDeleteItem -> setStatusTip(tr("Removes the Physics object"));
         connect(m_pActDeleteItem, SIGNAL(triggered()), this, SLOT(deleteObject()));
+        m_pActDeleteItem ->setData(itemData);
 
         m_pActResetItem = new QAction(tr("Reset Item"), this);
         m_pActResetItem -> setStatusTip(tr("Resets the Physics object to default values"));
         connect(m_pActResetItem, SIGNAL(triggered()), this, SLOT(resetObject()));
+        m_pActResetItem ->setData(itemData);
 
         contextMenu.addAction(m_pActCloneItem);
         contextMenu.addAction(m_pActDeleteItem);
