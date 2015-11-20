@@ -13,5 +13,5 @@ PhysVectorDataObj::~PhysVectorDataObj() {
 }
 
 PhysVectorDataObj &PhysVectorDataObj::operator=(const PhysVectorDataObj &obj) {
-
+    return *this;
 }

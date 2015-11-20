@@ -42,8 +42,10 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     formattedLabel.sprintf("%s: (%.6f, @=%3.2f", m_rawLabel.toStdString().c_str(), m_magnitude, m_Theta.degrees);
     m_pLabel = new CartesianLabel(formattedLabel, this);
 
-    m_pStartParticle = pStart;
-    m_pEndParticle = pEnd;
+    if (pStart)
+        StartParticle(pStart);
+    if (pEnd)
+        EndParticle(pEnd);
     m_pParent = pParent;
 
     setFlag(ItemIsMovable);
@@ -68,19 +70,28 @@ PhysVector::~PhysVector() {
 
 PhysVector *PhysVector::copy() {
     PhysVector *pObj = NULL;
-    pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), pos(), Name(), StartParticle(), EndParticle());
-    pObj ->theta(theta());
-
+    pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), pos(), Name());
+    pObj -> theta(theta());
+    pObj -> Magnitude(m_magnitude);
+    pObj -> StartPoint(m_StartPoint);
+    pObj -> EndPoint(m_EndPoint);
+    pObj -> CurrPos(m_currPos);
+    pObj ->StartParticle(m_pStartParticle);
+    pObj ->EndParticle(m_pEndParticle);
     return pObj;
 }
 
 void PhysVector::StartParticle(PhysParticle *pObj) {
-    m_pStartParticle = pObj;
-    m_pStartParticle -> addVector(this);
+    if (pObj) {
+        m_pStartParticle = pObj;
+        m_pStartParticle -> addVector(this);
+    }
 }
 void PhysVector::EndParticle(PhysParticle *pObj) {
-    m_pStartParticle = pObj;
-    m_pStartParticle -> addVector(this);
+    if (pObj) {
+        m_pEndParticle = pObj;
+        m_pEndParticle -> addVector(this);
+    }
 }
 
 
@@ -108,15 +119,17 @@ void PhysVector::adjust() {
             // QLineF aline(mapFromItem(m_pStartParticle, 0, 0), mapFromItem(m_pEndParticle, 0, 0));
             qreal length = line().length();
             QLineF my_line(line().p1(), line().p2());
-
+            QPointF pt1 = my_line.p1(), pt2 = my_line.p2();
             prepareGeometryChange();
             if (length > qreal(20.0)) {
                 QPointF edgeOffset((my_line.dx() * 10) / length, (my_line.dy() * 10) / length);
-                m_StartPoint = my_line.p1() + edgeOffset;
-                m_EndPoint = my_line.p2() - edgeOffset;
+                m_StartPoint = pt1 + edgeOffset;
+                m_EndPoint = pt2 - edgeOffset;
             }
-            else
-                m_StartPoint = m_EndPoint = my_line.p1();
+            else {
+                m_StartPoint = pt1;
+                m_EndPoint = pt2;
+            }
         }
     }
 }

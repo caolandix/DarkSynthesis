@@ -85,7 +85,6 @@ CartesianGraph *CartesianGraph::copy() {
     CartesianGraph *pObj = NULL;
 
     return pObj;
-
 }
 
 

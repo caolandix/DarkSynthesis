@@ -73,7 +73,6 @@ private:
     // Member attributes
 
     // Data Specific (should be pulled out into a separate DataObject like CartesianGraph has
-    CartesianLabel *m_pLabel;
     QString m_rawLabel;
     double m_magnitude;
     Theta m_Theta;
@@ -84,12 +83,14 @@ private:
     QPointF m_currPos;
 
     // Drawing specific.
+    CartesianLabel *m_pLabel;
     QColor m_Color;
     QPolygonF m_arrowHead;
     qreal m_arrowSize;
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
 
+    // Currently not used, will need to fix later
     PhysVectorDataObj m_DataObj;
 };
 
