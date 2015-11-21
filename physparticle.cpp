@@ -29,6 +29,15 @@ PhysParticle::~PhysParticle() {
     }
 }
 
+void PhysParticle::init() {
+    QListIterator<PhysVector *> itr(m_Vectors);
+    while (itr.hasNext()) {
+        PhysVector *pObj = itr.next();
+        pObj ->clearParticle(this);
+    }
+    m_Vectors.clear();
+}
+
 void PhysParticle::Vectors(const QList<PhysVector *> vectorList) {
     QListIterator<PhysVector *> itr(vectorList);
     while (itr.hasNext())

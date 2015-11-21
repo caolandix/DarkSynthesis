@@ -1,12 +1,7 @@
 #include "cartesiangraphdataobj.h"
 
 CartesianGraphDataObj::CartesianGraphDataObj() {
-    m_tickStep = 10.0;
-    m_origin = QPointF(0.0, 0.0);
-    m_x_min = -100;
-    m_x_max = 100;
-    m_y_min = -100;
-    m_y_max = 100;
+    init();
 }
 
 CartesianGraphDataObj::CartesianGraphDataObj(QPointF origin, double tickStep, double x_min, double x_max, double y_min, double y_max) {
@@ -47,8 +42,19 @@ CartesianGraphDataObj::CartesianGraphDataObj(const CartesianGraphDataObj &Obj) {
 }
 
 CartesianGraphDataObj::~CartesianGraphDataObj() {
+    init();
+}
+
+void CartesianGraphDataObj::init() {
     m_Vectors.clear();
     m_Particles.clear();
+
+    m_tickStep = 10.0;
+    m_origin = QPointF(0.0, 0.0);
+    m_x_min = -100;
+    m_x_max = 100;
+    m_y_min = -100;
+    m_y_max = 100;
 }
 
 CartesianGraphDataObj &CartesianGraphDataObj::operator=(const CartesianGraphDataObj &obj) {

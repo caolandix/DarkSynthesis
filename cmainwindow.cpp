@@ -274,6 +274,7 @@ void CMainWindow::createSignalSlots() {
     QMetaObject::Connection val = connect(m_pGraphWidget, SIGNAL(createObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onCreateObj(QGraphicsItem *)));
     val = connect(m_pPhysObjNavigator, SIGNAL(changeObj(QGraphicsItem *, QGraphicsItem *)), m_pPhysObjPropsNavigator, SLOT(onChangeObj(QGraphicsItem *, QGraphicsItem *)));
     val = connect(m_pPhysObjNavigator, SIGNAL(clonePhysObj(QGraphicsItem *)), m_pGraphWidget, SLOT(onClonePhysObj(QGraphicsItem *)));
+    val = connect(m_pGraphWidget, SIGNAL(removeObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onRemoveObj(QGraphicsItem *)));
 }
 
 void CMainWindow::createBaseObjects() {

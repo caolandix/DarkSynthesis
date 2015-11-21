@@ -67,7 +67,6 @@ PhysVector *GraphWidget::createVector(const QPointF &startPos) {
     PhysVector *pObj = new PhysVector(m_pCartGraph, startPos, Label);
 
     m_pCartGraph -> DataObj() -> AddVector(pObj);
-
     pScene -> addItem(pObj);
     emit createObj(pObj);
     return pObj;
@@ -97,6 +96,29 @@ void GraphWidget::onClonePhysObj(QGraphicsItem *pNewObj) {
         pNewObj -> setParentItem(m_pCartGraph);
         scene() -> addItem(pNewObj);
         emit createObj(pNewObj);
+    }
+}
+
+void GraphWidget::onDeletePhysObj(QGraphicsItem *pObj) {
+    qDebug("GraphWidget::onDeletePhysObj()");
+    if (!pObj)
+        qDebug("GraphWidget::onDeletePhysObj(): pNewObj is NULL");
+    else {
+        switch (pObj ->type()) {
+        case PhysBaseItem::VectorType:
+           // m_pCartGraph -> DataObj() -> removeVector(static_cast<PhysVector *>(pObj));
+            break;
+        case PhysBaseItem::ParticleType:
+           //m_pCartGraph -> DataObj() -> removeParticle(static_cast<PhysParticle *>(pObj));
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            break;
+        default:
+            qDebug("PhysObjectNavigator::onDeletePhysObj: not a supported object type: %d", pObj -> type());
+            break;
+        }
+        scene() ->removeItem(pObj);
+        emit removeObj(pObj);
     }
 }
 

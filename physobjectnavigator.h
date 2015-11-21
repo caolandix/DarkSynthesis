@@ -30,6 +30,7 @@ signals:
     void changeObj(QGraphicsItem *, QGraphicsItem *);
     void updateObj(QGraphicsItem *);
     void clonePhysObj(QGraphicsItem *);
+    void deletePhysObj(QGraphicsItem *);
 public slots:
     void onCreateObj(QGraphicsItem *);
     void onCustomContextMenu(const QPoint &);

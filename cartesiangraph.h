@@ -55,6 +55,7 @@ public:
     int type() const Q_DECL_OVERRIDE { return Type; }
 
     CartesianGraph *copy();
+    void init();
 
 
 protected:

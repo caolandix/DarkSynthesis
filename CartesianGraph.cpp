@@ -81,6 +81,10 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
     return *this;
 }
 
+void CartesianGraph::init() {
+    m_pDataObj -> init();
+}
+
 CartesianGraph *CartesianGraph::copy() {
     CartesianGraph *pObj = NULL;
 

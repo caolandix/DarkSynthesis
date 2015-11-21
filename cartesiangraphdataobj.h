@@ -50,6 +50,7 @@ public:
     // methods
     void AddVector(PhysVector *pobj) { m_Vectors.push_back(pobj); }
     void AddParticle(PhysParticle *pobj) { m_Particles.push_back(pobj); }
+    void init();
 private:
     QPointF m_origin;
     double m_tickStep;

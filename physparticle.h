@@ -30,6 +30,7 @@ public:
     void Vectors(const QList<PhysVector *> vectors);
     void DataObj(const PhysParticleDataObj &obj) { m_DataObj = obj; }
     PhysParticle *copy();
+    void init();
 
     QString Name() const { return m_Name; }
 

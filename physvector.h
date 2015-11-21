@@ -44,6 +44,7 @@ public:
     void updatePosition();
 
     PhysVector *copy();
+    void init();
 
     // accessors
     double Magnitude() const { return m_magnitude; }
@@ -58,6 +59,7 @@ public:
     void theta(const Theta &val) { m_Theta = val; }
     void StartParticle(PhysParticle *);
     void EndParticle(PhysParticle *);
+    void clearParticle(PhysParticle *);
     void StartPoint(const QPointF &pt) { m_StartPoint = pt; }
     void EndPoint(const QPointF &pt) { m_EndPoint = pt; }
     void CurrPos(const QPointF &pt) { m_currPos = pt; }

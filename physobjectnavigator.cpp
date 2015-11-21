@@ -43,8 +43,6 @@ void PhysObjectNavigator::cloneObject() {
     QAction *pAction = qobject_cast<QAction *>(sender());
     QVariant itemData = pAction -> data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
-
-    // Copy the object to a new one
     QGraphicsItem *pNewObj = NULL;
 
     if (!pObj)
@@ -72,47 +70,80 @@ void PhysObjectNavigator::cloneObject() {
     }
 }
 void PhysObjectNavigator::deleteObject() {
-    QAction *act = qobject_cast<QAction *>(sender());
-    QVariant itemData = act ->data();
+    QAction *pAction = qobject_cast<QAction *>(sender());
+    QVariant itemData = pAction -> data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
 
     if (!pObj)
         qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
     else {
         switch (pObj ->type()) {
-        case PhysBaseItem::VectorType:
+        case PhysBaseItem::VectorType:{
+            PhysVector *pCurr = static_cast<PhysVector *>(pObj);
             break;
-        case PhysBaseItem::ParticleType:
+        }
+        case PhysBaseItem::ParticleType:{
+            PhysParticle *pCurr = static_cast<PhysParticle *>(pObj);
             break;
-        case PhysBaseItem::CartesianGraphType:
+        }
+        default:
+            qDebug("PhysObjectNavigator::deleteObject: not a supported object type: %d", pObj -> type());
             break;
+        }
+
+        //removeTreeItem(pObj);
+        emit deletePhysObj(pObj);
+    }
+}
+/*
+void PhysObjectNavigator::removeTreeItem(QGraphicsItem *pObj) {
+    void visitTree(QStringList &list, QTreeWidgetItem *item){
+      list << item -> text(0);
+      for(int i = 0; i < item -> childCount(); ++i)
+        visitTree(list, item -> child(i));
+    }
+
+    QStringList visitTree(QTreeWidget *tree) {
+      QStringList list;
+      for(int i = 0; i < tree -> topLevelItemCount(); ++i)
+        visitTree(list, tree -> topLevelItem(i));
+      return list;
+    }
+    //...
+    QStringList result = visitTree(myTree);
+}
+
+*/
+
+void PhysObjectNavigator::resetObject() {
+    QAction *pAction = qobject_cast<QAction *>(sender());
+    QVariant itemData = pAction -> data();
+    QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
+
+    if (!pObj)
+        qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
+    else {
+        switch (pObj ->type()) {
+        case PhysBaseItem::VectorType:{
+            PhysVector *pCurr = static_cast<PhysVector *>(pObj);
+            pCurr ->init();
+            break;
+        }
+        case PhysBaseItem::ParticleType:{
+            PhysParticle *pCurr = static_cast<PhysParticle *>(pObj);
+            pCurr ->init();
+            break;
+        }
+        case PhysBaseItem::CartesianGraphType:{
+            CartesianGraph *pCurr = static_cast<CartesianGraph *>(pObj);
+            pCurr ->init();
+            break;
+        }
         default:
             qDebug("PhysObjectNavigator::deleteObject: not a supported object type: %d", pObj -> type());
             break;
         }
     }
-}
-void PhysObjectNavigator::resetObject() {
-    QAction *act = qobject_cast<QAction *>(sender());
-    QVariant itemData = act ->data();
-    QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
-
-    if (!pObj)
-        qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
-    else {
-        switch (pObj ->type()) {
-        case PhysBaseItem::VectorType:
-            break;
-        case PhysBaseItem::ParticleType:
-            break;
-        case PhysBaseItem::CartesianGraphType:
-            break;
-        default:
-            qDebug("PhysObjectNavigator::resetObject: not a supported object type: %d", pObj -> type());
-            break;
-        }
-    }
-
 }
 
 void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {

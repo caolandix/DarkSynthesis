@@ -24,18 +24,18 @@ const std::map<PhysVector::AxisOrientation, QString> PhysVector::m_OrientationLa
 PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
     QGraphicsLineItem(pParent), PhysBaseItem() {
     m_pLabel = NULL;
-    m_pStartParticle = NULL;
-    m_pEndParticle = NULL;
     m_pParent = NULL;
-
     m_Color = Qt::black;
-    m_magnitude = 50.0;
     m_arrowSize = 20;
     m_dragIndex = DI_VECTORLINE;
 
+
+    m_magnitude = 50.0;
     m_Theta.bAboveAxis = true;
     m_Theta.degrees = 45.0;
     m_Theta.axisOrientation = AXIS_HORIZ;
+    m_pStartParticle = NULL;
+    m_pEndParticle = NULL;
 
     m_rawLabel = Label;
     QString formattedLabel;
@@ -66,6 +66,30 @@ PhysVector::~PhysVector() {
     }
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
+}
+
+void PhysVector::clearParticle(PhysParticle *pObj) {
+    if (m_pStartParticle == pObj)
+        m_pStartParticle = NULL;
+    if (m_pEndParticle == pObj)
+        m_pEndParticle = NULL;
+}
+
+void PhysVector::init() {
+    m_magnitude = 50.0;
+
+    if (m_pStartParticle) {
+        m_pStartParticle ->removeVector(this);
+        m_pStartParticle = NULL;
+    }
+    if (m_pEndParticle) {
+        m_pEndParticle ->removeVector(this);
+        m_pEndParticle = NULL;
+    }
+    m_Theta.bAboveAxis = true;
+    m_Theta.degrees = 45.0;
+    m_Theta.axisOrientation = AXIS_HORIZ;
+    setLine(0 + m_magnitude, 0 + m_magnitude, 0, 0);
 }
 
 PhysVector *PhysVector::copy() {
