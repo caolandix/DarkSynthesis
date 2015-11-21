@@ -85,6 +85,7 @@ void PhysObjectNavigator::removeObject() {
         }
         case PhysBaseItem::ParticleType:{
             PhysParticle *pCurr = static_cast<PhysParticle *>(pObj);
+            pCurr ->DisassociateVectors();
             break;
         }
         default:

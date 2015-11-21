@@ -28,6 +28,7 @@ public:
     bool addVector(PhysVector *);
     bool removeVector(PhysVector *);
     void Vectors(const QList<PhysVector *> vectors);
+    void DisassociateVectors();
     void DataObj(const PhysParticleDataObj &obj) { m_DataObj = obj; }
     PhysParticle *copy();
     void init();

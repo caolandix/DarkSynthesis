@@ -104,6 +104,14 @@ bool PhysParticle::removeVector(PhysVector *pVector) {
     return bFound;
 }
 
+void PhysParticle::DisassociateVectors() {
+    QListIterator<PhysVector *> itr(m_Vectors);
+    while (itr.hasNext()) {
+        PhysVector *pObj = itr.next();
+        pObj -> clearParticle(this);
+    }
+}
+
 QVariant PhysParticle::itemChange(GraphicsItemChange change, const QVariant &value) {
     switch (change) {
         case ItemPositionHasChanged:
