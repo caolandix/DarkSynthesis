@@ -60,6 +60,7 @@ public:
     void StartParticle(PhysParticle *);
     void EndParticle(PhysParticle *);
     void clearParticle(PhysParticle *);
+    void removeFromParticles();
     void StartPoint(const QPointF &pt) { m_StartPoint = pt; }
     void EndPoint(const QPointF &pt) { m_EndPoint = pt; }
     void CurrPos(const QPointF &pt) { m_currPos = pt; }

@@ -78,14 +78,7 @@ void PhysVector::clearParticle(PhysParticle *pObj) {
 void PhysVector::init() {
     m_magnitude = 50.0;
 
-    if (m_pStartParticle) {
-        m_pStartParticle ->removeVector(this);
-        m_pStartParticle = NULL;
-    }
-    if (m_pEndParticle) {
-        m_pEndParticle ->removeVector(this);
-        m_pEndParticle = NULL;
-    }
+    removeFromParticles();
     m_Theta.bAboveAxis = true;
     m_Theta.degrees = 45.0;
     m_Theta.axisOrientation = AXIS_HORIZ;
@@ -118,6 +111,16 @@ void PhysVector::EndParticle(PhysParticle *pObj) {
     }
 }
 
+void PhysVector::removeFromParticles() {
+    if (m_pStartParticle) {
+        m_pStartParticle ->removeVector(this);
+        m_pStartParticle = NULL;
+    }
+    if (m_pEndParticle) {
+        m_pEndParticle ->removeVector(this);
+        m_pEndParticle = NULL;
+    }
+}
 
 QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value) {
     switch (change) {

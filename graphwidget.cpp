@@ -99,26 +99,25 @@ void GraphWidget::onClonePhysObj(QGraphicsItem *pNewObj) {
     }
 }
 
-void GraphWidget::onDeletePhysObj(QGraphicsItem *pObj) {
-    qDebug("GraphWidget::onDeletePhysObj()");
+void GraphWidget::onRemovePhysObj(QGraphicsItem *pObj) {
+    qDebug("GraphWidget::onRemovePhysObj()");
     if (!pObj)
-        qDebug("GraphWidget::onDeletePhysObj(): pNewObj is NULL");
+        qDebug("GraphWidget::onRemovePhysObj(): pNewObj is NULL");
     else {
         switch (pObj ->type()) {
         case PhysBaseItem::VectorType:
-           // m_pCartGraph -> DataObj() -> removeVector(static_cast<PhysVector *>(pObj));
+            //m_pCartGraph -> DataObj() -> removeVector(static_cast<PhysVector *>(pObj));
             break;
         case PhysBaseItem::ParticleType:
-           //m_pCartGraph -> DataObj() -> removeParticle(static_cast<PhysParticle *>(pObj));
+            //m_pCartGraph -> DataObj() -> removeParticle(static_cast<PhysParticle *>(pObj));
             break;
         case PhysBaseItem::CartesianGraphType:
             break;
         default:
-            qDebug("PhysObjectNavigator::onDeletePhysObj: not a supported object type: %d", pObj -> type());
+            qDebug("PhysObjectNavigator::onRemovePhysObj: not a supported object type: %d", pObj -> type());
             break;
         }
         scene() ->removeItem(pObj);
-        emit removeObj(pObj);
     }
 }
 

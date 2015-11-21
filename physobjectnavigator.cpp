@@ -69,7 +69,7 @@ void PhysObjectNavigator::cloneObject() {
             emit clonePhysObj(pNewObj);
     }
 }
-void PhysObjectNavigator::deleteObject() {
+void PhysObjectNavigator::removeObject() {
     QAction *pAction = qobject_cast<QAction *>(sender());
     QVariant itemData = pAction -> data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
@@ -80,6 +80,7 @@ void PhysObjectNavigator::deleteObject() {
         switch (pObj ->type()) {
         case PhysBaseItem::VectorType:{
             PhysVector *pCurr = static_cast<PhysVector *>(pObj);
+            pCurr ->removeFromParticles();
             break;
         }
         case PhysBaseItem::ParticleType:{
@@ -90,32 +91,32 @@ void PhysObjectNavigator::deleteObject() {
             qDebug("PhysObjectNavigator::deleteObject: not a supported object type: %d", pObj -> type());
             break;
         }
-
-        //removeTreeItem(pObj);
-        emit deletePhysObj(pObj);
+        removeFromTreeWidgetParent(pObj);
+        emit removePhysObj(pObj);
     }
 }
-/*
-void PhysObjectNavigator::removeTreeItem(QGraphicsItem *pObj) {
-    void visitTree(QStringList &list, QTreeWidgetItem *item){
-      list << item -> text(0);
-      for(int i = 0; i < item -> childCount(); ++i)
-        visitTree(list, item -> child(i));
-    }
 
-    QStringList visitTree(QTreeWidget *tree) {
-      QStringList list;
-      for(int i = 0; i < tree -> topLevelItemCount(); ++i)
-        visitTree(list, tree -> topLevelItem(i));
-      return list;
+void PhysObjectNavigator::removeFromTreeWidgetParent(QGraphicsItem *pObj) {
+    QTreeWidgetItemIterator it(this);
+    while (*it) {
+        QTreeWidgetItem *pItem = (*it);
+        QVariant itemData = pItem ->data(0, Qt::UserRole);
+        QGraphicsItem *pCurrObj = itemData.value<QGraphicsItem *>();
+
+        if (pCurrObj == pObj && pCurrObj ->type() != PhysBaseItem::CartesianGraphType) {
+            QTreeWidgetItem *pParentItem = pItem ->parent();
+            if (pParentItem) {
+                pParentItem ->removeChild(pItem);
+                qDebug("PhysObjectNavigator::removeFromTreeWidgetParent(): found it!");
+                return;
+            }
+        }
+        ++it;
     }
-    //...
-    QStringList result = visitTree(myTree);
 }
-
-*/
 
 void PhysObjectNavigator::resetObject() {
+    qDebug("PhysObjectNavigator::resetObject");
     QAction *pAction = qobject_cast<QAction *>(sender());
     QVariant itemData = pAction -> data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
@@ -162,7 +163,7 @@ void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
 
         m_pActDeleteItem = new QAction(tr("Delete Item"), this);
         m_pActDeleteItem -> setStatusTip(tr("Removes the Physics object"));
-        connect(m_pActDeleteItem, SIGNAL(triggered()), this, SLOT(deleteObject()));
+        connect(m_pActDeleteItem, SIGNAL(triggered()), this, SLOT(removeObject()));
         m_pActDeleteItem ->setData(itemData);
 
         m_pActResetItem = new QAction(tr("Reset Item"), this);
@@ -226,10 +227,19 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
 }
 
 void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
-    QModelIndex dropIndex = indexAt(pEvent -> pos());
+    qDebug("PhysObjectNavigator::dropEvent()");
+    QTreeWidgetItem *pItem = itemFromIndex(indexAt(pEvent -> pos()));
+    QVariant itemData = pItem -> data(0, Qt::UserRole);
+    QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
 
     // The object must have a parent to be dropped
-    if (dropIndex.parent().isValid()) {
+    if (pObj -> type() != PhysBaseItem::CartesianGraphType) {
+        if (PhysBaseItem::VectorType) {
+
+        }
+        else if (PhysBaseItem::ParticleType) {
+
+        }
         QTreeWidget::dropEvent(pEvent);
     }
 }

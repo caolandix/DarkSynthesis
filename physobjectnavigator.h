@@ -26,17 +26,18 @@ private:
     void insertVector(PhysVector *);
     void insertParticle(PhysParticle *);
     void createContextMenu();
+    void removeFromTreeWidgetParent(QGraphicsItem *);
 signals:
     void changeObj(QGraphicsItem *, QGraphicsItem *);
     void updateObj(QGraphicsItem *);
     void clonePhysObj(QGraphicsItem *);
-    void deletePhysObj(QGraphicsItem *);
+    void removePhysObj(QGraphicsItem *);
 public slots:
     void onCreateObj(QGraphicsItem *);
     void onCustomContextMenu(const QPoint &);
 
     void cloneObject();
-    void deleteObject();
+    void removeObject();
     void resetObject();
 private:
     QGraphicsItem *m_pCurrObj, *m_pPrevObj;
