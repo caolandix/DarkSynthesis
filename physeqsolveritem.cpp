@@ -1,15 +1,15 @@
 #include "physeqsolveritem.h"
 
-PhysEqSolverItem::PhysEqSolverItem() : QTableWidgetItem(), isResolving(false) {
+PhysEqSolverItem::PhysEqSolverItem() : QTableWidgetItem(), m_isResolving(false) {
 }
 
-PhysEqSolverItem::PhysEqSolverItem(const QString &text) : QTableWidgetItem(text), isResolving(false) {
+PhysEqSolverItem::PhysEqSolverItem(const QString &text) : QTableWidgetItem(text), m_isResolving(false) {
 }
 
 QTableWidgetItem *PhysEqSolverItem::clone() const {
-    PhysEqSolverItem *item = new PhysEqSolverItem();
-    *item = *this;
-    return item;
+    PhysEqSolverItem *pItem = new PhysEqSolverItem();
+    *pItem = *this;
+    return pItem;
 }
 
 QVariant PhysEqSolverItem::data(int role) const {
@@ -38,17 +38,17 @@ QVariant PhysEqSolverItem::data(int role) const {
 void PhysEqSolverItem::setData(int role, const QVariant &value) {
     QTableWidgetItem::setData(role, value);
     if (tableWidget())
-        tableWidget()->viewport()->update();
+        tableWidget() ->viewport() ->update();
 }
 
 QVariant PhysEqSolverItem::display() const {
 
     // avoid circular dependencies
-    if (isResolving)
+    if (m_isResolving)
         return QVariant();
-    isResolving = true;
+    m_isResolving = true;
     QVariant result = computeFormula(formula(), tableWidget(), this);
-    isResolving = false;
+    m_isResolving = false;
     return result;
 }
 
@@ -99,11 +99,11 @@ QVariant PhysEqSolverItem::resolveSigFigs(const QVariant &calcResult) {
     return result;
 }
 
-QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWidget *widget, const QTableWidgetItem *self) {
+QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWidget *pWidget, const QTableWidgetItem *self) {
 
     // check if the s tring is actually a formula or not
     QStringList list = formula.split(' ');
-    if (list.isEmpty() || !widget)
+    if (list.isEmpty() || !pWidget)
         return formula; // it is a normal string
 
     QString op = list.value(0).toLower();
@@ -119,20 +119,20 @@ QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWi
     if (list.count() > 2)
         decode_pos(list.value(2), &secondRow, &secondCol);
 
-    const QTableWidgetItem *start = widget->item(firstRow, firstCol);
-    const QTableWidgetItem *end = widget->item(secondRow, secondCol);
+    const QTableWidgetItem *pStart = pWidget ->item(firstRow, firstCol);
+    const QTableWidgetItem *pEnd = pWidget ->item(secondRow, secondCol);
 
-    int firstVal = start ? start->text().toInt() : 0;
-    int secondVal = end ? end->text().toInt() : 0;
+    int firstVal = pStart ? pStart ->text().toInt() : 0;
+    int secondVal = pEnd ? pEnd ->text().toInt() : 0;
 
     QVariant result;
     if (op == "sum") {
         int sum = 0;
-        for (int r = firstRow; r <= secondRow; ++r) {
-            for (int c = firstCol; c <= secondCol; ++c) {
-                const QTableWidgetItem *tableItem = widget->item(r, c);
+        for (int row = firstRow; row <= secondRow; ++row) {
+            for (int col = firstCol; col <= secondCol; ++col) {
+                const QTableWidgetItem *tableItem = pWidget ->item(row, col);
                 if (tableItem && tableItem != self)
-                    sum += tableItem->text().toInt();
+                    sum += tableItem ->text().toInt();
             }
         }
 
@@ -151,8 +151,8 @@ QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWi
             result = (firstVal / secondVal);
     }
     else if (op == "=") {
-        if (start)
-            result = start->text();
+        if (pStart)
+            result = pStart->text();
     }
     else
         result = formula;

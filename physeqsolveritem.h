@@ -18,7 +18,7 @@ public:
     static QVariant computeFormula(const QString &, const QTableWidget *, const QTableWidgetItem * = NULL);
     QVariant resolveSigFigs(const QVariant &);
 private:
-    mutable bool isResolving;
+    mutable bool m_isResolving;
 };
 
 #endif // PHYSEQSOLVERITEM_H

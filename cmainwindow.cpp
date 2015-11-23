@@ -263,7 +263,7 @@ void CMainWindow::createDockWindows() {
     addDockWidget(Qt::BottomDockWidgetArea, pDock);
 
     pDock = new QDockWidget(tr("Output"), this);
-    m_pPhysEqSolver = new PhysEqSolver(10, 6, pDock);
+    m_pPhysEqSolver = new PhysEqSolver(1, 2, pDock);
     pDock -> setWidget(m_pPhysEqSolver);
     pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
     addDockWidget(Qt::BottomDockWidgetArea, pDock);

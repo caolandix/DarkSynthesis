@@ -6,13 +6,6 @@
 PhysEqSolverDelegate::PhysEqSolverDelegate(QObject *pParent) : QItemDelegate(pParent) {}
 
 QWidget *PhysEqSolverDelegate::createEditor(QWidget *pParent, const QStyleOptionViewItem &viewItem, const QModelIndex &index) const {
-    if (index.column() == 1) {
-        QDateTimeEdit *pDateEditor = new QDateTimeEdit(pParent);
-        pDateEditor -> setDisplayFormat("yyyy/MM/dd");
-        pDateEditor -> setCalendarPopup(true);
-        return pDateEditor;
-    }
-
     QLineEdit *pEdit = new QLineEdit(pParent);
 
     // create a completer with the strings in the column as model
@@ -40,11 +33,6 @@ void PhysEqSolverDelegate::setEditorData(QWidget *pEditor, const QModelIndex &in
         pEdit -> setText(index.model() -> data(index, Qt::EditRole).toString());
         return;
     }
-
-    QDateTimeEdit *pDateEditor = qobject_cast<QDateTimeEdit *>(pEditor);
-    if (pDateEditor) {
-        pDateEditor -> setDate(QDate::fromString(index.model() -> data(index, Qt::EditRole).toString(), "d/M/yyyy"));
-    }
 }
 
 void PhysEqSolverDelegate::setModelData(QWidget *pEditor, QAbstractItemModel *pModel, const QModelIndex &index) const {
@@ -53,8 +41,4 @@ void PhysEqSolverDelegate::setModelData(QWidget *pEditor, QAbstractItemModel *pM
         pModel -> setData(index, pEdit -> text());
         return;
     }
-
-    QDateTimeEdit *pDateEditor = qobject_cast<QDateTimeEdit *>(pEditor);
-    if (pDateEditor)
-        pModel -> setData(index, pDateEditor -> date().toString("dd/M/yyyy"));
 }

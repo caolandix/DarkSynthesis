@@ -23,7 +23,6 @@ public slots:
     void selectColor();
     void selectFont();
     void clear();
-    void print();
     void actionSum();
     void actionSubtract();
     void actionAdd();
@@ -46,8 +45,6 @@ private:
     QAction *m_pActColor;
     QAction *m_pActFont;
     QAction *m_pActClear;
-    QAction *m_pActExit;
-    QAction *m_pActPrint;
     QAction *m_pActAppendTimeColumn;
     QAction *m_pActInsertTimeColumn;
     QAction *m_pActRemoveTimeColumn;
