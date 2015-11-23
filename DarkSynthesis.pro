@@ -64,7 +64,9 @@ SOURCES += main.cpp \
     jumpdrive/RPNExpression.cpp \
     jumpdrive/Token.cpp \
     jumpdrive/Tokenizer.cpp \
-    jumpdrive/ValueSet.cpp
+    jumpdrive/ValueSet.cpp \
+    physobjectpropdelegate.cpp \
+    physobjectpropeditor.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -142,7 +144,9 @@ HEADERS  += cmainwindow.h \
     jumpdrive/Tokenizer.h \
     jumpdrive/UnparsableExpressionException.h \
     jumpdrive/ValueSet.h \
-    jumpdrive/VariableToken.h
+    jumpdrive/VariableToken.h \
+    physobjectpropdelegate.h \
+    physobjectpropeditor.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui

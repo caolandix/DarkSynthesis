@@ -1,4 +1,5 @@
 #include <QTableWidget>
+#include <QTableView>
 #include <QGraphicsItem>
 #include <QHeaderView>
 #include <QTableWidgetItem>
@@ -12,8 +13,10 @@
 #include "physparticle.h"
 #include "physvector.h"
 #include "physctrldoublespinbox.h"
+#include "physobjectpropdelegate.h"
+#include "physobjectpropeditor.h"
 
-PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableWidget(pParent) {
+PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableView(pParent) {
     m_pXaxisLabel = NULL;
     m_pYaxisLabel = NULL;
     m_pAxisTickInc = NULL;
@@ -27,30 +30,57 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableWid
     m_pVectorName = NULL;
     m_pParticleName = NULL;
 
+
+    int rows = 0, cols = 2;
+    m_pTable = new QTableWidget(rows, cols, this);
+
     setShowGrid(true);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
-    setColumnCount(2);
+    m_pTable ->setColumnCount(2);
     verticalHeader() -> setVisible(false);
 
     QStringList tableHeader;
     tableHeader << "Property" << "Value";
-    setHorizontalHeaderLabels(tableHeader);
+    m_pTable ->setHorizontalHeaderLabels(tableHeader);
+    m_pTable -> setSizeAdjustPolicy(QTableWidget::AdjustToContents);
+    m_pTable -> setItemPrototype(m_pTable -> item(rows - 1, cols - 1));
+    m_pTable -> setItemDelegate(new PhysObjectPropDelegate());
+    createConnections();
+}
+
+void PhysObjectPropsNavigator::createConnections() {
+
+    // Create connections between controls and the View so that modifications will update PhysObject the view is assocviated with
+    /*
+    connect(m_pXaxisLabel, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pYaxisLabel, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pAxisTickInc, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pXaxisExtent, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pYaxisExtent, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pVectorMag, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pVectorThetaAngle, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pVectorThetaAxisOrient, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pVectorAssocParticle, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pCartesianGraphName, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pVectorName, SIGNAL(), this, SLOT(updateControl()));
+    connect(m_pParticleName, SIGNAL(), this, SLOT(updateControl()));
+    */
 }
 
 void PhysObjectPropsNavigator::deleteControls() {
-    if (m_pXaxisLabel) { delete m_pXaxisLabel; m_pXaxisLabel= NULL; };
-    if (m_pYaxisLabel) { delete m_pYaxisLabel; m_pYaxisLabel= NULL; };
-    if (m_pAxisTickInc) { delete m_pAxisTickInc; m_pAxisTickInc= NULL; };
-    if (m_pXaxisExtent) { delete m_pXaxisExtent; m_pXaxisExtent= NULL; };
-    if (m_pYaxisExtent) { delete m_pYaxisExtent; m_pYaxisExtent= NULL; };
-    if (m_pVectorMag) { delete m_pVectorMag; m_pVectorMag= NULL; };
-    if (m_pVectorThetaAngle) { delete m_pVectorThetaAngle; m_pVectorThetaAngle= NULL; };
-    if (m_pVectorThetaAxisOrient) { delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient= NULL; };
-    if (m_pVectorAssocParticle) { delete m_pVectorAssocParticle; m_pVectorAssocParticle= NULL; };
-    if (m_pCartesianGraphName) { delete m_pCartesianGraphName; m_pCartesianGraphName= NULL; };
-    if (m_pVectorName) { delete m_pVectorName; m_pVectorName= NULL; };
-    if (m_pParticleName) { delete m_pParticleName; m_pParticleName= NULL; };
+    if (m_pXaxisLabel) { delete m_pXaxisLabel; m_pXaxisLabel = NULL; };
+    if (m_pYaxisLabel) { delete m_pYaxisLabel; m_pYaxisLabel = NULL; };
+    if (m_pAxisTickInc) { delete m_pAxisTickInc; m_pAxisTickInc = NULL; };
+    if (m_pXaxisExtent) { delete m_pXaxisExtent; m_pXaxisExtent = NULL; };
+    if (m_pYaxisExtent) { delete m_pYaxisExtent; m_pYaxisExtent = NULL; };
+    if (m_pVectorMag) { delete m_pVectorMag; m_pVectorMag = NULL; };
+    if (m_pVectorThetaAngle) { delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL; };
+    if (m_pVectorThetaAxisOrient) { delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL; };
+    if (m_pVectorAssocParticle) { delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL; };
+    if (m_pCartesianGraphName) { delete m_pCartesianGraphName; m_pCartesianGraphName = NULL; };
+    if (m_pVectorName) { delete m_pVectorName; m_pVectorName = NULL; };
+    if (m_pParticleName) { delete m_pParticleName; m_pParticleName = NULL; };
 }
 
 void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *pPrevious) {
@@ -124,23 +154,23 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         // Axis extents (SpinboxDelegates)
 
         // Column 0 - Property Names
-        insertRow(0);
-        setItem(0, 0, createRowItem(QString("X-Axis Label")));
-        insertRow(1);
-        setItem(1, 0, createRowItem(QString("Y-Axis Label")));
-        insertRow(2);
-        setItem(2, 0, createRowItem(QString("Axis Tick Increment")));
-        insertRow(3);
-        setItem(3, 0, createRowItem(QString("X-Axis Extent")));
-        insertRow(4);
-        setItem(4, 0, createRowItem(QString("Y-Axis Extent")));
+        m_pTable ->insertRow(0);
+        m_pTable ->setItem(0, 0, createRowItem(QString("X-Axis Label")));
+        m_pTable ->insertRow(1);
+        m_pTable ->setItem(1, 0, createRowItem(QString("Y-Axis Label")));
+        m_pTable ->insertRow(2);
+        m_pTable ->setItem(2, 0, createRowItem(QString("Axis Tick Increment")));
+        m_pTable ->insertRow(3);
+        m_pTable ->setItem(3, 0, createRowItem(QString("X-Axis Extent")));
+        m_pTable ->insertRow(4);
+        m_pTable ->setItem(4, 0, createRowItem(QString("Y-Axis Extent")));
 
         // Column 1 specialties
-        setCellWidget(0, 1, m_pXaxisLabel = new PhysCtrlLineEdit(this));
-        setCellWidget(1, 1, m_pYaxisLabel = new PhysCtrlLineEdit(this));
-        setCellWidget(2, 1, m_pAxisTickInc = new PhysCtrlDoubleSpinBox(6, this));
-        setCellWidget(3, 1, m_pXaxisExtent = new PhysCtrlDoubleSpinBox(6, this));
-        setCellWidget(4, 1, m_pYaxisExtent = new PhysCtrlDoubleSpinBox(6, this));
+        m_pTable ->setItem(0, 1, m_pXaxisLabel = new PhysObjectPropEditor());
+        m_pTable ->setItem(1, 1, m_pYaxisLabel = new PhysObjectPropEditor());
+        m_pTable ->setCellWidget(2, 1, m_pAxisTickInc = new PhysCtrlDoubleSpinBox(6, this));
+        m_pTable ->setCellWidget(3, 1, m_pXaxisExtent = new PhysCtrlDoubleSpinBox(6, this));
+        m_pTable ->setCellWidget(4, 1, m_pYaxisExtent = new PhysCtrlDoubleSpinBox(6, this));
 
         // set data
         m_pXaxisLabel ->setText(pObj -> XAxisLabel());
@@ -161,23 +191,23 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
             destroyPrevTable(pPrev);
 
         // Column 0, row 0
-        insertRow(0);
-        setItem(0, 0, createRowItem(QString("Magnitude")));
+        m_pTable ->insertRow(0);
+        m_pTable ->setItem(0, 0, createRowItem(QString("Magnitude")));
         // Column 0, row 1
-        insertRow(1);
-        setItem(1, 0, createRowItem(QString("Theta - Angle")));
+        m_pTable ->insertRow(1);
+        m_pTable ->setItem(1, 0, createRowItem(QString("Theta - Angle")));
         // Column 0, row 2
-        insertRow(2);
-        setItem(2, 0, createRowItem(QString("Theta - Axis Orientation")));
+        m_pTable ->insertRow(2);
+        m_pTable ->setItem(2, 0, createRowItem(QString("Theta - Axis Orientation")));
         // Column 0, row 3
-        insertRow(3);
-        setItem(3, 0, createRowItem(QString("Associated Particle")));
+        m_pTable ->insertRow(3);
+        m_pTable ->setItem(3, 0, createRowItem(QString("Associated Particle")));
 
         // Column 1
-        setCellWidget(0, 1, m_pVectorMag = new PhysCtrlDoubleSpinBox(6, this));
-        setCellWidget(1, 1, m_pVectorThetaAngle = new PhysCtrlDoubleSpinBox(6, this));
-        setCellWidget(2, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
-        setCellWidget(3, 1, m_pVectorAssocParticle = new PhysCtrlLineEdit(this));
+        m_pTable ->setCellWidget(0, 1, m_pVectorMag = new PhysCtrlDoubleSpinBox(6, this));
+        m_pTable ->setCellWidget(1, 1, m_pVectorThetaAngle = new PhysCtrlDoubleSpinBox(6, this));
+        m_pTable ->setCellWidget(2, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
+        m_pTable ->setItem(3, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
 
         // set data
         m_pVectorMag ->setValue(pObj ->Magnitude());
@@ -206,14 +236,14 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
             destroyPrevTable(pPrev);
         QTableWidgetItem *pItem = NULL;
         // Column 0
-        insertRow(0);
-        setItem(0, 0, pItem = createRowItem(QString("Name")));
-        insertRow(1);
-        setItem(1, 0, pItem = createRowItem(QString("Mass")));
+        m_pTable ->insertRow(0);
+        m_pTable ->setItem(0, 0, pItem = createRowItem(QString("Name")));
+        m_pTable ->insertRow(1);
+        m_pTable ->setItem(1, 0, pItem = createRowItem(QString("Mass")));
 
         // column 1
-        setCellWidget(0, 1, m_pParticleName = new PhysCtrlLineEdit(this));
-        setCellWidget(1, 1, m_pParticleMass = new PhysCtrlLineEdit(this));
+        m_pTable ->setItem(0, 1, m_pParticleName = new PhysObjectPropEditor());
+        m_pTable ->setItem(1, 1, m_pParticleMass = new PhysObjectPropEditor());
         m_pParticleName -> setText(pObj ->Name());
         m_pParticleMass -> setText(QString("%1").arg(pObj -> mass(), 0, 'f', 6));
     }
@@ -226,9 +256,9 @@ void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
     }
 
     // If there are rows in the table, clear them out
-    if (rowCount()) {
-        while (rowCount() > 0)
-            removeRow(0);
+    if (m_pTable ->rowCount()) {
+        while (m_pTable ->rowCount())
+            m_pTable ->removeRow(0);
         switch (pObj -> type()) {
         case PhysBaseItem::VectorType:
             if (m_pVectorMag) {

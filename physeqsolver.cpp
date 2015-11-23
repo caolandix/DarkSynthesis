@@ -44,8 +44,6 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pP
     setupMenuBar();
     setupContents();
     setupContextMenu();
-
-    // statusBar();
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateStatus(QTableWidgetItem *)));
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateColor(QTableWidgetItem *)));
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
