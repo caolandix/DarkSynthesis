@@ -50,7 +50,6 @@ SOURCES += main.cpp \
     xes1/physelectrostatic.cpp \
     xes1/accel.cpp \
     physctrllineedit.cpp \
-    physctrldoublespinbox.cpp \
     jumpdrive/CustomFunction.cpp \
     jumpdrive/CustomOperator.cpp \
     jumpdrive/ExpressionBuilder.cpp \
@@ -66,7 +65,9 @@ SOURCES += main.cpp \
     jumpdrive/Tokenizer.cpp \
     jumpdrive/ValueSet.cpp \
     physobjectpropdelegate.cpp \
-    physobjectpropeditor.cpp
+    physobjectpropeditor.cpp \
+    physctrldoublespinboxdelegate.cpp \
+    physctrldoublespinbox.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -96,7 +97,6 @@ HEADERS  += cmainwindow.h \
     xes1/es1.h \
     xes1/physelectrostatic.h \
     physctrllineedit.h \
-    physctrldoublespinbox.h \
     jumpdrive/ArithmeticException.h \
     jumpdrive/Calculable.h \
     jumpdrive/commondefs.h \
@@ -146,7 +146,9 @@ HEADERS  += cmainwindow.h \
     jumpdrive/ValueSet.h \
     jumpdrive/VariableToken.h \
     physobjectpropdelegate.h \
-    physobjectpropeditor.h
+    physobjectpropeditor.h \
+    physctrldoublespinboxdelegate.h \
+    physctrldoublespinbox.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui

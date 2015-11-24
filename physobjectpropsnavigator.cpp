@@ -7,16 +7,17 @@
 #include <QComboBox>
 #include <QLineEdit>
 
-#include "physobjectpropsnavigator.h"
 #include "physbaseitem.h"
 #include "cartesiangraph.h"
 #include "physparticle.h"
 #include "physvector.h"
+#include "physobjectpropsnavigator.h"
+#include "physctrldoublespinboxdelegate.h"
 #include "physctrldoublespinbox.h"
 #include "physobjectpropdelegate.h"
 #include "physobjectpropeditor.h"
 
-PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableView(pParent) {
+PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows, int numCols) : QTableView(pParent) {
     m_pXaxisLabel = NULL;
     m_pYaxisLabel = NULL;
     m_pAxisTickInc = NULL;
@@ -30,9 +31,9 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableVie
     m_pVectorName = NULL;
     m_pParticleName = NULL;
 
+    m_pGraphicsItem = NULL;
 
-    int rows = 0, cols = 2;
-    m_pTable = new QTableWidget(rows, cols, this);
+    m_pTable = new QTableWidget(numRows, numCols, this);
 
     setShowGrid(true);
     setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -43,17 +44,17 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent) : QTableVie
     QStringList tableHeader;
     tableHeader << "Property" << "Value";
     m_pTable ->setHorizontalHeaderLabels(tableHeader);
-    m_pTable -> setSizeAdjustPolicy(QTableWidget::AdjustToContents);
-    m_pTable -> setItemPrototype(m_pTable -> item(rows - 1, cols - 1));
+    m_pTable -> setItemPrototype(m_pTable -> item(numRows - 1, numCols - 1));
     m_pTable -> setItemDelegate(new PhysObjectPropDelegate());
     createConnections();
 }
 
+
 void PhysObjectPropsNavigator::createConnections() {
 
     // Create connections between controls and the View so that modifications will update PhysObject the view is assocviated with
+
     /*
-    connect(m_pXaxisLabel, SIGNAL(), this, SLOT(updateControl()));
     connect(m_pYaxisLabel, SIGNAL(), this, SLOT(updateControl()));
     connect(m_pAxisTickInc, SIGNAL(), this, SLOT(updateControl()));
     connect(m_pXaxisExtent, SIGNAL(), this, SLOT(updateControl()));
@@ -84,6 +85,7 @@ void PhysObjectPropsNavigator::deleteControls() {
 }
 
 void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *pPrevious) {
+    m_pGraphicsItem = pObj;
     qDebug("PhysObjectPropsNavigator::onChangeObj()");
     if (pObj) {
         switch (pObj -> type()) {
@@ -137,10 +139,57 @@ void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
 }
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
     if (pObj) {
-
+        if (m_pXaxisLabel) {
+            pObj ->XAxisLabel(m_pXaxisLabel ->text());
+        }
+        if (m_pYaxisLabel) {
+        }
+        if (m_pAxisTickInc) {
+        }
+        if (m_pXaxisExtent) {
+        }
+        if (m_pYaxisExtent) {
+        }
+        if (m_pCartesianGraphName) {
+        }
     }
-
 }
+
+void PhysObjectPropsNavigator::onUpdateControl(int row, int col) {
+    qDebug("PhysObjectPropsNavigator::onUpdateControl1()");
+    PhysObjectPropEditor *pEditor = static_cast<PhysObjectPropEditor *>(m_pTable ->item(row, col));
+    QGraphicsItem *pObj = m_pGraphicsItem;
+
+    if (pObj) {
+        switch (pObj ->type()) {
+        case PhysBaseItem::CartesianGraphType: {
+            CartesianGraph *pGraph = static_cast<CartesianGraph *>(pObj);
+            updateCartesianGraphTable(pGraph);
+        }
+            break;
+        case PhysBaseItem::VectorType: {
+        }
+            break;
+        case PhysBaseItem::ParticleType: {
+        }
+            break;
+        }
+
+        pObj ->update();
+    }
+    else {
+        qDebug("PhysObjectPropsNavigator::onUpdateControl1(): pObj is NULL");
+    }
+}
+
+void PhysObjectPropsNavigator::onUpdateControl(double val) {
+    qDebug("PhysObjectPropsNavigator::onUpdateControl2()");
+}
+
+void PhysObjectPropsNavigator::onUpdateControl() {
+    qDebug("PhysObjectPropsNavigator::onUpdateControl3()");
+}
+
 
 void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QGraphicsItem *pPrev) {
     qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
@@ -180,6 +229,9 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         m_pXaxisExtent ->setRange(-pObj ->xMax(), pObj ->xMax());
         m_pXaxisExtent ->setValue(pObj ->xMax());
         m_pYaxisExtent ->setValue(pObj ->yMax());
+        connect(m_pTable, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl(int, int)));
+        connect(m_pAxisTickInc, SIGNAL(valueChanged(double)), this, SLOT(onUpdateControl(double)));
+        connect(m_pAxisTickInc, SIGNAL(editingFinished()), this, SLOT(onUpdateControl()));
     }
 }
 
@@ -297,6 +349,6 @@ void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
 
 QTableWidgetItem *PhysObjectPropsNavigator::createRowItem(const QString &strLabel) {
     QTableWidgetItem *pItem = new QTableWidgetItem(strLabel);
-    pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
+    pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     return pItem;
 }

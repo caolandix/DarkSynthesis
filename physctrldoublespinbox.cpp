@@ -3,6 +3,6 @@
 #include "physctrldoublespinbox.h"
 
 PhysCtrlDoubleSpinBox::PhysCtrlDoubleSpinBox(const int precision, QWidget *pParent) : QDoubleSpinBox(pParent) {
-    setDecimals(precision);
+    setDecimals(m_precision = precision);
 }
 

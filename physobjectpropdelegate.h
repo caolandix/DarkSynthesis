@@ -1,9 +1,9 @@
 #ifndef PHYSOBJECTPROPDELEGATE_H
 #define PHYSOBJECTPROPDELEGATE_H
 
-#include <QItemDelegate>
+#include <QStyledItemDelegate>
 
-class PhysObjectPropDelegate : public QItemDelegate {
+class PhysObjectPropDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
     PhysObjectPropDelegate(QObject * = NULL);

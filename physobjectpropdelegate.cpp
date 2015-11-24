@@ -1,7 +1,7 @@
 #include <QtWidgets>
 #include "physobjectpropdelegate.h"
 
-PhysObjectPropDelegate::PhysObjectPropDelegate(QObject *pParent) : QItemDelegate(pParent) {}
+PhysObjectPropDelegate::PhysObjectPropDelegate(QObject *pParent) : QStyledItemDelegate(pParent) {}
 
 QWidget *PhysObjectPropDelegate::createEditor(QWidget *pParent, const QStyleOptionViewItem &viewItem, const QModelIndex &index) const {
     QLineEdit *pEdit = new QLineEdit(pParent);

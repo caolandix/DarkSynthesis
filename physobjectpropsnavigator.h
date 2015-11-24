@@ -18,7 +18,7 @@
 class PhysObjectPropsNavigator : public QTableView {
     Q_OBJECT
 public:
-    PhysObjectPropsNavigator(QWidget * = NULL);
+    PhysObjectPropsNavigator(QWidget * = NULL, int = 0, int = 2);
 
     void buildCartesianGraphTable(CartesianGraph *, QGraphicsItem *);
     void buildVectorTable(PhysVector *, QGraphicsItem *);
@@ -39,6 +39,9 @@ signals:
 public slots:
     void onChangeObj(QGraphicsItem *, QGraphicsItem *);
     void onUpdateObj(QGraphicsItem *);
+    void onUpdateControl(int, int);
+    void onUpdateControl(double);
+    void onUpdateControl();
 private:
 
     // CartesianGraph
@@ -62,6 +65,7 @@ private:
 
     // The QTableWidget
     QTableWidget *m_pTable;
+    QGraphicsItem *m_pGraphicsItem;
 
 };
 

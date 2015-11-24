@@ -18,9 +18,9 @@ QVariant PhysObjectPropEditor::data(int role) const {
     if (role == Qt::DisplayRole)
         return display();
 
-    QString t = display().toString();
+    QString str = display().toString();
     bool isNumber = false;
-    int number = t.toInt(&isNumber);
+    int number = str.toInt(&isNumber);
 
     if (role == Qt::TextColorRole) {
         if (!isNumber)
@@ -30,19 +30,19 @@ QVariant PhysObjectPropEditor::data(int role) const {
         return QVariant::fromValue(QColor(Qt::blue));
     }
     if (role == Qt::TextAlignmentRole)
-        if (!t.isEmpty() && (t.at(0).isNumber() || t.at(0) == '-'))
+        if (!str.isEmpty() && (str.at(0).isNumber() || str.at(0) == '-'))
             return (int)(Qt::AlignRight | Qt::AlignVCenter);
      return QTableWidgetItem::data(role);
  }
 
 void PhysObjectPropEditor::setData(int role, const QVariant &value) {
+    qDebug("PhysObjectPropEditor::setData()");
     QTableWidgetItem::setData(role, value);
     if (tableWidget())
-        tableWidget() ->viewport() ->update();
+        tableWidget() -> viewport() ->update();
 }
 
 QVariant PhysObjectPropEditor::display() const {
-
     // avoid circular dependencies
     if (m_isResolving)
         return QVariant();

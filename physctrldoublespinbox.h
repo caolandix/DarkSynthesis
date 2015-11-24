@@ -8,9 +8,7 @@ class PhysCtrlDoubleSpinBox : public QDoubleSpinBox {
 public:
     PhysCtrlDoubleSpinBox(const int precision = 6, QWidget * = NULL);
 private:
-
-signals:
-public slots:
+    int m_precision;
 };
 
 #endif // PHYSCTRLDOUBLESPINBOX_H

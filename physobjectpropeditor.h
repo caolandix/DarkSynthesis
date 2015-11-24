@@ -14,6 +14,10 @@ public:
     QVariant display() const ;
 
     QString formula() const { return QTableWidgetItem::data(Qt::DisplayRole).toString(); }
+
+signals:
+    void updateControl();
+public slots:
 private:
     mutable bool m_isResolving;
 };
