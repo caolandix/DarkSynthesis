@@ -21,6 +21,14 @@ const map<PhysVector::AxisOrientation, QString> PhysVector::createMap() {
 }
 const std::map<PhysVector::AxisOrientation, QString> PhysVector::m_OrientationLabelMap = PhysVector::createMap();
 
+std::map<int, QString> PhysVector::m_listEditableProps = {
+    {0, QString("Name")},
+    {1, QString("Magnitude")},
+    {2, QString("Theta - Angle")},
+    {3, QString("Theta - Axis Orientation")},
+    {4, QString("Associated Particle")}
+};
+
 PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
     QGraphicsLineItem(pParent), PhysBaseItem() {
     m_pLabel = NULL;

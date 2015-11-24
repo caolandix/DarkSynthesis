@@ -36,6 +36,8 @@ public:
     QString Name() const { return m_Name; }
 
     double mass() const { return m_DataObj.mass(); }
+    map<int, QString> EditableProps() const { return m_listEditableProps;}
+
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
@@ -45,6 +47,8 @@ private:
     QString m_Name;
     QList<PhysVector *> m_Vectors;
     PhysParticleDataObj m_DataObj;
+
+    static map<int, QString> m_listEditableProps;
 };
 Q_DECLARE_METATYPE(PhysParticle *)
 #endif // PHYSPARTICLE_H

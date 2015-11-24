@@ -1,11 +1,4 @@
-#include <QTableWidget>
-#include <QTableView>
-#include <QGraphicsItem>
-#include <QHeaderView>
-#include <QTableWidgetItem>
-#include <QDoubleSpinBox>
-#include <QComboBox>
-#include <QLineEdit>
+#include <QtWidgets>
 
 #include "physbaseitem.h"
 #include "cartesiangraph.h"
@@ -143,15 +136,22 @@ void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
             pObj ->XAxisLabel(m_pXaxisLabel ->text());
         }
         if (m_pYaxisLabel) {
+            pObj ->XAxisLabel(m_pXaxisLabel ->text());
         }
         if (m_pAxisTickInc) {
+            pObj ->tickStep(m_pXaxisLabel ->text());
         }
         if (m_pXaxisExtent) {
+            pObj ->XExtent(m_pXaxisLabel ->text());
         }
         if (m_pYaxisExtent) {
+            pObj ->YExtent(m_pXaxisLabel ->text());
         }
         if (m_pCartesianGraphName) {
+            pObj ->Name(m_pXaxisLabel ->text());
         }
+        pObj->parentWidget()->update();
+
     }
 }
 
@@ -162,20 +162,16 @@ void PhysObjectPropsNavigator::onUpdateControl(int row, int col) {
 
     if (pObj) {
         switch (pObj ->type()) {
-        case PhysBaseItem::CartesianGraphType: {
-            CartesianGraph *pGraph = static_cast<CartesianGraph *>(pObj);
-            updateCartesianGraphTable(pGraph);
-        }
+        case PhysBaseItem::CartesianGraphType:
+            updateCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
             break;
-        case PhysBaseItem::VectorType: {
-        }
+        case PhysBaseItem::VectorType:
+            updateVectorTable(static_cast<PhysVector *>(pObj));
             break;
-        case PhysBaseItem::ParticleType: {
-        }
+        case PhysBaseItem::ParticleType:
+            updateParticleTable(static_cast<PhysParticle *>(pObj));
             break;
         }
-
-        pObj ->update();
     }
     else {
         qDebug("PhysObjectPropsNavigator::onUpdateControl1(): pObj is NULL");
@@ -184,6 +180,25 @@ void PhysObjectPropsNavigator::onUpdateControl(int row, int col) {
 
 void PhysObjectPropsNavigator::onUpdateControl(double val) {
     qDebug("PhysObjectPropsNavigator::onUpdateControl2()");
+    PhysObjectPropEditor *pEditor = static_cast<PhysObjectPropEditor *>(m_pTable ->item(row, col));
+    QGraphicsItem *pObj = m_pGraphicsItem;
+
+    if (pObj) {
+        switch (pObj ->type()) {
+        case PhysBaseItem::CartesianGraphType:
+            updateCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
+            break;
+        case PhysBaseItem::VectorType:
+            updateVectorTable(static_cast<PhysVector *>(pObj));
+            break;
+        case PhysBaseItem::ParticleType:
+            updateParticleTable(static_cast<PhysParticle *>(pObj));
+            break;
+        }
+    }
+    else {
+        qDebug("PhysObjectPropsNavigator::onUpdateControl2(): pObj is NULL");
+    }
 }
 
 void PhysObjectPropsNavigator::onUpdateControl() {
@@ -197,22 +212,13 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
     if (pObj) {
         if (pPrev)
             destroyPrevTable(pPrev);
+        map<int, QString> properties = pObj ->EditableProps();
 
-        // X/Y axis labels (edit controls)
-        // Axis tick increment (SpinboxDelegate)
-        // Axis extents (SpinboxDelegates)
-
-        // Column 0 - Property Names
-        m_pTable ->insertRow(0);
-        m_pTable ->setItem(0, 0, createRowItem(QString("X-Axis Label")));
-        m_pTable ->insertRow(1);
-        m_pTable ->setItem(1, 0, createRowItem(QString("Y-Axis Label")));
-        m_pTable ->insertRow(2);
-        m_pTable ->setItem(2, 0, createRowItem(QString("Axis Tick Increment")));
-        m_pTable ->insertRow(3);
-        m_pTable ->setItem(3, 0, createRowItem(QString("X-Axis Extent")));
-        m_pTable ->insertRow(4);
-        m_pTable ->setItem(4, 0, createRowItem(QString("Y-Axis Extent")));
+        // Column 0
+        for (int i = 0; i < properties.size(); i++) {
+            m_pTable ->insertRow(i);
+            m_pTable ->setItem(i, 0, createRowItem(properties[i]));
+        }
 
         // Column 1 specialties
         m_pTable ->setItem(0, 1, m_pXaxisLabel = new PhysObjectPropEditor());
@@ -241,25 +247,20 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
     if (pObj) {
         if (pPrev)
             destroyPrevTable(pPrev);
+        map<int, QString> properties = pObj ->EditableProps();
 
-        // Column 0, row 0
-        m_pTable ->insertRow(0);
-        m_pTable ->setItem(0, 0, createRowItem(QString("Magnitude")));
-        // Column 0, row 1
-        m_pTable ->insertRow(1);
-        m_pTable ->setItem(1, 0, createRowItem(QString("Theta - Angle")));
-        // Column 0, row 2
-        m_pTable ->insertRow(2);
-        m_pTable ->setItem(2, 0, createRowItem(QString("Theta - Axis Orientation")));
-        // Column 0, row 3
-        m_pTable ->insertRow(3);
-        m_pTable ->setItem(3, 0, createRowItem(QString("Associated Particle")));
+        // Column 0
+        for (int i = 0; i < properties.size(); i++) {
+            m_pTable ->insertRow(i);
+            m_pTable ->setItem(i, 0, createRowItem(properties[i]));
+        }
 
         // Column 1
-        m_pTable ->setCellWidget(0, 1, m_pVectorMag = new PhysCtrlDoubleSpinBox(6, this));
-        m_pTable ->setCellWidget(1, 1, m_pVectorThetaAngle = new PhysCtrlDoubleSpinBox(6, this));
-        m_pTable ->setCellWidget(2, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
-        m_pTable ->setItem(3, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
+        m_pTable ->setItem(0, 1, m_pVectorName = new PhysObjectPropEditor());
+        m_pTable ->setCellWidget(1, 1, m_pVectorMag = new PhysCtrlDoubleSpinBox(6, this));
+        m_pTable ->setCellWidget(2, 1, m_pVectorThetaAngle = new PhysCtrlDoubleSpinBox(6, this));
+        m_pTable ->setCellWidget(3, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
+        m_pTable ->setItem(4, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
 
         // set data
         m_pVectorMag ->setValue(pObj ->Magnitude());
@@ -286,12 +287,13 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
     if (pObj) {
         if (pPrev)
             destroyPrevTable(pPrev);
-        QTableWidgetItem *pItem = NULL;
+        map<int, QString> properties = pObj ->EditableProps();
+
         // Column 0
-        m_pTable ->insertRow(0);
-        m_pTable ->setItem(0, 0, pItem = createRowItem(QString("Name")));
-        m_pTable ->insertRow(1);
-        m_pTable ->setItem(1, 0, pItem = createRowItem(QString("Mass")));
+        for (int i = 0; i < properties.size(); i++) {
+            m_pTable ->insertRow(i);
+            m_pTable ->setItem(i, 0, createRowItem(properties[i]));
+        }
 
         // column 1
         m_pTable ->setItem(0, 1, m_pParticleName = new PhysObjectPropEditor());

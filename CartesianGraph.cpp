@@ -15,6 +15,14 @@
 #include "physvector.h"
 #include "graphwidget.h"
 
+std::map<int, QString> CartesianGraph::m_listEditableProps = {
+    {0, QString("X-Axis Label")},
+    {1, QString("Y-Axis Label")},
+    {2, QString("Axis Tick Increment")},
+    {3, QString("X-Axis Extent")},
+    {4, QString("Y-Axis Extent")}
+};
+
 CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj)  : QGraphicsItem() {
     m_pGraphWidget = pGraphWidget;
     m_pDataObj = (pDataObj) ? pDataObj : new CartesianGraphDataObj();
@@ -90,7 +98,6 @@ CartesianGraph *CartesianGraph::copy() {
 
     return pObj;
 }
-
 
 void CartesianGraph::onPropChange(const QString &str) {
     qDebug("CartesianGraph::onPropChange(): updating info");

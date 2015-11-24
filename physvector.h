@@ -55,6 +55,7 @@ public:
     PhysParticle *EndParticle() const { return m_pEndParticle; }
     QString Name() const { return m_pLabel -> toPlainText(); }
     map<AxisOrientation, QString> OrientationLabelMap() const { return m_OrientationLabelMap;}
+    map<int, QString> EditableProps() const { return m_listEditableProps;}
 
     void theta(const Theta &val) { m_Theta = val; }
     void StartParticle(PhysParticle *);
@@ -95,6 +96,7 @@ private:
 
     // Currently not used, will need to fix later
     PhysVectorDataObj m_DataObj;
+    static map<int, QString> m_listEditableProps;
 };
 
 Q_DECLARE_METATYPE(PhysVector *)

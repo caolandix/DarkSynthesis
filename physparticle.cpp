@@ -11,6 +11,11 @@
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
 
+std::map<int, QString> PhysParticle::m_listEditableProps = {
+    {0, QString("Name")},
+    {1, QString("Mass")}
+};
+
 PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, const QString &Label) :
     PhysBaseItem(), QGraphicsPolygonItem(pParent) {
     setFlag(ItemIsMovable);
