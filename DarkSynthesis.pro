@@ -49,7 +49,6 @@ SOURCES += main.cpp \
     xes1/set.cpp \
     xes1/physelectrostatic.cpp \
     xes1/accel.cpp \
-    physctrllineedit.cpp \
     jumpdrive/CustomFunction.cpp \
     jumpdrive/CustomOperator.cpp \
     jumpdrive/ExpressionBuilder.cpp \
@@ -96,7 +95,6 @@ HEADERS  += cmainwindow.h \
     physparticledataobj.h \
     xes1/es1.h \
     xes1/physelectrostatic.h \
-    physctrllineedit.h \
     jumpdrive/ArithmeticException.h \
     jumpdrive/Calculable.h \
     jumpdrive/commondefs.h \

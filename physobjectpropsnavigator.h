@@ -11,7 +11,6 @@
 #include "cartesiangraph.h"
 #include "physparticle.h"
 #include "physvector.h"
-#include "physctrllineedit.h"
 #include "physctrldoublespinbox.h"
 #include "physobjectpropeditor.h"
 
