@@ -9,6 +9,7 @@
 #include "physctrldoublespinbox.h"
 #include "physobjectpropdelegate.h"
 #include "physobjectpropeditor.h"
+#include "graphwidget.h"
 
 PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows, int numCols) : QTableView(pParent) {
     m_pXaxisLabel = NULL;
@@ -38,7 +39,7 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows
     tableHeader << "Property" << "Value";
     m_pTable ->setHorizontalHeaderLabels(tableHeader);
     m_pTable -> setItemPrototype(m_pTable -> item(numRows - 1, numCols - 1));
-    m_pTable -> setItemDelegate(new PhysObjectPropDelegate());
+    //m_pTable -> setItemDelegate(new PhysObjectPropDelegate());
     createConnections();
 }
 
@@ -133,7 +134,11 @@ void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
     if (pObj) {
         if (m_pXaxisLabel) {
+
+            qDebug("m_pXaxisLabel ->text(): '%s'", m_pXaxisLabel ->text().toStdString().c_str());
             pObj ->XAxisLabel(m_pXaxisLabel ->text());
+            qDebug("New String is: '%s'", pObj ->XAxisLabel().toStdString().c_str());
+
         }
         if (m_pYaxisLabel) {
             pObj ->XAxisLabel(m_pXaxisLabel ->text());
@@ -150,7 +155,8 @@ void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
         if (m_pCartesianGraphName) {
             pObj ->Name(m_pXaxisLabel ->text());
         }
-        pObj->parentWidget()->update();
+        GraphWidget *pGraphWidget = pObj ->graphWidget();
+        pGraphWidget -> update();
 
     }
 }
@@ -180,7 +186,7 @@ void PhysObjectPropsNavigator::onUpdateControl(int row, int col) {
 
 void PhysObjectPropsNavigator::onUpdateControl(double val) {
     qDebug("PhysObjectPropsNavigator::onUpdateControl2()");
-    PhysObjectPropEditor *pEditor = static_cast<PhysObjectPropEditor *>(m_pTable ->item(row, col));
+    // PhysObjectPropEditor *pEditor = static_cast<PhysObjectPropEditor *>(m_pTable ->item(row, col));
     QGraphicsItem *pObj = m_pGraphicsItem;
 
     if (pObj) {
