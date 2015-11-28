@@ -46,14 +46,14 @@ private:
     // CartesianGraph
     PhysObjectPropEditor *m_pXaxisLabel;
     PhysObjectPropEditor *m_pYaxisLabel;
-    PhysCtrlDoubleSpinBox *m_pAxisTickInc;
-    PhysCtrlDoubleSpinBox *m_pXaxisExtent;
-    PhysCtrlDoubleSpinBox *m_pYaxisExtent;
+    PhysObjectPropEditor *m_pAxisTickInc;
+    PhysObjectPropEditor *m_pXaxisExtent;
+    PhysObjectPropEditor *m_pYaxisExtent;
     PhysObjectPropEditor *m_pCartesianGraphName;
 
     // PhysVectors
-    PhysCtrlDoubleSpinBox *m_pVectorMag;
-    PhysCtrlDoubleSpinBox *m_pVectorThetaAngle;
+    PhysObjectPropEditor *m_pVectorMag;
+    PhysObjectPropEditor *m_pVectorThetaAngle;
     QComboBox *m_pVectorThetaAxisOrient;
     PhysObjectPropEditor *m_pVectorAssocParticle;
     PhysObjectPropEditor *m_pVectorName;

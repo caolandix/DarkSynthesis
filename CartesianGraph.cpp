@@ -93,6 +93,22 @@ void CartesianGraph::init() {
     m_pDataObj -> init();
 }
 
+void CartesianGraph::XExtent(const QString &str) {
+    m_pDataObj -> xMax(str.toDouble());
+    m_pDataObj -> xMin(-(str.toDouble()));
+    m_pXMax ->setPlainText(QString::number(m_pDataObj -> xMax()));
+    m_pXMin ->setPlainText(QString::number(m_pDataObj -> xMin()));
+}
+
+void CartesianGraph::YExtent(const QString &str) {
+    m_pDataObj -> yMax(str.toDouble());
+    m_pDataObj -> yMin(-(str.toDouble()));
+
+    m_pYMin ->setPlainText(QString::number(m_pDataObj -> yMin()));
+    m_pYMax ->setPlainText(QString::number(m_pDataObj -> yMax()));
+}
+
+
 CartesianGraph *CartesianGraph::copy() {
     CartesianGraph *pObj = NULL;
 

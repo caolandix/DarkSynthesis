@@ -54,8 +54,8 @@ public:
     void YAxisLabel(const QString &data) { m_y_label -> setPlainText(data); }
     void Name(const QString &obj) { m_Name = obj; }
     void tickStep(const QString &str) { m_pDataObj ->tickStep(str.toDouble()); }
-    void XExtent(const QString &str) { m_pDataObj -> xMax(str.toDouble()); m_pDataObj -> xMin(-(str.toDouble())); }
-    void YExtent(const QString &str) { m_pDataObj -> yMax(str.toDouble()); m_pDataObj -> yMin(-(str.toDouble())); }
+    void XExtent(const QString &);
+    void YExtent(const QString &);
 
     enum { Type = PhysBaseItem::CartesianGraphType };
     int type() const Q_DECL_OVERRIDE { return Type; }
