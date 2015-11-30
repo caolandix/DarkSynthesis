@@ -28,11 +28,8 @@ public:
     void updateCartesianGraphTable(CartesianGraph *);
 
     void destroyPrevTable(QGraphicsItem *);
-    void deleteControls();
 private:
     QTableWidgetItem *createRowItem(const QString &);
-
-    void createConnections();
     void createTable(const int, const int);
 signals:
     void repaint();

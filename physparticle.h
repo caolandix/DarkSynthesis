@@ -34,8 +34,9 @@ public:
     void init();
 
     QString Name() const { return m_Name; }
-
+    void Name(const QString &str) { m_Name = str; }
     double mass() const { return m_DataObj.mass(); }
+    void mass(const double val)  { m_DataObj.mass(val); }
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 
 protected:

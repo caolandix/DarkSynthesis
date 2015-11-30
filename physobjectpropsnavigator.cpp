@@ -24,15 +24,14 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows
     m_pCartesianGraphName = NULL;
     m_pVectorName = NULL;
     m_pParticleName = NULL;
+    m_pParticleMass = NULL;
     m_pGraphicsItem = NULL;
 
     setShowGrid(true);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
     verticalHeader() -> setVisible(false);
-
     createTable(numRows, numCols);
-    createConnections();
 }
 
 void PhysObjectPropsNavigator::createTable(const int numRows, const int numCols) {
@@ -45,72 +44,37 @@ void PhysObjectPropsNavigator::createTable(const int numRows, const int numCols)
     m_pTable -> setItemPrototype(m_pTable -> item(numRows - 1, numCols - 1));
 }
 
-
-void PhysObjectPropsNavigator::createConnections() {
-}
-
-void PhysObjectPropsNavigator::deleteControls() {
-    if (m_pXaxisLabel) { delete m_pXaxisLabel; m_pXaxisLabel = NULL; };
-    if (m_pYaxisLabel) { delete m_pYaxisLabel; m_pYaxisLabel = NULL; };
-    if (m_pAxisTickInc) { delete m_pAxisTickInc; m_pAxisTickInc = NULL; };
-    if (m_pXaxisExtent) { delete m_pXaxisExtent; m_pXaxisExtent = NULL; };
-    if (m_pYaxisExtent) { delete m_pYaxisExtent; m_pYaxisExtent = NULL; };
-    if (m_pVectorMag) { delete m_pVectorMag; m_pVectorMag = NULL; };
-    if (m_pVectorThetaAngle) { delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL; };
-    if (m_pVectorThetaAxisOrient) { delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL; };
-    if (m_pVectorAssocParticle) { delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL; };
-    if (m_pCartesianGraphName) { delete m_pCartesianGraphName; m_pCartesianGraphName = NULL; };
-    if (m_pVectorName) { delete m_pVectorName; m_pVectorName = NULL; };
-    if (m_pParticleName) { delete m_pParticleName; m_pParticleName = NULL; };
-}
-
 void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *pPrevious) {
     qDebug("PhysObjectPropsNavigator::onChangeObj()");
-    if (pObj == pPrevious)
-        return;
-    m_pGraphicsItem = pObj;
-    if (pObj) {
-        switch (pObj -> type()) {
-        case PhysBaseItem::VectorType:
-            buildVectorTable(static_cast<PhysVector *>(pObj), pPrevious);
-            break;
-        case PhysBaseItem::ParticleType:
-            buildParticleTable(static_cast<PhysParticle *>(pObj), pPrevious);
-            break;
-        case PhysBaseItem::CartesianGraphType:
-            buildCartesianGraphTable(static_cast<CartesianGraph *>(pObj), pPrevious);
-            break;
-        default:
-            qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
-            break;
+    if (pObj != pPrevious) {
+        m_pGraphicsItem = pObj;
+        if (pObj) {
+            disconnect(m_pTable, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl()));
+            switch (pObj -> type()) {
+            case PhysBaseItem::VectorType:
+                buildVectorTable(static_cast<PhysVector *>(pObj), pPrevious);
+                break;
+            case PhysBaseItem::ParticleType:
+                buildParticleTable(static_cast<PhysParticle *>(pObj), pPrevious);
+                break;
+            case PhysBaseItem::CartesianGraphType:
+                buildCartesianGraphTable(static_cast<CartesianGraph *>(pObj), pPrevious);
+                break;
+            default:
+                qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
+                break;
+            }
+            connect(m_pTable, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl()));
         }
     }
 }
 
 void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
     qDebug("PhysObjectPropsNavigator::onUpdateObj()");
-    if (pObj == m_pGraphicsItem)
-        return;
-    m_pGraphicsItem = pObj;
-    onUpdateControl();
-/*
-    if (pObj) {
-        switch (pObj -> type()) {
-        case PhysBaseItem::VectorType:
-            updateVectorTable(static_cast<PhysVector *>(pObj));
-            break;
-        case PhysBaseItem::ParticleType:
-            updateParticleTable(static_cast<PhysParticle *>(pObj));
-            break;
-        case PhysBaseItem::CartesianGraphType:
-            updateCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
-            break;
-        default:
-            qDebug("PhysObjectPropsNavigator::onUpdateObj(): not a valid Object type");
-            break;
-        }
+    if (pObj != m_pGraphicsItem) {
+        m_pGraphicsItem = pObj;
+        onUpdateControl();
     }
-*/
 }
 
 void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
@@ -140,7 +104,8 @@ void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
 void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
     qDebug("PhysObjectPropsNavigator::updateParticleTable()");
     if (pObj) {
-
+        pObj ->mass(m_pParticleMass ->text().toDouble());
+        pObj ->Name(m_pParticleName ->text());
     }
 }
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
@@ -211,7 +176,6 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         m_pAxisTickInc ->setText(QString::number(pObj ->tickStep()));
         m_pXaxisExtent ->setText(QString::number(pObj -> xMax()));
         m_pYaxisExtent ->setText(QString::number(pObj -> yMax()));
-        connect(m_pTable, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl()));
     }
 }
 
@@ -274,6 +238,7 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
 }
 
 void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
+    qDebug("PhysObjectPropsNavigator::destroyPrevTable()");
     if (!pObj) {
         qDebug("PhysObjectPropsNavigator::destroyPrevTable() -- The pObj is NULL");
         return;
@@ -283,59 +248,6 @@ void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
     if (m_pTable ->rowCount()) {
         while (m_pTable ->rowCount())
             m_pTable ->removeRow(0);
-        switch (pObj -> type()) {
-        case PhysBaseItem::VectorType:
-            if (m_pVectorMag) {
-                //delete m_pVectorMag;
-                m_pVectorMag = NULL;
-            }
-            if (m_pVectorThetaAngle) {
-                //delete m_pVectorThetaAngle;
-                m_pVectorThetaAngle = NULL;
-            }
-            if (m_pVectorThetaAxisOrient) {
-                //delete m_pVectorThetaAxisOrient;
-                m_pVectorThetaAxisOrient = NULL;
-            }
-            if (m_pVectorAssocParticle) {
-                //delete m_pVectorAssocParticle;
-                m_pVectorAssocParticle = NULL;
-            }
-            break;
-        case PhysBaseItem::ParticleType:
-            if (m_pParticleName) {
-                //delete m_pParticleName;
-                m_pParticleName = NULL;
-            }
-            m_pParticleMass = NULL;
-            break;
-        case PhysBaseItem::CartesianGraphType:
-            if (m_pCartesianGraphName) {
-                m_pCartesianGraphName = NULL;
-            }
-            if (m_pYaxisLabel) {
-                m_pYaxisLabel = NULL;
-            }
-            if (m_pXaxisLabel) {
-                m_pXaxisLabel = NULL;
-            }
-            if (m_pAxisTickInc) {
-                //delete m_pAxisTickInc;
-                m_pAxisTickInc = NULL;
-            }
-            if (m_pXaxisExtent) {
-                //delete m_pXaxisExtent;
-                m_pXaxisExtent = NULL;
-            }
-            if (m_pYaxisExtent) {
-                //delete m_pYaxisExtent;
-                m_pYaxisExtent = NULL;
-            }
-            break;
-        default:
-            qDebug("PhysObjectPropsNavigator::destroyPrevTable(): not a valid Object type");
-            break;
-        }
     }
 }
 

@@ -227,7 +227,7 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
             emit updateObj(m_pCurrObj);
     }
     */
-    changeObj(m_pCurrObj, m_pPrevObj);
+    emit changeObj(m_pCurrObj, m_pPrevObj);
 }
 
 void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
