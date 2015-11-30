@@ -65,8 +65,10 @@ void PhysObjectPropsNavigator::deleteControls() {
 }
 
 void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *pPrevious) {
-    m_pGraphicsItem = pObj;
     qDebug("PhysObjectPropsNavigator::onChangeObj()");
+    if (pObj == pPrevious)
+        return;
+    m_pGraphicsItem = pObj;
     if (pObj) {
         switch (pObj -> type()) {
         case PhysBaseItem::VectorType:
@@ -86,7 +88,12 @@ void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *p
 }
 
 void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
-    qDebug("PhysObjectPropsNavigator::onChangeObj()");
+    qDebug("PhysObjectPropsNavigator::onUpdateObj()");
+    if (pObj == m_pGraphicsItem)
+        return;
+    m_pGraphicsItem = pObj;
+    onUpdateControl();
+/*
     if (pObj) {
         switch (pObj -> type()) {
         case PhysBaseItem::VectorType:
@@ -103,9 +110,11 @@ void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
             break;
         }
     }
+*/
 }
 
 void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
+    qDebug("PhysObjectPropsNavigator::updateVectorTable()");
     if (pObj) {
         if (m_pVectorName) {
 
@@ -129,11 +138,13 @@ void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
 }
 
 void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
+    qDebug("PhysObjectPropsNavigator::updateParticleTable()");
     if (pObj) {
 
     }
 }
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
+    qDebug("PhysObjectPropsNavigator::updateCartesianGraphTable()");
     if (pObj) {
         if (m_pXaxisLabel) {
             QString str = m_pXaxisLabel ->text();
@@ -154,6 +165,7 @@ void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
 }
 
 void PhysObjectPropsNavigator::onUpdateControl() {
+    qDebug("PhysObjectPropsNavigator::onUpdateControl()");
     if (m_pGraphicsItem) {
         switch (m_pGraphicsItem ->type()) {
         case PhysBaseItem::CartesianGraphType:
@@ -170,11 +182,11 @@ void PhysObjectPropsNavigator::onUpdateControl() {
             return;
         }
     }
+    emit repaint();
 }
 
 void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QGraphicsItem *pPrev) {
     qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
-
     if (pObj) {
         if (pPrev)
             destroyPrevTable(pPrev);
@@ -199,7 +211,7 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         m_pAxisTickInc ->setText(QString::number(pObj ->tickStep()));
         m_pXaxisExtent ->setText(QString::number(pObj -> xMax()));
         m_pYaxisExtent ->setText(QString::number(pObj -> yMax()));
-        connect(m_pTable, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(onUpdateControl()));
+        connect(m_pTable, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl()));
     }
 }
 

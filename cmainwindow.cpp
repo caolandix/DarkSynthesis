@@ -267,7 +267,6 @@ void CMainWindow::createDockWindows() {
     pDock -> setWidget(m_pPhysEqSolver);
     pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
     addDockWidget(Qt::BottomDockWidgetArea, pDock);
-
 }
 
 void CMainWindow::createSignalSlots() {

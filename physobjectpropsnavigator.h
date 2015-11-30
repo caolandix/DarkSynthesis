@@ -35,7 +35,7 @@ private:
     void createConnections();
     void createTable(const int, const int);
 signals:
-
+    void repaint();
 public slots:
     void onChangeObj(QGraphicsItem *, QGraphicsItem *);
     void onUpdateObj(QGraphicsItem *);

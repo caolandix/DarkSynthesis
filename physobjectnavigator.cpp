@@ -70,12 +70,13 @@ void PhysObjectNavigator::cloneObject() {
     }
 }
 void PhysObjectNavigator::removeObject() {
+    qDebug("PhysObjectNavigator::removeObject()");
     QAction *pAction = qobject_cast<QAction *>(sender());
     QVariant itemData = pAction -> data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
 
     if (!pObj)
-        qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
+        qDebug("PhysObjectNavigator::removeObject: PhysObject is NULL");
     else {
         switch (pObj ->type()) {
         case PhysBaseItem::VectorType:{
@@ -89,7 +90,7 @@ void PhysObjectNavigator::removeObject() {
             break;
         }
         default:
-            qDebug("PhysObjectNavigator::deleteObject: not a supported object type: %d", pObj -> type());
+            qDebug("PhysObjectNavigator::removeObject: not a supported object type: %d", pObj -> type());
             break;
         }
         removeFromTreeWidgetParent(pObj);
@@ -108,7 +109,6 @@ void PhysObjectNavigator::removeFromTreeWidgetParent(QGraphicsItem *pObj) {
             QTreeWidgetItem *pParentItem = pItem ->parent();
             if (pParentItem) {
                 pParentItem ->removeChild(pItem);
-                qDebug("PhysObjectNavigator::removeFromTreeWidgetParent(): found it!");
                 return;
             }
         }
@@ -142,7 +142,7 @@ void PhysObjectNavigator::resetObject() {
             break;
         }
         default:
-            qDebug("PhysObjectNavigator::deleteObject: not a supported object type: %d", pObj -> type());
+            qDebug("PhysObjectNavigator::resetObject(): not a supported object type: %d", pObj -> type());
             break;
         }
     }
@@ -217,6 +217,7 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
 
     // Changing the currentitem
     // If we're brand new then there is no pPrevObj
+    /*
     if (!m_pPrevObj)
         emit changeObj(m_pCurrObj, m_pPrevObj);
     else {
@@ -225,6 +226,8 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
         else
             emit updateObj(m_pCurrObj);
     }
+    */
+    changeObj(m_pCurrObj, m_pPrevObj);
 }
 
 void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
@@ -273,7 +276,7 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
             pChildItem -> setData(0, Qt::UserRole, var);
             pParentItem -> addChild(pChildItem);
             setCurrentItem(pChildItem);
-            emit changeObj(m_pCurrObj, m_pPrevObj);
+            // emit changeObj(m_pCurrObj, m_pPrevObj);
             m_pPrevObj = m_pCurrObj;
             m_pCurrObj = pObj;
         }
