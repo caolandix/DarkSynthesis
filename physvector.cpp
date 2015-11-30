@@ -307,6 +307,7 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+    qDebug("PhysVector::mouseReleaseEvent()");
     if (m_dragIndex == DI_VECTORLINE) {
         event -> pos();
     }
@@ -376,7 +377,7 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-    qDebug("mouseMoveEvent m_dragIndex: '%d'", m_dragIndex);
+    qDebug("PhysVector::mouseMoveEvent(): m_dragIndex: '%d'", m_dragIndex);
     if (m_dragIndex != DI_VECTORLINE) {
 
         const QPointF anchor = (m_dragIndex == DI_VECTORHEAD) ? line().p1() : line().p2();
