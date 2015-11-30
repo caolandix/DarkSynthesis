@@ -74,6 +74,7 @@ PhysVector::~PhysVector() {
 }
 
 void PhysVector::clearParticle(PhysParticle *pObj) {
+    qDebug("PhysVector::clearParticle()");
     if (m_pStartParticle == pObj)
         m_pStartParticle = NULL;
     if (m_pEndParticle == pObj)
@@ -81,8 +82,9 @@ void PhysVector::clearParticle(PhysParticle *pObj) {
 }
 
 void PhysVector::init() {
-    m_magnitude = 50.0;
+    qDebug("PhysVector::init()");
 
+    m_magnitude = 50.0;
     removeFromParticles();
     m_Theta.bAboveAxis = true;
     m_Theta.degrees = 45.0;
@@ -104,6 +106,7 @@ PhysVector *PhysVector::copy() {
 }
 
 void PhysVector::Name(const QString &str) {
+    qDebug("PhysVector::Name()");
     m_Name = str;
     QString formattedLabel;
     formattedLabel.sprintf("%s: (%.6f, @=%3.2f", m_Name.toStdString().c_str(), m_magnitude, m_Theta.degrees);
@@ -111,12 +114,14 @@ void PhysVector::Name(const QString &str) {
 }
 
 void PhysVector::StartParticle(PhysParticle *pObj) {
+    qDebug("PhysVector::StartParticle()");
     if (pObj) {
         m_pStartParticle = pObj;
         m_pStartParticle -> addVector(this);
     }
 }
 void PhysVector::EndParticle(PhysParticle *pObj) {
+    qDebug("PhysVector::EndParticle()");
     if (pObj) {
         m_pEndParticle = pObj;
         m_pEndParticle -> addVector(this);
@@ -124,6 +129,7 @@ void PhysVector::EndParticle(PhysParticle *pObj) {
 }
 
 void PhysVector::removeFromParticles() {
+    qDebug("PhysVector::removeFromParticles()");
     if (m_pStartParticle) {
         m_pStartParticle ->removeVector(this);
         m_pStartParticle = NULL;
@@ -135,6 +141,7 @@ void PhysVector::removeFromParticles() {
 }
 
 QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value) {
+    qDebug("PhysVector::itemChange()");
     switch (change) {
         case ItemPositionHasChanged:
             break;
@@ -145,6 +152,7 @@ QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value
 }
 
 void PhysVector::adjust() {
+    qDebug("PhysVector::adjust()");
     if (!m_pStartParticle || !m_pEndParticle)
         return;
     else {

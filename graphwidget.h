@@ -29,6 +29,7 @@ public slots:
     void zoomOut() { scaleView(1 / qreal(1.2)); }
     void onClonePhysObj(QGraphicsItem *);
     void onRemovePhysObj(QGraphicsItem *);
+    void onRepaint();
 private slots:
     void createVector();
     void createParticle();

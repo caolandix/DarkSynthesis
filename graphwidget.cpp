@@ -33,13 +33,17 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     // show where the vector drawing occurs and the scales defined.
     m_pScene = new QGraphicsScene(this);
     m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
-    m_pScene -> setSceneRect(-200, -200, 400, 400);
+    m_pScene -> setSceneRect(-2000, -2000, 4000, 4000);
     setScene(m_pScene);
 
     // Create the actions used in the context menus
     createActions();
 
     m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
+}
+
+void GraphWidget::onRepaint() {
+    repaint();
 }
 
 void GraphWidget::createCartesianGraph() {
@@ -52,6 +56,7 @@ void GraphWidget::createCartesianGraph() {
 }
 
 PhysVector *GraphWidget::createVector(const QPointF &startPos) {
+    qDebug("GraphWidget::createVector()");
     QGraphicsScene *pScene = scene();
     QString Label;
     QTextStream(&Label) << "Vector-" << m_pCartGraph -> DataObj() -> Vectors().length();
@@ -113,6 +118,7 @@ void GraphWidget::onRemovePhysObj(QGraphicsItem *pObj) {
 }
 
 PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
+    qDebug("GraphWidget::createParticle");
     QGraphicsScene *pScene = scene();
     QString Label;
     QTextStream(&Label) << "Particle-" << m_pCartGraph -> DataObj() -> Particles().length();
@@ -125,10 +131,12 @@ PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
 }
 
 void GraphWidget::createVector() {
+    qDebug("GraphWidget::createVector");
     m_pInfoLabel -> setText(tr("Created a new Vector"));
     createVector(m_currClickPos);
 }
 void GraphWidget::createParticle() {
+    qDebug("GraphWidget::createParticle");
     m_pInfoLabel -> setText(tr("Created a new Particle"));
     createParticle(m_currClickPos);
 }
@@ -202,6 +210,7 @@ void GraphWidget::showPhysObjContextMenu(QGraphicsItem *pItem, const QPoint& glo
 }
 
 void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
+    qDebug("GraphWidget::contextMenuEvent");
     if (event) {
         QMenu menu(this);
         m_currClickPos = event -> pos();
