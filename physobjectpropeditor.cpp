@@ -13,7 +13,6 @@ QTableWidgetItem *PhysObjectPropEditor::clone() const {
 }
 
 QVariant PhysObjectPropEditor::data(int role) const {
-    qDebug("PhysObjectPropEditor::data(), role: %d", role);
     if (role == Qt::EditRole || role == Qt::StatusTipRole)
         return formula();
     if (role == Qt::DisplayRole)
@@ -37,15 +36,14 @@ QVariant PhysObjectPropEditor::data(int role) const {
  }
 
 void PhysObjectPropEditor::setData(int role, const QVariant &value) {
+    // qDebug("PhysObjectPropEditor::setData(), role: %d, value: %s", role, qPrintable(value.toString()));
     QString str = value.toString();
-    qDebug("PhysObjectPropEditor::setData(), role: %d, value: %s", role, qPrintable(value.toString()));
     QTableWidgetItem::setData(role, value);
     if (tableWidget())
         tableWidget() -> viewport() ->update();
 }
 
 QVariant PhysObjectPropEditor::display() const {
-    qDebug("PhysObjectPropEditor::display()");
     // avoid circular dependencies
     if (m_isResolving)
         return QVariant();

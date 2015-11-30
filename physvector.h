@@ -57,6 +57,7 @@ public:
     map<AxisOrientation, QString> OrientationLabelMap() const { return m_OrientationLabelMap;}
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 
+    void Name(const QString &);
     void theta(const Theta &val) { m_Theta = val; }
     void StartParticle(PhysParticle *);
     void EndParticle(PhysParticle *);
@@ -66,6 +67,10 @@ public:
     void EndPoint(const QPointF &pt) { m_EndPoint = pt; }
     void CurrPos(const QPointF &pt) { m_currPos = pt; }
     void Magnitude(const double val) { m_magnitude = val; }
+    void Magnitude(const QString &str) { m_magnitude = str.toDouble(); }
+    void ThetaAngle(const double val) { m_Theta.degrees = val; }
+    void ThetaAngle(const QString &str) { m_Theta.degrees = str.toDouble(); }
+    void ThetaAxisOrient(const AxisOrientation val) { m_Theta.axisOrientation = val; }
 protected:
 
     // Qt overrides
@@ -76,8 +81,9 @@ protected:
 private:
     // Member attributes
 
+
     // Data Specific (should be pulled out into a separate DataObject like CartesianGraph has
-    QString m_rawLabel;
+    QString m_Name;
     double m_magnitude;
     Theta m_Theta;
     PhysParticle *m_pStartParticle;

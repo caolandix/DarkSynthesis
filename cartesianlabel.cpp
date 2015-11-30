@@ -73,7 +73,7 @@ void CartesianLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *evt) {
 }
 
 QVariant CartesianLabel::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) {
-    qDebug("CartesianLabel::itemChange()");
+    // qDebug("CartesianLabel::itemChange()");
     if (change == QGraphicsItem::ItemSelectedChange) {
         qDebug("itemChange '%s', selected=%s", toPlainText().toStdString().c_str(), value.toString().toStdString().c_str());
     }

@@ -24,42 +24,29 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows
     m_pCartesianGraphName = NULL;
     m_pVectorName = NULL;
     m_pParticleName = NULL;
-
     m_pGraphicsItem = NULL;
-
-    m_pTable = new QTableWidget(numRows, numCols, this);
 
     setShowGrid(true);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
-    m_pTable ->setColumnCount(2);
     verticalHeader() -> setVisible(false);
 
-    QStringList tableHeader;
-    tableHeader << "Property" << "Value";
-    m_pTable ->setHorizontalHeaderLabels(tableHeader);
-    m_pTable -> setItemPrototype(m_pTable -> item(numRows - 1, numCols - 1));
+    createTable(numRows, numCols);
     createConnections();
+}
+
+void PhysObjectPropsNavigator::createTable(const int numRows, const int numCols) {
+    QStringList tableHeader;
+
+    tableHeader << "Property" << "Value";
+    m_pTable = new QTableWidget(numRows, numCols, this);
+    m_pTable -> setColumnCount(2);
+    m_pTable -> setHorizontalHeaderLabels(tableHeader);
+    m_pTable -> setItemPrototype(m_pTable -> item(numRows - 1, numCols - 1));
 }
 
 
 void PhysObjectPropsNavigator::createConnections() {
-
-    // Create connections between controls and the View so that modifications will update PhysObject the view is assocviated with
-
-    /*
-    connect(m_pYaxisLabel, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pAxisTickInc, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pXaxisExtent, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pYaxisExtent, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pVectorMag, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pVectorThetaAngle, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pVectorThetaAxisOrient, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pVectorAssocParticle, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pCartesianGraphName, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pVectorName, SIGNAL(), this, SLOT(updateControl()));
-    connect(m_pParticleName, SIGNAL(), this, SLOT(updateControl()));
-    */
 }
 
 void PhysObjectPropsNavigator::deleteControls() {
@@ -120,47 +107,53 @@ void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
 
 void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
     if (pObj) {
+        if (m_pVectorName) {
 
+            // Cases ..
+            // 1. m_pVectorName is empty. In which case we assign the value in pObj to m_pVectorName
+            // 2. m_pVectorName is not empty in which it is assigned to pObj
+            if (m_pVectorName ->text().length() > 0)
+                pObj ->Name(m_pVectorName ->text());
+            else
+                m_pVectorName ->setText(pObj ->Name());
+        }
+        if (m_pVectorMag)
+            pObj ->Magnitude(m_pVectorName ->text().toDouble());
+        if (m_pVectorThetaAngle)
+            pObj ->ThetaAngle(m_pVectorName ->text().toDouble());
+        if (m_pVectorThetaAxisOrient)
+            pObj ->ThetaAxisOrient((PhysVector::AxisOrientation)(m_pVectorName ->text().toInt()));
+        if (m_pVectorAssocParticle)
+            ;
     }
-
 }
+
 void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
     if (pObj) {
 
     }
-
 }
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
     if (pObj) {
         if (m_pXaxisLabel) {
-
-            qDebug("m_pXaxisLabel ->text(): '%s'", m_pXaxisLabel ->text().toStdString().c_str());
-            pObj ->XAxisLabel(m_pXaxisLabel ->text());
-            qDebug("New String is: '%s'", pObj ->XAxisLabel().toStdString().c_str());
-
+            QString str = m_pXaxisLabel ->text();
+            pObj ->XAxisLabel(str);
         }
-        if (m_pYaxisLabel) {
+        if (m_pYaxisLabel)
             pObj ->YAxisLabel(m_pYaxisLabel ->text());
-        }
-        if (m_pAxisTickInc) {
+        if (m_pAxisTickInc)
             pObj ->tickStep(m_pAxisTickInc ->text());
-        }
-        if (m_pXaxisExtent) {
+        if (m_pXaxisExtent)
             pObj ->XExtent(m_pXaxisExtent ->text());
-        }
-        if (m_pYaxisExtent) {
+        if (m_pYaxisExtent)
             pObj ->YExtent(m_pYaxisExtent ->text());
-        }
-        if (m_pCartesianGraphName) {
+        if (m_pCartesianGraphName)
             pObj ->Name(m_pCartesianGraphName ->text());
-        }
         pObj ->graphWidget() -> update();
     }
 }
 
-void PhysObjectPropsNavigator::onUpdateControl(int row, int col) {
-    qDebug("PhysObjectPropsNavigator::onUpdateControl(), Row: %d, Col: %d", row, col);
-
+void PhysObjectPropsNavigator::onUpdateControl() {
     if (m_pGraphicsItem) {
         switch (m_pGraphicsItem ->type()) {
         case PhysBaseItem::CartesianGraphType:
@@ -172,40 +165,12 @@ void PhysObjectPropsNavigator::onUpdateControl(int row, int col) {
         case PhysBaseItem::ParticleType:
             updateParticleTable(static_cast<PhysParticle *>(m_pGraphicsItem));
             break;
+        default:
+            qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
+            return;
         }
     }
-    else {
-        qDebug("PhysObjectPropsNavigator::onUpdateControl1(): pObj is NULL");
-    }
 }
-
-void PhysObjectPropsNavigator::onUpdateControl(double val) {
-    qDebug("PhysObjectPropsNavigator::onUpdateControl2()");
-    // PhysObjectPropEditor *pEditor = static_cast<PhysObjectPropEditor *>(m_pTable ->item(row, col));
-    QGraphicsItem *pObj = m_pGraphicsItem;
-
-    if (pObj) {
-        switch (pObj ->type()) {
-        case PhysBaseItem::CartesianGraphType:
-            updateCartesianGraphTable(static_cast<CartesianGraph *>(pObj));
-            break;
-        case PhysBaseItem::VectorType:
-            updateVectorTable(static_cast<PhysVector *>(pObj));
-            break;
-        case PhysBaseItem::ParticleType:
-            updateParticleTable(static_cast<PhysParticle *>(pObj));
-            break;
-        }
-    }
-    else {
-        qDebug("PhysObjectPropsNavigator::onUpdateControl2(): pObj is NULL");
-    }
-}
-
-void PhysObjectPropsNavigator::onUpdateControl() {
-    qDebug("PhysObjectPropsNavigator::onUpdateControl3()");
-}
-
 
 void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QGraphicsItem *pPrev) {
     qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
@@ -232,13 +197,9 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         m_pXaxisLabel ->setText(pObj -> XAxisLabel());
         m_pYaxisLabel ->setText(pObj -> YAxisLabel());
         m_pAxisTickInc ->setText(QString::number(pObj ->tickStep()));
-
-        // m_pXaxisExtent ->setRange(-pObj ->xMax(), pObj ->xMax());
-        m_pXaxisExtent ->setText(QString::number(pObj ->xMax()));
-        m_pYaxisExtent ->setText(QString::number(pObj ->yMax()));
-        connect(m_pTable, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl(int, int)));
-        //connect(m_pAxisTickInc, SIGNAL(valueChanged(double)), this, SLOT(onUpdateControl(double)));
-        //connect(m_pAxisTickInc, SIGNAL(editingFinished()), this, SLOT(onUpdateControl()));
+        m_pXaxisExtent ->setText(QString::number(pObj -> xMax()));
+        m_pYaxisExtent ->setText(QString::number(pObj -> yMax()));
+        connect(m_pTable, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(onUpdateControl()));
     }
 }
 
@@ -257,15 +218,11 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
         }
 
         // Column 1
-        m_pTable ->setItem(0, 1, m_pVectorName = new PhysObjectPropEditor());
-        m_pTable ->setItem(1, 1, m_pVectorMag = new PhysObjectPropEditor());
-        m_pTable ->setItem(2, 1, m_pVectorThetaAngle = new PhysObjectPropEditor());
+        m_pTable ->setItem(0, 1, m_pVectorName = new PhysObjectPropEditor(pObj ->Name()));
+        m_pTable ->setItem(1, 1, m_pVectorMag = new PhysObjectPropEditor(QString::number(pObj ->Magnitude())));
+        m_pTable ->setItem(2, 1, m_pVectorThetaAngle = new PhysObjectPropEditor(QString::number(pObj ->theta().degrees)));
         m_pTable ->setCellWidget(3, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
         m_pTable ->setItem(4, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
-
-        // set data
-        m_pVectorMag ->setText(QString::number(pObj ->Magnitude()));
-        m_pVectorThetaAngle ->setText(QString::number(pObj ->theta().degrees));
 
         // Populate the combobox control with possible values...
         QStringList items;
@@ -288,7 +245,7 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
     if (pObj) {
         if (pPrev)
             destroyPrevTable(pPrev);
-        map<int, QString> properties = pObj ->EditableProps();
+        map<int, QString> properties = pObj -> EditableProps();
 
         // Column 0
         for (int i = 0; i < properties.size(); i++) {
@@ -317,30 +274,50 @@ void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
         switch (pObj -> type()) {
         case PhysBaseItem::VectorType:
             if (m_pVectorMag) {
-                delete m_pVectorMag; m_pVectorMag = NULL;
+                //delete m_pVectorMag;
+                m_pVectorMag = NULL;
             }
             if (m_pVectorThetaAngle) {
-                delete m_pVectorThetaAngle; m_pVectorThetaAngle = NULL;
+                //delete m_pVectorThetaAngle;
+                m_pVectorThetaAngle = NULL;
             }
             if (m_pVectorThetaAxisOrient) {
-                delete m_pVectorThetaAxisOrient; m_pVectorThetaAxisOrient = NULL;
+                //delete m_pVectorThetaAxisOrient;
+                m_pVectorThetaAxisOrient = NULL;
             }
             if (m_pVectorAssocParticle) {
-                delete m_pVectorAssocParticle; m_pVectorAssocParticle = NULL;
+                //delete m_pVectorAssocParticle;
+                m_pVectorAssocParticle = NULL;
             }
             break;
         case PhysBaseItem::ParticleType:
-            if (m_pParticleName) { delete m_pParticleName; m_pParticleName = NULL; }
+            if (m_pParticleName) {
+                //delete m_pParticleName;
+                m_pParticleName = NULL;
+            }
+            m_pParticleMass = NULL;
             break;
         case PhysBaseItem::CartesianGraphType:
+            if (m_pCartesianGraphName) {
+                m_pCartesianGraphName = NULL;
+            }
+            if (m_pYaxisLabel) {
+                m_pYaxisLabel = NULL;
+            }
+            if (m_pXaxisLabel) {
+                m_pXaxisLabel = NULL;
+            }
             if (m_pAxisTickInc) {
-                delete m_pAxisTickInc; m_pAxisTickInc = NULL;
+                //delete m_pAxisTickInc;
+                m_pAxisTickInc = NULL;
             }
             if (m_pXaxisExtent) {
-                delete m_pXaxisExtent; m_pXaxisExtent = NULL;
+                //delete m_pXaxisExtent;
+                m_pXaxisExtent = NULL;
             }
             if (m_pYaxisExtent) {
-                delete m_pYaxisExtent; m_pYaxisExtent = NULL;
+                //delete m_pYaxisExtent;
+                m_pYaxisExtent = NULL;
             }
             break;
         default:

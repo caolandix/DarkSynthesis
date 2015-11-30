@@ -44,11 +44,8 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     m_Theta.axisOrientation = AXIS_HORIZ;
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
-
-    m_rawLabel = Label;
-    QString formattedLabel;
-    formattedLabel.sprintf("%s: (%.6f, @=%3.2f", m_rawLabel.toStdString().c_str(), m_magnitude, m_Theta.degrees);
-    m_pLabel = new CartesianLabel(formattedLabel, this);
+    m_pLabel = new CartesianLabel(this);
+    Name(Label);
 
     if (pStart)
         StartParticle(pStart);
@@ -104,6 +101,13 @@ PhysVector *PhysVector::copy() {
     pObj ->StartParticle(m_pStartParticle);
     pObj ->EndParticle(m_pEndParticle);
     return pObj;
+}
+
+void PhysVector::Name(const QString &str) {
+    m_Name = str;
+    QString formattedLabel;
+    formattedLabel.sprintf("%s: (%.6f, @=%3.2f", m_Name.toStdString().c_str(), m_magnitude, m_Theta.degrees);
+    m_pLabel ->setPlainText(formattedLabel);
 }
 
 void PhysVector::StartParticle(PhysParticle *pObj) {
@@ -267,7 +271,7 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     pPainter -> drawPolygon(m_arrowHead);
 
     QString formattedLabel;
-    m_pLabel -> setPlainText(formattedLabel.sprintf("%s: (%.6f, @=%3.2f)", m_rawLabel.toStdString().c_str(), m_magnitude, Theta));
+    m_pLabel -> setPlainText(formattedLabel.sprintf("%s: (%.6f, @=%3.2f)", m_Name.toStdString().c_str(), m_magnitude, Theta));
     QPainterPath tmpPath;
     QBrush brush(m_Color);
     tmpPath.addPolygon(m_arrowHead);

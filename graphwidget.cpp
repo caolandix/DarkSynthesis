@@ -1,14 +1,5 @@
 #include <math.h>
-#include <QKeyEvent>
-#include <QGraphicsSceneContextMenuEvent>
-#include <QContextMenuEvent>
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QMenu>
-#include <QLabel>
-
-#include <QDebug>
+#include <QtWidgets>
 
 #include "graphwidget.h"
 #include "cartesiangraph.h"

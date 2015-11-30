@@ -272,10 +272,10 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
             var.setValue(static_cast<QGraphicsItem *>(pObj));
             pChildItem -> setData(0, Qt::UserRole, var);
             pParentItem -> addChild(pChildItem);
-            m_pPrevObj = m_pCurrObj;
-            m_pCurrObj = pObj;
             setCurrentItem(pChildItem);
             emit changeObj(m_pCurrObj, m_pPrevObj);
+            m_pPrevObj = m_pCurrObj;
+            m_pCurrObj = pObj;
         }
     }
 }

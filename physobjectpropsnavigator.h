@@ -33,13 +33,12 @@ private:
     QTableWidgetItem *createRowItem(const QString &);
 
     void createConnections();
+    void createTable(const int, const int);
 signals:
 
 public slots:
     void onChangeObj(QGraphicsItem *, QGraphicsItem *);
     void onUpdateObj(QGraphicsItem *);
-    void onUpdateControl(int, int);
-    void onUpdateControl(double);
     void onUpdateControl();
 private:
 
@@ -65,7 +64,6 @@ private:
     // The QTableWidget
     QTableWidget *m_pTable;
     QGraphicsItem *m_pGraphicsItem;
-
 };
 
 #endif // PHYSOBJECTPROPSNAVIGATOR_H
