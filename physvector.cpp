@@ -108,9 +108,7 @@ PhysVector *PhysVector::copy() {
 void PhysVector::Name(const QString &str) {
     qDebug("PhysVector::Name()");
     m_Name = str;
-    QString formattedLabel;
-    formattedLabel.sprintf("%s: (%.6f, @=%3.2f", m_Name.toStdString().c_str(), m_magnitude, m_Theta.degrees);
-    m_pLabel ->setPlainText(formattedLabel);
+    m_pLabel ->setPlainText(m_Name);
 }
 
 void PhysVector::StartParticle(PhysParticle *pObj) {
@@ -277,9 +275,7 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     m_arrowHead << line().p1() << arrowP1 << arrowP2;
     pPainter -> drawLine(aLine);
     pPainter -> drawPolygon(m_arrowHead);
-
-    QString formattedLabel;
-    m_pLabel -> setPlainText(formattedLabel.sprintf("%s: (%.6f, @=%3.2f)", m_Name.toStdString().c_str(), m_magnitude, Theta));
+    m_pLabel -> setPlainText(m_Name);
     QPainterPath tmpPath;
     QBrush brush(m_Color);
     tmpPath.addPolygon(m_arrowHead);

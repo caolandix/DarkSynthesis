@@ -4,6 +4,7 @@
 PhysObjectPropDelegate::PhysObjectPropDelegate(QObject *pParent) : QStyledItemDelegate(pParent) {}
 
 QWidget *PhysObjectPropDelegate::createEditor(QWidget *pParent, const QStyleOptionViewItem &viewItem, const QModelIndex &index) const {
+    //qDebug("PhysObjectPropDelegate::createEditor()");
     QLineEdit *pEdit = new QLineEdit(pParent);
 
     // create a completer with the strings in the column as model
@@ -20,12 +21,14 @@ QWidget *PhysObjectPropDelegate::createEditor(QWidget *pParent, const QStyleOpti
 }
 
 void PhysObjectPropDelegate::commitAndCloseEditor() {
+    //qDebug("PhysObjectPropDelegate::commitAndCloseEditor()");
     QLineEdit *pEdit = qobject_cast<QLineEdit *>(sender());
     emit commitData(pEdit);
     emit closeEditor(pEdit);
 }
 
 void PhysObjectPropDelegate::setEditorData(QWidget *pEditor, const QModelIndex &index) const {
+    //qDebug("PhysObjectPropDelegate::setEditorData()");
     QLineEdit *pEdit = qobject_cast<QLineEdit*>(pEditor);
     if (pEdit) {
         pEdit -> setText(index.model() -> data(index, Qt::EditRole).toString());
@@ -34,6 +37,7 @@ void PhysObjectPropDelegate::setEditorData(QWidget *pEditor, const QModelIndex &
 }
 
 void PhysObjectPropDelegate::setModelData(QWidget *pEditor, QAbstractItemModel *pModel, const QModelIndex &index) const {
+    //qDebug("PhysObjectPropDelegate::setModelData()");
     QLineEdit *pEdit = qobject_cast<QLineEdit *>(pEditor);
     if (pEdit) {
         pModel -> setData(index, pEdit -> text());

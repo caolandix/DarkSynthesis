@@ -80,32 +80,45 @@ void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
 void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
     qDebug("PhysObjectPropsNavigator::updateVectorTable()");
     if (pObj) {
+        QString str;
+        if (m_pVectorMag) {
+            str = m_pVectorMag ->text();
+            pObj ->Magnitude(str.toDouble());
+        }
+        if (m_pVectorThetaAngle) {
+            str = m_pVectorThetaAngle ->text();
+            pObj ->ThetaAngle(str.toDouble());
+        }
+        if (m_pVectorThetaAxisOrient) {
+            pObj ->ThetaAxisOrient((PhysVector::AxisOrientation)(m_pVectorThetaAxisOrient ->currentIndex()));
+        }
+        if (m_pVectorAssocParticle)
+            ;
+
+        // NOTE: Name is put last because it uses updated values from other vars
         if (m_pVectorName) {
 
             // Cases ..
             // 1. m_pVectorName is empty. In which case we assign the value in pObj to m_pVectorName
             // 2. m_pVectorName is not empty in which it is assigned to pObj
-            if (m_pVectorName ->text().length() > 0)
-                pObj ->Name(m_pVectorName ->text());
-            else
-                m_pVectorName ->setText(pObj ->Name());
+            str = m_pVectorName ->text();
+            if (str.length() > 0)
+                pObj ->Name(str);
+            else {
+                str = pObj ->Name();
+                m_pVectorName ->setText(str);
+            }
         }
-        if (m_pVectorMag)
-            pObj ->Magnitude(m_pVectorName ->text().toDouble());
-        if (m_pVectorThetaAngle)
-            pObj ->ThetaAngle(m_pVectorName ->text().toDouble());
-        if (m_pVectorThetaAxisOrient)
-            pObj ->ThetaAxisOrient((PhysVector::AxisOrientation)(m_pVectorName ->text().toInt()));
-        if (m_pVectorAssocParticle)
-            ;
     }
 }
 
 void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
     qDebug("PhysObjectPropsNavigator::updateParticleTable()");
     if (pObj) {
-        pObj ->mass(m_pParticleMass ->text().toDouble());
-        pObj ->Name(m_pParticleName ->text());
+        QString str = m_pParticleMass ->text();
+        pObj ->mass(str.toDouble());
+        str = m_pParticleName ->text();
+        pObj ->Name(str);
     }
 }
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
