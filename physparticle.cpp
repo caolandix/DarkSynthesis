@@ -41,7 +41,7 @@ void PhysParticle::init() {
 }
 
 void PhysParticle::Name(const QString &str) {
-    //qDebug("PhysVector::Name()");
+    //qDebug("PhysParticle::Name()");
     emit changeItemName(m_Name, str);
     m_Name = str;
     m_pLabel ->setPlainText(m_Name);
