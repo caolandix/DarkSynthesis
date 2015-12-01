@@ -1,21 +1,22 @@
 #ifndef PHYSPARTICLE_H
 #define PHYSPARTICLE_H
 
-#include <QGraphicsItem>
-#include <QList>
-#include <QGraphicsSceneMouseEvent>
+#include <QtWidgets>
 
 #include "physbaseitem.h"
 #include "cartesianlabel.h"
+#include "physvectordataobj.h"
 #include "physparticledataobj.h"
 
+class CartesianGraph;
+class PhysParticle;
 class PhysVector;
 
 class PhysParticle : public PhysBaseItem, public QGraphicsPolygonItem {
     Q_OBJECT
 public:
-    PhysParticle(QGraphicsItem *);
-    PhysParticle(QGraphicsItem *, const QPointF &, const QString &);
+    PhysParticle(CartesianGraph *);
+    PhysParticle(CartesianGraph *, const QPointF &, const QString &);
     ~PhysParticle();
 
     enum { Type = ParticleType };
@@ -32,6 +33,7 @@ public:
     void DataObj(const PhysParticleDataObj &obj) { m_DataObj = obj; }
     PhysParticle *copy();
     void init();
+    void createConnections();
 
     QString Name() const { return m_Name; }
     void Name(const QString &str) { m_Name = str; }
@@ -43,12 +45,14 @@ protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
+signals:
+    void changeItemName(const QString &, const QString &);
 private:
     CartesianLabel *m_pLabel;
     QString m_Name;
     QList<PhysVector *> m_Vectors;
     PhysParticleDataObj m_DataObj;
-
+    CartesianGraph *m_pParent;
     static map<int, QString> m_listEditableProps;
 };
 Q_DECLARE_METATYPE(PhysParticle *)

@@ -11,7 +11,7 @@
 class GraphWidget;
 class PhysVector;
 class PhysParticle;
-// class CartesianGraphDataObj;
+class CartesianGraphDataObj;
 
 class CartesianGraph : public PhysBaseItem, public QGraphicsItem {
     Q_OBJECT

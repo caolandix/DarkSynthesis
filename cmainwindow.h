@@ -1,11 +1,7 @@
 #ifndef CMAINWINDOW_H
 #define CMAINWINDOW_H
 
-#include <QMainWindow>
-#include <QActionGroup>
-#include <QLabel>
-#include <QFile>
-#include <QXmlStreamReader>
+#include <QtWidgets>
 
 #include "graphwidget.h"
 

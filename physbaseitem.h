@@ -18,6 +18,7 @@ public:
 
     virtual PhysBaseItem *copy() = 0;
     virtual void init() = 0;
+
 private:
     map<int, QString> m_Types;
 };

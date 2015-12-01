@@ -1,7 +1,7 @@
 #ifndef GRAPHWIDGET_H
 #define GRAPHWIDGET_H
 
-#include <QGraphicsView>
+#include <QtWidgets>
 #include "cartesiangraph.h"
 
 class Node;

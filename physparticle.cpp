@@ -1,9 +1,4 @@
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
-#include <QMenu>
-#include <QListIterator>
+#include <QtWidgets>
 
 #include "physscience.h"
 #include "physbaseitem.h"
@@ -16,7 +11,7 @@ std::map<int, QString> PhysParticle::m_listEditableProps = {
     {1, QString("Mass")}
 };
 
-PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, const QString &Label) :
+PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, const QString &Label) :
     PhysBaseItem(), QGraphicsPolygonItem(pParent) {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -25,6 +20,8 @@ PhysParticle::PhysParticle(QGraphicsItem *pParent, const QPointF &startPos, cons
     setPos(0, 0);
     m_pLabel = new CartesianLabel(Label, this);
     m_Name = Label;
+    m_pParent = pParent;
+    createConnections();
 }
 
 PhysParticle::~PhysParticle() {
@@ -41,6 +38,11 @@ void PhysParticle::init() {
         pObj ->clearParticle(this);
     }
     m_Vectors.clear();
+}
+
+void PhysParticle::createConnections() {
+    connect(this, SIGNAL(changeItemName(const QString &, const QString &)),
+            m_pParent, SLOT(onChangeItemName(const QString &, const QString &)));
 }
 
 void PhysParticle::Vectors(const QList<PhysVector *> vectorList) {

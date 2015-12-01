@@ -1,9 +1,8 @@
 #ifndef CARTESIANGRAPHDATAOBJ_H
 #define CARTESIANGRAPHDATAOBJ_H
 
-#include <QDataStream>
-#include <QGraphicsTextItem>
-#include <QPointF>
+#include <QtWidgets>
+
 #include "physvector.h"
 #include "physparticle.h"
 
