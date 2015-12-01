@@ -42,6 +42,10 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
 }
 
+void GraphWidget::onChangeItemName(const QString &strOld, const QString &strNew) {
+    emit changeItemName(strOld, strNew);
+}
+
 void GraphWidget::onRepaint() {
     repaint();
 }

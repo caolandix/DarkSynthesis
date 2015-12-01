@@ -40,6 +40,7 @@ public slots:
     void removeObject();
     void resetObject();
     void onReorderObjNav(QGraphicsItem *pObj);
+    void onChangeItemName(const QString &, const QString &);
 private:
     QGraphicsItem *m_pCurrObj, *m_pPrevObj;
     QAction *m_pActNewItem, *m_pActCloneItem, *m_pActDeleteItem, *m_pActResetItem;

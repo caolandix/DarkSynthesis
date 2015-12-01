@@ -276,6 +276,8 @@ void CMainWindow::createSignalSlots() {
     val = connect(m_pPhysObjNavigator, SIGNAL(removePhysObj(QGraphicsItem *)), m_pGraphWidget, SLOT(onRemovePhysObj(QGraphicsItem *)));
     val = connect(m_pPhysObjPropsNavigator, SIGNAL(repaint()), m_pGraphWidget, SLOT(onRepaint()));
     val = connect(m_pGraphWidget, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onReorderObjNav(QGraphicsItem *)));
+    val = connect(m_pGraphWidget, SIGNAL(changeItemName(const QString &, const QString &)),
+                  m_pPhysObjNavigator, SLOT(onChangeItemName(const QString &, const QString &)));
 }
 
 void CMainWindow::createBaseObjects() {

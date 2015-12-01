@@ -25,6 +25,7 @@ signals:
     void removeObj(QGraphicsItem *);
     void modifyObj(QGraphicsItem *);
     void reorderObjNav(QGraphicsItem *);
+    void changeItemName(const QString &, const QString &);
 public slots:
     void zoomIn() { scaleView(qreal(1.2)); }
     void zoomOut() { scaleView(1 / qreal(1.2)); }
@@ -32,6 +33,7 @@ public slots:
     void onRemovePhysObj(QGraphicsItem *);
     void onRepaint();
     void onReorderObjNav(QGraphicsItem *);
+    void onChangeItemName(const QString &, const QString &);
 private slots:
     void createVector();
     void createParticle();

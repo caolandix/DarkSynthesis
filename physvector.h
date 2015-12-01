@@ -84,6 +84,7 @@ protected:
 
 signals:
     void reorderObjNav(QGraphicsItem *);
+    void changeItemName(const QString &, const QString &);
 private:
     // Member attributes
 

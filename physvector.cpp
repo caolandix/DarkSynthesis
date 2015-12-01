@@ -77,10 +77,12 @@ PhysVector::~PhysVector() {
 
 void PhysVector::createConnections() {
     connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pParent, SLOT(onReorderObjNav(QGraphicsItem *)));
+    connect(this, SIGNAL(changeItemName(const QString &, const QString &)),
+            m_pParent, SLOT(onChangeItemName(const QString &, const QString &)));
 }
 
 void PhysVector::clearParticle(PhysParticle *pObj) {
-    qDebug("PhysVector::clearParticle()");
+    //qDebug("PhysVector::clearParticle()");
     if (m_pStartParticle == pObj)
         m_pStartParticle = NULL;
     if (m_pEndParticle == pObj)
@@ -88,7 +90,7 @@ void PhysVector::clearParticle(PhysParticle *pObj) {
 }
 
 void PhysVector::init() {
-    qDebug("PhysVector::init()");
+    //qDebug("PhysVector::init()");
 
     m_magnitude = 50.0;
     removeFromParticles();
@@ -112,20 +114,21 @@ PhysVector *PhysVector::copy() {
 }
 
 void PhysVector::Name(const QString &str) {
-    qDebug("PhysVector::Name()");
+    //qDebug("PhysVector::Name()");
+    emit changeItemName(m_Name, str);
     m_Name = str;
     m_pLabel ->setPlainText(m_Name);
 }
 
 void PhysVector::StartParticle(PhysParticle *pObj) {
-    qDebug("PhysVector::StartParticle()");
+    //qDebug("PhysVector::StartParticle()");
     if (pObj) {
         m_pStartParticle = pObj;
         m_pStartParticle -> addVector(this);
     }
 }
 void PhysVector::EndParticle(PhysParticle *pObj) {
-    qDebug("PhysVector::EndParticle()");
+    //qDebug("PhysVector::EndParticle()");
     if (pObj) {
         m_pEndParticle = pObj;
         m_pEndParticle -> addVector(this);
@@ -133,7 +136,7 @@ void PhysVector::EndParticle(PhysParticle *pObj) {
 }
 
 void PhysVector::removeFromParticles() {
-    qDebug("PhysVector::removeFromParticles()");
+    //qDebug("PhysVector::removeFromParticles()");
     if (m_pStartParticle) {
         m_pStartParticle ->removeVector(this);
         m_pStartParticle = NULL;
@@ -145,7 +148,7 @@ void PhysVector::removeFromParticles() {
 }
 
 QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value) {
-    qDebug("PhysVector::itemChange()");
+    //qDebug("PhysVector::itemChange()");
     switch (change) {
         case ItemPositionHasChanged:
             break;
@@ -342,19 +345,13 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         // Handle the end point particle
         else {
             if (!collidesWithItem(m_pEndParticle)) {
-                //rcPart = m_pEndParticle -> boundingRect();
-
-                //if (!rcPart.contains(pt2)) {
-                        //  No longer intersecting the end point so disconnect from the particle
-                        m_pEndParticle -> removeVector(this);
-                        m_pEndParticle = NULL;
-                    //}
-                }
+                m_pEndParticle -> removeVector(this);
+                m_pEndParticle = NULL;
+            }
         }
     }
     for (QList<PhysParticle *>::Iterator iter = particles.begin(); iter != particles.end(); iter++) {
         PhysParticle *pParticle = *iter;
-
         if (collidesWithItem(pParticle)) {
 
             // Verify that the end points are the only things intersecting

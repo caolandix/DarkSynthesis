@@ -39,6 +39,15 @@ void PhysObjectNavigator::createContextMenu() {
             this, SLOT(onCustomContextMenu(const QPoint &)));
 }
 
+void PhysObjectNavigator::onChangeItemName(const QString &strOld, const QString &strNew) {
+    QList<QTreeWidgetItem *> Items = findItems(strOld, Qt::MatchExactly | Qt::MatchRecursive);
+
+    if (Items.count() > 0) {
+        QTreeWidgetItem *pItem = Items.at(0);
+        pItem ->setText(0, strNew);
+    }
+}
+
 void PhysObjectNavigator::cloneObject() {
     QAction *pAction = qobject_cast<QAction *>(sender());
     QVariant itemData = pAction -> data();

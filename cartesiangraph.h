@@ -84,8 +84,10 @@ private:
 public slots:
     void onPropChange(const QString &);
     void onReorderObjNav(QGraphicsItem *);
+    void onChangeItemName(const QString &, const QString &);
 signals:
     void reorderObjNav(QGraphicsItem *);
+    void changeItemName(const QString &, const QString &);
 };
 Q_DECLARE_METATYPE(CartesianGraph *)
 #endif // CARTESIANGRAPH_H
