@@ -40,6 +40,13 @@ void PhysParticle::init() {
     m_Vectors.clear();
 }
 
+void PhysParticle::Name(const QString &str) {
+    //qDebug("PhysVector::Name()");
+    emit changeItemName(m_Name, str);
+    m_Name = str;
+    m_pLabel ->setPlainText(m_Name);
+}
+
 void PhysParticle::createConnections() {
     connect(this, SIGNAL(changeItemName(const QString &, const QString &)),
             m_pParent, SLOT(onChangeItemName(const QString &, const QString &)));
