@@ -76,7 +76,7 @@ PhysVector::~PhysVector() {
 }
 
 void PhysVector::createConnections() {
-    connect(this, SIGNAL(reorderObjNav()), m_pParent, SLOT(onReorderObjNav()));
+    connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pParent, SLOT(onReorderObjNav(QGraphicsItem *)));
 }
 
 void PhysVector::clearParticle(PhysParticle *pObj) {
@@ -373,7 +373,7 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
                 pParticle -> addVector(this);
             }
         }
-        emit reorderObjNav();
+        emit reorderObjNav(static_cast<QGraphicsItem *>(this));
     }
     update();
     QGraphicsItem::mouseReleaseEvent(event);

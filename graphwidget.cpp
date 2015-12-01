@@ -46,9 +46,9 @@ void GraphWidget::onRepaint() {
     repaint();
 }
 
-void GraphWidget::onReorderObjNav() {
+void GraphWidget::onReorderObjNav(QGraphicsItem *pObj) {
     qDebug("GraphWidget::onReorderObjNav");
-    emit reorderObjNav();
+    emit reorderObjNav(pObj);
 }
 
 void GraphWidget::createCartesianGraph() {

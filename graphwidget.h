@@ -24,14 +24,14 @@ signals:
     void createObj(QGraphicsItem *);
     void removeObj(QGraphicsItem *);
     void modifyObj(QGraphicsItem *);
-    void reorderObjNav();
+    void reorderObjNav(QGraphicsItem *);
 public slots:
     void zoomIn() { scaleView(qreal(1.2)); }
     void zoomOut() { scaleView(1 / qreal(1.2)); }
     void onClonePhysObj(QGraphicsItem *);
     void onRemovePhysObj(QGraphicsItem *);
     void onRepaint();
-    void onReorderObjNav();
+    void onReorderObjNav(QGraphicsItem *);
 private slots:
     void createVector();
     void createParticle();

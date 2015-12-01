@@ -95,7 +95,7 @@ void CartesianGraph::init() {
 }
 
 void CartesianGraph::createConnections() {
-    connect(this, SIGNAL(reorderObjNav()), m_pGraphWidget, SLOT(onReorderObjNav()));
+    connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pGraphWidget, SLOT(onReorderObjNav(QGraphicsItem *)));
 }
 
 void CartesianGraph::XExtent(const QString &str) {
@@ -120,9 +120,9 @@ CartesianGraph *CartesianGraph::copy() {
     return pObj;
 }
 
-void CartesianGraph::onReorderObjNav() {
+void CartesianGraph::onReorderObjNav(QGraphicsItem *pObj) {
     qDebug("CartesianGraph::onReorderObjNav");
-    emit reorderObjNav();
+    emit reorderObjNav(pObj);
 }
 
 void CartesianGraph::onPropChange(const QString &str) {

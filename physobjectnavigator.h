@@ -39,7 +39,7 @@ public slots:
     void cloneObject();
     void removeObject();
     void resetObject();
-    void onReorderObjNav();
+    void onReorderObjNav(QGraphicsItem *pObj);
 private:
     QGraphicsItem *m_pCurrObj, *m_pPrevObj;
     QAction *m_pActNewItem, *m_pActCloneItem, *m_pActDeleteItem, *m_pActResetItem;

@@ -214,24 +214,14 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
         m_pPrevObj = m_pCurrObj;
         m_pCurrObj = pObj;
     }
-
-    // Changing the currentitem
-    // If we're brand new then there is no pPrevObj
-    /*
-    if (!m_pPrevObj)
-        emit changeObj(m_pCurrObj, m_pPrevObj);
-    else {
-        if (m_pPrevObj ->type() != m_pCurrObj ->type())
-            emit changeObj(m_pCurrObj, m_pPrevObj);
-        else
-            emit updateObj(m_pCurrObj);
-    }
-    */
     emit changeObj(m_pCurrObj, m_pPrevObj);
 }
 
-void PhysObjectNavigator::onReorderObjNav() {
+void PhysObjectNavigator::onReorderObjNav(QGraphicsItem *pObj) {
     qDebug("PhysObjectNavigator::onReorderObjNav()");
+    if (pObj) {
+
+    }
 }
 
 void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {

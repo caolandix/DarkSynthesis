@@ -63,6 +63,7 @@ public:
     CartesianGraph *copy();
     void init();
     void createConnections();
+    void restructure();
 
 
 protected:
@@ -82,9 +83,9 @@ private:
     static map<int, QString> m_listEditableProps;
 public slots:
     void onPropChange(const QString &);
-    void onReorderObjNav();
+    void onReorderObjNav(QGraphicsItem *);
 signals:
-    void reorderObjNav();
+    void reorderObjNav(QGraphicsItem *);
 };
 Q_DECLARE_METATYPE(CartesianGraph *)
 #endif // CARTESIANGRAPH_H

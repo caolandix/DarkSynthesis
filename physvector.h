@@ -83,7 +83,7 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 
 signals:
-    void reorderObjNav();
+    void reorderObjNav(QGraphicsItem *);
 private:
     // Member attributes
 
