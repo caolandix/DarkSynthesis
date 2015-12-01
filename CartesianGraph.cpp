@@ -45,6 +45,7 @@ CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, C
     m_pYMax -> setPos(QPointF(m_pYMax -> boundingRect().width() / 2, rc.height() + (m_pYMax -> boundingRect().height() / 2)));
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
+    createConnections();
 }
 
 CartesianGraph::CartesianGraph(const CartesianGraph &obj) : QGraphicsItem() {
@@ -93,6 +94,10 @@ void CartesianGraph::init() {
     m_pDataObj -> init();
 }
 
+void CartesianGraph::createConnections() {
+    connect(this, SIGNAL(reorderObjNav()), m_pGraphWidget, SLOT(onReorderObjNav()));
+}
+
 void CartesianGraph::XExtent(const QString &str) {
     m_pDataObj -> xMax(str.toDouble());
     m_pDataObj -> xMin(-(str.toDouble()));
@@ -115,9 +120,13 @@ CartesianGraph *CartesianGraph::copy() {
     return pObj;
 }
 
+void CartesianGraph::onReorderObjNav() {
+    qDebug("CartesianGraph::onReorderObjNav");
+    emit reorderObjNav();
+}
+
 void CartesianGraph::onPropChange(const QString &str) {
     qDebug("CartesianGraph::onPropChange(): updating info");
-
     update();
 }
 

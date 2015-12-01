@@ -230,6 +230,10 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
     emit changeObj(m_pCurrObj, m_pPrevObj);
 }
 
+void PhysObjectNavigator::onReorderObjNav() {
+    qDebug("PhysObjectNavigator::onReorderObjNav()");
+}
+
 void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
     qDebug("PhysObjectNavigator::dropEvent()");
     QTreeWidgetItem *pItem = itemFromIndex(indexAt(pEvent -> pos()));

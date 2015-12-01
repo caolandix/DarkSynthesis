@@ -46,6 +46,11 @@ void GraphWidget::onRepaint() {
     repaint();
 }
 
+void GraphWidget::onReorderObjNav() {
+    qDebug("GraphWidget::onReorderObjNav");
+    emit reorderObjNav();
+}
+
 void GraphWidget::createCartesianGraph() {
 
     // Create the object
@@ -68,8 +73,6 @@ PhysVector *GraphWidget::createVector(const QPointF &startPos) {
     return pObj;
 }
 
-// Cloning just sets up the parent and scene ownership. Actual cloning of the object takes place
-// in it's overloaded copy() method.
 void GraphWidget::onClonePhysObj(QGraphicsItem *pNewObj) {
     qDebug("GraphWidget::onClonePhysObj()");
     if (!pNewObj)
@@ -135,6 +138,7 @@ void GraphWidget::createVector() {
     m_pInfoLabel -> setText(tr("Created a new Vector"));
     createVector(m_currClickPos);
 }
+
 void GraphWidget::createParticle() {
     qDebug("GraphWidget::createParticle");
     m_pInfoLabel -> setText(tr("Created a new Particle"));

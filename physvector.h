@@ -63,6 +63,9 @@ public:
     void EndParticle(PhysParticle *);
     void clearParticle(PhysParticle *);
     void removeFromParticles();
+    void createConnections();
+
+
     void StartPoint(const QPointF &pt) { m_StartPoint = pt; }
     void EndPoint(const QPointF &pt) { m_EndPoint = pt; }
     void CurrPos(const QPointF &pt) { m_currPos = pt; }
@@ -78,6 +81,9 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
+
+signals:
+    void reorderObjNav();
 private:
     // Member attributes
 

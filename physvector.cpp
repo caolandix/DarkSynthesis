@@ -62,6 +62,8 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     setZValue(-1);
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     setLine(0 + m_magnitude, 0 + m_magnitude, 0, 0);
+
+    createConnections();
 }
 
 PhysVector::~PhysVector() {
@@ -71,6 +73,10 @@ PhysVector::~PhysVector() {
     }
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
+}
+
+void PhysVector::createConnections() {
+    connect(this, SIGNAL(reorderObjNav()), m_pParent, SLOT(onReorderObjNav()));
 }
 
 void PhysVector::clearParticle(PhysParticle *pObj) {
@@ -367,6 +373,7 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
                 pParticle -> addVector(this);
             }
         }
+        emit reorderObjNav();
     }
     update();
     QGraphicsItem::mouseReleaseEvent(event);
