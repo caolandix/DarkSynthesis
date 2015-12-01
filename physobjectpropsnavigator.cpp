@@ -92,8 +92,9 @@ void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
         if (m_pVectorThetaAxisOrient) {
             pObj ->ThetaAxisOrient((PhysVector::AxisOrientation)(m_pVectorThetaAxisOrient ->currentIndex()));
         }
-        if (m_pVectorAssocParticle)
+        if (m_pVectorAssocParticle) {
             ;
+        }
 
         // NOTE: Name is put last because it uses updated values from other vars
         if (m_pVectorName) {
@@ -221,8 +222,8 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
         // ... now set the value to what the vector object is assigned to.
         m_pVectorThetaAxisOrient ->setCurrentIndex(pObj ->theta().axisOrientation);
 
-        if (pObj ->StartParticle())
-            m_pVectorAssocParticle ->setText(QString(pObj -> StartParticle() -> Name()));
+        if (pObj ->EndParticle())
+            m_pVectorAssocParticle ->setText(QString(pObj -> EndParticle() -> Name()));
         else
             m_pVectorAssocParticle ->setText(QString("None"));
     }
