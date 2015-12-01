@@ -220,7 +220,30 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
 void PhysObjectNavigator::onReorderObjNav(QGraphicsItem *pObj) {
     qDebug("PhysObjectNavigator::onReorderObjNav()");
     if (pObj) {
+        QString Name;
 
+        switch (pObj -> type()) {
+        case PhysBaseItem::VectorType:
+            Name = static_cast<PhysVector *>(pObj) ->Name();
+            break;
+        case PhysBaseItem::ParticleType:
+            Name = static_cast<PhysParticle *>(pObj) ->Name();
+            break;
+        case PhysBaseItem::CartesianGraphType:
+            Name = static_cast<CartesianGraph *>(pObj) ->Name();
+            break;
+        default:
+            qDebug("PhysObjectNavigator::onReorderObjNav: not a supported object type: %d", pObj -> type());
+            break;
+        }
+        QList<QTreeWidgetItem *> Items = findItems(Name, Qt::MatchExactly | Qt::MatchRecursive);
+        if (Items.count() > 0) {
+            if (pObj ->type() == PhysBaseItem::VectorType) {
+                PhysVector *pVector = static_cast<PhysVector *>(pObj);
+                removeFromTreeWidgetParent(pObj);
+                insertVector(pVector);
+            }
+        }
     }
 }
 
@@ -254,7 +277,7 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
             QString strParticle = (pObj -> StartParticle()) ?
                         pObj -> StartParticle() -> Name() :
                         pObj -> EndParticle() -> Name();
-            QList<QTreeWidgetItem *> itemList = findItems(strParticle, Qt::MatchExactly);
+            QList<QTreeWidgetItem *> itemList = findItems(strParticle, Qt::MatchExactly | Qt::MatchRecursive);
             if (itemList.count() > 0) {
                 pParentItem = itemList.at(0);
                 pChildItem = new QTreeWidgetItem(pParentItem);
@@ -270,7 +293,6 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
             pChildItem -> setData(0, Qt::UserRole, var);
             pParentItem -> addChild(pChildItem);
             setCurrentItem(pChildItem);
-            // emit changeObj(m_pCurrObj, m_pPrevObj);
             m_pPrevObj = m_pCurrObj;
             m_pCurrObj = pObj;
         }

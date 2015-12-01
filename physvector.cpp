@@ -342,12 +342,13 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         // Handle the end point particle
         else {
             if (!collidesWithItem(m_pEndParticle)) {
-                rcPart = m_pEndParticle -> boundingRect();
-                if (!rcPart.contains(pt2)) {
+                //rcPart = m_pEndParticle -> boundingRect();
+
+                //if (!rcPart.contains(pt2)) {
                         //  No longer intersecting the end point so disconnect from the particle
                         m_pEndParticle -> removeVector(this);
                         m_pEndParticle = NULL;
-                    }
+                    //}
                 }
         }
     }
