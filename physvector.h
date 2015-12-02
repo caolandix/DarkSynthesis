@@ -71,8 +71,8 @@ public:
     void CurrPos(const QPointF &pt) { m_currPos = pt; }
     void Magnitude(const double val) { m_magnitude = val; }
     void Magnitude(const QString &str) { m_magnitude = str.toDouble(); }
-    void ThetaAngle(const double val) { m_Theta.degrees = val; }
-    void ThetaAngle(const QString &str) { m_Theta.degrees = str.toDouble(); }
+    void ThetaAngle(const double);
+    void ThetaAngle(const QString &);
     void ThetaAxisOrient(const AxisOrientation val) { m_Theta.axisOrientation = val; }
 protected:
 
@@ -85,6 +85,7 @@ protected:
 signals:
     void reorderObjNav(QGraphicsItem *);
     void changeItemName(const QString &, const QString &);
+    void repaint();
 private:
     // Member attributes
 
@@ -110,6 +111,7 @@ private:
     // Currently not used, will need to fix later
     PhysVectorDataObj m_DataObj;
     static map<int, QString> m_listEditableProps;
+    bool m_bUseNewThetaAngle;
 };
 
 Q_DECLARE_METATYPE(PhysVector *)

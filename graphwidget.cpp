@@ -6,7 +6,6 @@
 #include "physbaseitem.h"
 
 GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
-
     m_pCartGraph = NULL;
     m_actNewVector = NULL;
     m_actNewParticle = NULL;
@@ -47,6 +46,7 @@ void GraphWidget::onChangeItemName(const QString &strOld, const QString &strNew)
 }
 
 void GraphWidget::onRepaint() {
+    qDebug("GraphWidget::onRepaint()");
     repaint();
 }
 

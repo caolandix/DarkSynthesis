@@ -1,7 +1,4 @@
-#include <QPainter>
-#include <QString>
-#include <QAction>
-#include <QMenu>
+#include <QtWidgets>
 #include <math.h>
 #include <map>
 
@@ -36,9 +33,8 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     m_Color = Qt::black;
     m_arrowSize = 20;
     m_dragIndex = DI_VECTORLINE;
-
-
     m_magnitude = 50.0;
+    m_bUseNewThetaAngle = false;
     m_Theta.bAboveAxis = true;
     m_Theta.degrees = 45.0;
     m_Theta.axisOrientation = AXIS_HORIZ;
@@ -62,7 +58,6 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     setZValue(-1);
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     setLine(0 + m_magnitude, 0 + m_magnitude, 0, 0);
-
     createConnections();
 }
 
@@ -77,8 +72,8 @@ PhysVector::~PhysVector() {
 
 void PhysVector::createConnections() {
     connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pParent, SLOT(onReorderObjNav(QGraphicsItem *)));
-    connect(this, SIGNAL(changeItemName(const QString &, const QString &)),
-            m_pParent, SLOT(onChangeItemName(const QString &, const QString &)));
+    connect(this, SIGNAL(changeItemName(const QString &, const QString &)), m_pParent, SLOT(onChangeItemName(const QString &, const QString &)));
+    connect(this, SIGNAL(repaint()), m_pParent, SLOT(onRepaint()));
 }
 
 void PhysVector::clearParticle(PhysParticle *pObj) {
@@ -91,9 +86,8 @@ void PhysVector::clearParticle(PhysParticle *pObj) {
 
 void PhysVector::init() {
     //qDebug("PhysVector::init()");
-
-    m_magnitude = 50.0;
     removeFromParticles();
+    m_magnitude = 50.0;
     m_Theta.bAboveAxis = true;
     m_Theta.degrees = 45.0;
     m_Theta.axisOrientation = AXIS_HORIZ;
@@ -108,8 +102,8 @@ PhysVector *PhysVector::copy() {
     pObj -> StartPoint(m_StartPoint);
     pObj -> EndPoint(m_EndPoint);
     pObj -> CurrPos(m_currPos);
-    pObj ->StartParticle(m_pStartParticle);
-    pObj ->EndParticle(m_pEndParticle);
+    pObj -> StartParticle(m_pStartParticle);
+    pObj -> EndParticle(m_pEndParticle);
     return pObj;
 }
 
@@ -133,6 +127,16 @@ void PhysVector::EndParticle(PhysParticle *pObj) {
         m_pEndParticle = pObj;
         m_pEndParticle -> addVector(this);
     }
+}
+
+void PhysVector::ThetaAngle(const double val) {
+    m_Theta.degrees = val;
+    m_bUseNewThetaAngle = true;
+    emit repaint();
+}
+
+void PhysVector::ThetaAngle(const QString &str) {
+    ThetaAngle(str.toDouble());
 }
 
 void PhysVector::removeFromParticles() {
@@ -257,34 +261,41 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     QPointF arrowP1, arrowP2;
     double drawAngle, realAngle, Theta;
 
-    realAngle = ::acos(aLine.dx() / aLine.length());
-    if (m_Theta.axisOrientation == AXIS_HORIZ) {
-        QPointF currCoordP1(aLine.p1().x(), aLine.p1().y());
-        Theta = (::atan(aLine.dy() / aLine.dx()) * (180 / PhysConsts::PI));
-        qDebug("Line (x, y): (%f, %f)", currCoordP1.x(), currCoordP1.y());
-
-        // If we're in the Quad I (+x, +y) or Quad II (-x, +y)
-        if ((currCoordP1.x() >= 0 && currCoordP1.y() >= 0) || (currCoordP1.x() < 0 && currCoordP1.y() >= 0)) {
-            if (Theta < 0)
-                Theta = -Theta;
-        }
-
-        // Quad III (-x, -y) or Quad IV (+x, -y)
-        else if ((currCoordP1.x() < 0 && currCoordP1.y() < 0) || (currCoordP1.x() >= 0 && currCoordP1.y() < 0)) {
-            if (Theta > 0)
-                Theta = -Theta;
-        }
+    if (m_bUseNewThetaAngle) {
+        double radians = (m_Theta.degrees / 180.0 * PhysConsts::PI) / 2;
+        aLine.setAngle(radians);
+        m_bUseNewThetaAngle = false;
     }
-    m_Theta.degrees = Theta;
+    else {
+        realAngle = ::acos(aLine.dx() / aLine.length());
+        if (m_Theta.axisOrientation == AXIS_HORIZ) {
+            QPointF currCoordP1(aLine.p1().x(), aLine.p1().y());
+            Theta = (::atan(aLine.dy() / aLine.dx()) * (180 / PhysConsts::PI));
+            qDebug("Line (x, y): (%f, %f)", currCoordP1.x(), currCoordP1.y());
 
-    drawAngle = (aLine.dy() >= 0) ? (PhysConsts::PI * 2) - realAngle : (PhysConsts::PI * 2) + realAngle;
-    arrowP1 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI / 3) * m_arrowSize);
-    arrowP2 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
+            // If we're in the Quad I (+x, +y) or Quad II (-x, +y)
+            if ((currCoordP1.x() >= 0 && currCoordP1.y() >= 0) || (currCoordP1.x() < 0 && currCoordP1.y() >= 0)) {
+                if (Theta < 0)
+                    Theta = -Theta;
+            }
+
+            // Quad III (-x, -y) or Quad IV (+x, -y)
+            else if ((currCoordP1.x() < 0 && currCoordP1.y() < 0) || (currCoordP1.x() >= 0 && currCoordP1.y() < 0)) {
+                if (Theta > 0)
+                    Theta = -Theta;
+            }
+        }
+        m_Theta.degrees = Theta;
+
+        drawAngle = (aLine.dy() >= 0) ? (PhysConsts::PI * 2) - realAngle : (PhysConsts::PI * 2) + realAngle;
+        arrowP1 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI / 3) * m_arrowSize);
+        arrowP2 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
+    }
+    qDebug("PhysVector::paint(): Theta: %f, realAngle: %f, drawAngle: %f", Theta, realAngle, drawAngle);
     m_arrowHead.clear();
     m_arrowHead << line().p1() << arrowP1 << arrowP2;
     pPainter -> drawLine(aLine);
     pPainter -> drawPolygon(m_arrowHead);
-    m_pLabel -> setPlainText(m_Name);
     QPainterPath tmpPath;
     QBrush brush(m_Color);
     tmpPath.addPolygon(m_arrowHead);

@@ -96,12 +96,17 @@ void CartesianGraph::init() {
 
 void CartesianGraph::createConnections() {
     connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pGraphWidget, SLOT(onReorderObjNav(QGraphicsItem *)));
-    connect(this, SIGNAL(changeItemName(const QString &, const QString &)),
-            m_pGraphWidget, SLOT(onChangeItemName(const QString &, const QString &)));
+    connect(this, SIGNAL(changeItemName(const QString &, const QString &)), m_pGraphWidget, SLOT(onChangeItemName(const QString &, const QString &)));
+    connect(this, SIGNAL(repaint()), m_pGraphWidget, SLOT(onRepaint()));
 }
 
 void CartesianGraph::onChangeItemName(const QString &strOld, const QString &strNew) {
     emit changeItemName(strOld, strNew);
+}
+
+void CartesianGraph::onRepaint() {
+    qDebug("CartesianGraph::onRepaint()");
+    emit repaint();
 }
 
 void CartesianGraph::XExtent(const QString &str) {
