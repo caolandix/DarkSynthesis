@@ -54,6 +54,7 @@ private:
     PhysParticleDataObj m_DataObj;
     CartesianGraph *m_pParent;
     static map<int, QString> m_listEditableProps;
+    QPointF m_pos;
 };
 Q_DECLARE_METATYPE(PhysParticle *)
 #endif // PHYSPARTICLE_H

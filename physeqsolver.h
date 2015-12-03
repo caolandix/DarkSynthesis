@@ -1,22 +1,18 @@
 #ifndef PHYSEQSOLVER_H
 #define PHYSEQSOLVER_H
 
-#include <QMainWindow>
-#include <QTableView>
-#include <QTableWidgetItem>
+#include <QtWidgets>
 
-class QAction;
-class QLabel;
-class QLineEdit;
-class QToolBar;
-
+#include "physeqsolvertable.h"
 
 class PhysEqSolver : public QTableView {
     Q_OBJECT
 public:
-    PhysEqSolver(int rows, int cols, QWidget * = NULL);
+    PhysEqSolver(int rows = 0, int cols = 1, QWidget * = NULL);
+
+    void createConnections();
+    void createTable(const int, const int);
 public slots:
-    void updateStatus(QTableWidgetItem *);
     void updateColor(QTableWidgetItem *);
     void updateLineEdit(QTableWidgetItem *);
     void returnPressed();
@@ -24,40 +20,25 @@ public slots:
     void selectFont();
     void clear();
     void actionSum();
-    void actionSubtract();
-    void actionAdd();
-    void actionMultiply();
-    void actionDivide();
-
-    void actionAppendTimeColumn();
-    void actionInsertTimeColumn();
-    void actionRemoveTimeColumn();
+    void onAppendTimeColumn();
+    void onInsertTimeColumn();
+    void onRemoveTimeColumn();
 protected:
     void setupContextMenu();
     void setupContents();
-    void setupMenuBar();
     void createActions();
     void actionMath_helper(const QString &, const QString &);
     bool runInputDialog(const QString &, const QString &, const QString &, const QString &,
                         const QString &, QString *, QString *, QString *);
 private:
-    QToolBar *m_pPhysEqToolBar;
     QAction *m_pActColor;
     QAction *m_pActFont;
     QAction *m_pActClear;
     QAction *m_pActAppendTimeColumn;
     QAction *m_pActInsertTimeColumn;
     QAction *m_pActRemoveTimeColumn;
-    QAction *m_pActCellSum;
-    QAction *m_pActCellAdd;
-    QAction *m_pActCellSubtract;
-    QAction *m_pActCellMultiply;
-    QAction *m_pActCellDivide;
-
-    QLabel *m_pCellLabel;
-    QTableWidget *m_pTable;
+    PhysEqSolverTable *m_pTable;
     QLineEdit *m_pFormulaInput;
-
 };
 
 void decode_pos(const QString &, int *, int *);

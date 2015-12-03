@@ -66,7 +66,8 @@ SOURCES += main.cpp \
     physobjectpropdelegate.cpp \
     physobjectpropeditor.cpp \
     physctrldoublespinboxdelegate.cpp \
-    physctrldoublespinbox.cpp
+    physctrldoublespinbox.cpp \
+    physeqsolvertable.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -146,7 +147,8 @@ HEADERS  += cmainwindow.h \
     physobjectpropdelegate.h \
     physobjectpropeditor.h \
     physctrldoublespinboxdelegate.h \
-    physctrldoublespinbox.h
+    physctrldoublespinbox.h \
+    physeqsolvertable.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui

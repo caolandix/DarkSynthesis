@@ -18,9 +18,9 @@ QVariant PhysEqSolverItem::data(int role) const {
     if (role == Qt::DisplayRole)
         return display();
 
-    QString t = display().toString();
+    QString str = display().toString();
     bool isNumber = false;
-    int number = t.toInt(&isNumber);
+    int number = str.toInt(&isNumber);
 
     if (role == Qt::TextColorRole) {
         if (!isNumber)
@@ -30,7 +30,7 @@ QVariant PhysEqSolverItem::data(int role) const {
         return QVariant::fromValue(QColor(Qt::blue));
     }
     if (role == Qt::TextAlignmentRole)
-        if (!t.isEmpty() && (t.at(0).isNumber() || t.at(0) == '-'))
+        if (!str.isEmpty() && (str.at(0).isNumber() || str.at(0) == '-'))
             return (int)(Qt::AlignRight | Qt::AlignVCenter);
      return QTableWidgetItem::data(role);
  }
@@ -146,7 +146,7 @@ QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWi
         result = (firstVal * secondVal);
     else if (op == "/") {
         if (secondVal == 0)
-            result = QString("nan");
+            result = QString("Not a Number");
         else
             result = (firstVal / secondVal);
     }

@@ -9,42 +9,27 @@
 #include "physeqsolverdelegate.h"
 #include "physeqsolveritem.h"
 #include "physprintview.h"
+#include "physeqsolvertable.h"
 
 PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pParent) {
-    m_pPhysEqToolBar = NULL;
     m_pActColor = NULL;
     m_pActFont = NULL;
-    m_pActCellSum = NULL;
-    m_pActCellAdd = NULL;
-    m_pActCellSubtract = NULL;
-    m_pActCellMultiply = NULL;
-    m_pActCellDivide = NULL;
     m_pActClear = NULL;
     m_pActAppendTimeColumn = NULL;
     m_pActInsertTimeColumn = NULL;
     m_pActRemoveTimeColumn = NULL;
-    m_pCellLabel = NULL;
     m_pTable = NULL;
     m_pFormulaInput = new QLineEdit();
 
-    m_pCellLabel = new QLabel(m_pPhysEqToolBar);
-    m_pCellLabel -> setMinimumSize(80, 0);
-
-    m_pTable = new QTableWidget(rows, cols, this);
-    m_pTable -> setSizeAdjustPolicy(QTableWidget::AdjustToContents);
-
-    QStringList tableHeader;
-    tableHeader << "t0" << "t1";
-    m_pTable -> setHorizontalHeaderLabels(tableHeader);
-    m_pTable -> setItemPrototype(m_pTable -> item(rows - 1, cols - 1));
-    m_pTable -> setItemDelegate(new PhysEqSolverDelegate());
-
+    createTable(rows, cols);
     createActions();
     updateColor(0);
-    setupMenuBar();
     setupContents();
     setupContextMenu();
-    connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateStatus(QTableWidgetItem *)));
+    createConnections();
+}
+
+void PhysEqSolver::createConnections() {
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateColor(QTableWidgetItem *)));
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateStatus(QTableWidgetItem *)));
@@ -52,34 +37,26 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pP
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
 }
 
+void PhysEqSolver::createTable(const int rows, const int cols) {
+    m_pTable = new PhysEqSolverTable(rows, cols, this);
+    m_pTable -> setSizeAdjustPolicy(QTableWidget::AdjustToContents);
+
+    QStringList tableHeader;
+    tableHeader << "t0" << "t1";
+    m_pTable -> setHorizontalHeaderLabels(tableHeader);
+    m_pTable -> setItemPrototype(m_pTable -> item(rows - 1, cols - 1));
+    m_pTable -> setItemDelegate(new PhysEqSolverDelegate());
+}
+
 void PhysEqSolver::createActions() {
     m_pActAppendTimeColumn = new QAction(tr("Append Time Column"), this);
-    connect(m_pActAppendTimeColumn, SIGNAL(triggered()), this, SLOT(actionAppendTimeColumn()));
+    connect(m_pActAppendTimeColumn, SIGNAL(triggered()), this, SLOT(onAppendTimeColumn()));
 
     m_pActInsertTimeColumn = new QAction(tr("Insert Time Column"), this);
-    connect(m_pActInsertTimeColumn, SIGNAL(triggered()), this, SLOT(actionInsertTimeColumn()));
+    connect(m_pActInsertTimeColumn, SIGNAL(triggered()), this, SLOT(onInsertTimeColumn()));
 
     m_pActRemoveTimeColumn = new QAction(tr("Remove Time Column"), this);
-    connect(m_pActRemoveTimeColumn, SIGNAL(triggered()), this, SLOT(actionRemoveTimeColumn()));
-
-    m_pActCellSum = new QAction(tr("Sum"), this);
-    connect(m_pActCellSum, SIGNAL(triggered()), this, SLOT(actionSum()));
-
-    m_pActCellAdd = new QAction(tr("&Add"), this);
-    m_pActCellAdd->setShortcut(Qt::CTRL | Qt::Key_Plus);
-    connect(m_pActCellAdd, SIGNAL(triggered()), this, SLOT(actionAdd()));
-
-    m_pActCellSubtract = new QAction(tr("&Subtract"), this);
-    m_pActCellSubtract->setShortcut(Qt::CTRL | Qt::Key_Minus);
-    connect(m_pActCellSubtract, SIGNAL(triggered()), this, SLOT(actionSubtract()));
-
-    m_pActCellMultiply = new QAction(tr("&Multiply"), this);
-    m_pActCellMultiply->setShortcut(Qt::CTRL | Qt::Key_multiply);
-    connect(m_pActCellMultiply, SIGNAL(triggered()), this, SLOT(actionMultiply()));
-
-    m_pActCellDivide = new QAction(tr("&Divide"), this);
-    m_pActCellDivide->setShortcut(Qt::CTRL | Qt::Key_division);
-    connect(m_pActCellDivide, SIGNAL(triggered()), this, SLOT(actionDivide()));
+    connect(m_pActRemoveTimeColumn, SIGNAL(triggered()), this, SLOT(onRemoveTimeColumn()));
 
     m_pActFont = new QAction(tr("Font..."), this);
     m_pActFont->setShortcut(Qt::CTRL | Qt::Key_F);
@@ -93,55 +70,32 @@ void PhysEqSolver::createActions() {
     connect(m_pActClear, SIGNAL(triggered()), this, SLOT(clear()));
 }
 
-void PhysEqSolver::actionAppendTimeColumn() {
+void PhysEqSolver::onAppendTimeColumn() {
 }
 
-void PhysEqSolver::actionInsertTimeColumn() {
+void PhysEqSolver::onInsertTimeColumn() {
 }
 
-void PhysEqSolver::actionRemoveTimeColumn() {
-}
-
-void PhysEqSolver::setupMenuBar() {
-    /*
-    QMenu *pFileMenu = menuBar() -> addMenu(tr("&File"));
-    pFileMenu -> addAction(m_pActPrint);
-    pFileMenu -> addAction(m_pActExit);
-
-    QMenu *pCellMenu = menuBar() -> addMenu(tr("&Cell"));
-    pCellMenu -> addAction(m_pActCellAdd);
-    pCellMenu -> addAction(m_pActCellSubtract);
-    pCellMenu -> addAction(m_pActCellMultiply);
-    pCellMenu -> addAction(m_pActCellDivide);
-    pCellMenu -> addAction(m_pActCellSum);
-    pCellMenu -> addSeparator();
-    pCellMenu -> addAction(m_pActColor);
-    pCellMenu -> addAction(m_pActFont);
-    */
-}
-
-void PhysEqSolver::updateStatus(QTableWidgetItem *pItem) {
-    if (pItem && pItem == m_pTable -> currentItem())
-        m_pCellLabel -> setText(tr("Cell: (%1)").arg(encode_pos(m_pTable -> row(pItem), m_pTable -> column(pItem))));
+void PhysEqSolver::onRemoveTimeColumn() {
 }
 
 void PhysEqSolver::updateColor(QTableWidgetItem *pItem) {
     QPixmap pix(16, 16);
-    QColor col;
+    QColor colour;
     if (pItem)
-        col = pItem -> backgroundColor();
-    if (!col.isValid())
-        col = palette().base().color();
+        colour = pItem -> backgroundColor();
+    if (!colour.isValid())
+        colour = palette().base().color();
 
     QPainter pt(&pix);
-    pt.fillRect(0, 0, 16, 16, col);
+    pt.fillRect(0, 0, 16, 16, colour);
 
-    QColor lighter = col.light();
+    QColor lighter = colour.light();
     pt.setPen(lighter);
     QPoint lightFrame[] = { QPoint(0, 15), QPoint(0, 0), QPoint(15, 0) };
     pt.drawPolyline(lightFrame, 3);
 
-    pt.setPen(col.dark());
+    pt.setPen(colour.dark());
     QPoint darkFrame[] = { QPoint(1, 15), QPoint(15, 15), QPoint(15, 1) };
     pt.drawPolyline(darkFrame, 3);
     pt.end();
@@ -220,32 +174,12 @@ void PhysEqSolver::actionMath_helper(const QString &title, const QString &op) {
     }
 }
 
-void PhysEqSolver::actionAdd() {
-    actionMath_helper(tr("Addition"), "+");
-}
-
-void PhysEqSolver::actionSubtract() {
-    actionMath_helper(tr("Subtraction"), "-");
-}
-
-void PhysEqSolver::actionMultiply() {
-    actionMath_helper(tr("Multiplication"), "*");
-}
-void PhysEqSolver::actionDivide() {
-    actionMath_helper(tr("Division"), "/");
-}
-
 void PhysEqSolver::clear() {
     foreach (QTableWidgetItem *pItem, m_pTable -> selectedItems())
         pItem -> setText("");
 }
 
 void PhysEqSolver::setupContextMenu() {
-    addAction(m_pActCellAdd);
-    addAction(m_pActCellSubtract);
-    addAction(m_pActCellMultiply);
-    addAction(m_pActCellDivide);
-    addAction(m_pActCellSum);
     addAction(m_pActColor);
     addAction(m_pActFont);
     addAction(m_pActClear);
@@ -257,47 +191,47 @@ void PhysEqSolver::setupContents() {
     QFont titleFont = m_pTable -> font();
     titleFont.setBold(true);
 
-    // row 0
     m_pTable -> setItem(0, 0, new PhysEqSolverItem(""));
     m_pTable -> item(0, 0) -> setBackgroundColor(titleBackground);
     m_pTable -> item(0, 0) -> setFont(titleFont);
-
-    /*
-    m_pTable -> setItem(1, 0, new PhysEqSolverItem("AirportBus"));
-    m_pTable -> setItem(2, 0, new PhysEqSolverItem("Flight (Munich)"));
-    m_pTable -> setItem(3, 0, new PhysEqSolverItem("Lunch"));
-    m_pTable -> setItem(4, 0, new PhysEqSolverItem("Flight (LA)"));
-    m_pTable -> setItem(5, 0, new PhysEqSolverItem("Taxi"));
-    m_pTable -> setItem(6, 0, new PhysEqSolverItem("Dinner"));
-    m_pTable -> setItem(7, 0, new PhysEqSolverItem("Hotel"));
-    m_pTable -> setItem(8, 0, new PhysEqSolverItem("Flight (Oslo)"));
-    m_pTable -> setItem(9, 0, new PhysEqSolverItem("Total:"));
-
-    m_pTable -> item(9, 0) -> setFont(titleFont);
-    m_pTable -> item(9, 0) -> setBackgroundColor(Qt::lightGray);
-*/
-
-    /*
-    // column 1
-    m_pTable -> setItem(0, 1, new PhysEqSolverItem("t1"));
-    m_pTable -> item(0, 1) -> setBackgroundColor(titleBackground);
-    m_pTable -> item(0, 1) -> setToolTip("This column shows the purchase date, double click to change");
-    m_pTable -> item(0, 1) -> setFont(titleFont);
-    m_pTable -> setItem(1, 1, new PhysEqSolverItem("15/6/2006"));
-    m_pTable -> setItem(2, 1, new PhysEqSolverItem("15/6/2006"));
-    m_pTable -> setItem(3, 1, new PhysEqSolverItem("15/6/2006"));
-    m_pTable -> setItem(4, 1, new PhysEqSolverItem("21/5/2006"));
-    m_pTable -> setItem(5, 1, new PhysEqSolverItem("16/6/2006"));
-    m_pTable -> setItem(6, 1, new PhysEqSolverItem("16/6/2006"));
-    m_pTable -> setItem(7, 1, new PhysEqSolverItem("16/6/2006"));
-    m_pTable -> setItem(8, 1, new PhysEqSolverItem("18/6/2006"));
-
-    m_pTable -> setItem(9, 1, new PhysEqSolverItem());
-    m_pTable -> item(9, 1) -> setBackgroundColor(Qt::lightGray);
-    */
-
 }
 
+void PhysEqSolver::actionSum() {
+    int rowFirst = 0;
+    int rowLast = 0;
+    int rowCur = 0;
+    int colFirst = 0;
+    int colLast = 0;
+    int colCur = 0;
+
+    QList<QTableWidgetItem*> selected = m_pTable ->selectedItems();
+
+    if (!selected.isEmpty()) {
+        QTableWidgetItem *pFirst = selected.first();
+        QTableWidgetItem *pLast = selected.last();
+        rowFirst = m_pTable -> row(pFirst);
+        rowLast = m_pTable -> row(pLast);
+        colFirst = m_pTable -> column(pFirst);
+        colLast = m_pTable -> column(pLast);
+    }
+
+    QTableWidgetItem *pCurrent = m_pTable -> currentItem();
+    if (pCurrent) {
+        rowCur = m_pTable -> row(pCurrent);
+        colCur = m_pTable -> column(pCurrent);
+    }
+
+    QString cell1 = encode_pos(rowFirst, colFirst);
+    QString cell2 = encode_pos(rowLast, colLast);
+    QString out = encode_pos(rowCur, colCur);
+    if (runInputDialog(tr("Sum cells"), tr("First cell:"), tr("Last cell:"),
+                       QString("%1").arg(QChar(0x03a3)), tr("Output to:"), &cell1, &cell2, &out)) {
+        int row;
+        int col;
+        decode_pos(out, &row, &col);
+        m_pTable -> item(row, col) -> setText(tr("sum %1 %2").arg(cell1, cell2));
+    }
+}
 
 void decode_pos(const QString &pos, int *pRow, int *pCol) {
     if (pos.isEmpty()) {
@@ -422,41 +356,3 @@ bool PhysEqSolver::runInputDialog(const QString &title, const QString &c1Text, c
     }
     return false;
 }
-
-void PhysEqSolver::actionSum() {
-    int row_first = 0;
-    int row_last = 0;
-    int row_cur = 0;
-    int col_first = 0;
-    int col_last = 0;
-    int col_cur = 0;
-
-    QList<QTableWidgetItem*> selected = m_pTable ->selectedItems();
-
-    if (!selected.isEmpty()) {
-        QTableWidgetItem *pFirst = selected.first();
-        QTableWidgetItem *pLast = selected.last();
-        row_first = m_pTable -> row(pFirst);
-        row_last = m_pTable -> row(pLast);
-        col_first = m_pTable -> column(pFirst);
-        col_last = m_pTable -> column(pLast);
-    }
-
-    QTableWidgetItem *pCurrent = m_pTable -> currentItem();
-    if (pCurrent) {
-        row_cur = m_pTable -> row(pCurrent);
-        col_cur = m_pTable -> column(pCurrent);
-    }
-
-    QString cell1 = encode_pos(row_first, col_first);
-    QString cell2 = encode_pos(row_last, col_last);
-    QString out = encode_pos(row_cur, col_cur);
-    if (runInputDialog(tr("Sum cells"), tr("First cell:"), tr("Last cell:"),
-                       QString("%1").arg(QChar(0x03a3)), tr("Output to:"), &cell1, &cell2, &out)) {
-        int row;
-        int col;
-        decode_pos(out, &row, &col);
-        m_pTable -> item(row, col) -> setText(tr("sum %1 %2").arg(cell1, cell2));
-    }
-}
-

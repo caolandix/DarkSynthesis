@@ -2,7 +2,6 @@
 
 #include "physeqsolverdelegate.h"
 
-
 PhysEqSolverDelegate::PhysEqSolverDelegate(QObject *pParent) : QItemDelegate(pParent) {}
 
 QWidget *PhysEqSolverDelegate::createEditor(QWidget *pParent, const QStyleOptionViewItem &viewItem, const QModelIndex &index) const {
