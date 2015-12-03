@@ -69,7 +69,8 @@ SOURCES += main.cpp \
     physctrldoublespinbox.cpp \
     physeqsolvertable.cpp \
     physeqgrid.cpp \
-    physeqgridcell.cpp
+    physeqgridcell.cpp \
+    physeqrow.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -152,7 +153,8 @@ HEADERS  += cmainwindow.h \
     physctrldoublespinbox.h \
     physeqsolvertable.h \
     physeqgrid.h \
-    physeqgridcell.h
+    physeqgridcell.h \
+    physeqrow.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui
