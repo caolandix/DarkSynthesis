@@ -20,7 +20,7 @@ QVariant PhysEqSolverItem::data(int role) const {
 
     QString str = display().toString();
     bool isNumber = false;
-    int number = str.toInt(&isNumber);
+    double number = str.toDouble(&isNumber);
 
     if (role == Qt::TextColorRole) {
         if (!isNumber)
