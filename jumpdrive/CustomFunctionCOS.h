@@ -12,10 +12,10 @@
 
 class CustomFunctionCOS: public CustomFunction {
 public:
-	CustomFunctionCOS(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionCOS() {};
+    CustomFunctionCOS(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionCOS() {}
 
-	virtual double applyFunction(double args[]) const { return cos(deg2rad(args[0])); };
+    virtual double applyFunction(double args[]) const { return cos(deg2rad(args[0])); }
 };
 
 #endif /* CUSTOMFUNCTIONCOS_H_ */

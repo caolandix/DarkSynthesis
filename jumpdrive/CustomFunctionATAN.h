@@ -12,10 +12,10 @@
 
 class CustomFunctionATAN: public CustomFunction {
 public:
-	CustomFunctionATAN(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionATAN() {};
+    CustomFunctionATAN(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionATAN() {}
 
-	virtual double applyFunction(double args[]) const { return atan(args[0]); };
+    virtual double applyFunction(double args[]) const { return atan(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONATAN_H_ */

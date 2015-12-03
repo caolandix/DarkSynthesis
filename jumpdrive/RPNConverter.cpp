@@ -8,7 +8,7 @@
 #include "commondefs.h"
 #include "jumpdrivedefs.h"
 
-string RPNConverter::substituteUnaryOperators(const string expr, map<string, CustomOperator *> &operators) {
+string RPNConverter::substituteUnaryOperators(const string &expr, map<string, CustomOperator *> &operators) {
 	string resultBuilder;
 	uint whitespaceCount = 0;
 
@@ -56,7 +56,7 @@ string RPNConverter::substituteUnaryOperators(const string expr, map<string, Cus
 	return resultBuilder;
 }
 
-RPNExpression RPNConverter::toRPNExpression(const string infix, map<string, double> &variables, map<string, CustomFunction *> &customFunctions, map<string, CustomOperator *> &operators) {
+RPNExpression RPNConverter::toRPNExpression(const string &infix, map<string, double> &variables, map<string, CustomFunction *> &customFunctions, map<string, CustomOperator *> &operators) {
 	vector<string> variableKeySet;
 	string output;
 	stack<Token*> operatorStack;
@@ -66,35 +66,43 @@ RPNExpression RPNConverter::toRPNExpression(const string infix, map<string, doub
 	for (map<string, double>::iterator iter = variables.begin(); iter != variables.end(); iter++)
 		variableKeySet.push_back((*iter).first);
 	Tokenizer tokenizer(variableKeySet, customFunctions, operators);
-	list<Token*> tokens = tokenizer.getTokens(substituteUnaryOperators(infix, operators));
+    string str = substituteUnaryOperators(infix, operators);
+    list<Token*> tokens = tokenizer.getTokens(str);
 	validateRPNExpression(tokens, operators);
 	for (list<Token*>::iterator iter = tokens.begin(); iter != tokens.end(); iter++) {
 		switch ((*iter) -> tokenType()) {
-			case Token::TT_NUMBER: {
-				NumberToken *ptok = (NumberToken *)(*iter);
-				ptok -> mutateStackForInfixTranslation(operatorStack, output);
-			}
-			break;
-			case Token::TT_OPERATOR: {
-				OperatorToken *ptok = (OperatorToken *)(*iter);
-				ptok -> mutateStackForInfixTranslation(operatorStack, output);
-			}
-			break;
-			case Token::TT_FUNCTION: {
-				FunctionToken *ptok = (FunctionToken *)(*iter);
-				ptok -> mutateStackForInfixTranslation(operatorStack, output);
-			}
-			break;
-			case Token::TT_PAREN: {
-				ParenthesisToken *ptok = (ParenthesisToken *)(*iter);
-				ptok -> mutateStackForInfixTranslation(operatorStack, output);
-			}
-			break;
-			case Token::TT_VARIABLE: {
-				VariableToken *ptok = (VariableToken *)(*iter);
-				ptok -> mutateStackForInfixTranslation(operatorStack, output);
-			}
-			break;
+        case Token::TT_NUMBER: {
+            NumberToken *ptok = (NumberToken *)(*iter);
+            ptok -> mutateStackForInfixTranslation(operatorStack, output);
+        }
+            break;
+        case Token::TT_OPERATOR: {
+            OperatorToken *ptok = (OperatorToken *)(*iter);
+            ptok -> mutateStackForInfixTranslation(operatorStack, output);
+        }
+            break;
+        case Token::TT_FUNCTION: {
+            FunctionToken *ptok = (FunctionToken *)(*iter);
+            ptok -> mutateStackForInfixTranslation(operatorStack, output);
+        }
+            break;
+        case Token::TT_PAREN: {
+            ParenthesisToken *ptok = (ParenthesisToken *)(*iter);
+            ptok -> mutateStackForInfixTranslation(operatorStack, output);
+        }
+            break;
+        case Token::TT_VARIABLE: {
+            VariableToken *ptok = (VariableToken *)(*iter);
+            ptok -> mutateStackForInfixTranslation(operatorStack, output);
+        }
+        case Token::TT_NONE:
+            break;
+        case Token::TT_CALC:
+            break;
+        case Token::TT_FUNCTION_SEP:
+            break;
+        case Token::TT_RANGE:
+            break;
 		}
 	}
 	// all tokens read, put the rest of the operations on the output;
@@ -110,14 +118,12 @@ RPNExpression RPNConverter::toRPNExpression(const string infix, map<string, doub
 	return rpnExpression;
 }
 
-void RPNConverter::validateRPNExpression(list<Token*> &tokens, map<string, CustomOperator *> &operators) {
-	list<Token*>::iterator iter = tokens.begin();
-	list<Token*>::iterator prevIter = tokens.begin();
+void RPNConverter::validateRPNExpression(list<Token*> &tokens, map<string, CustomOperator *> &) {
 	vector<Token*> vecTokens;
 
 	for (list<Token*>::iterator iter = tokens.begin(); iter != tokens.end(); iter++)
 		vecTokens.push_back(*iter);
-	for (int i = 1; i < vecTokens.size(); i++) {
+    for (unsigned int i = 1; i < vecTokens.size(); i++) {
 		if (vecTokens[i - 1] -> tokenType() == Token::TT_NUMBER) {
 			if (vecTokens[i] -> tokenType() == Token::TT_VARIABLE ||
 				(vecTokens[i] -> tokenType() == Token::TT_PAREN && ((ParenthesisToken *)vecTokens[i]) -> isOpen()) ||

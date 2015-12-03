@@ -12,10 +12,10 @@
 
 class CustomFunctionCOSH: public CustomFunction {
 public:
-	CustomFunctionCOSH(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionCOSH() {};
+    CustomFunctionCOSH(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionCOSH() {}
 
-	virtual double applyFunction(double args[]) const { return cosh(args[0]); };
+    virtual double applyFunction(double args[]) const { return cosh(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONCOSH_H_ */

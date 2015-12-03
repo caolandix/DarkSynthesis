@@ -12,10 +12,10 @@
 
 class CustomFunctionLOG: public CustomFunction {
 public:
-	CustomFunctionLOG(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionLOG() {};
+    CustomFunctionLOG(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionLOG() {}
 
-	virtual double applyFunction(double args[]) const { return log(args[0]); };
+    virtual double applyFunction(double args[]) const { return log(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONLOG_H_ */

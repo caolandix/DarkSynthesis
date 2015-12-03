@@ -14,11 +14,11 @@
 
 class OperatorToken : public Token {
 public:
-	OperatorToken() : m_poperation(NULL), Token(Token::TT_OPERATOR) {};
-	OperatorToken(const string &value, CustomOperator *poperation) : Token(Token::TT_OPERATOR, value) { m_poperation = poperation; };
-	virtual ~OperatorToken() {};
+    OperatorToken() : Token(Token::TT_OPERATOR), m_poperation(NULL) {}
+    OperatorToken(const string &value, CustomOperator *poperation) : Token(Token::TT_OPERATOR, value) { m_poperation = poperation; }
+    virtual ~OperatorToken() {}
 
-	double applyOperation(double values[]) { return m_poperation -> applyOperation(values); };
+    double applyOperation(double values[]) { return m_poperation -> applyOperation(values); }
 
 	virtual void mutateStackForInfixTranslation(stack<Token*> &operatorStack, string &output);
 	virtual void mutateStackForCalculation(stack<double> &stack, const map<string, double> &variableValues);
@@ -26,8 +26,8 @@ public:
 	bool operator==(const OperatorToken &);
 
 private:
-	bool isLeftAssociative() const { return m_poperation -> leftassociative(); };
-	int getPrecedence() const {	return m_poperation -> precedence(); };
+    bool isLeftAssociative() const { return m_poperation -> leftassociative(); }
+    int getPrecedence() const {	return m_poperation -> precedence(); }
 	CustomOperator *m_poperation;
 };
 

@@ -12,17 +12,17 @@
 
 class CustomOperatorSub: public CustomOperator {
 public:
-	virtual ~CustomOperatorSub() {};
+    virtual ~CustomOperatorSub() {}
 
 	CustomOperatorSub(const string symbol, const bool leftAssociative, const int precedence) :
-		CustomOperator(symbol, leftAssociative, precedence) {};
+        CustomOperator(symbol, leftAssociative, precedence) {}
 	CustomOperatorSub(const string symbol, const bool leftAssociative, const int precedence, const int operandCount) :
-		CustomOperator(symbol, leftAssociative, precedence, operandCount) {};
+        CustomOperator(symbol, leftAssociative, precedence, operandCount) {}
 	CustomOperatorSub(const string symbol, const int precedence) :
-		CustomOperator(symbol, precedence) {};
+        CustomOperator(symbol, precedence) {}
 	CustomOperatorSub(const string symbol) :
-		CustomOperator(symbol) {};
-	virtual double applyOperation(double values[]) { return values[1] - values[0]; };
+        CustomOperator(symbol) {}
+    virtual double applyOperation(double values[]) { return values[1] - values[0]; }
 
 };
 

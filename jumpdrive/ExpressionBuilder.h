@@ -34,10 +34,10 @@ public:
 	void withVariables(const map<string, double> &variableMap);
 	void withOperations(vector<CustomOperator *> &operations);
 
-	void withOperation(CustomOperator *poperation) { m_customOperators.insert(pair<string, CustomOperator *>(poperation -> symbol(), poperation)); };
-	void withExpression(const string expression) { m_expression = expression; };
-	void withVariable(const string &variableName, const double value) { m_variables.insert(pair<string, double>(variableName, value)); };
-	void withCustomFunction(CustomFunction *pfunction) { m_customFunctions.insert(pair<string, CustomFunction *>(pfunction -> get_name(), pfunction)); };
+    void withOperation(CustomOperator *poperation) { m_customOperators.insert(pair<string, CustomOperator *>(poperation -> symbol(), poperation)); }
+    void withExpression(const string expression) { m_expression = expression; }
+    void withVariable(const string &variableName, const double value) { m_variables.insert(pair<string, double>(variableName, value)); }
+    void withCustomFunction(CustomFunction *pfunction) { m_customFunctions.insert(pair<string, CustomFunction *>(pfunction -> get_name(), pfunction)); }
 	static const string PROPERTY_UNARY_HIGH_PRECEDENCE;
 	/**
 	 * Property name for unary precedence choice. You can set System.getProperty(PROPERTY_UNARY_HIGH_PRECEDENCE,"false")

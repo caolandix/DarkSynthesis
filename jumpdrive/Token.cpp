@@ -14,8 +14,8 @@
 
 Token *Token::Create(TokenType tt) {
 	switch (tt) {
-	// case TT_CALC:
-		// return new CalculationToken();
+    case TT_CALC:
+        return NULL;// return new CalculationToken();
 	case TT_FUNCTION:
 		return new FunctionToken();
 	case TT_FUNCTION_SEP:
@@ -28,7 +28,10 @@ Token *Token::Create(TokenType tt) {
 		return new ParenthesisToken();
 	case TT_VARIABLE:
 		return new VariableToken();
-	}
+    case TT_RANGE:
+    case TT_NONE:
+        return NULL;
+    }
 	return NULL;
 }
 

@@ -12,12 +12,12 @@
 
 class Calculable {
 public:
-	virtual ~Calculable() {};
+    virtual ~Calculable() {}
 
-	virtual double calculate() const { return 0.0; };
-	virtual double calculate(vector<double> variableValues) const { return 0.0; };
-	virtual string getExpression() const { return ""; };
-	virtual void setVariable(string name, double value) {};
+    virtual double calculate() const { return 0.0; }
+    virtual double calculate(vector<double> ) const { return 0.0; }
+    virtual string getExpression() const { return ""; }
+    virtual void setVariable(string , double ) {}
 };
 
 #endif /* CALCULABLE_H_ */

@@ -15,9 +15,7 @@ using namespace std;
 
 class InvalidCustomFunctionException : public boost::exception {
 public:
-	InvalidCustomFunctionException(string message) {
-		cout << message <<  endl;
-	}
+    InvalidCustomFunctionException(string message) { cout << message <<  endl; }
 };
 
 #endif /* INVALIDCUSTOMFUNCTIONEXCEPTION_H_ */

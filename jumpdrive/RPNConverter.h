@@ -17,11 +17,11 @@
 
 class RPNConverter {
 public:
-	RPNConverter() {};
-	virtual ~RPNConverter() {};
+    RPNConverter() {}
+    virtual ~RPNConverter() {}
 
-	 RPNExpression toRPNExpression(const string infix, map<string, double> &variables, map<string, CustomFunction*> &customFunctions, map<string, CustomOperator *> &operators);
-	string substituteUnaryOperators(const string expr, map<string, CustomOperator *> &operators);
+     RPNExpression toRPNExpression(const string &infix, map<string, double> &variables, map<string, CustomFunction*> &customFunctions, map<string, CustomOperator *> &operators);
+    string substituteUnaryOperators(const string &expr, map<string, CustomOperator *> &operators);
 private:
 	void validateRPNExpression(list<Token*> &tokens, map<string, CustomOperator *> &operators);
 	bool isOperatorCharacter(const char c, map<string, CustomOperator *> &operators);

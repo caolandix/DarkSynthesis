@@ -15,14 +15,14 @@
 
 class RPNExpression : public Calculable {
 public:
-	RPNExpression() {};
+    RPNExpression() {}
 	RPNExpression(const list<Token *> &tokens, const string &expression, const map<string, double> &variables);
-	virtual ~RPNExpression() {};
+    virtual ~RPNExpression() {}
 
 	ValueSet calculate(const ValueSet values);
-	string getExpression() const { return m_expression; };
-	void setVariable(string name, double value) { m_variables.insert(pair<string, double>(name, value)); };
-	void print(const string);
+    string getExpression() const { return m_expression; }
+    void setVariable(string name, double value) { m_variables.insert(pair<string, double>(name, value)); }
+    void print(const string &);
 private:
 	list<Token *> m_tokens;
 	string m_expression;

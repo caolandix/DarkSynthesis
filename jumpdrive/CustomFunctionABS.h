@@ -13,10 +13,10 @@
 
 class CustomFunctionABS : public CustomFunction {
 public:
-	CustomFunctionABS(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionABS() {};
+    CustomFunctionABS(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionABS() {}
 
-	virtual double applyFunction(double args[]) const { return abs(args[0]); };
+    virtual double applyFunction(double args[]) const { return abs(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONABS_H_ */

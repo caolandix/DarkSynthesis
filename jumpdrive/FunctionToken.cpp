@@ -12,7 +12,7 @@ FunctionToken::FunctionToken(string value, CustomFunction *pfunction) : Token(To
 	m_functionName = pfunction -> get_name();
 	m_pfunction = pfunction;
 }
-void FunctionToken::mutateStackForCalculation(stack<double> &valstack, const map<string, double> &variableValues) {
+void FunctionToken::mutateStackForCalculation(stack<double> &valstack, const map<string, double> &) {
 	vector<double> args;
 	for (int i = 0; i < m_pfunction -> getArgumentCount(); i++) {
 		args.push_back(valstack.top());

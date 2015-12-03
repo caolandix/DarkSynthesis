@@ -12,10 +12,10 @@
 
 class CustomFunctionTANH: public CustomFunction {
 public:
-	CustomFunctionTANH(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionTANH() {};
+    CustomFunctionTANH(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionTANH() {}
 
-	virtual double applyFunction(double args[]) const { return tanh(args[0]); };
+    virtual double applyFunction(double args[]) const { return tanh(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONTANH_H_ */

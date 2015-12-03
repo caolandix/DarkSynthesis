@@ -12,10 +12,10 @@
 
 class CustomFunctionEXP: public CustomFunction {
 public:
-	CustomFunctionEXP(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionEXP() {};
+    CustomFunctionEXP(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionEXP() {}
 
-	virtual double applyFunction(double args[]) const { return exp(args[0]); };
+    virtual double applyFunction(double args[]) const { return exp(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONEXP_H_ */

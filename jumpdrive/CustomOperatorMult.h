@@ -12,17 +12,17 @@
 
 class CustomOperatorMult: public CustomOperator {
 public:
-	virtual ~CustomOperatorMult() {};
+    virtual ~CustomOperatorMult() {}
 
 	CustomOperatorMult(const string symbol, const bool leftAssociative, const int precedence) :
-		CustomOperator(symbol, leftAssociative, precedence) {};
+        CustomOperator(symbol, leftAssociative, precedence) {}
 	CustomOperatorMult(const string symbol, const bool leftAssociative, const int precedence, const int operandCount) :
-		CustomOperator(symbol, leftAssociative, precedence, operandCount) {};
+        CustomOperator(symbol, leftAssociative, precedence, operandCount) {}
 	CustomOperatorMult(const string symbol, const int precedence) :
-		CustomOperator(symbol, precedence) {};
+        CustomOperator(symbol, precedence) {}
 	CustomOperatorMult(const string symbol) :
-		CustomOperator(symbol) {};
-	virtual double applyOperation(double values[]) { return values[1] * values[0]; };
+        CustomOperator(symbol) {}
+    virtual double applyOperation(double values[]) { return values[1] * values[0]; }
 };
 
 #endif /* CUSTOMOPERATORMULT_H_ */

@@ -13,9 +13,9 @@
 
 class VariableToken : public Token {
 public:
-	VariableToken() :Token(TT_VARIABLE) {};
-	VariableToken(const string val) : Token(TT_VARIABLE, val) {};
-	virtual ~VariableToken() {};
+    VariableToken() :Token(TT_VARIABLE) {}
+    VariableToken(const string val) : Token(TT_VARIABLE, val) {}
+    virtual ~VariableToken() {}
 
 	bool operator==(const VariableToken &obj) const {
 		if (obj == *this)
@@ -29,8 +29,6 @@ public:
 			valstack.push((*iter).second);
 	}
 
-	void mutateStackForInfixTranslation(stack<Token *> &operatorStack, string &output) {
-		output.append(getValue().append(" "));
-	}
+    void mutateStackForInfixTranslation(stack<Token *> &, string &output) { output.append(getValue().append(" ")); 	}
 };
 #endif /* VARIABLETOKEN_H_ */

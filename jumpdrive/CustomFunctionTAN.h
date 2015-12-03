@@ -12,10 +12,10 @@
 
 class CustomFunctionTAN: public CustomFunction {
 public:
-	CustomFunctionTAN(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionTAN() {};
+    CustomFunctionTAN(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionTAN() {}
 
-	virtual double applyFunction(double args[]) const { return tan(deg2rad(args[0])); };
+    virtual double applyFunction(double args[]) const { return tan(deg2rad(args[0])); }
 };
 
 #endif /* CUSTOMFUNCTIONTAN_H_ */

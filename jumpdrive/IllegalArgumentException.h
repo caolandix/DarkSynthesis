@@ -16,9 +16,7 @@ class IllegalArgumentException : public boost::exception {
 public:
 	//virtual ~IllegalArgumentException() {};
 
-	IllegalArgumentException(string message) {
-		cout << message <<  endl;
-	}
+    IllegalArgumentException(string message) { cout << message <<  endl; }
 };
 
 #endif /* ILLEGALARGUMENTEXCEPTION_H_ */

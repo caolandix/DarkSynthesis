@@ -14,9 +14,7 @@ using namespace std;
 
 class UnparsableExpressionException: public boost::exception {
 public:
-	UnparsableExpressionException(string message) {
-		cout << message <<  endl;
-	}
+    UnparsableExpressionException(string message) { cout << message <<  endl; }
 };
 
 #endif /* UNPARSABLEEXPRESSIONEXCEPTION_H_ */

@@ -12,10 +12,10 @@
 
 class CustomFunctionASIN: public CustomFunction {
 public:
-	CustomFunctionASIN(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionASIN() {};
+    CustomFunctionASIN(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionASIN() {}
 
-	virtual double applyFunction(double args[]) const { return asin(args[0]); };
+    virtual double applyFunction(double args[]) const { return asin(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONASIN_H_ */

@@ -12,10 +12,10 @@
 
 class CustomFunctionSINH: public CustomFunction {
 public:
-	CustomFunctionSINH(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionSINH() {};
+    CustomFunctionSINH(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionSINH() {}
 
-	virtual double applyFunction(double args[]) const { return sinh(args[0]); };
+    virtual double applyFunction(double args[]) const { return sinh(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONSINH_H_ */

@@ -13,8 +13,8 @@
 
 class FunctionSeparatorToken : public Token {
 public:
-	FunctionSeparatorToken() : Token(Token::TT_FUNCTION_SEP, ",") {};
-	virtual ~FunctionSeparatorToken() {};
+    FunctionSeparatorToken() : Token(Token::TT_FUNCTION_SEP, ",") {}
+    virtual ~FunctionSeparatorToken() {}
 
 	virtual void mutateStackForInfixTranslation(stack<Token*> &operatorStack, string &output) {
 		while ((operatorStack.top() -> tokenType() != Token::TT_PAREN) && operatorStack.top() -> getValue().compare("(") == 0) {

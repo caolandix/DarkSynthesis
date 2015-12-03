@@ -20,15 +20,15 @@ void Tokenizer::setParenTokens() {
 	m_parenTokens = "{}()[]";
 }
 
-bool Tokenizer::charInTokenSet(const char c, const string tokenset) const {
-	for (int i = 0; i < tokenset.size(); i++) {
+bool Tokenizer::charInTokenSet(const char c, const string &tokenset) const {
+    for (unsigned int i = 0; i < tokenset.size(); i++) {
 		if (tokenset[i] == c)
 			return true;
 	}
 	return false;
 }
 
-bool Tokenizer::isVariable(const string name) const {
+bool Tokenizer::isVariable(const string &name) const {
 	if (!m_variableNames.empty()) {
 		for (vector<string>::const_iterator iter = m_variableNames.begin(); iter != m_variableNames.end(); iter++) {
 			string str = *iter;
@@ -48,7 +48,7 @@ bool Tokenizer::isOperatorCharacter(const char c) const {
 	return false;
 }
 
-list<Token*> Tokenizer::getTokens(string expression) {
+list<Token*> Tokenizer::getTokens(string &expression) {
 	list<Token*> tokens;
 	int openBraces = 0;
 	int openCurly = 0;
@@ -58,8 +58,7 @@ list<Token*> Tokenizer::getTokens(string expression) {
 	cout << "Tokenizer::getTokens(), input expression: " << expression << endl;
 #endif
 
-	// iterate over the chars and fork on different types of input
-	Token *plastToken = NULL;
+    // iterate over the chars and fork on different types of input
 	for (uint i = 0; i < expression.length(); i++) {
 		char c = expression[i];
 		if (c == ' ')
@@ -184,7 +183,7 @@ list<Token*> Tokenizer::getTokens(string expression) {
 	return tokens;
 }
 
-void Tokenizer::print_tokens(const string str, list<Token*> token_list) {
+void Tokenizer::print_tokens(const string &, list<Token*>) {
 #ifdef _DEBUG
 	cout << str << endl;
 	cout << "Token List:" << endl;
@@ -196,12 +195,12 @@ void Tokenizer::print_tokens(const string str, list<Token*> token_list) {
 #endif
 }
 
-bool Tokenizer::isFunction(const string name) const {
+bool Tokenizer::isFunction(const string &name) const {
 	map<string, CustomFunction *>::const_iterator iter = m_functions.find(name);
 	return (iter != m_functions.end()) ? true : false;
 }
 
-bool Tokenizer::isOperatorStart(const string op) const {
+bool Tokenizer::isOperatorStart(const string &op) const {
 	for (map<string, CustomOperator *>::const_iterator iter = m_operators.begin(); iter != m_operators.end(); iter++) {
 		if ((*iter).first.find(op) == 0)
 			return true;

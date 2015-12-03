@@ -12,10 +12,10 @@
 
 class CustomFunctionEXPM1: public CustomFunction {
 public:
-	CustomFunctionEXPM1(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionEXPM1() {};
+    CustomFunctionEXPM1(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionEXPM1() {}
 
-	virtual double applyFunction(double args[]) const { return expm1(args[0]); };
+    virtual double applyFunction(double args[]) const { return expm1(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONEXPM1_H_ */

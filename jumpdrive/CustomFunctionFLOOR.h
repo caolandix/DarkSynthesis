@@ -12,10 +12,10 @@
 
 class CustomFunctionFLOOR: public CustomFunction {
 public:
-	CustomFunctionFLOOR(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionFLOOR() {};
+    CustomFunctionFLOOR(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionFLOOR() {}
 
-	virtual double applyFunction(double args[]) const { return floor(args[0]); };
+    virtual double applyFunction(double args[]) const { return floor(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONFLOOR_H_ */

@@ -14,16 +14,16 @@
 
 class FunctionToken : public Token {
 public:
-	FunctionToken() : m_pfunction(NULL), Token(Token::TT_FUNCTION) {};
+    FunctionToken() : Token(Token::TT_FUNCTION), m_pfunction(NULL) {}
 	FunctionToken(string, CustomFunction *);
-	virtual ~FunctionToken() {};
+    virtual ~FunctionToken() {}
 
-	const string getFunctionName() const { return m_functionName; };
-	CustomFunction *getFunction() const { return m_pfunction; };
+    const string getFunctionName() const { return m_functionName; }
+    CustomFunction *getFunction() const { return m_pfunction; }
 
-	bool operator==(const FunctionToken &obj) { return (m_functionName == obj.getFunctionName()) ? true : false; };
-	virtual void mutateStackForInfixTranslation(stack<Token*> &operatorStack, string &output) { operatorStack.push(this); };
-	virtual void mutateStackForCalculation(stack<double> &stack, const map<string, double> &variableValues);
+    bool operator==(const FunctionToken &obj) { return (m_functionName == obj.getFunctionName()) ? true : false; }
+    virtual void mutateStackForInfixTranslation(stack<Token*> &operatorStack, string &) { operatorStack.push(this); }
+    virtual void mutateStackForCalculation(stack<double> &stack, const map<string, double> &variableValues);
 private:
 	string m_functionName;
 	CustomFunction *m_pfunction;

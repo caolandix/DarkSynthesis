@@ -12,13 +12,13 @@
 
 class CustomOperator {
 public:
-	CustomOperator() : m_symbol(""), m_operandCount(0), m_precedence(0), m_leftAssociative(true) {};
-	virtual ~CustomOperator() {};
+    CustomOperator() : m_symbol(""), m_operandCount(0), m_precedence(0), m_leftAssociative(true) {}
+    virtual ~CustomOperator() {}
 
-	const string symbol() const { return m_symbol; };
-	const int precedence() const { return m_precedence; };
-	const int operandCount() const { return m_operandCount; };
-	const bool leftassociative() const { return m_leftAssociative; };
+    const string symbol() const { return m_symbol; }
+    int precedence() const { return m_precedence; }
+    int operandCount() const { return m_operandCount; }
+    bool leftassociative() const { return m_leftAssociative; }
 	virtual double applyOperation(double values[]) = 0;
 private:
 	string m_symbol;

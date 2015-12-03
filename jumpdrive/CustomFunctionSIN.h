@@ -12,10 +12,10 @@
 
 class CustomFunctionSIN: public CustomFunction {
 public:
-	CustomFunctionSIN(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionSIN() {};
+    CustomFunctionSIN(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionSIN() {}
 
-	virtual double applyFunction(double args[]) const { return sin(deg2rad(args[0])); };
+    virtual double applyFunction(double args[]) const { return sin(deg2rad(args[0])); }
 };
 
 #endif /* CUSTOMFUNCTIONSIN_H_ */

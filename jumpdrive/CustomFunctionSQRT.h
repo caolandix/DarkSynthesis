@@ -12,10 +12,10 @@
 
 class CustomFunctionSQRT: public CustomFunction {
 public:
-	CustomFunctionSQRT(const string str) : CustomFunction(str) {};
-	virtual ~CustomFunctionSQRT() {};
+    CustomFunctionSQRT(const string str) : CustomFunction(str) {}
+    virtual ~CustomFunctionSQRT() {}
 
-	virtual double applyFunction(double args[]) const { return sqrt(args[0]); };
+    virtual double applyFunction(double args[]) const { return sqrt(args[0]); }
 };
 
 #endif /* CUSTOMFUNCTIONSQRT_H_ */

@@ -15,7 +15,7 @@ bool OperatorToken::operator==(const OperatorToken &obj) {
 	return false;
 }
 
-void OperatorToken::mutateStackForCalculation(stack<double> &valstack, const map<string, double> &variableValues) {
+void OperatorToken::mutateStackForCalculation(stack<double> &valstack, const map<string, double> &) {
 	double operands[valstack.size()];
 	for (int i = 0; i < m_poperation -> operandCount(); i++) {
 		operands[i] = valstack.top();
@@ -25,30 +25,9 @@ void OperatorToken::mutateStackForCalculation(stack<double> &valstack, const map
 	valstack.push(val);
 }
 
-/*
-	void mutateStackForInfixTranslation(Stack<Token> operatorStack, StringBuilder output) {
-		Token before;
-		while (!operatorStack.isEmpty() && (before = operatorStack.peek()) != null && (before instanceof OperatorToken || before instanceof FunctionToken)) {
-			if (before instanceof FunctionToken) {
-				operatorStack.pop();
-				output.append(before.getValue()).append(" ");
-			} else {
-				final OperatorToken stackOperator = (OperatorToken) before;
-				if (this.isLeftAssociative() && this.getPrecedence() <= stackOperator.getPrecedence()) {
-					output.append(operatorStack.pop().getValue()).append(" ");
-				} else if (!this.isLeftAssociative() && this.getPrecedence() < stackOperator.getPrecedence()) {
-					output.append(operatorStack.pop().getValue()).append(" ");
-				} else {
-					break;
-				}
-			}
-		}
-		operatorStack.push(this);
-	}
-*/
-
 void OperatorToken::mutateStackForInfixTranslation(stack<Token*> &operatorStack, string &output) {
 	Token *pbefore = NULL;
+
 	while (!(operatorStack.empty())) {
 		pbefore = operatorStack.top();
 		if (pbefore -> tokenType() == TokenType::TT_OPERATOR || pbefore -> tokenType() == TokenType::TT_FUNCTION) {

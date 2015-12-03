@@ -12,8 +12,8 @@
 
 class ExpressionUtil {
 public:
-	ExpressionUtil() {};
-	virtual ~ExpressionUtil() {};
+    ExpressionUtil() {}
+    virtual ~ExpressionUtil() {}
 
 	string &normalizeNumber(string &number);
 };

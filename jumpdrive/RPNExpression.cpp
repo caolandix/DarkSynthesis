@@ -17,7 +17,7 @@ RPNExpression::RPNExpression(const list<Token*> &tokens, const string &expressio
 ValueSet RPNExpression::calculate(const ValueSet values) {
 	if (m_variables.size() == 0 && values.size() > 0)
 		throw new IllegalArgumentException("there are no variables to set values");
-	else if (values.size() != m_variables.size())
+    else if (values.size() != m_variables.size())
 		throw new IllegalArgumentException("The are an unequal number of variables and arguments");
 
 	if (m_variables.size() > 0 && !values.empty()) {
@@ -31,19 +31,28 @@ ValueSet RPNExpression::calculate(const ValueSet values) {
 	for (list<Token*>::iterator iter = m_tokens.begin(); iter != m_tokens.end(); iter++) {
 		Token *ptok = *iter;
 		switch (ptok -> tokenType()) {
-			case Token::TT_VARIABLE:
-				((VariableToken *)ptok) -> mutateStackForCalculation(m_valstack, m_variables);
-				break;
-			case Token::TT_FUNCTION:
-				((FunctionToken *)ptok) -> mutateStackForCalculation(m_valstack, m_variables);
-				break;
-			case Token::TT_NUMBER:
-				((NumberToken *)ptok) -> mutateStackForCalculation(m_valstack, m_variables);
-				break;
-			case Token::TT_OPERATOR:
-				((OperatorToken *)ptok) -> mutateStackForCalculation(m_valstack, m_variables);
-				break;
-		}
+        case Token::TT_VARIABLE:
+            ((VariableToken *)ptok) -> mutateStackForCalculation(m_valstack, m_variables);
+            break;
+        case Token::TT_FUNCTION:
+            ((FunctionToken *)ptok) -> mutateStackForCalculation(m_valstack, m_variables);
+            break;
+        case Token::TT_NUMBER:
+            ((NumberToken *)ptok) -> mutateStackForCalculation(m_valstack, m_variables);
+            break;
+        case Token::TT_OPERATOR:
+            ((OperatorToken *)ptok) -> mutateStackForCalculation(m_valstack, m_variables);
+            break;
+        case Token::TT_CALC:
+            break;
+        case Token::TT_FUNCTION_SEP:
+            break;
+        case Token::TT_PAREN:
+            break;
+        case Token::TT_RANGE:
+        case Token::TT_NONE:
+            break;
+        }
 	}
 	vector<double> eq_values;
 	if (m_valstack.size() > 0) {
@@ -53,7 +62,7 @@ ValueSet RPNExpression::calculate(const ValueSet values) {
 	return eq_values;
 }
 
-void RPNExpression::print(const string header) {
+void RPNExpression::print(const string &) {
 #ifdef _DEBUG
 	cout << header << endl;
 	cout << "Expression: " << m_expression << endl;
