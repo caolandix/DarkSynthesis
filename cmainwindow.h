@@ -35,7 +35,7 @@ private:
     Ui::CMainWindow *m_pUI;
     GraphWidget *m_pGraphWidget;
 protected:
-    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
+    void contextMenuEvent(QContextMenuEvent *) Q_DECL_OVERRIDE;
 private slots:
     void cartesianGraphOptions();
     void newFile();

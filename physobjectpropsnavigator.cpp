@@ -172,7 +172,7 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
         map<int, QString> properties = pObj ->EditableProps();
 
         // Column 0
-        for (int i = 0; i < properties.size(); i++) {
+        for (unsigned int i = 0; i < properties.size(); i++) {
             m_pTable ->insertRow(i);
             m_pTable ->setItem(i, 0, createRowItem(properties[i]));
         }
@@ -202,7 +202,7 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
         map<int, QString> properties = pObj ->EditableProps();
 
         // Column 0
-        for (int i = 0; i < properties.size(); i++) {
+        for (unsigned int i = 0; i < properties.size(); i++) {
             m_pTable ->insertRow(i);
             m_pTable ->setItem(i, 0, createRowItem(properties[i]));
         }
@@ -238,7 +238,7 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
         map<int, QString> properties = pObj -> EditableProps();
 
         // Column 0
-        for (int i = 0; i < properties.size(); i++) {
+        for (unsigned int i = 0; i < properties.size(); i++) {
             m_pTable ->insertRow(i);
             m_pTable ->setItem(i, 0, createRowItem(properties[i]));
         }

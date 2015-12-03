@@ -1,7 +1,5 @@
 #include "physeqgrid.h"
 
-PhysEqGrid::PhysEqGrid()
-{
-
+PhysEqGrid::PhysEqGrid() {
 }
 

@@ -1,7 +1,6 @@
 #include "physeqgridcell.h"
 
-PhysEqGridCell::PhysEqGridCell()
-{
+PhysEqGridCell::PhysEqGridCell() {
 
 }
 

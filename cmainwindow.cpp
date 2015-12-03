@@ -58,7 +58,7 @@ void CMainWindow::init() {
     m_pPhysOutputNavigator = NULL;
 }
 
-void CMainWindow::contextMenuEvent(QContextMenuEvent *event) {
+void CMainWindow::contextMenuEvent(QContextMenuEvent *) {
     QMenu menu(this);
 }
 
