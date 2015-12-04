@@ -70,7 +70,8 @@ SOURCES += main.cpp \
     physeqsolvertable.cpp \
     physeqgrid.cpp \
     physeqgridcell.cpp \
-    physeqrow.cpp
+    physeqrow.cpp \
+    physeqrowprops.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
@@ -154,7 +155,8 @@ HEADERS  += cmainwindow.h \
     physeqsolvertable.h \
     physeqgrid.h \
     physeqgridcell.h \
-    physeqrow.h
+    physeqrow.h \
+    physeqrowprops.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui

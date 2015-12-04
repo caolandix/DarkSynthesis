@@ -1,15 +1,29 @@
 #ifndef PHYSEQROW_H
 #define PHYSEQROW_H
 
+#include <QtWidgets>
 
-class PhysEqRow
-{
+#include "physeqgridcell.h"
+#include "physeqrowprops.h"
+
+class PhysEqRow {
 public:
-    PhysEqRow();
+    typedef QList<PhysEqGridCell *> CellList;
 
-signals:
+    PhysEqRow() {}
+    PhysEqRow(const QString &, const QString &);
+    PhysEqRow(const PhysEqRow &);
+    PhysEqRow &operator=(const PhysEqRow &);
+    ~PhysEqRow();
 
-public slots:
+
+    PhysEqRowProps *RowProps() const { return m_pRowProps; }
+
+private:
+    CellList m_CellList;
+    QString m_equation;
+    QString m_variableName;
+    PhysEqRowProps *m_pRowProps;
 };
 
 #endif // PHYSEQROW_H
