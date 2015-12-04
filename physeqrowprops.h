@@ -7,8 +7,8 @@ class PhysEqRowProps {
 public:
     PhysEqRowProps() {}
     PhysEqRowProps(const QString &, const QString &);
-    PhysEqRowProps(const PhysRowProps &);
-    PhysEqRowProps &operator=(const PhysRowProps &);
+    PhysEqRowProps(const PhysEqRowProps &);
+    PhysEqRowProps &operator=(const PhysEqRowProps &);
     ~PhysEqRowProps() {}
 
     const QString Equation() const { return m_equation; }

@@ -16,13 +16,11 @@ public:
     PhysEqRow &operator=(const PhysEqRow &);
     ~PhysEqRow();
 
-
     PhysEqRowProps *RowProps() const { return m_pRowProps; }
+    CellList cellList() const { return m_CellList; }
 
 private:
     CellList m_CellList;
-    QString m_equation;
-    QString m_variableName;
     PhysEqRowProps *m_pRowProps;
 };
 
