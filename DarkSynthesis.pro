@@ -72,7 +72,8 @@ SOURCES += main.cpp \
     physeqgridcell.cpp \
     physeqrow.cpp \
     physeqrowprops.cpp \
-    physeqsolvertableheader.cpp
+    physeqsolvertableheader.cpp \
+    physscience.cpp
 
 HEADERS  += cmainwindow.h \
     node.h \
