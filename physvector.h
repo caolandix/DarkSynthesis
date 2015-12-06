@@ -96,9 +96,9 @@ private:
     Theta m_Theta;
     PhysParticle *m_pStartParticle;
     PhysParticle *m_pEndParticle;
-    QPointF m_StartPoint;
-    QPointF m_EndPoint;
     QPointF m_currPos;
+    static map<int, QString> m_listEditableProps;
+    bool m_bUseNewThetaAngle;
 
     // Drawing specific.
     CartesianLabel *m_pLabel;
@@ -107,11 +107,10 @@ private:
     qreal m_arrowSize;
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
-
+    QPointF m_StartPoint;
+    QPointF m_EndPoint;
     // Currently not used, will need to fix later
     PhysVectorDataObj m_DataObj;
-    static map<int, QString> m_listEditableProps;
-    bool m_bUseNewThetaAngle;
 };
 
 Q_DECLARE_METATYPE(PhysVector *)

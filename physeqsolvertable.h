@@ -11,6 +11,10 @@ public:
 
     ~PhysEqSolverTable();
 
+    void appendColumn();
+    void insertColumn(const QPoint);
+    void removeColumn(const QPoint);
+
 private:
 
 signals:

@@ -4,6 +4,7 @@
 #include <QtWidgets>
 
 #include "physeqsolvertable.h"
+#include "physeqgrid.h"
 
 class PhysEqSolver : public QTableView {
     Q_OBJECT
@@ -39,6 +40,7 @@ private:
     QAction *m_pActRemoveTimeColumn;
     PhysEqSolverTable *m_pTable;
     QLineEdit *m_pFormulaInput;
+    PhysEqGrid m_Grid;
 };
 
 void decode_pos(const QString &, int *, int *);

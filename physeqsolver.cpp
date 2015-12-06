@@ -39,13 +39,6 @@ void PhysEqSolver::createConnections() {
 
 void PhysEqSolver::createTable(const int rows, const int cols) {
     m_pTable = new PhysEqSolverTable(rows, cols, this);
-    m_pTable -> setSizeAdjustPolicy(QTableWidget::AdjustToContents);
-
-    QStringList tableHeader;
-    tableHeader << "t0" << "t1";
-    m_pTable -> setHorizontalHeaderLabels(tableHeader);
-    m_pTable -> setItemPrototype(m_pTable -> item(rows - 1, cols - 1));
-    m_pTable -> setItemDelegate(new PhysEqSolverDelegate());
 }
 
 void PhysEqSolver::createActions() {
@@ -71,12 +64,15 @@ void PhysEqSolver::createActions() {
 }
 
 void PhysEqSolver::onAppendTimeColumn() {
+    m_pTable -> appendColumn();
 }
 
 void PhysEqSolver::onInsertTimeColumn() {
+    m_pTable -> insertColumn(pos());
 }
 
 void PhysEqSolver::onRemoveTimeColumn() {
+    m_pTable -> removeColumn(pos());
 }
 
 void PhysEqSolver::updateColor(QTableWidgetItem *pItem) {
@@ -157,6 +153,35 @@ void PhysEqSolver::selectFont() {
     }
 }
 
+void PhysEqSolver::clear() {
+    foreach (QTableWidgetItem *pItem, m_pTable -> selectedItems())
+        pItem -> setText("");
+}
+
+void PhysEqSolver::setupContextMenu() {
+    addAction(m_pActColor);
+    addAction(m_pActFont);
+    addAction(m_pActClear);
+    addAction(m_pActAppendTimeColumn);
+    addAction(m_pActInsertTimeColumn);
+    if (m_pTable ->columnCount() > 2)
+        m_pActRemoveTimeColumn -> setEnabled(true);
+    else
+        m_pActRemoveTimeColumn -> setEnabled(false);
+    addAction(m_pActRemoveTimeColumn);
+
+    setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+void PhysEqSolver::setupContents() {
+    QColor titleBackground(Qt::lightGray);
+    QFont titleFont = m_pTable -> font();
+    titleFont.setBold(true);
+
+    m_pTable -> setItem(0, 0, new PhysEqSolverItem(""));
+    m_pTable -> item(0, 0) -> setBackgroundColor(titleBackground);
+    m_pTable -> item(0, 0) -> setFont(titleFont);
+}
 
 void PhysEqSolver::actionMath_helper(const QString &title, const QString &op) {
     QString cell1 = "C1";
@@ -172,28 +197,6 @@ void PhysEqSolver::actionMath_helper(const QString &title, const QString &op) {
         decode_pos(out, &row, &col);
         m_pTable -> item(row, col) -> setText(tr("%1 %2 %3").arg(op, cell1, cell2));
     }
-}
-
-void PhysEqSolver::clear() {
-    foreach (QTableWidgetItem *pItem, m_pTable -> selectedItems())
-        pItem -> setText("");
-}
-
-void PhysEqSolver::setupContextMenu() {
-    addAction(m_pActColor);
-    addAction(m_pActFont);
-    addAction(m_pActClear);
-    setContextMenuPolicy(Qt::ActionsContextMenu);
-}
-
-void PhysEqSolver::setupContents() {
-    QColor titleBackground(Qt::lightGray);
-    QFont titleFont = m_pTable -> font();
-    titleFont.setBold(true);
-
-    m_pTable -> setItem(0, 0, new PhysEqSolverItem(""));
-    m_pTable -> item(0, 0) -> setBackgroundColor(titleBackground);
-    m_pTable -> item(0, 0) -> setFont(titleFont);
 }
 
 void PhysEqSolver::actionSum() {
