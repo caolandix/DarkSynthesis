@@ -65,7 +65,7 @@ PhysElectroStatic::~PhysElectroStatic() {
     if (nms) { delete [] esem; esem = NULL; }
 }
 
-void PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t,
+bool PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t,
                              double *nm, int *vbin1, int *vbin2, double *dvb, double *vstart, int *nvbin) {
     double wp = 1.0, wc = 0.0, qm = -1.0, vt1 = 0.0, vt2 = 0.0, v0 =0.0,
         x1 = 0.0, v1 = 0.0, thetax = 0.0, thetav = 0.0, ddx, x0,
@@ -73,6 +73,9 @@ void PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t
     int ngr, j, i1, i2, n = 128, nlg = 1, nv2 = 0, mode = 1, nbins = 100;
     char a_char[80];
 
+    // Make sure we have valid pointers
+    if (!(t && il2 && il1 && q && m && nm && dvb))
+        return false;
     *dvb = 1.0;  // this is a huge default.
 
     /*
@@ -110,11 +113,11 @@ void PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t
     *vbin2 = *vbin1 + nbins;
     if (vupper - vlower < 0.0) {
         qDebug("\nError in INIT: vupper must be > vlower!");
-        return;
+        return false;
     }
     if (vt1 < 0 || vt2 < 0) {
         qDebug("\nError in INIT: can't have negative thermal voltages!");
-        return;
+        return false;
     }
     if(vupper-vlower > 0.0) {
         *vstart = vlower;
@@ -171,8 +174,10 @@ void PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t
             fv = (i - 0.5) * df;
             while (fv >= x[j + 1]) {
                 j++;
-                if (j > (*il2 - 2))
+                if (j > (*il2 - 2)) {
                     qDebug("distribution function error");
+                    return false;
+                }
             }
             vv = dv * (j - *il1 + (fv - x[j]) / (x[j + 1] - x[j])) - vmax;
             vx[i1] += vv;
@@ -232,6 +237,7 @@ void PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t
         vx[i1] += v1 * sin(theta + thetav);
     }
     setrho(*il1, *il2 - 1, *q, (*q) * n / l);
+    return true;
 }
 
 void PhysElectroStatic::start(int argc, char *argv) {
@@ -261,7 +267,7 @@ void PhysElectroStatic::start(int argc, char *argv) {
             return;
         }
 
-        if (accum<0) {
+        if (accum < 0) {
             qDebug("Error:  accum can't be negative!");
             return;
         }
@@ -353,8 +359,10 @@ void PhysElectroStatic::start(int argc, char *argv) {
         qDebug("ng = %5d   iw = %2d   ec = %2d  accum = %4d", ng, iw, ec, accum);
         qDebug("epsi = %4.2f  a1 = %4.2f  a2 = %4.2f", epsi ,a1, a2);
 
-        for (int i = 1; i <= nsp; i++)
-            init(&ins[i], &ins[i + 1], &ms[i], &qs[i], &ts[i], &nms[i], &vbins[i], &vbins[i+1], &dvbin[i], &vbinstart[i], &nvbin[i]);
+        for (int i = 1; i <= nsp; i++) {
+            if (!init(&ins[i], &ins[i + 1], &ms[i], &qs[i], &ts[i], &nms[i], &vbins[i], &vbins[i+1], &dvbin[i], &vbinstart[i], &nvbin[i]))
+                return;
+        }
 
         // added vbins to param list
         // fclose(InputDeck);
@@ -391,8 +399,8 @@ void PhysElectroStatic::start(int argc, char *argv) {
 // all this function does is set up the initial velocity distribution diagnostic to reflect the startup values.
 void PhysElectroStatic::startvel() {
     int s, nbinmaxi;
-    double *vsps;          // vsps is a pointer to the part of the velocity bin array where the species starts
-    double vst,dvt;        // this is the vstart[isp],dv[isp]
+    double *vsps = NULL;          // vsps is a pointer to the part of the velocity bin array where the species starts
+    double vst, dvt;        // this is the vstart[isp],dv[isp]
 
     // This code does the velocity-distribution stuff.
     for (int i = 1; i <= nsp; i++) {
@@ -744,7 +752,7 @@ void PhysElectroStatic::accel(int ilp, int iup, double q, double m, double t, do
 
 void PhysElectroStatic::fields(const int ith) {
     static int ng2 = 0, ng1 = 0;
-    static double *ksqi, *sm;
+    static double *ksqi = NULL, *sm = NULL;
     int kk, km;
     int k, j;
     double kdx2, li, hdx, eses, eot, hdxi, dxi, temp, temp1, e0t, kperp2;
@@ -852,7 +860,7 @@ void PhysElectroStatic::move(const int ilp, const int iup, const double q) {
 
     il = ilp;
     iu = iup;
-    qdx = q/dx;
+    qdx = q / dx;
     xn = ng;
     switch (iw) {
     case Zero_Order :
@@ -943,18 +951,18 @@ void PhysElectroStatic::move(const int ilp, const int iup, const double q) {
             else {
 
                 // a= -.5*cub(jxii)-sqr(jxii)+twothirds;
-                a=twothirds -jxii*jxii*( 1.0 + 0.5*jxii);
+                a = twothirds - jxii * jxii * (1.0 + 0.5 * jxii);
 
                 // b=.5*cub(jxii+1)-sqr(jxii+1)+twothirds;
-                b=onesix + 0.5 * jxii*(-1.0 + jxii*( 1.0 + jxii));
+                b = onesix + 0.5 * jxii * (-1.0 + jxii * (1.0 + jxii));
 
                 // c= cub(jxii-1)/6.0+sqr(jxii-1)+2*(jxii-1)+1.3333333;
-                c=onesix+ onesix*jxii*(3+jxii*(3+jxii));
+                c = onesix + onesix * jxii * (3 + jxii * (3 + jxii));
 
-                rho[j+1]+=a*qdx;
-                rho[j+2]+=b*qdx;
-                rho[j]+=c*qdx;
-                rho[j+3]+=(1.0 -a -b -c) * qdx;
+                rho[j + 1] += a * qdx;
+                rho[j + 2] += b * qdx;
+                rho[j] += c * qdx;
+                rho[j + 3] += (1.0 - a - b - c) * qdx;
             }
         }
         break;
@@ -1076,6 +1084,9 @@ void PhysElectroStatic::setv(const int il, const int iu,
                              const double q, const double m,
                              const double t, double *p,
                              double *ke) {
+
+    if (!ke || !p)
+        return;
     double dtdx, c, s, vxx;
     dtdx = dt / dx;
     if (t != 0.0) {
@@ -1097,7 +1108,7 @@ void PhysElectroStatic::velocity() {
     int s, nbinmaxi;
     static int count = 5;
     double pval;
-    double *vsps;    // vsps is a pointer to the part of the velocity bin array where the species starts
+    double *vsps = NULL;    // vsps is a pointer to the part of the velocity bin array where the species starts
     double vst, dvt; // this is the vstart[isp],dv[isp]
 
     if (!accum)
@@ -1121,7 +1132,9 @@ void PhysElectroStatic::velocity() {
     if (!count)
         count = accum;
     for (int i = 1; i <= nsp; i++) {
-        vsps = & (vbin_inst[vbins[i]]);
+        vsps = &(vbin_inst[vbins[i]]);
+        if (!vsps)
+            break;
         vst = vbinstart[i];
         dvt = dvbin[i];
         nbinmaxi = nvbin[i];

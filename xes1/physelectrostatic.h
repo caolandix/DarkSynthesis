@@ -29,7 +29,7 @@ private:
     static const int MAXPARTICLES;
 
     // member methods
-    void init(int *, int *, double *, double *, double *, double *, int *, int *, double *, double *, int *);
+    bool init(int *, int *, double *, double *, double *, double *, int *, int *, double *, double *, int *);
     void startvel();
     void accel(int, int, double, double, double, double *, double *);
     void cpft(double [], double [], int, int, double);
