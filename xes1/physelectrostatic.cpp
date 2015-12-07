@@ -4,18 +4,6 @@
 #include "physelectrostatic.h"
 #include "physscience.h"
 
-
-const double PhysElectroStatic::onesix = 0.16666666667;
-const double PhysElectroStatic::twothirds = 0.6666666667;
-const double PhysElectroStatic::AKPERP = 2.405;
-const int PhysElectroStatic::K8 = 8192;
-const int PhysElectroStatic::NGMAX = K8;
-const int PhysElectroStatic::NXV = K8;
-const int PhysElectroStatic::NVY = NXV / 2;
-const int PhysElectroStatic::HISTMAX = 512;
-const int PhysElectroStatic::NVBINMAX = 1024;
-const int PhysElectroStatic::MAXPARTICLES = 920001;
-
 PhysElectroStatic::PhysElectroStatic() {
 
     // Setting the global parameters to their default values.
@@ -23,7 +11,7 @@ PhysElectroStatic::PhysElectroStatic() {
     dt = 0.2;
     nsp = 1;
     epsi = 1.0;
-    ng = 32;
+    m_ng = 32;
     iw = 2;
     ec = 0;
     ins[1] = 1;
@@ -49,7 +37,7 @@ PhysElectroStatic::~PhysElectroStatic() {
     if (kes_hist) { delete [] kes_hist; kes_hist = NULL; }
     if (pxs_hist) { delete [] pxs_hist; pxs_hist = NULL; }
     if (esem_hist) { delete [] esem_hist; esem_hist = NULL; }
-    if (x) { delete [] x; x = NULL; }
+    if (m_x) { delete [] m_x; m_x = NULL; }
     if (vx) { delete [] vx; vx = NULL; }
     if (vy) { delete [] vy; vy = NULL; }
     if (vbint) { delete [] vbint; vbint = NULL; }
@@ -151,42 +139,42 @@ bool PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t
     for (int i = 1; i <= ngr; i++) {
         i1 = i - 1 + *il1;
         x0 = (i - 0.5) * ddx;
-        x[i1] = x0;
+        m_x[i1] = x0;
         vx[i1] = v0;
     }
     if (vt2 != 0.0) {
         vmax = 5.0 * vt2;
         dv = 2.0 * vmax / (n - 1);
         vvnv2 = 1.0;
-        x[*il1] = 0.0;
+        m_x[*il1] = 0.0;
         for (int i = 2; i <= n; i++) {
             vv = ((i - 1.5) * dv - vmax) / vt2;
             if (nv2 != 0)
                 vvnv2 = pow(vv, (double)nv2);
             fv = vvnv2 * exp(-0.5 * vv * vv);
             i1 = i - 1 + *il1;
-            x[i1] = x[i1 - 1] + ((fv >= 0.0) ? fv : 0.0);
+            m_x[i1] = m_x[i1 - 1] + ((fv >= 0.0) ? fv : 0.0);
         }
-        df = x[i1]/ngr;
+        df = m_x[i1]/ngr;
         i1 = *il1;
         j = *il1;
         for (int i = 1; i <= ngr; i++) {
             fv = (i - 0.5) * df;
-            while (fv >= x[j + 1]) {
+            while (fv >= m_x[j + 1]) {
                 j++;
                 if (j > (*il2 - 2)) {
                     qDebug("distribution function error");
                     return false;
                 }
             }
-            vv = dv * (j - *il1 + (fv - x[j]) / (x[j + 1] - x[j])) - vmax;
+            vv = dv * (j - *il1 + (fv - m_x[j]) / (m_x[j + 1] - m_x[j])) - vmax;
             vx[i1] += vv;
             i1++;
         }
         xs = 0.0;
         for (int i = 1; i <= ngr; i++) {
             i1 = i - 1 + *il1;
-            x[i1] = xs * lg + 0.5 * ddx;
+            m_x[i1] = xs * lg + 0.5 * ddx;
             xsi = 1.0;
             do {
                 xsi *= 0.5;
@@ -213,7 +201,7 @@ bool PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t
             for (int j = 1; j <= ngr; j++) {
                 i1 = j - 1 + *il1;
                 i2 = i1 + i - 1;
-                x[i2] = x[i1] + xs;
+                m_x[i2] = m_x[i1] + xs;
                 vx[i2] = vx[i1];
                 if (wc != 0.0)
                     vy[i2] = vy[i1];
@@ -232,8 +220,8 @@ bool PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t
     }
     for (int i = 1; i <= n; i++) {
         i1 = i - 1 + *il1;
-        theta = 2 * PhysConsts::PI * mode * x[i1] / l;
-        x[i1] += x1 * cos(theta + thetax);
+        theta = 2 * PhysConsts::PI * mode * m_x[i1] / l;
+        m_x[i1] += x1 * cos(theta + thetax);
         vx[i1] += v1 * sin(theta + thetav);
     }
     setrho(*il1, *il2 - 1, *q, (*q) * n / l);
@@ -288,13 +276,13 @@ void PhysElectroStatic::start(int argc, char *argv) {
             return;
         }
 
-        if (ng > NGMAX) {
+        if (m_ng > NGMAX) {
             printf("Number of grids ng cannot exceed NGMAX");
             return;
         }
-        dx = l / ng;
-        ng1 = ng + 1;
-        k_hi = ng / 2;
+        m_dx = l / m_ng;
+        ng1 = m_ng + 1;
+        k_hi = m_ng / 2;
 
         // Allocating space for arrays
         nms = new double[nsp + 1];
@@ -302,27 +290,27 @@ void PhysElectroStatic::start(int argc, char *argv) {
         qs = new double[nsp + 1];
         ts = new double[nsp + 1];
 
-        x_array = new double[ng + 1];
-        for (int i = 0; i <= ng; i++)
-            x_array[i] = i * dx;
+        x_array = new double[m_ng + 1];
+        for (int i = 0; i <= m_ng; i++)
+            x_array[i] = i * m_dx;
 
-        rho = new double[ng + 3];
-        phi = new double[ng + 2];
-        phik = new double[ng + 2];
-        k_array = new double[ng];
+        rho = new double[m_ng + 3];
+        phi = new double[m_ng + 2];
+        phik = new double[m_ng + 2];
+        k_array = new double[m_ng];
         for (int i = 0; i < k_hi; i++)
             k_array[i] = i * 2 * PhysConsts::PI / l;
-        e = new double[ng + 2];
-        acc = new double[ng + 3];
+        e = new double[m_ng + 2];
+        acc = new double[m_ng + 3];
 
         t_array = new double[HISTMAX];
         ese = new double[HISTMAX];
         ke = new double[HISTMAX];
         te = new double[HISTMAX];
 
-        kes_hist = new double[nsp+1];
-        pxs_hist = new double[nsp+1];
-        esem_hist = new double[mmax+1];
+        kes_hist = new double[nsp + 1];
+        pxs_hist = new double[nsp + 1];
+        esem_hist = new double[mmax + 1];
 
         kes = new double*[nsp];
         for (int i = 0; i < nsp; i++)
@@ -336,7 +324,7 @@ void PhysElectroStatic::start(int argc, char *argv) {
         for (int i=0; i< mmax; i++)
             esem[i] = new double[HISTMAX];
 
-        x = new double[MAXPARTICLES];
+        m_x = new double[MAXPARTICLES];
         vx = new double[MAXPARTICLES];
         vy = new double[MAXPARTICLES];
 
@@ -349,38 +337,38 @@ void PhysElectroStatic::start(int argc, char *argv) {
         vbinstart = new double[nsp + 1];
         v_array = new double[NVBINMAX * nsp];
 
-        if (!x || !vx || !vy || !vbint || !vbin_inst || !dvbin || !v_array ) {
+        if (!m_x || !vx || !vy || !vbint || !vbin_inst || !dvbin || !v_array ) {
             qDebug("START: Could not get enough memory for x or v's.");
             return;
         }
 
         qDebug("nsp = %2d     l = %8.5f", nsp, l);
         qDebug("dt = %4.2f    nt = %4d", dt, nt);
-        qDebug("ng = %5d   iw = %2d   ec = %2d  accum = %4d", ng, iw, ec, accum);
+        qDebug("ng = %5d   iw = %2d   ec = %2d  accum = %4d", m_ng, iw, ec, accum);
         qDebug("epsi = %4.2f  a1 = %4.2f  a2 = %4.2f", epsi ,a1, a2);
 
         for (int i = 1; i <= nsp; i++) {
-            if (!init(&ins[i], &ins[i + 1], &ms[i], &qs[i], &ts[i], &nms[i], &vbins[i], &vbins[i+1], &dvbin[i], &vbinstart[i], &nvbin[i]))
+            if (!init(&ins[i], &ins[i + 1], &ms[i], &qs[i], &ts[i], &nms[i], &vbins[i], &vbins[i + 1], &dvbin[i], &vbinstart[i], &nvbin[i]))
                 return;
         }
 
         // added vbins to param list
         // fclose(InputDeck);
 
-        for (int i=1; i<= nsp; i++)
-            np[i]= ins[i+1] -ins[i];
+        for (int i = 1; i <= nsp; i++)
+            np[i] = ins[i + 1] - ins[i];
 
-        for (int i=0; i < nsp; i++) {
-            for (int j=0; j < HISTMAX; j++) {
+        for (int i = 0; i < nsp; i++) {
+            for (int j = 0; j < HISTMAX; j++) {
                 kes[i][j] = 0.0;
                 pxs[i][j] = 0.0;
             }
         }
         rho[1] += rho[ng1];   // These resolve the periodic boundary conditions.
-        rho[2] += rho[ng + 2];
-        rho[ng] += rho[0];
-        rho[0] = rho[ng];
-        rho[ng + 2] = rho[2];
+        rho[2] += rho[m_ng + 2];
+        rho[m_ng] += rho[0];
+        rho[0] = rho[m_ng];
+        rho[m_ng + 2] = rho[2];
         rho[ng1] = rho[1];
         fields(0);
 
@@ -388,8 +376,8 @@ void PhysElectroStatic::start(int argc, char *argv) {
             setv(ins[i], ins[i + 1] - 1, qs[i], ms[i], ts[i], &pxs_hist[i], &kes_hist[i]);
 
             // scale all the velocities  properly
-            dvbin[i] *= dt / dx;
-            vbinstart[i] *= dt / dx;
+            dvbin[i] *= dt / m_dx;
+            vbinstart[i] *= dt / m_dx;
         }
         startvel();
     }
@@ -615,18 +603,18 @@ void PhysElectroStatic::accel(int ilp, int iup, double q, double m, double t, do
 
     il = ilp;
     iu = iup;
-    dxdt = dx / dt;
+    dxdt = m_dx / dt;
     ae = (q / m) * (dt / dxdt);
     if (t != 0.0)
         ae *= 0.5;
     if (ae != ael) {
-        ng1 = ng + 1;
+        ng1 = m_ng + 1;
 
         // tem = ae/ael;  this does nothing, is not used later
         for (int j = 1; j <= ng1; j++)
             acc[j] = e[j] * ae;
-        acc[0] = ae * e[ng];
-        acc[ng + 2] = ae * e[2];
+        acc[0] = ae * e[m_ng];
+        acc[m_ng + 2] = ae * e[2];
         acc[ng1] = ae * e[1];
         ael = ae;
     }
@@ -634,9 +622,9 @@ void PhysElectroStatic::accel(int ilp, int iup, double q, double m, double t, do
     case Zero_Order :
         v1s = v2s = 0.0;
         for (int i = il; i <= iu; i++) {
-            j = x[i] + 0.5 - ecconst;  // ecconst is .5 for energy conserving, 0 for momentum conserving
+            j = m_x[i] + 0.5 - ecconst;  // ecconst is .5 for energy conserving, 0 for momentum conserving
             vo = vx[i];
-            vn = vo + acc[j+1];
+            vn = vo + acc[j + 1];
             v1s += vn;
             v2s += vn * vo;
             vx[i] = vn;
@@ -649,7 +637,7 @@ void PhysElectroStatic::accel(int ilp, int iup, double q, double m, double t, do
             s = 2.0 * t / (1.0 + t * t);
             v2s = 0.0;
             for (int i = il; i <= iu; i++) {
-                xii = x[i] - ecconst + 1.0;
+                xii = m_x[i] - ecconst + 1.0;
                 j = xii;
                 xii -= 1.0;
                 j -= 1;
@@ -671,7 +659,7 @@ void PhysElectroStatic::accel(int ilp, int iup, double q, double m, double t, do
         else {
             v1s = v2s = 0.0;
             for (int i = il; i <= iu; i++) {
-                xii = x[i] - ecconst + 1;
+                xii = m_x[i] - ecconst + 1;
                 j = xii;
                 xii -= 1.0;
                 j -= 1;
@@ -691,7 +679,7 @@ void PhysElectroStatic::accel(int ilp, int iup, double q, double m, double t, do
     case Quadratic_Spline :
         v1s = v2s = 0.0;
         for (int i = il; i <= iu; i++) {
-            xii = x[i] - ecconst; //Grab the value of x[i] so we don't have to keep dereferencing a pointer
+            xii = m_x[i] - ecconst; //Grab the value of x[i] so we don't have to keep dereferencing a pointer
             j = xii + 0.5;   // Grab the nearest grid point.
             vo = vx[i];    // Grab the value of the current velocity
             a = 0.75 - sqr(j - xii);
@@ -707,7 +695,7 @@ void PhysElectroStatic::accel(int ilp, int iup, double q, double m, double t, do
     case Cubic_Spline :
         v1s = v2s = 0.0;
         for (int i = il; i <= iu; i++) {
-            xii = x[i];
+            xii = m_x[i];
             j = xii + 0.5;
             vo = vx[i];
             jxii = j - xii;
@@ -758,13 +746,13 @@ void PhysElectroStatic::fields(const int ith) {
     double kdx2, li, hdx, eses, eot, hdxi, dxi, temp, temp1, e0t, kperp2;
 
     if (ng2 == 0) {
-        ng2 = ng / 2;
+        ng2 = m_ng / 2;
         ksqi = new double[ng2 + 1];
         sm = new double[ng2 + 1];
-        ng1 = ng + 1;
+        ng1 = m_ng + 1;
         kperp2 = AKPERP * AKPERP * (la / l * la / l); /* a = charge disk radius*/
         for (int k = 1; k <= ng2; k++) {
-            kdx2 = (PhysConsts::PI / ng) * k;
+            kdx2 = (PhysConsts::PI / m_ng) * k;
             if ((a1 != 0.0) || (a2 != 0.0)) {
                 temp = (k < ng2) ? tan(kdx2) : 10000.0;
                 temp *= temp;
@@ -777,22 +765,22 @@ void PhysElectroStatic::fields(const int ith) {
             }
             else
                 sm[k] = 1.0;
-            temp = 2.0 * sin(kdx2) / dx;
+            temp = 2.0 * sin(kdx2) / m_dx;
             temp = temp * temp;
             temp += kperp2;
             ksqi[k] = (epsi / temp) * sm[k] * sm[k];
         }
     }
-    hdx = 0.5 * dx;
-    for (int j = 1; j <= ng; j++) {
+    hdx = 0.5 * m_dx;
+    for (int j = 1; j <= m_ng; j++) {
         rho[j] *= hdx;
         e[j] = 0.0;
     }
-    cpft(rho, e, ng, 1, 1.0);
-    rpft2(rho, e, ng, 1);
+    cpft(rho, e, m_ng, 1, 1.0);
+    rpft2(rho, e, m_ng, 1);
     rho[1] = eses = phi[1] = 0.0;
     for (int k = 2;k <= ng2 ;k++) {
-        kk = ng + 2 - k;
+        kk = m_ng + 2 - k;
         phi[k] = ksqi[k-1] * rho[k];
         phi[kk] = ksqi[k-1] * rho[kk];
         eses += rho[k] * phi[k] + rho[kk] * phi[kk];
@@ -801,47 +789,47 @@ void PhysElectroStatic::fields(const int ith) {
     ese_hist = (2.0 * eses + rho[ng2 + 1] * phi[ng2 + 1]) / (2.0 * l);
     li = 1.0 / l;
 
-    for (int km=1; km <=mmax; km++) {
-        k = km +1;
-        if (k ==1)
+    for (int km = 1; km <= mmax; km++) {
+        k = km + 1;
+        if (k == 1)
             break;
-        kk = ng +2 -k;
-        esem_hist[km] = (rho[k]*phi[k] + rho[kk]*phi[kk])*li;
+        kk = m_ng + 2 - k;
+        esem_hist[km] = (rho[k] * phi[k] + rho[kk] * phi[kk]) * li;
         if (k == kk)
             esem_hist[km] *= 0.25;
     }
-    for (int k=2; k<=ng2; k++){
-        kk = ng-k;
-        rho[k] *= sm[k-1];
-        rho[kk] *= sm[k-1];
+    for (int k = 2; k <= ng2; k++){
+        kk = m_ng - k;
+        rho[k] *= sm[k - 1];
+        rho[kk] *= sm[k - 1];
     }
-    rho[ng2+1] *= sm[ng2];
-    for (int k=1; k <= ng ;k++) {
+    rho[ng2 + 1] *= sm[ng2];
+    for (int k = 1; k <= m_ng ;k++) {
         rho[k] *= li;
         phi[k] *= li;
     }
 
     phik[1] = 1e-30;
-    for (int k=1;k <=ng2; k++) {
-        kk = ng +2 -k;
-        phik[k] = li*fabs(phi[k]*rho[k] +phi[kk]*rho[kk]) +1e-30;
+    for (int k = 1; k <= ng2; k++) {
+        kk = m_ng + 2 - k;
+        phik[k] = li * fabs(phi[k] * rho[k] + phi[kk] * rho[kk]) + 1e-30;
     }
-    rpfti2(phi, rho, ng, 1);
-    cpft(phi, rho, ng, 1, -1.0);
+    rpfti2(phi, rho, m_ng, 1);
+    cpft(phi, rho, m_ng, 1, -1.0);
     phi[ng1] = phi[1];
     rho[ng1] = rho[1];
     e0t = (e0 != 0.0) ?  e0 * cos(w0 * t) : 0.0;
     switch (ec) {
     case Momentum_Conserving:
-        hdxi = 0.5/dx;
-        for (int j=2;j <= ng;j++) e[j] = (phi[j-1]-phi[j+1])*hdxi + e0t;
-        e[1] = (phi[ng]-phi[2])*hdxi + e0t;
-        e[ng + 1] = e[1];
+        hdxi = 0.5 / m_dx;
+        for (int j = 2; j <= m_ng; j++) e[j] = (phi[j - 1] - phi[j + 1]) * hdxi + e0t;
+        e[1] = (phi[m_ng] - phi[2]) * hdxi + e0t;
+        e[m_ng + 1] = e[1];
         break;
     case Energy_Conserving:
-        dxi = 1.0/dx;
-        for (int j=1;j <= ng;j++) e[j] = (phi[j]-phi[j+1])*dxi + e0t;
-        e[ng + 1] = e[1];
+        dxi = 1.0 / m_dx;
+        for (int j = 1; j <= m_ng; j++) e[j] = (phi[j] - phi[j + 1]) * dxi + e0t;
+        e[m_ng + 1] = e[1];
         break;
     default:
         qDebug("Bad ec switch in fields");
@@ -852,58 +840,56 @@ void PhysElectroStatic::fields(const int ith) {
 }
 
 void PhysElectroStatic::move(const int ilp, const int iup, const double q) {
-    int il, iu;
+    int il = ilp, iu = iup;
     int j;
-    double xn, qdx, drho;
+    double qdx = q / m_dx;
+    double xn = m_ng;
+    double drho;
     double a, b, c, xii;
-    double jxii;  // = j-xii:  we use it so much it's worth defining it.
+    double jxii;
 
-    il = ilp;
-    iu = iup;
-    qdx = q / dx;
-    xn = ng;
     switch (iw) {
     case Zero_Order :
         for (int i = il; i <= iu; i++) {
-            x[i] += vx[i];
-            if (x[i] < 0.0)
-                x[i] += xn;
+            m_x[i] += vx[i];
+            if (m_x[i] < 0.0)
+                m_x[i] += xn;
             else {
-                if (x[i] >= xn)
-                    x[i] -= xn;
+                if (m_x[i] >= xn)
+                    m_x[i] -= xn;
             }
-            j = x[i] + 0.5;
-            rho[j+1] += qdx;
+            j = m_x[i] + 0.5;
+            rho[j + 1] += qdx;
         }
         break;
     case First_Order :
         for (int i = il; i <= iu; i++) {
-            x[i] += vx[i];
-            if (x[i] < 0.0)
-                x[i] += xn;
+            m_x[i] += vx[i];
+            if (m_x[i] < 0.0)
+                m_x[i] += xn;
             else {
-                if (x[i] >= xn)
-                    x[i] -= xn;
+                if (m_x[i] >= xn)
+                    m_x[i] -= xn;
             }
-            j = x[i];
-            drho = qdx * (x[i] - j);
+            j = m_x[i];
+            drho = qdx * (m_x[i] - j);
             rho[j + 1] += qdx - drho;
             rho[j + 2] += drho;
         }
         break;
     case Quadratic_Spline :
         for (int i = il; i <= iu; i++) {
-            x[i] += vx[i];
-            if (x[i] < 0.0)
-                x[i] += xn;
+            m_x[i] += vx[i];
+            if (m_x[i] < 0.0)
+                m_x[i] += xn;
             else {
-                if (x[i] >= xn)
-                    x[i] -= xn;
+                if (m_x[i] >= xn)
+                    m_x[i] -= xn;
             }
 
             // By looking up x[i] and storing it in xii, I save three additions: I must do an addition every
             // time I use a subscript!
-            xii = x[i];
+            xii = m_x[i];
 
             // Extract the nearest grid point: using truncation to do rounding- j is int.
             j = xii + 0.5;
@@ -920,14 +906,14 @@ void PhysElectroStatic::move(const int ilp, const int iup, const double q) {
         break;
     case Cubic_Spline :
         for (int i = il; i <= iu; i++) {
-            x[i] += vx[i];
-            if (x[i] < 0.0)
-                x[i] += xn;
+            m_x[i] += vx[i];
+            if (m_x[i] < 0.0)
+                m_x[i] += xn;
             else {
-                if (x[i] >= xn)
-                    x[i] -= xn;
+                if (m_x[i] >= xn)
+                    m_x[i] -= xn;
             }
-            xii = x[i];
+            xii = m_x[i];
             j = xii + 0.5;
             jxii = j - xii;
 
@@ -978,55 +964,55 @@ void PhysElectroStatic::setrho(const int il, const int iu, const double q, const
     int j = 0;
     static double dxi, xn;
 
-    qdx = q / dx;
+    qdx = q / m_dx;
     if (il == 1) {
-        for (int j = 1; j <= ng; j++)
+        for (int j = 1; j <= m_ng; j++)
             rho[j] = rho0;
         rho[ng1] = 0.0;
-        rho[0] = rho[ng + 2]=0.0;
-        dxi = 1.0 / dx;
-        xn = ng;
+        rho[0] = rho[m_ng + 2]=0.0;
+        dxi = 1.0 / m_dx;
+        xn = m_ng;
     }
     rho0 -= rhos;
-    for (j = 1; j <= ng; j++)
+    for (j = 1; j <= m_ng; j++)
         rho[j] -= rhos;
     switch (iw) {
     case Zero_Order :
         for (int i = il; i <= iu; i++) {
-            x[i] *= dxi;
-            if (x[i] < 0.0)
-                x[i] += xn;
-            if (x[i] >= xn)
-                x[i] -= xn;
-            j = x[i] + 0.5;
+            m_x[i] *= dxi;
+            if (m_x[i] < 0.0)
+                m_x[i] += xn;
+            if (m_x[i] >= xn)
+                m_x[i] -= xn;
+            j = m_x[i] + 0.5;
             rho[j + 1] += qdx;
         }
         break;
     case First_Order :
         for (int i = il; i <= iu; i++) {
-            x[i] *= dxi;
-            if (x[i] < 0.0)
-                x[i] += xn;
-            if (x[i] >= xn)
-                x[i] -= xn;
-            j = x[i];
-            drho = qdx * (x[i] - j);
+            m_x[i] *= dxi;
+            if (m_x[i] < 0.0)
+                m_x[i] += xn;
+            if (m_x[i] >= xn)
+                m_x[i] -= xn;
+            j = m_x[i];
+            drho = qdx * (m_x[i] - j);
             rho[j + 1] += qdx - drho;
             rho[j + 2] += drho;
         }
         break;
     case Quadratic_Spline :
         for (int i = il; i <= iu; i++) {
-            x[i] *= dxi;
-            if (x[i] < 0.0)
-                x[i] += xn;
+            m_x[i] *= dxi;
+            if (m_x[i] < 0.0)
+                m_x[i] += xn;
             else {
-                if (x[i] >= xn)
-                    x[i] -= xn;
+                if (m_x[i] >= xn)
+                    m_x[i] -= xn;
             }
             // By looking up x[i] and storing it in xii, save three additions --
             // I must do an addition every time I use a subscript!
-            xii = x[i];
+            xii = m_x[i];
 
             // Extract the nearest grid point: using truncation to do rounding- j is int.
             j = xii + 0.5;
@@ -1036,7 +1022,7 @@ void PhysElectroStatic::setrho(const int il, const int iu, const double q, const
 
             // Get the coefficient for the grid location one to the right.  Since (j+2)-xii is aways
             // postive the fabs doesn`t need to be there.
-            b = 0.5 * sqr(1.5 -  (j+1) + xii);
+            b = 0.5 * sqr(1.5 - (j + 1) + xii);
             rho[j + 1] += a * qdx;
             rho[j + 2] += b * qdx;
             rho[j] += (1.0 - a - b) * qdx;
@@ -1044,14 +1030,14 @@ void PhysElectroStatic::setrho(const int il, const int iu, const double q, const
         break;
     case Cubic_Spline :
         for (int i = il ;i <= iu; i++) {
-            x[i] *= dxi;
-            if (x[i] <0.0)
-                x[i] += xn;
+            m_x[i] *= dxi;
+            if (m_x[i] <0.0)
+                m_x[i] += xn;
             else {
-                if (x[i] >= xn)
-                    x[i] -= xn;
+                if (m_x[i] >= xn)
+                    m_x[i] -= xn;
             }
-            xii = x[i];
+            xii = m_x[i];
             j = xii + 0.5;
             if ((j - xii) >= 0) {
                 a = 0.5 * cube(j - xii) - sqr(j - xii) + twothirds;
@@ -1088,7 +1074,7 @@ void PhysElectroStatic::setv(const int il, const int iu,
     if (!ke || !p)
         return;
     double dtdx, c, s, vxx;
-    dtdx = dt / dx;
+    dtdx = dt / m_dx;
     if (t != 0.0) {
         c = 1.0 / sqrt(1.0 + t * t);
         s = c * t;

@@ -15,18 +15,17 @@ private:
     enum { Zero_Order = 0, First_Order, Quadratic_Spline, Cubic_Spline };
     enum { Momentum_Conserving = 0, Energy_Conserving };
 
-    static const double onesix;
-    static const double twothirds;
-    static const double AKPERP;
-
-    static const int K8;
-    static const int NGMAX;
-    static const int NXV;
-    static const int NVY;
+    static constexpr double onesix = 0.16666666667;
+    static constexpr double twothirds = 0.6666666667;
+    static constexpr double AKPERP = 2.405;
+    static const int K8 = 8192;
+    static const int NGMAX = K8;
+    static const int NXV = K8;
+    static const int NVY = NXV / 2;
     static const int NSPM = 8;
-    static const int HISTMAX;
-    static const int NVBINMAX;
-    static const int MAXPARTICLES;
+    static const int HISTMAX = 512;
+    static const int NVBINMAX = 1024;
+    static const int MAXPARTICLES = 920001;
 
     // member methods
     bool init(int *, int *, double *, double *, double *, double *, int *, int *, double *, double *, int *);
@@ -48,17 +47,20 @@ private:
     inline double cube(const double val) { return val * val * val; }
 
     // member properties
-    double l, dx, dt, la, ael, epsi, rho0, a1, a2, e0, w0, ese_hist, p, ecconst;
+    int m_ng;
+    double m_dx;
+    double *m_x;
+    double l, dt, la, ael, epsi, rho0, a1, a2, e0, w0, ese_hist, p, ecconst;
 
     double *kes_hist, *pxs_hist, *esem_hist, *ms, *qs, *ts, *nms;
-    double *ese, **kes, **pxs, **esem, *ke, *te, *x, *vx, *vy;
+    double *ese, **kes, **pxs, **esem, *ke, *te, *vx, *vy;
     double *x_array,  *t_array, *k_array, *rho, *phi, *phik, *e;
     double *acc, *dvbin, *v_array, *vbint, *vbin, *vbinstart, *vbin_inst;
     double t;
+    int it, nt, ith, ithl, hist_hi, interval, nsp, localnsp, accum, mmax, ng1, iw, ec, k_hi;
+    int ins[NSPM + 2], np[NSPM + 2], vbins[NSPM + 2], nvbin[NSPM];
     QFile *InputDeck;
 
-    int it, nt, ith, ithl, hist_hi, interval, nsp, localnsp, accum, mmax, ng, ng1, iw, ec, k_hi;
-    int ins[NSPM + 2], np[NSPM + 2], vbins[NSPM + 2], nvbin[NSPM];
 };
 
 #endif // PHYSELECTROSTATIC_H
