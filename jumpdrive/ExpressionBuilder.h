@@ -17,12 +17,12 @@ string &rtrim(string &s);
 string &trim(string &s);
 
 class ExpressionBuilder {
+    typedef pair<string, CustomOperator *> CustomOperatorPair;
+    typedef pair<string, CustomFunction *> CustomFunctionPair;
 public:
 
 	static inline string &trim(string &s);
 
-	typedef pair<string, CustomOperator *> CustomOperatorPair;
-	typedef pair<string, CustomFunction *> CustomFunctionPair;
 	ExpressionBuilder();
 	ExpressionBuilder(const string expression);
 	virtual ~ExpressionBuilder();
@@ -30,7 +30,7 @@ public:
 	RPNExpression build();
 	ValueSet calculate();
 	void withCustomFunctions(const vector<CustomFunction *> &functions);
-	void withVariableNames(const vector<string> &variableNames);
+    void withVariableNames(const VecStr &variableNames);
 	void withVariables(const map<string, double> &variableMap);
 	void withOperations(vector<CustomOperator *> &operations);
 

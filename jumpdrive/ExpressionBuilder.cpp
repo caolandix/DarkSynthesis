@@ -57,12 +57,12 @@ ExpressionBuilder::ExpressionBuilder() {
 //
 ExpressionBuilder::ExpressionBuilder(string strEquation) {
 	string var;
-	vector<string> fields;
+    VecStr fields;
 
 	split(fields, strEquation, is_any_of(","));
-	for (vector<string>::iterator iter = fields.begin() + 1; iter != fields.end(); iter++) {
+    for (VecStr::iterator iter = fields.begin() + 1; iter != fields.end(); iter++) {
 		double val = 0.0;
-		vector<string> tmp;
+        VecStr tmp;
 
 		// Split the variable from it's value
 		split(tmp, ::trim(*iter), is_any_of("="));
@@ -241,8 +241,8 @@ void ExpressionBuilder::withCustomFunctions(const vector<CustomFunction *> &func
 // Notes:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-void ExpressionBuilder::withVariableNames(const vector<string> &variableNames) {
-	for (vector<string>::const_iterator iter = variableNames.begin(); iter != variableNames.end(); iter++)
+void ExpressionBuilder::withVariableNames(const VecStr &variableNames) {
+    for (VecStrIter iter = variableNames.begin(); iter != variableNames.end(); iter++)
 		m_variables.insert(pair<string, double>(*iter, NULL));
 }
 //

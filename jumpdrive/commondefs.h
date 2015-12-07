@@ -42,5 +42,9 @@ using namespace boost::multi_index;
 using boost::multi_index_container;
 
 typedef unsigned int uint;
+typedef vector<double> VecDbl;
+typedef vector<double>::const_iterator VecDblIter;
+typedef vector<string> VecStr;
+typedef vector<string>::const_iterator VecStrIter;
 
 #endif /* COMMONDEFS_H_ */
