@@ -40,15 +40,7 @@ SOURCES += main.cpp \
     physeqsolveritem.cpp \
     physvectordataobj.cpp \
     physparticledataobj.cpp \
-    xes1/es1.cpp \
-    xes1/fft.cpp \
-    xes1/fields.cpp \
-    xes1/init.cpp \
-    xes1/initwin.cpp \
-    xes1/move.cpp \
-    xes1/set.cpp \
     xes1/physelectrostatic.cpp \
-    xes1/accel.cpp \
     jumpdrive/CustomFunction.cpp \
     jumpdrive/CustomOperator.cpp \
     jumpdrive/ExpressionBuilder.cpp \
@@ -100,7 +92,6 @@ HEADERS  += cmainwindow.h \
     physeqsolveritem.h \
     physvectordataobj.h \
     physparticledataobj.h \
-    xes1/es1.h \
     xes1/physelectrostatic.h \
     jumpdrive/ArithmeticException.h \
     jumpdrive/Calculable.h \
