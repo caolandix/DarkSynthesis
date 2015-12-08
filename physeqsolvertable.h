@@ -5,6 +5,8 @@
 
 #include "physeqsolvertableheader.h"
 
+class PhysEqSolverTableHeader;
+
 class PhysEqSolverTable : public QTableWidget {
 public:
     PhysEqSolverTable(QWidget * = NULL);
@@ -12,17 +14,12 @@ public:
 
     ~PhysEqSolverTable();
 
-signals:
-    //void customContextMenuRequested(const QPoint &);
-public slots:
-    void ShowContextMenu(const QPoint &);
     void insertColumn();
     void removeColumn();
-
+signals:
+public slots:
 private:
     PhysEqSolverTableHeader *m_pHeader;
-    QAction *m_pActionInsertColumn;
-    QAction *m_pActionRemoveColumn;
 };
 
 #endif // PHYSEQSOLVERTABLE_H
