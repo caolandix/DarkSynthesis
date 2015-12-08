@@ -8,7 +8,10 @@
 
 std::map<int, QString> PhysParticle::m_listEditableProps = {
     {0, QString("Name")},
-    {1, QString("Mass")}
+    {1, QString("Mass")},
+    {2, QString("Position")},
+    {3, QString("Lock X Axis")},
+    {4, QString("Lock Y Axis")}
 };
 
 PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, const QString &Label) :
@@ -21,6 +24,8 @@ PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, con
     m_pLabel = new CartesianLabel(Label, this);
     m_Name = Label;
     m_pParent = pParent;
+    m_bLockXAxis = false;
+    m_bLockYAxis = false;
     createConnections();
 }
 
@@ -127,12 +132,19 @@ void PhysParticle::DisassociateVectors() {
 }
 
 QVariant PhysParticle::itemChange(GraphicsItemChange change, const QVariant &value) {
-    switch (change) {
-        case ItemPositionHasChanged:
-            break;
-        default:
-            break;
-    };
+    if (change == ItemPositionChange && scene()) {
+
+        // value is the new position.
+        QPointF newPos = value.toPointF();
+
+        if (m_bLockXAxis || m_bLockYAxis) {
+            if (m_bLockXAxis)
+                newPos.setX(0);
+            if (m_bLockYAxis)
+                newPos.setY(0);
+            return newPos;
+        }
+    }
     return QGraphicsItem::itemChange(change, value);
 }
 

@@ -39,6 +39,13 @@ public:
     void Name(const QString &str);
     double mass() const { return m_DataObj.mass(); }
     void mass(const double val)  { m_DataObj.mass(val); }
+    QPointF Position() const { return m_DataObj.Position(); }
+    void Position(const QPointF pos) { m_DataObj.Position(pos); }
+    bool isXAxisLocked() const { return m_bLockXAxis; }
+    bool isYAxisLocked() const { return m_bLockYAxis; }
+    void LockXAxis(const bool val) { m_bLockXAxis = val; }
+    void LockYAxis(const bool val) { m_bLockYAxis = val; }
+
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 
 protected:
@@ -53,8 +60,8 @@ private:
     QList<PhysVector *> m_Vectors;
     PhysParticleDataObj m_DataObj;
     CartesianGraph *m_pParent;
+    bool m_bLockXAxis, m_bLockYAxis;
     static map<int, QString> m_listEditableProps;
-    QPointF m_pos;
 };
 Q_DECLARE_METATYPE(PhysParticle *)
 #endif // PHYSPARTICLE_H

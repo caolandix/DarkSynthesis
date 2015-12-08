@@ -57,6 +57,9 @@ private:
     // PhysParticles
     PhysObjectPropEditor *m_pParticleName;
     PhysObjectPropEditor *m_pParticleMass;
+    QComboBox *m_pLockXAxis;
+    QComboBox *m_pLockYAxis;
+    PhysObjectPropEditor *m_pPosition;
 
     // The QTableWidget
     QTableWidget *m_pTable;

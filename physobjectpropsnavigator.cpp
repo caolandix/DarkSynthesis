@@ -26,6 +26,9 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows
     m_pParticleName = NULL;
     m_pParticleMass = NULL;
     m_pGraphicsItem = NULL;
+    m_pLockXAxis = NULL;
+    m_pLockYAxis = NULL;
+    m_pPosition = NULL;
 
     setShowGrid(true);
     setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -116,10 +119,22 @@ void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
 void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
     qDebug("PhysObjectPropsNavigator::updateParticleTable()");
     if (pObj) {
-        QString str = m_pParticleMass ->text();
-        pObj ->mass(str.toDouble());
-        str = m_pParticleName ->text();
-        pObj ->Name(str);
+        pObj ->mass(m_pParticleMass ->text().toDouble());
+        pObj ->Name(m_pParticleName ->text());
+
+        // Extract the values from the string
+        QString str = m_pPosition ->text();
+
+        str = str.right(str.length() - 1);
+        str = str.left(str.length() - 1);
+        QStringList strList(str.split(","));
+
+        QPointF newPos(strList.at(0).toDouble(), strList.at(1).toDouble());
+        pObj ->Position(newPos);
+
+        // Locking of the axis'
+        pObj ->LockXAxis(m_pLockXAxis ->currentIndex() == 0 ? true : false);
+        pObj ->LockYAxis(m_pLockYAxis ->currentIndex() == 0 ? true : false);
     }
 }
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
@@ -246,8 +261,25 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
         // column 1
         m_pTable ->setItem(0, 1, m_pParticleName = new PhysObjectPropEditor());
         m_pTable ->setItem(1, 1, m_pParticleMass = new PhysObjectPropEditor());
+        m_pTable ->setItem(2, 1, m_pPosition = new PhysObjectPropEditor());
+        m_pTable ->setCellWidget(3, 1, m_pLockXAxis = new QComboBox());
+        m_pTable ->setCellWidget(4, 1, m_pLockYAxis = new QComboBox());
+
+        // Name
         m_pParticleName -> setText(pObj ->Name());
+
+        // Mass
         m_pParticleMass -> setText(QString("%1").arg(pObj -> mass(), 0, 'f', 6));
+
+        // Position
+        QString position = QString("(%1, %2)").arg(pObj ->pos().x(), 0, 'f', 6).arg(pObj ->pos().y(), 0, 'f', 6);
+        m_pPosition ->setText(position);
+
+        // Lock the Axis'
+        QStringList values;
+        values << "true" << "false";
+        m_pLockXAxis ->addItems(values);
+        m_pLockYAxis ->addItems(values);
     }
 }
 
