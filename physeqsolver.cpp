@@ -64,15 +64,15 @@ void PhysEqSolver::createActions() {
 }
 
 void PhysEqSolver::onAppendTimeColumn() {
-    m_pTable -> appendColumn();
+    //m_pTable -> appendColumn();
 }
 
 void PhysEqSolver::onInsertTimeColumn() {
-    m_pTable -> insertColumn(pos());
+    //m_pTable -> insertColumn(pos());
 }
 
 void PhysEqSolver::onRemoveTimeColumn() {
-    m_pTable -> removeColumn(pos());
+    //m_pTable -> removeColumn(pos());
 }
 
 void PhysEqSolver::updateColor(QTableWidgetItem *pItem) {

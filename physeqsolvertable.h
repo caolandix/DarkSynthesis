@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 
+#include "physeqsolvertableheader.h"
 
 class PhysEqSolverTable : public QTableWidget {
 public:
@@ -11,15 +12,17 @@ public:
 
     ~PhysEqSolverTable();
 
-    void appendColumn();
-    void insertColumn(const QPoint);
-    void removeColumn(const QPoint);
+signals:
+    //void customContextMenuRequested(const QPoint &);
+public slots:
+    void ShowContextMenu(const QPoint &);
+    void insertColumn();
+    void removeColumn();
 
 private:
-
-signals:
-
-public slots:
+    PhysEqSolverTableHeader *m_pHeader;
+    QAction *m_pActionInsertColumn;
+    QAction *m_pActionRemoveColumn;
 };
 
 #endif // PHYSEQSOLVERTABLE_H
