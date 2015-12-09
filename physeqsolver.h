@@ -21,9 +21,6 @@ public slots:
     void selectFont();
     void clear();
     void actionSum();
-    void onAppendTimeColumn();
-    void onInsertTimeColumn();
-    void onRemoveTimeColumn();
 protected:
     void setupContextMenu();
     void setupContents();
@@ -35,9 +32,6 @@ private:
     QAction *m_pActColor;
     QAction *m_pActFont;
     QAction *m_pActClear;
-    QAction *m_pActAppendTimeColumn;
-    QAction *m_pActInsertTimeColumn;
-    QAction *m_pActRemoveTimeColumn;
     PhysEqSolverTable *m_pTable;
     QLineEdit *m_pFormulaInput;
     PhysEqGrid m_Grid;

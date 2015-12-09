@@ -15,9 +15,6 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pP
     m_pActColor = NULL;
     m_pActFont = NULL;
     m_pActClear = NULL;
-    m_pActAppendTimeColumn = NULL;
-    m_pActInsertTimeColumn = NULL;
-    m_pActRemoveTimeColumn = NULL;
     m_pTable = NULL;
     m_pFormulaInput = new QLineEdit();
 
@@ -42,15 +39,6 @@ void PhysEqSolver::createTable(const int rows, const int cols) {
 }
 
 void PhysEqSolver::createActions() {
-    m_pActAppendTimeColumn = new QAction(tr("Append Time Column"), this);
-    connect(m_pActAppendTimeColumn, SIGNAL(triggered()), this, SLOT(onAppendTimeColumn()));
-
-    m_pActInsertTimeColumn = new QAction(tr("Insert Time Column"), this);
-    connect(m_pActInsertTimeColumn, SIGNAL(triggered()), this, SLOT(onInsertTimeColumn()));
-
-    m_pActRemoveTimeColumn = new QAction(tr("Remove Time Column"), this);
-    connect(m_pActRemoveTimeColumn, SIGNAL(triggered()), this, SLOT(onRemoveTimeColumn()));
-
     m_pActFont = new QAction(tr("Font..."), this);
     m_pActFont->setShortcut(Qt::CTRL | Qt::Key_F);
     connect(m_pActFont, SIGNAL(triggered()), this, SLOT(selectFont()));
@@ -61,18 +49,6 @@ void PhysEqSolver::createActions() {
     m_pActClear = new QAction(tr("Clear"), this);
     m_pActClear->setShortcut(Qt::Key_Delete);
     connect(m_pActClear, SIGNAL(triggered()), this, SLOT(clear()));
-}
-
-void PhysEqSolver::onAppendTimeColumn() {
-    //m_pTable -> appendColumn();
-}
-
-void PhysEqSolver::onInsertTimeColumn() {
-    //m_pTable -> insertColumn(pos());
-}
-
-void PhysEqSolver::onRemoveTimeColumn() {
-    //m_pTable -> removeColumn(pos());
 }
 
 void PhysEqSolver::updateColor(QTableWidgetItem *pItem) {
@@ -162,14 +138,6 @@ void PhysEqSolver::setupContextMenu() {
     addAction(m_pActColor);
     addAction(m_pActFont);
     addAction(m_pActClear);
-    addAction(m_pActAppendTimeColumn);
-    addAction(m_pActInsertTimeColumn);
-    if (m_pTable ->columnCount() > 2)
-        m_pActRemoveTimeColumn -> setEnabled(true);
-    else
-        m_pActRemoveTimeColumn -> setEnabled(false);
-    addAction(m_pActRemoveTimeColumn);
-
     setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
