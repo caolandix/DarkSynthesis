@@ -277,9 +277,19 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
 
         // Lock the Axis'
         QStringList values;
-        values << "true" << "false";
+        values << "false" << "true";
         m_pLockXAxis ->addItems(values);
         m_pLockYAxis ->addItems(values);
+
+        if (pObj ->isXAxisLocked())
+            m_pLockXAxis ->setCurrentIndex(1);
+        else
+            m_pLockXAxis ->setCurrentIndex(0);
+        if (pObj ->isYAxisLocked())
+            m_pLockYAxis ->setCurrentIndex(1);
+        else
+            m_pLockYAxis ->setCurrentIndex(0);
+
     }
 }
 

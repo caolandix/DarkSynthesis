@@ -21,24 +21,15 @@ PhysEqSolverTable::~PhysEqSolverTable() {
 
 void PhysEqSolverTable::insertColumn() {
     QStringList headers;
-    for (int i = 0; i < model() ->columnCount(); i++)
-        headers.append(model() ->headerData(i, Qt::Horizontal).toString());
 
-    // Append a column to the end
-    QString lastHeader = headers.back();
-    QString lastColumn = lastHeader.right(lastHeader.count() - 1);
-    int nextColumn = lastColumn.toInt() + 1;
-    QString str("t");
-    str += QString::number(nextColumn);
-    QString newColumn(QString("t") + QString::number(nextColumn));
+    // Insert a new column at the end
+    model() ->insertColumn(model() ->columnCount());
 
-    model() ->insertColumn(lastHeader.count());
-    //horizontalHeaderItem(lastHeader.count() - 1)->setText(newColumn);
-
-    //model() ->insertColumn(lastHeader.count());
-    //model() ->setHeaderData(lastHeader.count() - 1, Qt::Horizontal, QVariant(newColumn));
-
-    resizeRowsToContents();
+    // rebuild column headers
+    headers.push_back(QString(""));
+    for (int i = 1; i < model() ->columnCount(); i++)
+        headers.push_back(QString("t") + QString::number(i - 1));
+    setHorizontalHeaderLabels(headers);
     resizeColumnsToContents();
 }
 
