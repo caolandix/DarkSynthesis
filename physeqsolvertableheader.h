@@ -22,6 +22,7 @@ private:
     PhysEqSolverTable *m_pTable;
     QAction *m_pActionInsertColumn;
     QAction *m_pActionRemoveColumn;
+    int m_hdrIdx;
 };
 
 #endif // PHYSEQSOLVERTABLEHEADER_H

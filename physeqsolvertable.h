@@ -15,7 +15,8 @@ public:
     ~PhysEqSolverTable();
 
     void insertColumn();
-    void removeColumn();
+    void removeColumn(const int);
+    void rebuildColumnHeaders();
 signals:
 public slots:
 private:

@@ -28,12 +28,9 @@ void PhysEqSolverTableHeader::onShowContextMenu(const QPoint &pos) {
 
     ctxMenu.addAction(m_pActionInsertColumn);
     ctxMenu.addAction(m_pActionRemoveColumn);
-
-    QAction *pAction = NULL;
-    QPoint globalPos = mapToGlobal(pos);
-    if (pAction = ctxMenu.exec(globalPos)) {
-        bool bVal = true;
-    }
+    QModelIndex modelIdx = indexAt(pos);
+    m_hdrIdx = modelIdx.column();
+    ctxMenu.exec(mapToGlobal(pos));
 }
 
 void PhysEqSolverTableHeader::insertColumn() {
@@ -41,6 +38,6 @@ void PhysEqSolverTableHeader::insertColumn() {
 }
 
 void PhysEqSolverTableHeader::removeColumn() {
-    m_pTable ->removeColumn();
+    m_pTable ->removeColumn(m_hdrIdx);
 }
 
