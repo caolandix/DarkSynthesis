@@ -8,6 +8,7 @@
 class PhysEqSolverTableHeader;
 
 class PhysEqSolverTable : public QTableWidget {
+    Q_OBJECT
 public:
     PhysEqSolverTable(const int, const int, QWidget *);
 
@@ -16,14 +17,21 @@ public:
     void insertColumn();
     void removeColumn(const int);
     void rebuildColumnHeaders();
-    void createActions();
-    void setupContextMenu();
+    void createTableHeader();
+    void updateColor(QTableWidgetItem *);
 signals:
 public slots:
-    void selectColor();
-    void selectFont();
-    void clear();
-    void updateColor(QTableWidgetItem *);
+    void onSelectColor();
+    void onSelectFont();
+    void onClear();
+    void onCustomContextMenu(const QPoint &);
+    void onSelectVelVector();
+    void onSelectAccelVector();
+    void onSelectGravVector();
+    void onSelectDisplacementVector();
+    void onSelectFreeParticle();
+    void onSelectXLockedParticle();
+    void onSelectYLockedParticle();
 private:
     PhysEqSolverTableHeader *m_pHeader;
     QAction *m_pActColor;
