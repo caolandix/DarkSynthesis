@@ -28,8 +28,8 @@ void PhysEqSolverTableHeader::onShowContextMenu(const QPoint &pos) {
 
     ctxMenu.addAction(m_pActionInsertColumn);
     ctxMenu.addAction(m_pActionRemoveColumn);
-    QModelIndex modelIdx = indexAt(pos);
-    m_hdrIdx = modelIdx.column();
+
+    m_hdrIdx = logicalIndexAt(pos);
     ctxMenu.exec(mapToGlobal(pos));
 }
 

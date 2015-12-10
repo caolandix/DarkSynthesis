@@ -29,8 +29,10 @@ void PhysEqSolverTable::insertColumn() {
 }
 
 void PhysEqSolverTable::removeColumn(const int idx) {
-    model() ->removeColumn(idx);
-    rebuildColumnHeaders();
+    if (model() ->columnCount() > 2) {
+        model() ->removeColumn(idx);
+        rebuildColumnHeaders();
+    }
 }
 
 void PhysEqSolverTable::rebuildColumnHeaders() {
