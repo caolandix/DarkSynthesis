@@ -14,24 +14,16 @@ public:
     void createConnections();
     void createTable(const int, const int);
 public slots:
-    void updateColor(QTableWidgetItem *);
     void updateLineEdit(QTableWidgetItem *);
     void returnPressed();
-    void selectColor();
-    void selectFont();
-    void clear();
     void actionSum();
 protected:
     void setupContextMenu();
     void setupContents();
-    void createActions();
     void actionMath_helper(const QString &, const QString &);
     bool runInputDialog(const QString &, const QString &, const QString &, const QString &,
                         const QString &, QString *, QString *, QString *);
 private:
-    QAction *m_pActColor;
-    QAction *m_pActFont;
-    QAction *m_pActClear;
     PhysEqSolverTable *m_pTable;
     QLineEdit *m_pFormulaInput;
     PhysEqGrid m_Grid;

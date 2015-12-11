@@ -12,15 +12,10 @@
 #include "physeqsolvertable.h"
 
 PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pParent) {
-    m_pActColor = NULL;
-    m_pActFont = NULL;
-    m_pActClear = NULL;
     m_pTable = NULL;
     m_pFormulaInput = new QLineEdit();
 
     createTable(rows, cols);
-    createActions();
-    updateColor(0);
     setupContents();
     setupContextMenu();
     createConnections();
@@ -36,42 +31,6 @@ void PhysEqSolver::createConnections() {
 
 void PhysEqSolver::createTable(const int rows, const int cols) {
     m_pTable = new PhysEqSolverTable(rows, cols, this);
-}
-
-void PhysEqSolver::createActions() {
-    m_pActFont = new QAction(tr("Font..."), this);
-    m_pActFont->setShortcut(Qt::CTRL | Qt::Key_F);
-    connect(m_pActFont, SIGNAL(triggered()), this, SLOT(selectFont()));
-
-    m_pActColor = new QAction(QPixmap(16, 16), tr("Background &Color..."), this);
-    connect(m_pActColor, SIGNAL(triggered()), this, SLOT(selectColor()));
-
-    m_pActClear = new QAction(tr("Clear"), this);
-    m_pActClear->setShortcut(Qt::Key_Delete);
-    connect(m_pActClear, SIGNAL(triggered()), this, SLOT(clear()));
-}
-
-void PhysEqSolver::updateColor(QTableWidgetItem *pItem) {
-    QPixmap pix(16, 16);
-    QColor colour;
-    if (pItem)
-        colour = pItem -> backgroundColor();
-    if (!colour.isValid())
-        colour = palette().base().color();
-
-    QPainter pt(&pix);
-    pt.fillRect(0, 0, 16, 16, colour);
-
-    QColor lighter = colour.light();
-    pt.setPen(lighter);
-    QPoint lightFrame[] = { QPoint(0, 15), QPoint(0, 0), QPoint(15, 0) };
-    pt.drawPolyline(lightFrame, 3);
-
-    pt.setPen(colour.dark());
-    QPoint darkFrame[] = { QPoint(1, 15), QPoint(15, 15), QPoint(15, 1) };
-    pt.drawPolyline(darkFrame, 3);
-    pt.end();
-    m_pActColor -> setIcon(pix);
 }
 
 void PhysEqSolver::updateLineEdit(QTableWidgetItem *pItem) {
@@ -95,49 +54,7 @@ void PhysEqSolver::returnPressed() {
     m_pTable -> viewport() -> update();
 }
 
-void PhysEqSolver::selectColor() {
-    QTableWidgetItem *pItem = m_pTable -> currentItem();
-    QColor col = pItem ? pItem -> backgroundColor() : m_pTable -> palette().base().color();
-    col = QColorDialog::getColor(col, this);
-    if (!col.isValid())
-        return;
-
-    QList<QTableWidgetItem *> selectedItems = m_pTable -> selectedItems();
-    if (selectedItems.count() == 0)
-        return;
-
-    foreach (QTableWidgetItem *pItem, selectedItems) {
-        if (pItem)
-            pItem -> setBackgroundColor(col);
-    }
-    updateColor(m_pTable -> currentItem());
-}
-
-void PhysEqSolver::selectFont() {
-    QList<QTableWidgetItem*> selectedItems = m_pTable -> selectedItems();
-    if (selectedItems.count() == 0)
-        return;
-
-    bool ok = false;
-    QFont fnt = QFontDialog::getFont(&ok, font(), this);
-
-    if (!ok)
-        return;
-    foreach (QTableWidgetItem *pItem, selectedItems) {
-        if (pItem)
-            pItem -> setFont(fnt);
-    }
-}
-
-void PhysEqSolver::clear() {
-    foreach (QTableWidgetItem *pItem, m_pTable -> selectedItems())
-        pItem -> setText("");
-}
-
 void PhysEqSolver::setupContextMenu() {
-    addAction(m_pActColor);
-    addAction(m_pActFont);
-    addAction(m_pActClear);
     setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
