@@ -2,6 +2,7 @@
 #include "physeqsolvertable.h"
 #include "physeqsolverdelegate.h"
 #include "physeqsolvertableheader.h"
+#include "PhysSelectParticleDlg.h"
 
 
 PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget *pParent) : QTableWidget(rows, columns, pParent) {
@@ -23,7 +24,6 @@ PhysEqSolverTable::~PhysEqSolverTable() {
 
 void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
     QMenu subCtxMenu(tr("Physics Objects..."));
-    QMenu subCtxMenuParticles(tr("Particles..."));
     QMenu subCtxMenuVectors(tr("Vectors..."));
     QMenu subCtxMenuOther(tr("Other..."));
     QMenu ctxMenu;
@@ -51,12 +51,8 @@ void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
     connect(pDisplacement, SIGNAL(triggered()), this, SLOT(onSelectDisplacementVector()));
 
     // Particles
-    QAction *pGenPart = new QAction(tr("Free-form"), this);
-    connect(pGenPart, SIGNAL(triggered()), this, SLOT(onSelectFreeParticle()));
-    QAction *pXPart = new QAction(tr("Horizontal Only"), this);
-    connect(pXPart, SIGNAL(triggered()), this, SLOT(onSelectXLockedParticle()));
-    QAction *pYPart = new QAction(tr("Vertical Only"), this);
-    connect(pYPart, SIGNAL(triggered()), this, SLOT(onSelectYLockedParticle()));
+    QAction *pGenPart = new QAction(tr("Particle"), this);
+    connect(pGenPart, SIGNAL(triggered()), this, SLOT(onSelectParticle()));
 
     // Vectors Submenu
     subCtxMenuVectors.addAction(pVel);
@@ -65,16 +61,14 @@ void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
     subCtxMenuVectors.addAction(pDisplacement);
 
     // Particles submenu
-    subCtxMenuParticles.addAction(pGenPart);
-    subCtxMenuParticles.addAction(pXPart);
-    subCtxMenuParticles.addAction(pYPart);
+    subCtxMenu.addAction(pGenPart);
 
     // Other submenu
 
     // Connect up submenu chain
     subCtxMenu.addMenu(&subCtxMenuOther);
-    subCtxMenu.addMenu(&subCtxMenuParticles);
     subCtxMenu.addMenu(&subCtxMenuVectors);
+
     ctxMenu.addMenu(&subCtxMenu);
 
     // Execute the menu
@@ -93,21 +87,19 @@ void PhysEqSolverTable::onSelectGravVector() {
     qDebug("PhysEqSolverTable::onSelectGravVector()");
 }
 
-void PhysEqSolverTable::onSelectFreeParticle() {
-    qDebug("PhysEqSolverTable::onSelectFreeParticle()");
-}
-
-void PhysEqSolverTable::onSelectXLockedParticle() {
-    qDebug("PhysEqSolverTable::onSelectXLockedParticle()");
-}
-
-void PhysEqSolverTable::onSelectYLockedParticle() {
-    qDebug("PhysEqSolverTable::onSelectYLockedParticle()");
-}
 
 void PhysEqSolverTable::onSelectDisplacementVector() {
     qDebug("PhysEqSolverTable::onSelectDisplacementVector()");
 }
+
+void PhysEqSolverTable::onSelectParticle() {
+    qDebug("PhysEqSolverTable::onSelectParticle()");
+
+    PhysSelectParticleDlg dlg(this);
+
+    dlg.show();
+}
+
 
 void PhysEqSolverTable::createTableHeader() {
     setHorizontalHeader(m_pHeader = new PhysEqSolverTableHeader(this));

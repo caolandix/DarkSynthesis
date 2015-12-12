@@ -29,9 +29,7 @@ public slots:
     void onSelectAccelVector();
     void onSelectGravVector();
     void onSelectDisplacementVector();
-    void onSelectFreeParticle();
-    void onSelectXLockedParticle();
-    void onSelectYLockedParticle();
+    void onSelectParticle();
 private:
     PhysEqSolverTableHeader *m_pHeader;
     QAction *m_pActColor;
