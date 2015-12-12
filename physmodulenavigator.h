@@ -1,8 +1,7 @@
 #ifndef PHYSMODULENAVIGATOR_H
 #define PHYSMODULENAVIGATOR_H
 
-#include <QListWidget>
-#include <QList>
+#include <QtWidgets>
 
 #include "physmodule.h"
 
