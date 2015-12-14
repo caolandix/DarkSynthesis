@@ -2,7 +2,7 @@
 #include "physeqsolvertable.h"
 #include "physeqsolverdelegate.h"
 #include "physeqsolvertableheader.h"
-#include "PhysSelectParticleDlg.h"
+#include "ui_physselectparticledlg.h"
 
 
 PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget *pParent) : QTableWidget(rows, columns, pParent) {
@@ -95,9 +95,10 @@ void PhysEqSolverTable::onSelectDisplacementVector() {
 void PhysEqSolverTable::onSelectParticle() {
     qDebug("PhysEqSolverTable::onSelectParticle()");
 
-    PhysSelectParticleDlg dlg(this);
-
-    dlg.show();
+    QDialog *pDlg = new QDialog(0,0);
+    Ui_PhysSelectParticleDlg dlg;
+    dlg.setupUi(pDlg);
+    pDlg ->show();
 }
 
 
