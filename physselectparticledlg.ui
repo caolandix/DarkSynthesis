@@ -41,6 +41,9 @@
    <property name="selectionMode">
     <enum>QAbstractItemView::MultiSelection</enum>
    </property>
+   <property name="currentRow">
+    <number>-1</number>
+   </property>
    <property name="sortingEnabled">
     <bool>true</bool>
    </property>

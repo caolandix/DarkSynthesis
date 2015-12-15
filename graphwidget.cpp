@@ -62,6 +62,7 @@ void GraphWidget::createCartesianGraph() {
     m_pCartGraph -> setPos(0, 0);
     m_pScene -> addItem(m_pCartGraph);
     emit createObj(m_pCartGraph);
+    emit cartesianGraphCreated(m_pCartGraph ->DataObj());
 }
 
 PhysVector *GraphWidget::createVector(const QPointF &startPos) {

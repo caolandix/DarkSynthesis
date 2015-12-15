@@ -98,9 +98,13 @@ void PhysEqSolverTable::onSelectParticle() {
     QDialog *pDlg = new QDialog(0,0);
     Ui_PhysSelectParticleDlg dlg;
     dlg.setupUi(pDlg);
-    pDlg ->show();
-}
 
+    for (QList<PhysParticle *>::iterator iter = m_pDataObj ->Particles().begin(); iter != m_pDataObj ->Particles().end(); iter++) {
+        QListWidgetItem *pItem = new QListWidgetItem((*iter) ->Name());
+        dlg.m_lstParticles->addItem(pItem);
+    }
+    pDlg -> show();
+}
 
 void PhysEqSolverTable::createTableHeader() {
     setHorizontalHeader(m_pHeader = new PhysEqSolverTableHeader(this));

@@ -13,10 +13,15 @@ public:
 
     void createConnections();
     void createTable(const int, const int);
+
+    void CartesianDataObj(CartesianGraphDataObj *pObj) { m_pTable -> CartesianDataObj(pObj); }
+    QList<PhysParticle *> Particles() const { return m_pTable -> CartesianDataObj() ->Particles(); }
+    QList<PhysVector *> Vectors() const { return m_pTable -> CartesianDataObj() ->Vectors(); }
 public slots:
     void updateLineEdit(QTableWidgetItem *);
     void returnPressed();
     void actionSum();
+    void onCartesianGraphCreated(CartesianGraphDataObj *pObj) { m_pTable ->CartesianDataObj(pObj); }
 protected:
     void setupContextMenu();
     void setupContents();

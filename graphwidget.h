@@ -26,6 +26,7 @@ signals:
     void modifyObj(QGraphicsItem *);
     void reorderObjNav(QGraphicsItem *);
     void changeItemName(const QString &, const QString &);
+    void cartesianGraphCreated(CartesianGraphDataObj *);
 public slots:
     void zoomIn() { scaleView(qreal(1.2)); }
     void zoomOut() { scaleView(1 / qreal(1.2)); }

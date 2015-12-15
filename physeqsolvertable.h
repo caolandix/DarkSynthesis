@@ -4,6 +4,7 @@
 #include <QtWidgets>
 
 #include "physeqsolvertableheader.h"
+#include "cartesiangraphdataobj.h"
 
 class PhysEqSolverTableHeader;
 
@@ -19,6 +20,9 @@ public:
     void rebuildColumnHeaders();
     void createTableHeader();
     void updateColor(QTableWidgetItem *);
+
+    void CartesianDataObj(CartesianGraphDataObj *pObj) { m_pDataObj = pObj; }
+    CartesianGraphDataObj *CartesianDataObj() const { return m_pDataObj; }
 signals:
 public slots:
     void onSelectColor();
@@ -32,6 +36,7 @@ public slots:
     void onSelectParticle();
 private:
     PhysEqSolverTableHeader *m_pHeader;
+    CartesianGraphDataObj *m_pDataObj;
     QAction *m_pActColor;
     QAction *m_pActFont;
     QAction *m_pActClear;
