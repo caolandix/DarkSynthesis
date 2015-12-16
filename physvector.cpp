@@ -34,7 +34,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     m_Color = Qt::black;
     m_arrowSize = 20;
     m_dragIndex = DI_VECTORLINE;
-    m_magnitude = 50.0;
+    m_pDataObj ->Magnitude(50.0);
     m_bUseNewThetaAngle = false;
     m_Theta.bAboveAxis = true;
     m_Theta.degrees = 45.0;
@@ -57,7 +57,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    setLine(0 + m_magnitude, 0 + m_magnitude, 0, 0);
+    setLine(0 + Magnitude(), 0 + Magnitude(), 0, 0);
     createConnections();
 }
 
@@ -87,18 +87,18 @@ void PhysVector::clearParticle(PhysParticle *pObj) {
 void PhysVector::init() {
     //qDebug("PhysVector::init()");
     removeFromParticles();
-    m_magnitude = 50.0;
+    m_pDataObj ->Magnitude(50.0);
     m_Theta.bAboveAxis = true;
     m_Theta.degrees = 45.0;
     m_Theta.axisOrientation = AXIS_HORIZ;
-    setLine(0 + m_magnitude, 0 + m_magnitude, 0, 0);
+    setLine(0 + Magnitude(), 0 + Magnitude(), 0, 0);
 }
 
 PhysVector *PhysVector::copy() {
     PhysVector *pObj = NULL;
     pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), pos(), Name());
     pObj -> theta(theta());
-    pObj -> Magnitude(m_magnitude);
+    pObj ->Magnitude(Magnitude());
     pObj -> StartPoint(m_StartPoint);
     pObj -> EndPoint(m_EndPoint);
     pObj -> CurrPos(m_currPos);
@@ -109,8 +109,8 @@ PhysVector *PhysVector::copy() {
 
 void PhysVector::Name(const QString &str) {
     //qDebug("PhysVector::Name()");
-    m_pDataObj ->Name(str);
     emit changeItemName(m_pDataObj ->Name(), str);
+    m_pDataObj ->Name(str);
     m_pLabel ->setPlainText(m_pDataObj ->Name());
 }
 

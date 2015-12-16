@@ -43,6 +43,7 @@ public:
     QString Name() const { return m_pDataObj ->Name(); }
     CartesianLabel *xlabel() const { return m_x_label; }
     map<int, QString> EditableProps() const { return m_listEditableProps;}
+    void AddParticle(PhysParticle *pObj) { m_pDataObj ->AddParticle(pObj); }
 
 
     // accessors -- set

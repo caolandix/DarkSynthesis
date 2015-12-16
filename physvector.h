@@ -42,7 +42,7 @@ public:
     void init();
 
     // accessors
-    double Magnitude() const { return m_magnitude; }
+    double Magnitude() const { return m_pDataObj ->Magnitude(); }
     Theta theta() const { return m_Theta; }
     QColor Color() const { return m_Color; }
     QPolygonF ArrowHead() const { return m_arrowHead; }
@@ -64,8 +64,8 @@ public:
     void StartPoint(const QPointF &pt) { m_StartPoint = pt; }
     void EndPoint(const QPointF &pt) { m_EndPoint = pt; }
     void CurrPos(const QPointF &pt) { m_currPos = pt; }
-    void Magnitude(const double val) { m_magnitude = val; }
-    void Magnitude(const QString &str) { m_magnitude = str.toDouble(); }
+    void Magnitude(const double val) { m_pDataObj ->Magnitude(val); }
+    void Magnitude(const QString &str) { m_pDataObj ->Magnitude(str.toDouble()); }
     void ThetaAngle(const double);
     void ThetaAngle(const QString &);
     void ThetaAxisOrient(const AxisOrientation val) { m_Theta.axisOrientation = val; }
@@ -86,13 +86,12 @@ private:
 
 
     // Data Specific (should be pulled out into a separate DataObject like CartesianGraph has
-    double m_magnitude;
-    Theta m_Theta;
-    PhysParticle *m_pStartParticle;
-    PhysParticle *m_pEndParticle;
     QPointF m_currPos;
     static map<int, QString> m_listEditableProps;
     bool m_bUseNewThetaAngle;
+    Theta m_Theta;
+    PhysParticle *m_pStartParticle;
+    PhysParticle *m_pEndParticle;
 
     // Drawing specific.
     CartesianLabel *m_pLabel;

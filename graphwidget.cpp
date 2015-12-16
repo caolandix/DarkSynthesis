@@ -78,6 +78,31 @@ PhysVector *GraphWidget::createVector(const QPointF &startPos) {
     return pObj;
 }
 
+PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
+    qDebug("GraphWidget::createParticle");
+    QGraphicsScene *pScene = scene();
+    QString Label;
+    QTextStream(&Label) << "Particle-" << m_pCartGraph ->Particles().length();
+    PhysParticle *pObj = new PhysParticle(m_pCartGraph, startPos, Label);
+
+    m_pCartGraph -> AddParticle(pObj);
+    pScene -> addItem(pObj);
+    emit createObj(pObj);
+    return pObj;
+}
+
+void GraphWidget::createVector() {
+    qDebug("GraphWidget::createVector");
+    m_pInfoLabel -> setText(tr("Created a new Vector"));
+    createVector(m_currClickPos);
+}
+
+void GraphWidget::createParticle() {
+    qDebug("GraphWidget::createParticle");
+    m_pInfoLabel -> setText(tr("Created a new Particle"));
+    createParticle(m_currClickPos);
+}
+
 void GraphWidget::onClonePhysObj(QGraphicsItem *pNewObj) {
     qDebug("GraphWidget::onClonePhysObj()");
     if (!pNewObj)
@@ -123,31 +148,6 @@ void GraphWidget::onRemovePhysObj(QGraphicsItem *pObj) {
         }
         scene() ->removeItem(pObj);
     }
-}
-
-PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
-    qDebug("GraphWidget::createParticle");
-    QGraphicsScene *pScene = scene();
-    QString Label;
-    QTextStream(&Label) << "Particle-" << m_pCartGraph -> DataObj() -> Particles().length();
-    PhysParticle *pObj = new PhysParticle(m_pCartGraph, startPos, Label);
-
-    m_pCartGraph -> DataObj() -> AddParticle(pObj);
-    pScene -> addItem(pObj);
-    emit createObj(pObj);
-    return pObj;
-}
-
-void GraphWidget::createVector() {
-    qDebug("GraphWidget::createVector");
-    m_pInfoLabel -> setText(tr("Created a new Vector"));
-    createVector(m_currClickPos);
-}
-
-void GraphWidget::createParticle() {
-    qDebug("GraphWidget::createParticle");
-    m_pInfoLabel -> setText(tr("Created a new Particle"));
-    createParticle(m_currClickPos);
 }
 
 void GraphWidget::particleProps() {
