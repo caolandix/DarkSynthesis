@@ -103,20 +103,14 @@ void PhysEqSolverTable::onSelectParticle() {
     dlg.setupUi(pDlg);
 
     foreach (PhysParticle *pObj, m_pDataObj ->Particles()) {
-        if (pObj) {
-            QListWidgetItem *pItem = new QListWidgetItem(pObj ->Name());
-            dlg.m_lstParticles->addItem(pItem);
-        }
+        if (pObj)
+            dlg.m_lstParticles->addItem(new QListWidgetItem(pObj ->Name()));
     }
     pDlg ->show();
     if (pDlg ->result() == QDialog::Accepted) {
-        QList<QListWidgetItem *> lst = dlg.m_lstParticles ->selectedItems();
-        QString itemName;
-
-        for (QList<QListWidgetItem *>::iterator iter = lst.begin(); iter != lst.end(); iter++) {
-            QListWidgetItem *pItem = *iter;
-            itemName = pItem -> text();
-            // emit addPhysEqSolverRow(itemName);
+        foreach(QListWidgetItem *pItem, dlg.m_lstParticles ->selectedItems()) {
+            if (pItem)
+                emit addPhysEqSolverRow(pItem -> text());
         }
     }
 }
