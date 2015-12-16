@@ -17,8 +17,6 @@ INCLUDEPATH = ./boost_1_59_0
 
 SOURCES += main.cpp \
     cmainwindow.cpp \
-    node.cpp \
-    edge.cpp \
     graphwidget.cpp \
     cartesiangraph.cpp \
     physparticle.cpp \
@@ -28,8 +26,6 @@ SOURCES += main.cpp \
     cartesiangraphdataobj.cpp \
     physbaseitem.cpp \
     physobjectnavigator.cpp \
-    comboboxdelegate.cpp \
-    spinboxdelegate.cpp \
     physmodulenavigator.cpp \
     physoutputnavigator.cpp \
     physobjectpropsnavigator.cpp \
@@ -57,8 +53,6 @@ SOURCES += main.cpp \
     jumpdrive/ValueSet.cpp \
     physobjectpropdelegate.cpp \
     physobjectpropeditor.cpp \
-    physctrldoublespinboxdelegate.cpp \
-    physctrldoublespinbox.cpp \
     physeqsolvertable.cpp \
     physeqgrid.cpp \
     physeqgridcell.cpp \
@@ -69,8 +63,6 @@ SOURCES += main.cpp \
     physdataobj.cpp
 
 HEADERS  += cmainwindow.h \
-    node.h \
-    edge.h \
     graphwidget.h \
     cartesiangraph.h \
     physparticle.h \
@@ -80,8 +72,6 @@ HEADERS  += cmainwindow.h \
     cartesiangraphdataobj.h \
     physbaseitem.h \
     physobjectnavigator.h \
-    comboboxdelegate.h \
-    spinboxdelegate.h \
     physmodulenavigator.h \
     physoutputnavigator.h \
     physobjectpropsnavigator.h \
@@ -144,8 +134,6 @@ HEADERS  += cmainwindow.h \
     jumpdrive/VariableToken.h \
     physobjectpropdelegate.h \
     physobjectpropeditor.h \
-    physctrldoublespinboxdelegate.h \
-    physctrldoublespinbox.h \
     physeqsolvertable.h \
     physeqgrid.h \
     physeqgridcell.h \
