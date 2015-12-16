@@ -1,12 +1,16 @@
 #ifndef PHYSVECTORDATAOBJ_H
 #define PHYSVECTORDATAOBJ_H
 
+#include <QString>
 
-class PhysVectorDataObj {
+#include "physdataobj.h"
+
+class PhysVectorDataObj : public PhysDataObj {
 public:
-    PhysVectorDataObj();
+    PhysVectorDataObj(const QString str = "") : PhysDataObj(str) {}
     PhysVectorDataObj(const PhysVectorDataObj &);
-    ~PhysVectorDataObj();
+    PhysVectorDataObj(const PhysVectorDataObj *);
+    ~PhysVectorDataObj() {}
     PhysVectorDataObj &operator=(const PhysVectorDataObj &);
 private:
 };

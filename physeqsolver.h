@@ -22,6 +22,7 @@ public slots:
     void returnPressed();
     void actionSum();
     void onCartesianGraphCreated(CartesianGraphDataObj *pObj) { m_pTable ->CartesianDataObj(pObj); }
+    void onAddPhysEqSolverRow(QString objName);
 protected:
     void setupContextMenu();
     void setupContents();

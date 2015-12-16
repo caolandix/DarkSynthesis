@@ -9,6 +9,8 @@ public:
     PhysEqGrid() {}
     ~PhysEqGrid();
 
+    void insertRow();
+
 private:
     RowList m_rowList;
 };

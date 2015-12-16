@@ -1,11 +1,4 @@
-#include <QGraphicsScene>
-#include <QGraphicsItem>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsTextItem>
-#include <QPainter>
-#include <QPen>
-#include <QStyleOption>
-#include <QTextStream>
+#include <QtWidgets>
 
 #include "physbaseitem.h"
 #include "cartesianlabel.h"
@@ -25,11 +18,10 @@ std::map<int, QString> CartesianGraph::m_listEditableProps = {
 
 CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj)  : QGraphicsItem() {
     m_pGraphWidget = pGraphWidget;
-    m_pDataObj = (pDataObj) ? pDataObj : new CartesianGraphDataObj();
+    m_pDataObj = (pDataObj) ? pDataObj : new CartesianGraphDataObj(Name);
     m_borderWidth = 5;
-    m_Name = Name;
-    m_x_label = new CartesianLabel(QString("x: t(s)"), this);
-    m_y_label = new CartesianLabel(QString("y: v(m/s)"), this);
+    m_x_label = new CartesianLabel(QString("x: <Enter label>"), this);
+    m_y_label = new CartesianLabel(QString("y: <Enter label>"), this);
     m_x_label -> setPos(QPointF(200 + m_borderWidth, 0));
     m_y_label -> setPos(QPointF(0, 200 + m_borderWidth));
 

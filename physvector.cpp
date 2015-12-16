@@ -26,10 +26,11 @@ std::map<int, QString> PhysVector::m_listEditableProps = {
     {4, QString("Associated Particle")}
 };
 
-PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Label, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
+PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Name, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
     QGraphicsLineItem(pParent), PhysBaseItem() {
     m_pLabel = NULL;
     m_pParent = NULL;
+    m_pDataObj = new PhysVectorDataObj(Name);
     m_Color = Qt::black;
     m_arrowSize = 20;
     m_dragIndex = DI_VECTORLINE;
@@ -41,7 +42,6 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
     m_pLabel = new CartesianLabel(this);
-    Name(Label);
 
     if (pStart)
         StartParticle(pStart);
@@ -109,9 +109,9 @@ PhysVector *PhysVector::copy() {
 
 void PhysVector::Name(const QString &str) {
     //qDebug("PhysVector::Name()");
-    emit changeItemName(m_Name, str);
-    m_Name = str;
-    m_pLabel ->setPlainText(m_Name);
+    m_pDataObj ->Name(str);
+    emit changeItemName(m_pDataObj ->Name(), str);
+    m_pLabel ->setPlainText(m_pDataObj ->Name());
 }
 
 void PhysVector::StartParticle(PhysParticle *pObj) {

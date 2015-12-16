@@ -1,12 +1,7 @@
 #ifndef PHYSVECTOR_H
 #define PHYSVECTOR_H
 
-#include <QGraphicsItem>
-#include <QGraphicsScene>
-#include <QList>
-#include <QGraphicsSceneMouseEvent>
-#include <QContextMenuEvent>
-#include <QStringList>
+#include <QtWidgets>
 #include <map>
 
 #include "physbaseitem.h"
@@ -53,7 +48,7 @@ public:
     QPolygonF ArrowHead() const { return m_arrowHead; }
     PhysParticle *StartParticle() const { return m_pStartParticle; }
     PhysParticle *EndParticle() const { return m_pEndParticle; }
-    QString Name() const { return m_pLabel -> toPlainText(); }
+    QString Name() const { return m_pDataObj ->Name(); }
     map<AxisOrientation, QString> OrientationLabelMap() const { return m_OrientationLabelMap;}
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 
@@ -91,7 +86,6 @@ private:
 
 
     // Data Specific (should be pulled out into a separate DataObject like CartesianGraph has
-    QString m_Name;
     double m_magnitude;
     Theta m_Theta;
     PhysParticle *m_pStartParticle;
@@ -110,7 +104,7 @@ private:
     QPointF m_StartPoint;
     QPointF m_EndPoint;
     // Currently not used, will need to fix later
-    PhysVectorDataObj m_DataObj;
+    PhysVectorDataObj *m_pDataObj;
 };
 
 Q_DECLARE_METATYPE(PhysVector *)

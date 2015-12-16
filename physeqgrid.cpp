@@ -7,3 +7,7 @@ PhysEqGrid::~PhysEqGrid() {
     }
     m_rowList.clear();
 }
+
+void PhysEqGrid::insertRow() {
+
+}

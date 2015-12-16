@@ -3,18 +3,20 @@
 
 #include <QtWidgets>
 
+#include "physdataobj.h"
 #include "physvector.h"
 #include "physparticle.h"
 
-class CartesianGraphDataObj {
+class CartesianGraphDataObj : public PhysDataObj {
 public:
-    CartesianGraphDataObj();
+    CartesianGraphDataObj(const QString Name = "");
     CartesianGraphDataObj(QPointF origin,
                           double tickStep,
                           double x_min,
                           double x_max,
                           double y_min,
-                          double y_max);
+                          double y_max,
+                          const QString Name = "");
     virtual ~CartesianGraphDataObj();
 
     // copy ctor and assignment

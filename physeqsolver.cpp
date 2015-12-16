@@ -27,10 +27,15 @@ void PhysEqSolver::createConnections() {
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateStatus(QTableWidgetItem *)));
     connect(m_pFormulaInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
+    connect(m_pTable, SIGNAL(addPhysEqSolverRow(QString)), this, SLOT(onAddPhysEqSolverRow(QString)));
 }
 
 void PhysEqSolver::createTable(const int rows, const int cols) {
     m_pTable = new PhysEqSolverTable(rows, cols, this);
+}
+
+void PhysEqSolver::onAddPhysEqSolverRow(QString objName) {
+
 }
 
 void PhysEqSolver::updateLineEdit(QTableWidgetItem *pItem) {

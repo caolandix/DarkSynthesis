@@ -1,11 +1,7 @@
 #ifndef CARTESIANGRAPH_H
 #define CARTESIANGRAPH_H
 
-#include <QGraphicsItem>
-/*
-#include "physparticle.h"
-#include "physvector.h"
-*/
+#include <QtWidgets>
 #include "cartesiangraphdataobj.h"
 
 class GraphWidget;
@@ -44,7 +40,7 @@ public:
     GraphWidget *graphWidget() const { return m_pGraphWidget; }
     QString XAxisLabel() const { return m_x_label -> toPlainText(); }
     QString YAxisLabel() const { return m_y_label -> toPlainText(); }
-    QString Name() const { return m_Name; }
+    QString Name() const { return m_pDataObj ->Name(); }
     CartesianLabel *xlabel() const { return m_x_label; }
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 
@@ -52,7 +48,7 @@ public:
     // accessors -- set
     void XAxisLabel(const QString &data) { m_x_label -> setPlainText(data); }
     void YAxisLabel(const QString &data) { m_y_label -> setPlainText(data); }
-    void Name(const QString &obj) { m_Name = obj; }
+    void Name(const QString &str) { m_pDataObj ->Name(str); }
     void tickStep(const QString &str) { m_pDataObj ->tickStep(str.toDouble()); }
     void XExtent(const QString &);
     void YExtent(const QString &);
@@ -79,7 +75,6 @@ private:
     CartesianLabel *m_pYMax;
     CartesianGraphDataObj *m_pDataObj;
     int m_borderWidth;
-    QString m_Name;
     static map<int, QString> m_listEditableProps;
 public slots:
     void onPropChange(const QString &);

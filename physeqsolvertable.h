@@ -24,6 +24,7 @@ public:
     void CartesianDataObj(CartesianGraphDataObj *pObj) { m_pDataObj = pObj; }
     CartesianGraphDataObj *CartesianDataObj() const { return m_pDataObj; }
 signals:
+     void addPhysEqSolverRow(QString);
 public slots:
     void onSelectColor();
     void onSelectFont();

@@ -1,8 +1,11 @@
 #include <QtWidgets>
+
+#include "ui_physselectparticledlg.h"
+
 #include "physeqsolvertable.h"
 #include "physeqsolverdelegate.h"
 #include "physeqsolvertableheader.h"
-#include "ui_physselectparticledlg.h"
+#include "physparticledataobj.h"
 
 
 PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget *pParent) : QTableWidget(rows, columns, pParent) {
@@ -103,7 +106,17 @@ void PhysEqSolverTable::onSelectParticle() {
         QListWidgetItem *pItem = new QListWidgetItem((*iter) ->Name());
         dlg.m_lstParticles->addItem(pItem);
     }
-    pDlg -> show();
+    dlg.m_lstParticles->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    if (pDlg ->result() == QDialog::Accepted) {
+        QList<QListWidgetItem *> lst = dlg.m_lstParticles ->selectedItems();
+        QString itemName;
+
+        for (QList<QListWidgetItem *>::iterator iter = lst.begin(); iter != lst.end(); iter++) {
+            QListWidgetItem *pItem = *iter;
+            itemName = pItem -> text();
+            // emit addPhysEqSolverRow(itemName);
+        }
+    }
 }
 
 void PhysEqSolverTable::createTableHeader() {

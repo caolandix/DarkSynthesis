@@ -18,6 +18,8 @@ public:
 private:
     QString m_variableName;
     QString m_equation;
+    QString m_Name;
+    bool m_bCalculated;
 };
 
 #endif // PHYSEQROWPROPS_H
