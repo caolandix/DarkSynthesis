@@ -3,9 +3,11 @@
 
 #include <QtWidgets>
 
-class PhysParticleDataObj {
+#include "physdataobj.h"
+
+class PhysParticleDataObj : public PhysDataObj {
 public:
-    PhysParticleDataObj();
+    PhysParticleDataObj(const QString = "");
     PhysParticleDataObj(const PhysParticleDataObj &);
     ~PhysParticleDataObj();
 
@@ -19,5 +21,6 @@ private:
     double m_mass;
     QPointF m_position;
 };
-
+QDataStream &operator<<(QDataStream &out, const PhysParticleDataObj &obj);
+QDataStream &operator>>(QDataStream &in, PhysParticleDataObj &obj);
 #endif // PHYSPARTICLEDATAOBJ_H

@@ -22,7 +22,7 @@ PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, con
     setZValue(-1);
     setPos(0, 0);
     m_pLabel = new CartesianLabel(Label, this);
-    m_Name = Label;
+    m_pDataObj = new PhysParticleDataObj(Label);
     m_pParent = pParent;
     m_bLockXAxis = false;
     m_bLockYAxis = false;
@@ -34,6 +34,7 @@ PhysParticle::~PhysParticle() {
         delete m_pLabel;
         m_pLabel = NULL;
     }
+    delete m_pDataObj;
 }
 
 void PhysParticle::init() {
@@ -47,9 +48,9 @@ void PhysParticle::init() {
 
 void PhysParticle::Name(const QString &str) {
     //qDebug("PhysParticle::Name()");
-    emit changeItemName(m_Name, str);
-    m_Name = str;
-    m_pLabel ->setPlainText(m_Name);
+    emit changeItemName(m_pDataObj ->Name(), str);
+    m_pDataObj ->Name(str);
+    m_pLabel ->setPlainText(m_pDataObj ->Name());
 }
 
 void PhysParticle::createConnections() {
@@ -67,7 +68,7 @@ PhysParticle *PhysParticle::copy() {
     PhysParticle *pNewObj = NULL;
     pNewObj = new PhysParticle(static_cast<CartesianGraph *>(parentItem()), pos(), Name());
     pNewObj ->Vectors(m_Vectors);
-    pNewObj ->DataObj(m_DataObj);
+    pNewObj ->DataObj(m_pDataObj);
     return pNewObj;
 }
 

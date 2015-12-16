@@ -10,3 +10,11 @@ PhysVectorDataObj &PhysVectorDataObj::operator=(const PhysVectorDataObj &obj) {
     m_Name = obj.Name();
     return *this;
 }
+
+QDataStream &operator<<(QDataStream &out, const PhysVectorDataObj &obj) {
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, PhysVectorDataObj &obj) {
+    return in;
+}

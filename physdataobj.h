@@ -16,5 +16,6 @@ public:
 protected:
     QString m_Name;
 };
-
+QDataStream &operator<<(QDataStream &out, const PhysDataObj &obj);
+QDataStream &operator>>(QDataStream &in, PhysDataObj &obj);
 #endif // PHYSDATAOBJ_H

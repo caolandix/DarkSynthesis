@@ -14,5 +14,6 @@ public:
     PhysVectorDataObj &operator=(const PhysVectorDataObj &);
 private:
 };
-
+QDataStream &operator<<(QDataStream &out, const PhysVectorDataObj &obj);
+QDataStream &operator>>(QDataStream &in, PhysVectorDataObj &obj);
 #endif // PHYSVECTORDATAOBJ_H

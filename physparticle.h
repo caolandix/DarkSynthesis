@@ -30,17 +30,17 @@ public:
     bool removeVector(PhysVector *);
     void Vectors(const QList<PhysVector *> vectors);
     void DisassociateVectors();
-    void DataObj(const PhysParticleDataObj &obj) { m_DataObj = obj; }
+    void DataObj(const PhysParticleDataObj *pObj) { *m_pDataObj = *pObj; }
     PhysParticle *copy();
     void init();
     void createConnections();
 
-    QString Name() const { return m_Name; }
+    QString Name() const { return m_pDataObj ->Name(); }
     void Name(const QString &str);
-    double mass() const { return m_DataObj.mass(); }
-    void mass(const double val)  { m_DataObj.mass(val); }
-    QPointF Position() const { return m_DataObj.Position(); }
-    void Position(const QPointF pos) { m_DataObj.Position(pos); }
+    double mass() const { return m_pDataObj ->mass(); }
+    void mass(const double val)  { m_pDataObj ->mass(val); }
+    QPointF Position() const { return m_pDataObj ->Position(); }
+    void Position(const QPointF pos) { m_pDataObj ->Position(pos); }
     bool isXAxisLocked() const { return m_bLockXAxis; }
     bool isYAxisLocked() const { return m_bLockYAxis; }
     void LockXAxis(const bool val) { m_bLockXAxis = val; }
@@ -56,9 +56,8 @@ signals:
     void changeItemName(const QString &, const QString &);
 private:
     CartesianLabel *m_pLabel;
-    QString m_Name;
     QList<PhysVector *> m_Vectors;
-    PhysParticleDataObj m_DataObj;
+    PhysParticleDataObj *m_pDataObj;
     CartesianGraph *m_pParent;
     bool m_bLockXAxis, m_bLockYAxis;
     static map<int, QString> m_listEditableProps;

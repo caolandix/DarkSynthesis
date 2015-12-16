@@ -60,6 +60,6 @@ QDataStream &operator<<(QDataStream &out, const CartesianGraphDataObj &obj) {
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, CartesianGraphDataObj &obj) {\
+QDataStream &operator>>(QDataStream &in, CartesianGraphDataObj &obj) {
     return in;
 }
