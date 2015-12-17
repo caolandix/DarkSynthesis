@@ -9,7 +9,12 @@ class PhysEqSolverTable;
 class PhysEqSolverTableHeader : public QHeaderView {
     Q_OBJECT
 public:
-    PhysEqSolverTableHeader(QWidget *);
+    PhysEqSolverTableHeader(QList<int>, QWidget *);
+
+    void timeSliceList(const QList<int> lstTimeSlices) { m_lstTimeSlices = lstTimeSlices; }
+    QList<int> timeSliceList() const { return m_lstTimeSlices; }
+
+    bool verifyTimeEntry(const int, const int);
 
 signals:
     void updateTimeSlices(const int, const int);
@@ -24,6 +29,7 @@ private:
     QAction *m_pActionInsertColumn;
     QAction *m_pActionRemoveColumn;
     int m_hdrIdx;
+    QList<int> m_lstTimeSlices;
 };
 
 #endif // PHYSEQSOLVERTABLEHEADER_H

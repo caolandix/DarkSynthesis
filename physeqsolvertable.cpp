@@ -116,19 +116,24 @@ void PhysEqSolverTable::onSelectParticle() {
 }
 
 void PhysEqSolverTable::onUpdateTimeSlices(const int logicalIndex, const int timeVal) {
-    m_TimeSliceValues[logicalIndex] = timeVal;
+    // m_TimeSliceValues[logicalIndex] = timeVal;
+    m_TimeSliceValues = m_pHeader ->timeSliceList();
 }
 
 void PhysEqSolverTable::createTableHeader() {
-    setHorizontalHeader(m_pHeader = new PhysEqSolverTableHeader(this));
+    m_TimeSliceValues.push_back(1.0);
+    setHorizontalHeader(m_pHeader = new PhysEqSolverTableHeader(m_TimeSliceValues, this));
     setHorizontalHeaderLabels(QStringList() << "" << "t0");
     verticalHeader() ->setVisible(false);
-    m_TimeSliceValues.push_back(1.0);
 }
 
 void PhysEqSolverTable::insertColumn() {
+    // When inserting a new column with the default value, it should be added to the previous column
+    int idx = m_TimeSliceValues.count() - 1;
+    int newValue = m_TimeSliceValues.at(idx) + 1.0;
+    m_TimeSliceValues.push_back(newValue);
+
     model() ->insertColumn(model() ->columnCount());
-    m_TimeSliceValues.push_back(1.0);
     rebuildColumnHeaders();
 }
 
