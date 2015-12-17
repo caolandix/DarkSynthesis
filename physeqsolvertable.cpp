@@ -19,6 +19,7 @@ PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget 
     setItemPrototype(item(rows - 1, columns - 1));
     setItemDelegate(new PhysEqSolverDelegate());
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+    connect(m_pHeader, SIGNAL(updateTimeSlices(const int, const int)), this, SLOT(onUpdateTimeSlices(const int, const int)));
 }
 
 PhysEqSolverTable::~PhysEqSolverTable() {
@@ -114,7 +115,7 @@ void PhysEqSolverTable::onSelectParticle() {
     }
 }
 
-void PhysEqSolverTable::updateTimeSlices(const int logicalIndex, const int timeVal) {
+void PhysEqSolverTable::onUpdateTimeSlices(const int logicalIndex, const int timeVal) {
     m_TimeSliceValues[logicalIndex] = timeVal;
 }
 

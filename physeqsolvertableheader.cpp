@@ -36,7 +36,8 @@ void PhysEqSolverTableHeader::onSectionDoubleClicked(int logicalIndex) {
 
     QString strTime = QInputDialog::getText(this, tr("Enter a time value"), tr("Enter a value in seconds"), QLineEdit::Normal, "");
     int time = strTime.toInt();
-    model() ->setHeaderData(logicalIndex, Qt::Horizontal, strTime);
+    emit
+    //model() ->setHeaderData(logicalIndex, Qt::Horizontal, strTime);
 
 }
 

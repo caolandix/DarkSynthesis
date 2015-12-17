@@ -12,6 +12,7 @@ public:
     PhysEqSolverTableHeader(QWidget *);
 
 signals:
+    void updateTimeSlices(const int, const int);
 public slots:
     void onShowContextMenu(const QPoint &);
     void insertColumn();
