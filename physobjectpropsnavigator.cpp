@@ -5,8 +5,6 @@
 #include "physparticle.h"
 #include "physvector.h"
 #include "physobjectpropsnavigator.h"
-#include "physctrldoublespinboxdelegate.h"
-#include "physctrldoublespinbox.h"
 #include "physobjectpropdelegate.h"
 #include "physobjectpropeditor.h"
 #include "graphwidget.h"

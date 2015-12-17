@@ -1,5 +1,7 @@
 #include "physeqsolvertable.h"
 #include "physeqsolvertableheader.h"
+#include "physobjectpropdelegate.h"
+
 
 PhysEqSolverTableHeader::PhysEqSolverTableHeader(QWidget *pParent) : QHeaderView(Qt::Horizontal, pParent) {
     m_pActionInsertColumn = NULL;
@@ -8,12 +10,8 @@ PhysEqSolverTableHeader::PhysEqSolverTableHeader(QWidget *pParent) : QHeaderView
     setSectionsClickable(true);
     setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(this, SIGNAL(sectionClicked(int)), this, SLOT(onSectionClicked(int)));
+    connect(this, SIGNAL(sectionDoubleClicked(int)), this, SLOT(onSectionDoubleClicked(int)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onShowContextMenu(const QPoint &)));
-}
-
-void PhysEqSolverTableHeader::onSectionClicked(int index) {
-    QMessageBox::about(this, "Hi! Header Click Detected!" ,"Index: " + QString::number(index));
 }
 
 void PhysEqSolverTableHeader::onShowContextMenu(const QPoint &pos) {
@@ -31,6 +29,15 @@ void PhysEqSolverTableHeader::onShowContextMenu(const QPoint &pos) {
 
     m_hdrIdx = logicalIndexAt(pos);
     ctxMenu.exec(mapToGlobal(pos));
+}
+
+void PhysEqSolverTableHeader::onSectionDoubleClicked(int logicalIndex) {
+    qDebug("PhysEqSolverTableHeader::onSectionDoubleClicked");
+
+    QString strTime = QInputDialog::getText(this, tr("Enter a time value"), tr("Enter a value in seconds"), QLineEdit::Normal, "");
+    int time = strTime.toInt();
+    model() ->setHeaderData(logicalIndex, Qt::Horizontal, strTime);
+
 }
 
 void PhysEqSolverTableHeader::insertColumn() {

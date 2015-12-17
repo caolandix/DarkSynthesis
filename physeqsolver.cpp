@@ -34,7 +34,13 @@ void PhysEqSolver::createTable(const int rows, const int cols) {
 }
 
 void PhysEqSolver::onAddPhysEqSolverRow(QString objName) {
+    qDebug("PhysEqSolver::onAddPhysEqSolverRow");
 
+    // Find the particle entry
+
+    // Create entry in underlying data structure used for doing the mathematics
+
+    // Insert and populate UI row
 }
 
 void PhysEqSolver::updateLineEdit(QTableWidgetItem *pItem) {

@@ -18,7 +18,6 @@ PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget 
     setSizeAdjustPolicy(QTableWidget::AdjustToContents);
     setItemPrototype(item(rows - 1, columns - 1));
     setItemDelegate(new PhysEqSolverDelegate());
-
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 }
 
@@ -115,21 +114,27 @@ void PhysEqSolverTable::onSelectParticle() {
     }
 }
 
+void PhysEqSolverTable::updateTimeSlices(const int logicalIndex, const int timeVal) {
+    m_TimeSliceValues[logicalIndex] = timeVal;
+}
+
 void PhysEqSolverTable::createTableHeader() {
     setHorizontalHeader(m_pHeader = new PhysEqSolverTableHeader(this));
     setHorizontalHeaderLabels(QStringList() << "" << "t0");
     verticalHeader() ->setVisible(false);
+    m_TimeSliceValues.push_back(1.0);
 }
 
 void PhysEqSolverTable::insertColumn() {
     model() ->insertColumn(model() ->columnCount());
+    m_TimeSliceValues.push_back(1.0);
     rebuildColumnHeaders();
-    resizeColumnsToContents();
 }
 
 void PhysEqSolverTable::removeColumn(const int idx) {
     if (model() ->columnCount() > 2) {
         model() ->removeColumn(idx);
+        m_TimeSliceValues.removeAt(idx);
         rebuildColumnHeaders();
     }
 }

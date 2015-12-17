@@ -13,10 +13,10 @@ public:
 
 signals:
 public slots:
-    void onSectionClicked(int);
     void onShowContextMenu(const QPoint &);
     void insertColumn();
     void removeColumn();
+    void onSectionDoubleClicked(int);
 
 private:
     PhysEqSolverTable *m_pTable;
