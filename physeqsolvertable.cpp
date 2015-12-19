@@ -143,6 +143,7 @@ void PhysEqSolverTable::removeColumn(const int idx) {
     if (model() ->columnCount() > 2) {
         model() ->removeColumn(idx);
         m_TimeSliceValues.removeAt(idx);
+        m_pHeader ->timeSliceList(m_TimeSliceValues);
         rebuildColumnHeaders();
     }
 }
