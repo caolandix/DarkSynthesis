@@ -35,55 +35,99 @@ void PhysEqSolverTableHeader::onShowContextMenu(const QPoint &pos) {
 void PhysEqSolverTableHeader::onSectionDoubleClicked(int logicalIndex) {
     qDebug("PhysEqSolverTableHeader::onSectionDoubleClicked");
 
-    QString strTime = QInputDialog::getText(this, tr("Enter a time value"), tr("Enter a value in seconds"), QLineEdit::Normal, "");
-    while (!verifyTimeEntry(strTime.toInt(), logicalIndex)) {
-        strTime = QInputDialog::getText(this, tr("Enter a time value"), tr("Enter a value in seconds"), QLineEdit::Normal, "");
+    // Check to see if we are modifying the first column do nothing if we are
+    if (logicalIndex > 0) {
+        QString strTime = QInputDialog::getText(this, tr("Enter a time value"), tr("Enter a value in seconds"), QLineEdit::Normal, "");
+        int timeSlice = 0;
+        while ((timeSlice = strTime.toInt()) < 0)
+            strTime = QInputDialog::getText(this, tr("Enter a time value"), tr("Enter a value in seconds"), QLineEdit::Normal, "");
+        QList<int> rebuiltList;
+
+        // conditions
+        //      Time slices should increase linearly as t0 is the start time.
+        //      timeSliceAmount must be a unique value
+        //      timeSliceAmount must be > 0
+        //      timeSliceAmount cannot be <= the amount to the left of it
+        //      timeSliceAmount cannot be = the amount to the right of it
+        //      If timeSliceAmount is > the amount to the right of it, all of those values to the right get incremented by
+        //      timeSliceAmount. E.g.: if t1 is modified to be 12s, and t2 is 11s, t2 then becomes 12s + 11s = 23s, and so on up the line.
+
+
+        // At a minimum this value will be 1
+        int colCount = m_lstTimeSlices.count();
+        int numColumns = model() ->columnCount() - 1;
+        int idx = logicalIndex - 1;
+
+
+        // base case: it's the only item in the list
+        if (numColumns == 1 || idx == 0)
+            m_lstTimeSlices[0] = timeSlice;
+        else {
+
+            // easy case: it's the last item in the list check to see if greater than the one before it
+            if (logicalIndex == numColumns) {
+                if (m_lstTimeSlices.at(idx - 1) >= timeSlice)
+                    return;
+                m_lstTimeSlices[idx] = timeSlice;
+            }
+
+            // it's between two columns so check their values to ensure that on the left it is greater than, and on the right it is not equal
+            else {
+                if ((m_lstTimeSlices.at(idx - 1) >= timeSlice) || (m_lstTimeSlices.at(idx + 1) == timeSlice))
+                    return;
+                m_lstTimeSlices[idx] = timeSlice;
+            }
+
+        }
+
+        // reorder the list so that anything to the right of the modified index is corrected for the new value
+        int i = 0;
+        for (; i < logicalIndex; i++)
+            rebuiltList.push_back(m_lstTimeSlices.at(i));
+        for (; i < model() ->columnCount() - 1; i++) {
+            int sum = m_lstTimeSlices.at(i) + timeSlice;
+            rebuiltList.push_back(sum);
+        }
+        m_lstTimeSlices = rebuiltList;
+        emit updateTimeSlices(logicalIndex, timeSlice);
     }
-    int time = strTime.toInt();
-    QList<int> m_rebuiltList;
-    for (int i = 0; i < logicalIndex; i++)
-        m_rebuiltList.push_back(m_lstTimeSlices.at(i));
-    m_rebuiltList.push_back(time);
-    for (int i = logicalIndex + 1; i < model() ->columnCount(); i++)
-        m_rebuiltList.push_back(m_lstTimeSlices.at(i));
-    m_lstTimeSlices.clear();
-    m_lstTimeSlices = m_rebuiltList;
-    emit updateTimeSlices(logicalIndex, time);
 }
 
 bool PhysEqSolverTableHeader::verifyTimeEntry(const int timeSliceAmount, const int logicalIndex) {
+    if (timeSliceAmount < 1)
+        return false;
 
-    // Its valid...
-    bool retVal = true;
+    // conditions
+    //      Time slices should increase linearly as t0 is the start time.
+    //      timeSliceAmount must be a unique value
+    //      timeSliceAmount must be > 0
+    //      timeSliceAmount cannot be <= the amount to the left of it
+    //      timeSliceAmount cannot be = the amount to the right of it
+    //      If timeSliceAmount is > the amount to the right of it, all of those values to the right get incremented by
+    //      timeSliceAmount. E.g.: if t1 is modified to be 12s, and t2 is 11s, t2 then becomes 12s + 11s = 23s, and so on up the line.
+    // we do not count the first column because it is not considered. At a minimum this value will be 1
+    int colCount = model() ->columnCount() - 1;
 
-    // We need to ensure that the timeSliceAmount in the column indicated by logicalIndex is properly placed because
-    // time values should be increasing left to right.
-    if (logicalIndex == 0)
-        retVal = false;
-    else {
+    // If it's the only item then who cares. Get out...
+    if (colCount == 1)
+        return true;
 
-        // It's the first element
-        if (logicalIndex == 1) {
-            if (m_lstTimeSlices.at(logicalIndex - 1) >= timeSliceAmount)
-                retVal = false;
-        }
-        else {
-            int count = model() ->columnCount();
+    // Check to see if it is the first column
+    if (logicalIndex == 1)
+        return true;
 
-            // it's the last element
-            if (logicalIndex == count - 1) {
-                if (m_lstTimeSlices.at(logicalIndex - 1) <= m_lstTimeSlices.at(logicalIndex - 2))
-                    retVal = false;
-            }
-
-            // Make sure that the next is not less <= and that the previous is not >= the new one.
-            else {
-                if ((m_lstTimeSlices.at(logicalIndex - 2) >= timeSliceAmount) || (m_lstTimeSlices.at(logicalIndex) <= timeSliceAmount))
-                    retVal = false;
-            }
-        }
+    // Check to see if it's the last check to make sure that it is not less than the previous
+    if (logicalIndex == colCount) {
+        if (m_lstTimeSlices.at(logicalIndex - 1) >= m_lstTimeSlices.at(logicalIndex))
+            return false;
     }
-    return retVal;
+
+    // it's between two columns so check their values to ensure that on the left it is greater than, and on the right it is not equal
+    else {
+        if ((m_lstTimeSlices.at(logicalIndex - 1) >= m_lstTimeSlices.at(logicalIndex)) && (m_lstTimeSlices.at(logicalIndex) == m_lstTimeSlices.at(logicalIndex + 1)))
+            return false;
+    }
+    return true;
 }
 
 void PhysEqSolverTableHeader::insertColumn() {

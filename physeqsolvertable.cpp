@@ -132,6 +132,7 @@ void PhysEqSolverTable::insertColumn() {
     int idx = m_TimeSliceValues.count() - 1;
     int newValue = m_TimeSliceValues.at(idx) + 1.0;
     m_TimeSliceValues.push_back(newValue);
+    m_pHeader ->timeSliceList(m_TimeSliceValues);
 
     model() ->insertColumn(model() ->columnCount());
     rebuildColumnHeaders();
