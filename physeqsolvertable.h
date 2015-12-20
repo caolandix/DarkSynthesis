@@ -21,6 +21,9 @@ public:
     void createTableHeader();
     void updateColor(QTableWidgetItem *);
 
+    QSize sizeHint() const Q_DECL_OVERRIDE;
+    QSize minimumSizeHint() const Q_DECL_OVERRIDE;
+
     void CartesianDataObj(CartesianGraphDataObj *pObj) { m_pDataObj = pObj; }
     CartesianGraphDataObj *CartesianDataObj() const { return m_pDataObj; }
 signals:

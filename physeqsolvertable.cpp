@@ -129,12 +129,12 @@ void PhysEqSolverTable::createTableHeader() {
 }
 
 void PhysEqSolverTable::insertColumn() {
+
     // When inserting a new column with the default value, it should be added to the previous column
     int idx = m_TimeSliceValues.count() - 1;
     int newValue = m_TimeSliceValues.at(idx) + 1.0;
     m_TimeSliceValues.push_back(newValue);
     m_pHeader ->timeSliceList(m_TimeSliceValues);
-
     model() ->insertColumn(model() ->columnCount());
     rebuildColumnHeaders();
 }
@@ -148,6 +148,22 @@ void PhysEqSolverTable::removeColumn(const int idx) {
     }
 }
 
+QSize PhysEqSolverTable::minimumSizeHint() const {
+    QSize size(QTableWidget::sizeHint());
+    int width = 0;
+    for (int a = 0; a < columnCount(); ++a)
+        width += columnWidth(a);
+    size.setWidth(width + (columnCount() * 1));
+    int height = horizontalHeader()->height();
+    for (int a = 0; a < rowCount(); ++a)
+        height += rowHeight(a);
+    size.setHeight(height + (rowCount() * 1));
+    return size;
+}
+QSize PhysEqSolverTable::sizeHint() const {
+    return minimumSizeHint();
+}
+
 void PhysEqSolverTable::rebuildColumnHeaders() {
     QStringList headers;
     QList<int> lst = m_pHeader ->timeSliceList();
@@ -156,7 +172,6 @@ void PhysEqSolverTable::rebuildColumnHeaders() {
     headers.push_back(QString(""));
     for (int i = 1; i < model() ->columnCount(); i++) {
         QString hdrString = QString("t%1 = %2s").arg(i - 1).arg(lst.at(i - 1));
-
         headers.push_back(hdrString);
     }
     setHorizontalHeaderLabels(headers);

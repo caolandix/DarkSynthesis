@@ -13,9 +13,6 @@ public:
 
     void timeSliceList(const QList<int> lstTimeSlices) { m_lstTimeSlices = lstTimeSlices; }
     QList<int> timeSliceList() const { return m_lstTimeSlices; }
-
-    bool verifyTimeEntry(const int, const int);
-
 signals:
     void updateTimeSlices(const int, const int);
 public slots:

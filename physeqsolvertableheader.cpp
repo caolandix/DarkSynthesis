@@ -93,43 +93,6 @@ void PhysEqSolverTableHeader::onSectionDoubleClicked(int logicalIndex) {
     }
 }
 
-bool PhysEqSolverTableHeader::verifyTimeEntry(const int timeSliceAmount, const int logicalIndex) {
-    if (timeSliceAmount < 1)
-        return false;
-
-    // conditions
-    //      Time slices should increase linearly as t0 is the start time.
-    //      timeSliceAmount must be a unique value
-    //      timeSliceAmount must be > 0
-    //      timeSliceAmount cannot be <= the amount to the left of it
-    //      timeSliceAmount cannot be = the amount to the right of it
-    //      If timeSliceAmount is > the amount to the right of it, all of those values to the right get incremented by
-    //      timeSliceAmount. E.g.: if t1 is modified to be 12s, and t2 is 11s, t2 then becomes 12s + 11s = 23s, and so on up the line.
-    // we do not count the first column because it is not considered. At a minimum this value will be 1
-    int colCount = model() ->columnCount() - 1;
-
-    // If it's the only item then who cares. Get out...
-    if (colCount == 1)
-        return true;
-
-    // Check to see if it is the first column
-    if (logicalIndex == 1)
-        return true;
-
-    // Check to see if it's the last check to make sure that it is not less than the previous
-    if (logicalIndex == colCount) {
-        if (m_lstTimeSlices.at(logicalIndex - 1) >= m_lstTimeSlices.at(logicalIndex))
-            return false;
-    }
-
-    // it's between two columns so check their values to ensure that on the left it is greater than, and on the right it is not equal
-    else {
-        if ((m_lstTimeSlices.at(logicalIndex - 1) >= m_lstTimeSlices.at(logicalIndex)) && (m_lstTimeSlices.at(logicalIndex) == m_lstTimeSlices.at(logicalIndex + 1)))
-            return false;
-    }
-    return true;
-}
-
 void PhysEqSolverTableHeader::insertColumn() {
     m_pTable ->insertColumn();
 }

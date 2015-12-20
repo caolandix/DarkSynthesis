@@ -23,7 +23,6 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pP
 
 void PhysEqSolver::createConnections() {
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
-    connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateStatus(QTableWidgetItem *)));
     connect(m_pFormulaInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
     connect(m_pTable, SIGNAL(addPhysEqSolverRow(QString)), this, SLOT(onAddPhysEqSolverRow(QString)));
