@@ -60,7 +60,8 @@ SOURCES += main.cpp \
     physeqrowprops.cpp \
     physeqsolvertableheader.cpp \
     physscience.cpp \
-    physdataobj.cpp
+    physdataobj.cpp \
+    physdockedwidget.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -140,7 +141,8 @@ HEADERS  += cmainwindow.h \
     physeqrow.h \
     physeqrowprops.h \
     physeqsolvertableheader.h \
-    physdataobj.h
+    physdataobj.h \
+    physdockedwidget.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \

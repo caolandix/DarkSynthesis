@@ -22,17 +22,20 @@ public slots:
     void returnPressed();
     void actionSum();
     void onCartesianGraphCreated(CartesianGraphDataObj *pObj) { m_pTable ->CartesianDataObj(pObj); }
-    void onAddPhysEqSolverRow(QString objName);
+    void onAddPhysEqSolverRow(QString);
+    void onRecvParticle(PhysParticle *);
+
+signals:
+     void addPhysEqSolverRow(QString);
+     void requestParticle();
 protected:
     void setupContextMenu();
     void setupContents();
-    void actionMath_helper(const QString &, const QString &);
-    bool runInputDialog(const QString &, const QString &, const QString &, const QString &,
-                        const QString &, QString *, QString *, QString *);
 private:
     PhysEqSolverTable *m_pTable;
     QLineEdit *m_pFormulaInput;
     PhysEqGrid m_Grid;
+    QList<PhysParticle *> m_lstParticles;
 };
 
 void decode_pos(const QString &, int *, int *);

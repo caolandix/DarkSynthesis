@@ -15,11 +15,11 @@ PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget 
 
     createTableHeader();
     setContextMenuPolicy(Qt::CustomContextMenu);
-    setSizeAdjustPolicy(QTableWidget::AdjustToContents);
     setItemPrototype(item(rows - 1, columns - 1));
     setItemDelegate(new PhysEqSolverDelegate());
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
     connect(m_pHeader, SIGNAL(updateTimeSlices(const int, const int)), this, SLOT(onUpdateTimeSlices(const int, const int)));
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 PhysEqSolverTable::~PhysEqSolverTable() {
@@ -160,8 +160,9 @@ QSize PhysEqSolverTable::minimumSizeHint() const {
     size.setHeight(height + (rowCount() * 1));
     return size;
 }
+
 QSize PhysEqSolverTable::sizeHint() const {
-    return minimumSizeHint();
+    return QTableWidget::sizeHint();//minimumSizeHint();
 }
 
 void PhysEqSolverTable::rebuildColumnHeaders() {

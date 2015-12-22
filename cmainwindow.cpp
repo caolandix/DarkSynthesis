@@ -1,8 +1,4 @@
-#include <QContextMenuEvent>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QXmlStreamReader>
-#include <QDockWidget>
+#include <QtWidgets>
 
 #include <iostream>
 
@@ -15,6 +11,7 @@
 #include "physoutputnavigator.h"
 #include "physobjectpropsnavigator.h"
 #include "physeqsolver.h"
+#include "physdockedwidget.h"
 
 using namespace std;
 
@@ -183,11 +180,11 @@ void CMainWindow::createDockWindows() {
     pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
     addDockWidget(Qt::BottomDockWidgetArea, pDock);
 
-    pDock = new QDockWidget(tr("Output"), this);
-    m_pPhysEqSolver = new PhysEqSolver(1, 2, pDock);
-    pDock -> setWidget(m_pPhysEqSolver);
-    pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
-    addDockWidget(Qt::BottomDockWidgetArea, pDock);
+    PhysDockedWidget *pPhysDock = new PhysDockedWidget(tr("Equation Solver"), this);
+    m_pPhysEqSolver = new PhysEqSolver(1, 2, pPhysDock);
+    pPhysDock -> setWidget(m_pPhysEqSolver);
+    pPhysDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
+    addDockWidget(Qt::BottomDockWidgetArea, pPhysDock);
 }
 
 void CMainWindow::createSignalSlots() {
