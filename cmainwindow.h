@@ -4,6 +4,7 @@
 #include <QtWidgets>
 
 #include "graphwidget.h"
+#include "physcommon.h"
 
 class PhysObjectNavigator;
 class PhysObjectPropsNavigator;
@@ -15,7 +16,7 @@ namespace Ui {
     class CMainWindow;
 }
 
-class CMainWindow : public QMainWindow {
+class CMainWindow : public QMainWindow, public PhysCommon {
     Q_OBJECT
 public:
     explicit CMainWindow(QWidget *parent = 0);

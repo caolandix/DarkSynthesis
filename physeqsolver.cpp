@@ -1,9 +1,4 @@
-#include <QtWidgets>::
-#ifndef QT_NO_PRINTER
-#include <QtPrintSupport/QPrinter>
-#include <QtPrintSupport/QPrintDialog>
-#include <QtPrintSupport/QPrintPreviewDialog>
-#endif
+#include <QtWidgets>
 
 #include "physeqsolver.h"
 #include "physeqsolverdelegate.h"
@@ -19,7 +14,6 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pP
     setupContents();
     setupContextMenu();
     createConnections();
-
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
@@ -27,33 +21,77 @@ void PhysEqSolver::createConnections() {
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
     connect(m_pFormulaInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
-    connect(m_pTable, SIGNAL(addPhysEqSolverRow(QString)), this, SLOT(onAddPhysEqSolverRow(QString)));
+    connect(m_pTable, SIGNAL(addPhysEqSolverRow(QList<PhysParticle *>)), this, SLOT(onAddPhysEqSolverRow(QList<PhysParticle *>)));
 }
 
 void PhysEqSolver::createTable(const int rows, const int cols) {
     m_pTable = new PhysEqSolverTable(rows, cols, this);
 }
 
-void PhysEqSolver::onRecvParticle(PhysParticle *pParticle) {
-
+QTableWidgetItem *PhysEqSolver::createRowItem(const QString &strLabel) {
+    QTableWidgetItem *pItem = new QTableWidgetItem(strLabel);
+    pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    return pItem;
 }
 
-void PhysEqSolver::onAddPhysEqSolverRow(QString objName) {
+void PhysEqSolver::createParticleItems(const int i, const PhysParticle *pParticle) {
+    switch (ModType()) {
+    case SINGLEDIM_KINEMATICS:
+        create1DKinematicItems(i, pParticle);
+        break;
+    default:
+        break;
+    }
+}
+
+void PhysEqSolver::create1DKinematicItems(const int i, const PhysParticle *pParticle) {
+
+    // create the Acceleration, Velocity, Gravity, displacement vectors
+    PhysVector *pAccel = new PhysVector();
+    PhysVector *pVelocity = new PhysVector();
+    PhysVector *pGravity = new PhysVector();
+    PhysVector *pDisplacement = new PhysVector();
+
+    //
+}
+
+void PhysEqSolver::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
     qDebug("PhysEqSolver::onAddPhysEqSolverRow");
 
-    // Find the particle entry
+    int i = 0;
+    foreach(PhysParticle *pParticle, lstParticles) {
+        // Create entry in underlying data structure used for doing the mathematics
 
-    // Create entry in underlying data structure used for doing the mathematics
+        // Insert and populate UI row
+        m_pTable ->insertRow(m_pTable ->rowCount());
+        m_pTable ->setItem(i++, 0, createRowItem(pParticle ->Name()));
+        createParticleItems(i, pParticle);
+    }
+/*
 
-    // Insert and populate UI row
+    // Column 0
+    for (unsigned int i = 0; i < properties.size(); i++) {
+        m_pTable ->insertRow(i);
+        m_pTable ->setItem(i, 0, createRowItem(properties[i]));
+    }
+
+    // Column 1
+    m_pTable ->setItem(0, 1, m_pVectorName = new PhysObjectPropEditor(pObj ->Name()));
+    m_pTable ->setItem(1, 1, m_pVectorMag = new PhysObjectPropEditor(QString::number(pObj ->Magnitude())));
+    m_pTable ->setItem(2, 1, m_pVectorThetaAngle = new PhysObjectPropEditor(QString::number(pObj ->theta().degrees)));
+    m_pTable ->setCellWidget(3, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
+    m_pTable ->setItem(4, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
+*/
 }
 
 void PhysEqSolver::updateLineEdit(QTableWidgetItem *pItem) {
-    if (pItem == m_pTable -> currentItem()) {
-        if (pItem)
-            m_pFormulaInput -> setText(pItem -> data(Qt::EditRole).toString());
-        else
-            m_pFormulaInput -> clear();
+    if (pItem) {
+        if (pItem == m_pTable -> currentItem()) {
+            if (pItem)
+                m_pFormulaInput -> setText(pItem -> data(Qt::EditRole).toString());
+            else
+                m_pFormulaInput -> clear();
+        }
     }
 }
 

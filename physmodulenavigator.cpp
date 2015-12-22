@@ -1,7 +1,6 @@
 #include "physmodulenavigator.h"
 
-PhysModuleNavigator::PhysModuleNavigator(QWidget *pParent) : QListWidget(pParent) {
-
+PhysModuleNavigator::PhysModuleNavigator(QWidget *pParent) : QListWidget(pParent), PhysCommon() {
     // PHYS-221
     m_ModuleList.push_back(new PhysModule("1D Kinematics"));
     m_ModuleList.push_back(new PhysModule("2D Kinematics"));
@@ -61,6 +60,7 @@ PhysModuleNavigator::PhysModuleNavigator(QWidget *pParent) : QListWidget(pParent
         insertItem(i, pItem);
     }
     setCurrentIndex(model()->index(0, 0));
+    ModType(SINGLEDIM_KINEMATICS);
 
+    emit setModType(ModType());
 }
-

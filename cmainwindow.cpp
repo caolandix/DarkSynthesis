@@ -12,10 +12,11 @@
 #include "physobjectpropsnavigator.h"
 #include "physeqsolver.h"
 #include "physdockedwidget.h"
+#include "physcommon.h"
 
 using namespace std;
 
-CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
+CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), PhysCommon() {
     init();
     m_pUI -> setupUi(this);
     m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
@@ -26,6 +27,13 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     createToolBars();
     createStatusBar();
     createDockWindows();
+
+    GraphWidget *pGraph = new GraphWidget();
+
+    setGraphWidget(pGraph);
+    setCentralWidget(pGraph);
+    createSignalSlots();
+    createBaseObjects();
     setWindowTitle(tr("The Physicist's Workbench"));
 }
 
@@ -52,6 +60,7 @@ void CMainWindow::init() {
     m_pPhysObjPropsNavigator = NULL;
     m_pPhysModNavigator = NULL;
     m_pPhysOutputNavigator = NULL;
+    m_pPhysEqSolver = NULL;
 }
 
 void CMainWindow::contextMenuEvent(QContextMenuEvent *) {
@@ -197,6 +206,7 @@ void CMainWindow::createSignalSlots() {
     val = connect(m_pGraphWidget, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onReorderObjNav(QGraphicsItem *)));
     val = connect(m_pGraphWidget, SIGNAL(changeItemName(const QString &, const QString &)),
                   m_pPhysObjNavigator, SLOT(onChangeItemName(const QString &, const QString &)));
+    connect(m_pPhysModNavigator, SIGNAL(setModType(int)), m_pPhysEqSolver, SLOT(onSetModType(int)));
 }
 
 void CMainWindow::createBaseObjects() {

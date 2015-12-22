@@ -5,8 +5,9 @@
 
 #include "physeqsolvertable.h"
 #include "physeqgrid.h"
+#include "physcommon.h"
 
-class PhysEqSolver : public QTableView {
+class PhysEqSolver : public QTableView, PhysCommon {
     Q_OBJECT
 public:
     PhysEqSolver(int rows = 0, int cols = 1, QWidget * = NULL);
@@ -17,17 +18,20 @@ public:
     void CartesianDataObj(CartesianGraphDataObj *pObj) { m_pTable -> CartesianDataObj(pObj); }
     QList<PhysParticle *> Particles() const { return m_pTable -> CartesianDataObj() ->Particles(); }
     QList<PhysVector *> Vectors() const { return m_pTable -> CartesianDataObj() ->Vectors(); }
+
+private:
+    void createParticleItems(const int, const PhysParticle *);
+    void create1DKinematicItems(const int, const PhysParticle *);
+    QTableWidgetItem *createRowItem(const QString &);
 public slots:
     void updateLineEdit(QTableWidgetItem *);
     void returnPressed();
     void actionSum();
     void onCartesianGraphCreated(CartesianGraphDataObj *pObj) { m_pTable ->CartesianDataObj(pObj); }
-    void onAddPhysEqSolverRow(QString);
-    void onRecvParticle(PhysParticle *);
+    void onAddPhysEqSolverRow(QList<PhysParticle *>);
+    void onSetModType(int val) { ModType((PhysModuleType)val); }
 
 signals:
-     void addPhysEqSolverRow(QString);
-     void requestParticle();
 protected:
     void setupContextMenu();
     void setupContents();

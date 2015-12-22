@@ -108,10 +108,16 @@ void PhysEqSolverTable::onSelectParticle() {
     }
     pDlg ->show();
     if (pDlg ->result() == QDialog::Accepted) {
+        QList<PhysParticle *> lst;
         foreach(QListWidgetItem *pItem, dlg.m_lstParticles ->selectedItems()) {
-            if (pItem)
-                emit addPhysEqSolverRow(pItem -> text());
+            if (pItem) {
+                foreach(PhysParticle *pPart, m_pDataObj ->Particles()) {
+                    if (pPart ->Name().compare(pItem ->text()) == 0)
+                        lst.push_back(pPart);
+                }
+            }
         }
+        emit addPhysEqSolverRow(lst);
     }
 }
 
