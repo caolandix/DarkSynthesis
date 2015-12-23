@@ -29,7 +29,11 @@ public:
     enum { Type = PhysBaseItem::VectorType };
     int type() const Q_DECL_OVERRIDE { return Type; }
 
-    PhysVector(CartesianGraph *, const QPointF &, const QString &, PhysParticle * = NULL, PhysParticle * = NULL, QGraphicsScene * = NULL);
+    PhysVector(
+            CartesianGraph *pParent, PhysParticle *pParticle,
+            const QString variable, const QString equation, const QString name,
+            const bool bDraw = true, const double angle = 0.0, const double magnitude = 0.0);
+    PhysVector(CartesianGraph *, const QString, PhysParticle * = NULL, PhysParticle * = NULL);
     ~PhysVector();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -59,13 +63,14 @@ public:
     void clearParticle(PhysParticle *);
     void removeFromParticles();
     void createConnections();
-
+    void initGraphicsProperties();
 
     void StartPoint(const QPointF &pt) { m_StartPoint = pt; }
     void EndPoint(const QPointF &pt) { m_EndPoint = pt; }
     void CurrPos(const QPointF &pt) { m_currPos = pt; }
     void Magnitude(const double val) { m_pDataObj ->Magnitude(val); }
     void Magnitude(const QString &str) { m_pDataObj ->Magnitude(str.toDouble()); }
+    void SetDraw(bool bVal) { m_bDraw = bVal; }
     void ThetaAngle(const double);
     void ThetaAngle(const QString &);
     void ThetaAxisOrient(const AxisOrientation val) { m_Theta.axisOrientation = val; }
@@ -94,6 +99,7 @@ private:
     PhysParticle *m_pEndParticle;
 
     // Drawing specific.
+    bool m_bDraw;
     CartesianLabel *m_pLabel;
     QColor m_Color;
     QPolygonF m_arrowHead;
@@ -102,7 +108,7 @@ private:
     CartesianGraph *m_pParent;
     QPointF m_StartPoint;
     QPointF m_EndPoint;
-    // Currently not used, will need to fix later
+
     PhysVectorDataObj *m_pDataObj;
 };
 

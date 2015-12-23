@@ -68,9 +68,7 @@ void GraphWidget::createCartesianGraph() {
 PhysVector *GraphWidget::createVector(const QPointF &startPos) {
     qDebug("GraphWidget::createVector()");
     QGraphicsScene *pScene = scene();
-    QString Label;
-    QTextStream(&Label) << "Vector-" << m_pCartGraph -> DataObj() -> Vectors().length();
-    PhysVector *pObj = new PhysVector(m_pCartGraph, startPos, Label);
+    PhysVector *pObj = new PhysVector(m_pCartGraph, QString("Vector-%1").arg(m_pCartGraph -> DataObj() -> Vectors().length()));
 
     m_pCartGraph -> DataObj() -> AddVector(pObj);
     pScene -> addItem(pObj);
@@ -81,9 +79,7 @@ PhysVector *GraphWidget::createVector(const QPointF &startPos) {
 PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
     qDebug("GraphWidget::createParticle");
     QGraphicsScene *pScene = scene();
-    QString Label;
-    QTextStream(&Label) << "Particle-" << m_pCartGraph ->Particles().length();
-    PhysParticle *pObj = new PhysParticle(m_pCartGraph, startPos, Label);
+    PhysParticle *pObj = new PhysParticle(m_pCartGraph, startPos, QString("Particle-%1").arg(m_pCartGraph ->Particles().length()));
 
     m_pCartGraph -> AddParticle(pObj);
     pScene -> addItem(pObj);

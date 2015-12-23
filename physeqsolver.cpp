@@ -34,7 +34,7 @@ QTableWidgetItem *PhysEqSolver::createRowItem(const QString &strLabel) {
     return pItem;
 }
 
-void PhysEqSolver::createParticleItems(const int i, const PhysParticle *pParticle) {
+void PhysEqSolver::createParticleItems(const int i, PhysParticle *pParticle) {
     switch (ModType()) {
     case SINGLEDIM_KINEMATICS:
         create1DKinematicItems(i, pParticle);
@@ -44,15 +44,16 @@ void PhysEqSolver::createParticleItems(const int i, const PhysParticle *pParticl
     }
 }
 
-void PhysEqSolver::create1DKinematicItems(const int i, const PhysParticle *pParticle) {
+void PhysEqSolver::create1DKinematicItems(const int i, PhysParticle *pParticle) {
 
     // create the Acceleration, Velocity, Gravity, displacement vectors
-    PhysVector *pAccel = new PhysVector();
-    PhysVector *pVelocity = new PhysVector();
-    PhysVector *pGravity = new PhysVector();
-    PhysVector *pDisplacement = new PhysVector();
-
-    //
+    PhysVector *pAccel = new PhysVector(pParticle ->Parent(), pParticle,
+                                        QString("a"), QString("diff(dx/dv)"), QString("Acceleration"), false);
+    PhysVector *pVelocity = new PhysVector(pParticle ->Parent(), pParticle,
+                                           QString("v"), QString("diff(dx/dv)"), QString("Velocity"), false);
+    PhysVector *pGravity = new PhysVector(pParticle ->Parent(), pParticle,
+                                          QString("g"), QString("-9.8"), QString("Gravity"), false, -90.0, -9.8);
+    //PhysVector *pDisplacement = new PhysVector();
 }
 
 void PhysEqSolver::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {

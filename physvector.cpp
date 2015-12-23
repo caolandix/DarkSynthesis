@@ -26,10 +26,35 @@ std::map<int, QString> PhysVector::m_listEditableProps = {
     {4, QString("Associated Particle")}
 };
 
-PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const QString &Name, PhysParticle *pStart, PhysParticle *pEnd, QGraphicsScene *scene) :
+PhysVector::PhysVector(
+        CartesianGraph *pParent, PhysParticle *pParticle,
+        const QString variable, const QString equation, const QString name,
+        const bool bDraw, const double angle, const double magnitude) :
+    PhysBaseItem(), QGraphicsLineItem(pParent) {
+    m_pDataObj = new PhysVectorDataObj(variable, equation, name, magnitude);
+
+    m_pLabel = new CartesianLabel(name, this);
+    m_pParent = pParent;
+    m_Color = Qt::black;
+    m_arrowSize = 20;
+    m_dragIndex = DI_VECTORLINE;
+    m_bUseNewThetaAngle = false;
+    m_Theta.bAboveAxis = true;
+    m_Theta.degrees = angle;
+    m_Theta.axisOrientation = AXIS_HORIZ;
+    m_pEndParticle = NULL;
+    m_bDraw = bDraw;
+
+    if (pParticle)
+        StartParticle(pParticle);
+    init();
+    createConnections();
+}
+
+PhysVector::PhysVector(CartesianGraph *pParent, const QString Name, PhysParticle *pStart, PhysParticle *pEnd) :
     QGraphicsLineItem(pParent), PhysBaseItem() {
     m_pLabel = NULL;
-    m_pParent = NULL;
+    m_pParent = pParent;
     m_pDataObj = new PhysVectorDataObj(Name);
     m_Color = Qt::black;
     m_arrowSize = 20;
@@ -42,22 +67,14 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QPointF &startPos, const Q
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
     m_pLabel = new CartesianLabel(this);
+    m_bDraw = true;
 
     if (pStart)
         StartParticle(pStart);
     if (pEnd)
         EndParticle(pEnd);
     m_pParent = pParent;
-
-    setFlag(ItemIsMovable);
-    setFlag(ItemIsSelectable);
-    setFlag(ItemSendsGeometryChanges);
-    setFlag(ItemSendsScenePositionChanges);
-    setFlag(ItemIsFocusable);
-    setCacheMode(DeviceCoordinateCache);
-    setZValue(-1);
-    setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    setLine(0 + Magnitude(), 0 + Magnitude(), 0, 0);
+    init();
     createConnections();
 }
 
@@ -68,6 +85,18 @@ PhysVector::~PhysVector() {
     }
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
+}
+
+void PhysVector::init() {
+    setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
+    setFlag(ItemSendsGeometryChanges);
+    setFlag(ItemSendsScenePositionChanges);
+    setFlag(ItemIsFocusable);
+    setCacheMode(DeviceCoordinateCache);
+    setZValue(-1);
+    setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    setLine(0 + Magnitude(), 0 + Magnitude(), 0, 0);
 }
 
 void PhysVector::createConnections() {
@@ -84,19 +113,9 @@ void PhysVector::clearParticle(PhysParticle *pObj) {
         m_pEndParticle = NULL;
 }
 
-void PhysVector::init() {
-    //qDebug("PhysVector::init()");
-    removeFromParticles();
-    m_pDataObj ->Magnitude(50.0);
-    m_Theta.bAboveAxis = true;
-    m_Theta.degrees = 45.0;
-    m_Theta.axisOrientation = AXIS_HORIZ;
-    setLine(0 + Magnitude(), 0 + Magnitude(), 0, 0);
-}
-
 PhysVector *PhysVector::copy() {
     PhysVector *pObj = NULL;
-    pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), pos(), Name());
+    pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), Name());
     pObj -> theta(theta());
     pObj ->Magnitude(Magnitude());
     pObj -> StartPoint(m_StartPoint);
@@ -221,6 +240,9 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     QPen myPen = pen();
     pPainter -> setPen(pen());
 
+    if (!m_bDraw)
+        return;
+
     // If there are two particles to attach to then draw a the vector and attach to them
     if (m_pStartParticle && m_pEndParticle) {
         if (m_pStartParticle -> collidesWithItem(m_pEndParticle))
@@ -300,6 +322,10 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     QBrush brush(m_Color);
     tmpPath.addPolygon(m_arrowHead);
     pPainter -> fillPath(tmpPath, brush);
+
+    // draw a bounding rectangle
+    pPainter -> setPen(Qt::darkRed);
+    pPainter -> drawRect(boundingRect());
 }
 
 void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {

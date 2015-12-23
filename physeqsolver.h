@@ -20,8 +20,8 @@ public:
     QList<PhysVector *> Vectors() const { return m_pTable -> CartesianDataObj() ->Vectors(); }
 
 private:
-    void createParticleItems(const int, const PhysParticle *);
-    void create1DKinematicItems(const int, const PhysParticle *);
+    void createParticleItems(const int, PhysParticle *);
+    void create1DKinematicItems(const int, PhysParticle *);
     QTableWidgetItem *createRowItem(const QString &);
 public slots:
     void updateLineEdit(QTableWidgetItem *);

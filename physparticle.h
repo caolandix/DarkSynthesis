@@ -45,6 +45,7 @@ public:
     bool isYAxisLocked() const { return m_bLockYAxis; }
     void LockXAxis(const bool val) { m_bLockXAxis = val; }
     void LockYAxis(const bool val) { m_bLockYAxis = val; }
+    CartesianGraph *Parent() const { return m_pParent; }
 
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 
