@@ -1,7 +1,7 @@
 #ifndef PHYSVECTORDATAOBJ_H
 #define PHYSVECTORDATAOBJ_H
 
-#include <QString>
+#include <QtWidgets>
 
 #include "physdataobj.h"
 
@@ -15,7 +15,6 @@ public:
     ~PhysVectorDataObj() {}
     PhysVectorDataObj &operator=(const PhysVectorDataObj &);
     bool operator==(const PhysVectorDataObj &);
-
 
     void Magnitude(const double val) { m_magnitude = val; }
     void Magnitude(const QString &str) { m_magnitude = str.toDouble(); }
@@ -31,4 +30,6 @@ private:
 };
 QDataStream &operator<<(QDataStream &out, const PhysVectorDataObj &obj);
 QDataStream &operator>>(QDataStream &in, PhysVectorDataObj &obj);
+Q_DECLARE_METATYPE(const PhysVectorDataObj *)
+Q_DECLARE_METATYPE(PhysVectorDataObj *)
 #endif // PHYSVECTORDATAOBJ_H

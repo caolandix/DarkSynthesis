@@ -23,4 +23,7 @@ private:
 };
 QDataStream &operator<<(QDataStream &out, const PhysParticleDataObj &obj);
 QDataStream &operator>>(QDataStream &in, PhysParticleDataObj &obj);
+
+Q_DECLARE_METATYPE(const PhysParticleDataObj *)
+Q_DECLARE_METATYPE(PhysParticleDataObj *)
 #endif // PHYSPARTICLEDATAOBJ_H

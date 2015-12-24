@@ -61,6 +61,4 @@ PhysModuleNavigator::PhysModuleNavigator(QWidget *pParent) : QListWidget(pParent
     }
     setCurrentIndex(model()->index(0, 0));
     ModType(SINGLEDIM_KINEMATICS);
-
-    emit setModType(ModType());
 }

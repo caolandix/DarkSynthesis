@@ -4,12 +4,15 @@
 #include <QtWidgets>
 
 #include "physeqsolvertable.h"
-#include "physeqgrid.h"
+#include "physeqrow.h"
 #include "physcommon.h"
 
-class PhysEqSolver : public QTableView, PhysCommon {
+class PhysEqSolver : public QTableView, public PhysCommon {
     Q_OBJECT
 public:
+    typedef QList<PhysEqRow *> PhysEqRowList;
+
+
     PhysEqSolver(int rows = 0, int cols = 1, QWidget * = NULL);
 
     void createConnections();
@@ -20,16 +23,17 @@ public:
     QList<PhysVector *> Vectors() const { return m_pTable -> CartesianDataObj() ->Vectors(); }
 
 private:
-    void createParticleItems(const int, PhysParticle *);
-    void create1DKinematicItems(const int, PhysParticle *);
-    QTableWidgetItem *createRowItem(const QString &);
+    void createParticleItems(int, PhysParticle *);
+    void create1DKinematicItems(int, PhysParticle *);
+    QTableWidgetItem *createRowItem(PhysVectorDataObj *);
+    QTableWidgetItem *createRowItem(PhysParticleDataObj *);
 public slots:
     void updateLineEdit(QTableWidgetItem *);
     void returnPressed();
     void actionSum();
     void onCartesianGraphCreated(CartesianGraphDataObj *pObj) { m_pTable ->CartesianDataObj(pObj); }
     void onAddPhysEqSolverRow(QList<PhysParticle *>);
-    void onSetModType(int val) { ModType((PhysModuleType)val); }
+    void Calculate();
 
 signals:
 protected:
@@ -38,8 +42,10 @@ protected:
 private:
     PhysEqSolverTable *m_pTable;
     QLineEdit *m_pFormulaInput;
-    PhysEqGrid m_Grid;
+    PhysEqRowList m_lstRows;
     QList<PhysParticle *> m_lstParticles;
+    QTimer *m_pCalcTimer;
+    unsigned int m_CalcInterval;
 };
 
 void decode_pos(const QString &, int *, int *);

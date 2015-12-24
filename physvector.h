@@ -55,6 +55,7 @@ public:
     QString Name() const { return m_pDataObj ->Name(); }
     map<AxisOrientation, QString> OrientationLabelMap() const { return m_OrientationLabelMap;}
     map<int, QString> EditableProps() const { return m_listEditableProps;}
+    PhysVectorDataObj *DataObj() const { return m_pDataObj; }
 
     void Name(const QString &);
     void theta(const Theta &val) { m_Theta = val; }

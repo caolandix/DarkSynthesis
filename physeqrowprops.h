@@ -3,22 +3,24 @@
 
 #include <QtWidgets>
 
+#include "physvectordataobj.h"
+
 class PhysEqRowProps {
 public:
-    PhysEqRowProps() {}
+    PhysEqRowProps(PhysVectorDataObj *pObj = NULL, bool bCalculated = false);
     PhysEqRowProps(const QString &, const QString &);
     PhysEqRowProps(const PhysEqRowProps &);
     PhysEqRowProps &operator=(const PhysEqRowProps &);
     ~PhysEqRowProps() {}
 
-    const QString Equation() const { return m_equation; }
-    const QString VariableName() const { return m_variableName; }
-    void Equation(const QString &str) { m_equation = str; }
-    void VariableName(const QString &str) { m_variableName = str; }
+    const QString Equation() const { return m_pDataObj ->Equation(); }
+    const QString Variable() const { return m_pDataObj ->Variable(); }
+    void Equation(const QString &str) { m_pDataObj ->Equation(str); }
+    void Variable(const QString &str) { m_pDataObj ->Variable(str); }
+    bool Calculated() const { return m_bCalculated; }
+    void Calculated(bool bVal) { m_bCalculated = bVal; }
 private:
-    QString m_variableName;
-    QString m_equation;
-    QString m_Name;
+    PhysVectorDataObj *m_pDataObj;
     bool m_bCalculated;
 };
 

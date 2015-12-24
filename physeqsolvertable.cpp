@@ -106,7 +106,7 @@ void PhysEqSolverTable::onSelectParticle() {
         if (pObj)
             dlg.m_lstParticles->addItem(new QListWidgetItem(pObj ->Name()));
     }
-    pDlg ->show();
+    pDlg ->exec();
     if (pDlg ->result() == QDialog::Accepted) {
         QList<PhysParticle *> lst;
         foreach(QListWidgetItem *pItem, dlg.m_lstParticles ->selectedItems()) {

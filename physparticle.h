@@ -46,6 +46,7 @@ public:
     void LockXAxis(const bool val) { m_bLockXAxis = val; }
     void LockYAxis(const bool val) { m_bLockYAxis = val; }
     CartesianGraph *Parent() const { return m_pParent; }
+    PhysParticleDataObj *DataObj() const { return m_pDataObj; }
 
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 

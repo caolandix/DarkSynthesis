@@ -194,6 +194,9 @@ void CMainWindow::createDockWindows() {
     pPhysDock -> setWidget(m_pPhysEqSolver);
     pPhysDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
     addDockWidget(Qt::BottomDockWidgetArea, pPhysDock);
+
+    m_pPhysEqSolver ->ModType(m_pPhysModNavigator ->ModType());
+
 }
 
 void CMainWindow::createSignalSlots() {

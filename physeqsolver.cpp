@@ -5,16 +5,21 @@
 #include "physeqsolveritem.h"
 #include "physprintview.h"
 #include "physeqsolvertable.h"
+#include "physdataobj.h"
 
 PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pParent) {
     m_pTable = NULL;
+    m_pCalcTimer = new QTimer(this);
+    m_CalcInterval = 1000;              // 1000ms = 1 sec -- should be adjustable: PS-36
     m_pFormulaInput = new QLineEdit();
-
     createTable(rows, cols);
     setupContents();
     setupContextMenu();
     createConnections();
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+
+    m_pCalcTimer ->start(m_CalcInterval);
 }
 
 void PhysEqSolver::createConnections() {
@@ -22,42 +27,74 @@ void PhysEqSolver::createConnections() {
     connect(m_pFormulaInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
     connect(m_pTable, SIGNAL(addPhysEqSolverRow(QList<PhysParticle *>)), this, SLOT(onAddPhysEqSolverRow(QList<PhysParticle *>)));
+    connect(m_pCalcTimer, SIGNAL(timeout()), this, SLOT(Calculate()));
 }
 
 void PhysEqSolver::createTable(const int rows, const int cols) {
     m_pTable = new PhysEqSolverTable(rows, cols, this);
 }
 
-QTableWidgetItem *PhysEqSolver::createRowItem(const QString &strLabel) {
-    QTableWidgetItem *pItem = new QTableWidgetItem(strLabel);
+QTableWidgetItem *PhysEqSolver::createRowItem(PhysVectorDataObj *pObj) {
+    QTableWidgetItem *pItem = new QTableWidgetItem(pObj ->Name());
     pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    PhysEqRowProps *pRowProps = new PhysEqRowProps(pObj);
+    PhysEqRow *pRow = new PhysEqRow(pRowProps);
+    m_lstRows.push_back(pRow);
+    return pItem;
+}
+QTableWidgetItem *PhysEqSolver::createRowItem(PhysParticleDataObj *pObj) {
+    QTableWidgetItem *pItem = new QTableWidgetItem(pObj ->Name());
+    pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+
+    QVariant var;
+    var.setValue(pObj);
+
+    pItem ->setData(Qt::UserRole, var);
     return pItem;
 }
 
-void PhysEqSolver::createParticleItems(const int i, PhysParticle *pParticle) {
+void PhysEqSolver::createParticleItems(int i, PhysParticle *pParticle) {
     switch (ModType()) {
     case SINGLEDIM_KINEMATICS:
         create1DKinematicItems(i, pParticle);
         break;
     default:
+        qDebug("PhysEqSolver::createParticleItems(): Invalid Module type");
         break;
     }
 }
 
-void PhysEqSolver::create1DKinematicItems(const int i, PhysParticle *pParticle) {
+void PhysEqSolver::create1DKinematicItems(int i, PhysParticle *pParticle) {
 
     // create the Acceleration, Velocity, Gravity, displacement vectors
+    // Important parameters are:
+    //      - variable name
+    //      - equation that defines it
+    //      - boolean value that determines if it is to be drawn or not
+    //      - Angle at which it should be represented on the CartesianGraph (if any)
+    //      - Magnitude, or the value of the vector
     PhysVector *pAccel = new PhysVector(pParticle ->Parent(), pParticle,
                                         QString("a"), QString("diff(dx/dv)"), QString("Acceleration"), false);
     PhysVector *pVelocity = new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("v"), QString("diff(dx/dv)"), QString("Velocity"), false);
+                                           QString("v"), QString("diff(dx/dy)"), QString("Velocity"), false);
+    PhysVector *pDisplacement = new PhysVector(pParticle ->Parent(), pParticle,
+                                               QString("y"), QString("v*t"), QString("Displacement"), false);
     PhysVector *pGravity = new PhysVector(pParticle ->Parent(), pParticle,
                                           QString("g"), QString("-9.8"), QString("Gravity"), false, -90.0, -9.8);
-    //PhysVector *pDisplacement = new PhysVector();
+    m_pTable ->insertRow(i);
+    m_pTable ->setItem(i, 0, createRowItem(pAccel ->DataObj()));
+    m_pTable ->insertRow(++i);
+    m_pTable ->setItem(i, 0, createRowItem(pVelocity ->DataObj()));
+    m_pTable ->insertRow(++i);
+    m_pTable ->setItem(i, 0, createRowItem(pDisplacement ->DataObj()));
+    m_pTable ->insertRow(++i);
+    m_pTable ->setItem(i, 0, createRowItem(pGravity ->DataObj()));
 }
 
 void PhysEqSolver::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
     qDebug("PhysEqSolver::onAddPhysEqSolverRow");
+
+    m_pCalcTimer ->stop();
 
     int i = 0;
     foreach(PhysParticle *pParticle, lstParticles) {
@@ -65,24 +102,17 @@ void PhysEqSolver::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
 
         // Insert and populate UI row
         m_pTable ->insertRow(m_pTable ->rowCount());
-        m_pTable ->setItem(i++, 0, createRowItem(pParticle ->Name()));
+        m_pTable ->setItem(i++, 0, createRowItem(pParticle ->DataObj()));
         createParticleItems(i, pParticle);
     }
-/*
+    m_pCalcTimer ->start(m_CalcInterval);
+}
 
-    // Column 0
-    for (unsigned int i = 0; i < properties.size(); i++) {
-        m_pTable ->insertRow(i);
-        m_pTable ->setItem(i, 0, createRowItem(properties[i]));
+void PhysEqSolver::Calculate() {
+    qDebug("PhysEqSolver::Calculate()");
+    if (m_pTable ->rowCount() > 1) {
+
     }
-
-    // Column 1
-    m_pTable ->setItem(0, 1, m_pVectorName = new PhysObjectPropEditor(pObj ->Name()));
-    m_pTable ->setItem(1, 1, m_pVectorMag = new PhysObjectPropEditor(QString::number(pObj ->Magnitude())));
-    m_pTable ->setItem(2, 1, m_pVectorThetaAngle = new PhysObjectPropEditor(QString::number(pObj ->theta().degrees)));
-    m_pTable ->setCellWidget(3, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
-    m_pTable ->setItem(4, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
-*/
 }
 
 void PhysEqSolver::updateLineEdit(QTableWidgetItem *pItem) {

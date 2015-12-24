@@ -1,7 +1,7 @@
 #ifndef PHYSDATAOBJ_H
 #define PHYSDATAOBJ_H
 
-#include <QString>
+#include <QtWidgets>
 
 class PhysDataObj {
 public:
@@ -18,4 +18,6 @@ protected:
 };
 QDataStream &operator<<(QDataStream &out, const PhysDataObj &obj);
 QDataStream &operator>>(QDataStream &in, PhysDataObj &obj);
+Q_DECLARE_METATYPE(const PhysDataObj *)
+Q_DECLARE_METATYPE(PhysDataObj *)
 #endif // PHYSDATAOBJ_H
