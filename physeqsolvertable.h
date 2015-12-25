@@ -20,6 +20,7 @@ public:
     void rebuildColumnHeaders();
     void createTableHeader();
     void updateColor(QTableWidgetItem *);
+    void createConnections();
 
     QSize sizeHint() const Q_DECL_OVERRIDE;
     QSize minimumSizeHint() const Q_DECL_OVERRIDE;
@@ -38,14 +39,14 @@ public slots:
     void onSelectGravVector();
     void onSelectDisplacementVector();
     void onSelectParticle();
-    void onUpdateTimeSlices(const int, const int);
+    void onUpdateTimeSlices(const int, const double);
 private:
     PhysEqSolverTableHeader *m_pHeader;
     CartesianGraphDataObj *m_pDataObj;
     QAction *m_pActColor;
     QAction *m_pActFont;
     QAction *m_pActClear;
-    QList<int> m_TimeSliceValues;
+    QList<double> m_TimeSliceValues;
 };
 
 #endif // PHYSEQSOLVERTABLE_H

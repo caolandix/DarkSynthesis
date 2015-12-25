@@ -3,7 +3,7 @@
 #include "physobjectpropdelegate.h"
 
 
-PhysEqSolverTableHeader::PhysEqSolverTableHeader(QList<int> lstTimeSlices, QWidget *pParent) : QHeaderView(Qt::Horizontal, pParent) {
+PhysEqSolverTableHeader::PhysEqSolverTableHeader(QList<double> lstTimeSlices, QWidget *pParent) : QHeaderView(Qt::Horizontal, pParent) {
     m_pActionInsertColumn = NULL;
     m_pActionRemoveColumn = NULL;
     m_pTable = static_cast<PhysEqSolverTable *>(pParent);
@@ -38,15 +38,15 @@ void PhysEqSolverTableHeader::onSectionDoubleClicked(int logicalIndex) {
     // Check to see if we are modifying the first column do nothing if we are
     if (logicalIndex > 0) {
         QString strTime = QInputDialog::getText(this, tr("Enter a time value"), tr("Enter a value in seconds"), QLineEdit::Normal, "");
-        int timeSlice = 0;
-        while ((timeSlice = strTime.toInt()) < 0)
+        double timeSlice = 0.0;
+        while ((timeSlice = strTime.toDouble()) < 0.0)
             strTime = QInputDialog::getText(this, tr("Enter a time value"), tr("Enter a value in seconds"), QLineEdit::Normal, "");
-        QList<int> rebuiltList;
+        QList<double> rebuiltList;
 
         // conditions
         //      Time slices should increase linearly as t0 is the start time.
         //      timeSliceAmount must be a unique value
-        //      timeSliceAmount must be > 0
+        //      timeSliceAmount must be > 0.0
         //      timeSliceAmount cannot be <= the amount to the left of it
         //      timeSliceAmount cannot be = the amount to the right of it
         //      If timeSliceAmount is > the amount to the right of it, all of those values to the right get incremented by
@@ -85,7 +85,7 @@ void PhysEqSolverTableHeader::onSectionDoubleClicked(int logicalIndex) {
         for (; i < logicalIndex; i++)
             rebuiltList.push_back(m_lstTimeSlices.at(i));
         for (; i < model() ->columnCount() - 1; i++) {
-            int sum = m_lstTimeSlices.at(i) + timeSlice;
+            double sum = m_lstTimeSlices.at(i) + timeSlice;
             rebuiltList.push_back(sum);
         }
         m_lstTimeSlices = rebuiltList;

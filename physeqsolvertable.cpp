@@ -17,12 +17,16 @@ PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget 
     setContextMenuPolicy(Qt::CustomContextMenu);
     setItemPrototype(item(rows - 1, columns - 1));
     setItemDelegate(new PhysEqSolverDelegate());
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
-    connect(m_pHeader, SIGNAL(updateTimeSlices(const int, const int)), this, SLOT(onUpdateTimeSlices(const int, const int)));
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    createConnections();
 }
 
 PhysEqSolverTable::~PhysEqSolverTable() {
+}
+
+void PhysEqSolverTable::createConnections() {
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+    connect(m_pHeader, SIGNAL(updateTimeSlices(const int, const double)), this, SLOT(onUpdateTimeSlices(const int, const double)));
 }
 
 void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
@@ -121,7 +125,7 @@ void PhysEqSolverTable::onSelectParticle() {
     }
 }
 
-void PhysEqSolverTable::onUpdateTimeSlices(const int logicalIndex, const int timeVal) {
+void PhysEqSolverTable::onUpdateTimeSlices(const int logicalIndex, const double timeVal) {
     m_TimeSliceValues = m_pHeader ->timeSliceList();
     rebuildColumnHeaders();
 }
@@ -138,7 +142,7 @@ void PhysEqSolverTable::insertColumn() {
 
     // When inserting a new column with the default value, it should be added to the previous column
     int idx = m_TimeSliceValues.count() - 1;
-    int newValue = m_TimeSliceValues.at(idx) + 1.0;
+    double newValue = m_TimeSliceValues.at(idx) + 1.0;
     m_TimeSliceValues.push_back(newValue);
     m_pHeader ->timeSliceList(m_TimeSliceValues);
     model() ->insertColumn(model() ->columnCount());
@@ -173,13 +177,16 @@ QSize PhysEqSolverTable::sizeHint() const {
 
 void PhysEqSolverTable::rebuildColumnHeaders() {
     QStringList headers;
-    QList<int> lst = m_pHeader ->timeSliceList();
+    QList<double> lst = m_pHeader ->timeSliceList();
+    int precision = 4;
 
     // rebuild column headers
     headers.push_back(QString(""));
     for (int i = 1; i < model() ->columnCount(); i++) {
-        QString hdrString = QString("t%1 = %2s").arg(i - 1).arg(lst.at(i - 1));
-        headers.push_back(hdrString);
+        char str[25];
+        sprintf(str, "t%d = %.*f", i - 1, precision, lst.at(i - 1));
+        //QString hdrString = QString.sprintf("t%d = %f", i - 1, lst.at(i - 1));
+        headers.push_back(QString(str));
     }
     setHorizontalHeaderLabels(headers);
 }
