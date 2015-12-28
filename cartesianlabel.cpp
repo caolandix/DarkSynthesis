@@ -1,31 +1,28 @@
-#include <QPainter>
-#include <QGraphicsTextItem>
-#include <QGraphicsSceneMouseEvent>
-#include <QVariant>
-#include <QGraphicsItem>
-#include <QGraphicsSimpleTextItem>
-#include <QTextCursor>
+#include <QtWidgets>
 
 #include "cartesianlabel.h"
 
-CartesianLabel::CartesianLabel(const QString &text, Qt::Alignment flags, QGraphicsItem *pParent) : QGraphicsTextItem(text, pParent), m_Flags(flags) {
+CartesianLabel::CartesianLabel(const QString &text, Qt::Alignment flags, QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(text, pParent), m_Flags(flags) {
 
     setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
+    m_bDraw = bDraw;
 }
 
-CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent) : QGraphicsTextItem(text, pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
+CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(text, pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
     setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
+    m_bDraw = bDraw;
 }
 
-CartesianLabel::CartesianLabel(QGraphicsItem * pParent) : QGraphicsTextItem(pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
+CartesianLabel::CartesianLabel(QGraphicsItem * pParent, bool bDraw) : QGraphicsTextItem(pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
 
     setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
+    m_bDraw = bDraw;
 }
 
 QRectF CartesianLabel::boundingRect() const {
@@ -46,8 +43,10 @@ QRectF CartesianLabel::boundingRect() const {
 }
 
 void CartesianLabel::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOption, QWidget *pWidget) {
-    pPainter -> translate(m_Bounds.left(), -m_Bounds.top());
-    QGraphicsTextItem::paint(pPainter, pOption, pWidget);
+    if (m_bDraw) {
+        pPainter -> translate(m_Bounds.left(), -m_Bounds.top());
+        QGraphicsTextItem::paint(pPainter, pOption, pWidget);
+    }
 }
 
 void CartesianLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *evt) {

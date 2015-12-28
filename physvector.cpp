@@ -33,7 +33,7 @@ PhysVector::PhysVector(
     PhysBaseItem(), QGraphicsLineItem(pParent) {
     m_pDataObj = new PhysVectorDataObj(variable, equation, name, magnitude);
 
-    m_pLabel = new CartesianLabel(name, this);
+    m_pLabel = new CartesianLabel(name, this, bDraw);
     m_pParent = pParent;
     m_Color = Qt::black;
     m_arrowSize = 20;

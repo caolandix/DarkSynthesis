@@ -110,6 +110,8 @@ void PhysEqSolver::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
 
 void PhysEqSolver::Calculate() {
     qDebug("PhysEqSolver::Calculate()");
+
+    // The first row doesn't count
     if (m_pTable ->rowCount() > 1) {
 
     }

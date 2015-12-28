@@ -12,6 +12,7 @@
 #include "physobjectpropsnavigator.h"
 #include "physeqsolver.h"
 #include "physdockedwidget.h"
+#include "phystablemodel.h"
 #include "physcommon.h"
 
 using namespace std;
@@ -191,6 +192,7 @@ void CMainWindow::createDockWindows() {
 
     PhysDockedWidget *pPhysDock = new PhysDockedWidget(tr("Equation Solver"), this);
     m_pPhysEqSolver = new PhysEqSolver(1, 2, pPhysDock);
+    m_pPhysEqSolver ->setModel(new PhysTableModel(this));
     pPhysDock -> setWidget(m_pPhysEqSolver);
     pPhysDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
     addDockWidget(Qt::BottomDockWidgetArea, pPhysDock);
