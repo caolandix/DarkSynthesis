@@ -5,10 +5,10 @@
 
 class CustomFunctionIntegrate : public CustomFunction {
 public:
-    CustomFunctionIntegrate(const string, const int);
+    CustomFunctionIntegrate(const string, const int = 0);
 
     virtual double applyFunction(double args[]) const;
-    string applyFunction(double args[]);
+    string applyFunction1(double args[]) const;
 private:
     double m_Interval[2];
     bool m_isDefinite;

@@ -1,7 +1,7 @@
 #include "CustomFunction.h"
 #include "customfunctiondifferentiate.h"
 
-CustomFunctionDifferentiate::CustomFunctionDifferentiate(const string Name, const int argCount) : CustomFunction(Name, argCount) {
+CustomFunctionDifferentiate::CustomFunctionDifferentiate(const string Name, const int argCount) : CustomFunction(Name) {
 
 }
 

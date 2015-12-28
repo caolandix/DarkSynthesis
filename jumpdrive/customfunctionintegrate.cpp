@@ -4,10 +4,10 @@
 // Args in an Integration include:
 //  - Function in string form
 //  -
-CustomFunctionIntegrate::CustomFunctionIntegrate(const string Name, const int argCount) : CustomFunction(Name, argCount) {
+CustomFunctionIntegrate::CustomFunctionIntegrate(const string Name, const int argCount) : CustomFunction(Name) {
 }
 
-string CustomFunctionIntegrate::applyFunction(double args[]) const {
+string CustomFunctionIntegrate::applyFunction1(double args[]) const {
     std::string Fx;
     if (m_isDefinite) {
         double val = applyFunction(args);
