@@ -26,5 +26,7 @@
 #include "UnparsableExpressionException.h"
 #include "VariableToken.h"
 #include "ValueSet.h"
+#include "customfunctiondifferentiate.h"
+#include "customfunctionintegrate.h"
 
 #endif /* JUMPDRIVEDEFS_H_ */

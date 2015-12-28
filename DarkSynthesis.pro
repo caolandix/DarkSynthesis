@@ -62,7 +62,9 @@ SOURCES += main.cpp \
     physscience.cpp \
     physdataobj.cpp \
     physdockedwidget.cpp \
-    physcommon.cpp
+    physcommon.cpp \
+    jumpdrive/customfunctiondifferentiate.cpp \
+    jumpdrive/customfunctionintegrate.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -144,7 +146,9 @@ HEADERS  += cmainwindow.h \
     physeqsolvertableheader.h \
     physdataobj.h \
     physdockedwidget.h \
-    physcommon.h
+    physcommon.h \
+    jumpdrive/customfunctiondifferentiate.h \
+    jumpdrive/customfunctionintegrate.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \

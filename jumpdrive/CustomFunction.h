@@ -17,9 +17,9 @@ public:
     virtual ~CustomFunction() {}
 
 
-    int getArgumentCount() const { return m_argc; }
+    int argc() const { return m_argc; }
     virtual double applyFunction(double []) const { return 0.0; }
-    string get_name() const { return m_name; }
+    string Name() const { return m_name; }
 private:
 	int m_argc;
 	string m_name;

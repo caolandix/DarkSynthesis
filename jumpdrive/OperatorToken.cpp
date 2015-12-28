@@ -8,10 +8,8 @@
 #include "jumpdrivedefs.h"
 
 bool OperatorToken::operator==(const OperatorToken &obj) {
-	if (obj.tokenType() == tokenType()) {
-		;//return t.getValue().equals(this.getValue());
+    if (obj.tokenType() == tokenType())
 		return true;
-	}
 	return false;
 }
 
@@ -57,34 +55,3 @@ void OperatorToken::mutateStackForInfixTranslation(stack<Token*> &operatorStack,
 	}
 	operatorStack.push(this);
 }
-/*
-void OperatorToken::mutateStackForInfixTranslation(stack<Token*> &operatorStack, string &output) {
-	if (operatorStack.empty())
-		return;
-	Token *pbefore = operatorStack.top();
-	while ((!operatorStack.empty() && pbefore) &&
-			(pbefore -> tokenType() == TokenType::TT_OPERATOR ||
-			pbefore -> tokenType() == TokenType::TT_FUNCTION)) {
-
-		if (pbefore -> tokenType() == TokenType::TT_FUNCTION) {
-			operatorStack.pop();
-			output += pbefore -> getValue() + " ";
-		}
-		else {
-			OperatorToken *popToken = (OperatorToken *)pbefore;
-			if (isLeftAssociative() && getPrecedence() <= popToken -> getPrecedence()) {
-				output += operatorStack.top() -> getValue() + " ";
-				operatorStack.pop();
-			}
-			else if (!isLeftAssociative() && getPrecedence() < popToken -> getPrecedence()) {
-				output += operatorStack.top() -> getValue() + " ";
-				operatorStack.pop();
-			}
-			else
-				break;
-		}
-		pbefore = operatorStack.top();
-	}
-	operatorStack.push(this);
-}
-*/

@@ -43,7 +43,6 @@ string &trim(string &s) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 ExpressionBuilder::ExpressionBuilder() {
-	typedef multi_index_container<string, indexed_by<ordered_unique<string>>> variable_set;
 	m_highUnaryPrecedence = false;
 }
 //
@@ -165,7 +164,9 @@ void ExpressionBuilder::getBuiltinFunctions() {
 		m_customFunctions.insert(CustomFunctionPair("sqrt", new CustomFunctionSQRT("sqrt")));
 		m_customFunctions.insert(CustomFunctionPair("tan", new CustomFunctionTAN("tan")));
 		m_customFunctions.insert(CustomFunctionPair("tanh", new CustomFunctionTANH("tanh")));
-	}
+        m_customFunctions.insert(CustomFunctionPair("diff", new CustomFunctionDifferentiate("diff")));
+        m_customFunctions.insert(CustomFunctionPair("integ", new CustomFunctionIntegrate("integ")));
+    }
 	catch (InvalidCustomFunctionException &e) {
 
 		// this should not happen...

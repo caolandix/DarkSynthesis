@@ -109,7 +109,8 @@ list<Token*> Tokenizer::getTokens(string &expression) {
 				tokens.push_back(new VariableToken(name));
 			}
 			else if (isFunction(name)) {
-				// might be a function
+
+                // might be a function
 				i += offset - 1;
 				map<string, CustomFunction *>::const_iterator iter = m_functions.find(name);
 				if (iter != m_functions.end())

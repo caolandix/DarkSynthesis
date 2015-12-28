@@ -17,8 +17,10 @@ string &rtrim(string &s);
 string &trim(string &s);
 
 class ExpressionBuilder {
+public:
     typedef pair<string, CustomOperator *> CustomOperatorPair;
     typedef pair<string, CustomFunction *> CustomFunctionPair;
+    typedef multi_index_container<string, indexed_by<ordered_unique<string>>> variable_set;
 public:
 
 	static inline string &trim(string &s);
@@ -34,14 +36,14 @@ public:
 	void withVariables(const map<string, double> &variableMap);
 	void withOperations(vector<CustomOperator *> &operations);
 
-    void withOperation(CustomOperator *poperation) { m_customOperators.insert(pair<string, CustomOperator *>(poperation -> symbol(), poperation)); }
+    void withOperation(CustomOperator *pObj) { m_customOperators.insert(pair<string, CustomOperator *>(pObj -> symbol(), pObj)); }
     void withExpression(const string expression) { m_expression = expression; }
     void withVariable(const string &variableName, const double value) { m_variables.insert(pair<string, double>(variableName, value)); }
-    void withCustomFunction(CustomFunction *pfunction) { m_customFunctions.insert(pair<string, CustomFunction *>(pfunction -> get_name(), pfunction)); }
+    void withCustomFunction(CustomFunction *pFunc) { m_customFunctions.insert(pair<string, CustomFunction *>(pFunc -> Name(), pFunc)); }
 	static const string PROPERTY_UNARY_HIGH_PRECEDENCE;
-	/**
-	 * Property name for unary precedence choice. You can set System.getProperty(PROPERTY_UNARY_HIGH_PRECEDENCE,"false")
-	 * in order to change evaluation from an expression like "-3^2" from "(-3)^2" to "-(3^2)"
+    /*
+     Property name for unary precedence choice. You can set System.getProperty(PROPERTY_UNARY_HIGH_PRECEDENCE,"false")
+     in order to change evaluation from an expression like "-3^2" from "(-3)^2" to "-(3^2)"
 	 */
 private:
 	map<string, double> m_variables;
