@@ -131,7 +131,7 @@ void PhysEqSolverTable::onUpdateTimeSlices(const int logicalIndex, const double 
 }
 
 void PhysEqSolverTable::createTableHeader() {
-    m_TimeSliceValues.push_back(1.0);
+    m_TimeSliceValues.push_back(0.0);
     setHorizontalHeader(m_pHeader = new PhysEqSolverTableHeader(m_TimeSliceValues, this));
     setHorizontalHeaderLabels(QStringList() << "" << "t0");
     verticalHeader() ->setVisible(false);
@@ -147,6 +147,8 @@ void PhysEqSolverTable::insertColumn() {
     m_pHeader ->timeSliceList(m_TimeSliceValues);
     model() ->insertColumn(model() ->columnCount());
     rebuildColumnHeaders();
+
+    emit addTimeSliceCell(idx, newValue);
 }
 
 void PhysEqSolverTable::removeColumn(const int idx) {
@@ -155,6 +157,8 @@ void PhysEqSolverTable::removeColumn(const int idx) {
         m_TimeSliceValues.removeAt(idx);
         m_pHeader ->timeSliceList(m_TimeSliceValues);
         rebuildColumnHeaders();
+
+        emit removeTimeSliceCell(idx);
     }
 }
 
@@ -185,7 +189,6 @@ void PhysEqSolverTable::rebuildColumnHeaders() {
     for (int i = 1; i < model() ->columnCount(); i++) {
         char str[25];
         sprintf(str, "t%d = %.*f", i - 1, precision, lst.at(i - 1));
-        //QString hdrString = QString.sprintf("t%d = %f", i - 1, lst.at(i - 1));
         headers.push_back(QString(str));
     }
     setHorizontalHeaderLabels(headers);

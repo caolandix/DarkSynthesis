@@ -5,14 +5,19 @@
 
 class PhysEqGrid {
 public:
-    typedef QList<PhysEqRow *> RowList;
-    PhysEqGrid() {}
+    PhysEqGrid();
     ~PhysEqGrid();
 
-    void insertRow();
+    int RowCount() const { return m_rowCount; }
+    int ColCount() const { return m_colCount; }
 
 private:
-    RowList m_rowList;
+    void insertRow();
+
+
+private:
+    QList<PhysEqRow *> m_rowList;
+    int m_rowCount, m_colCount;
 };
 
 #endif // PHYSEQGRID_H

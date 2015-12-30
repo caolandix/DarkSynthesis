@@ -100,14 +100,14 @@ QVariant PhysEqSolverItem::resolveSigFigs(const QVariant &calcResult) {
 }
 
 QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWidget *pWidget, const QTableWidgetItem *self) {
-
+    QVariant result;
     // check if the s tring is actually a formula or not
     QStringList list = formula.split(' ');
     if (list.isEmpty() || !pWidget)
         return formula; // it is a normal string
 
     QString op = list.value(0).toLower();
-
+/*
     int firstRow = -1;
     int firstCol = -1;
     int secondRow = -1;
@@ -125,7 +125,6 @@ QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWi
     int firstVal = pStart ? pStart ->text().toInt() : 0;
     int secondVal = pEnd ? pEnd ->text().toInt() : 0;
 
-    QVariant result;
     if (op == "sum") {
         int sum = 0;
         for (int row = firstRow; row <= secondRow; ++row) {
@@ -156,5 +155,6 @@ QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWi
     }
     else
         result = formula;
+        */
     return result;
 }

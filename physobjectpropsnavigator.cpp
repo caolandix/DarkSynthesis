@@ -118,6 +118,9 @@ void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
     qDebug("PhysObjectPropsNavigator::updateParticleTable()");
     if (pObj) {
         pObj ->mass(m_pParticleMass ->text().toDouble());
+
+        // Alert the PhysEqTable that a change in name has occurred in particles.
+        emit updateParticleName(pObj ->Name(), m_pParticleName ->text());
         pObj ->Name(m_pParticleName ->text());
 
         // Extract the values from the string

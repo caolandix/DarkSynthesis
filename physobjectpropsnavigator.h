@@ -32,6 +32,7 @@ private:
     void createTable(const int, const int);
 signals:
     void repaint();
+    void updateParticleName(const QString, const QString);
 public slots:
     void onChangeObj(QGraphicsItem *, QGraphicsItem *);
     void onUpdateObj(QGraphicsItem *);

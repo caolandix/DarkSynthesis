@@ -1,13 +1,13 @@
 #include "physvectordataobj.h"
 
-PhysVectorDataObj::PhysVectorDataObj() : PhysDataObj(QString("")) {
+PhysVectorDataObj::PhysVectorDataObj() : PhysDataObj(QString(""), DT_VECTOR) {
     m_variable = QString("");
     m_equation = QString("");
     m_magnitude = 0.0;
 }
 
 
-PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QString equation, const QString name, double magnitude) : PhysDataObj(name) {
+PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QString equation, const QString name, double magnitude) : PhysDataObj(name, DT_VECTOR) {
     m_variable = variable;
     m_equation = equation;
     m_magnitude = magnitude;

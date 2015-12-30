@@ -65,7 +65,9 @@ SOURCES += main.cpp \
     physcommon.cpp \
     jumpdrive/customfunctiondifferentiate.cpp \
     jumpdrive/customfunctionintegrate.cpp \
-    phystablemodel.cpp
+    phystablemodel.cpp \
+    physcalculatetimer.cpp \
+    phystimeslicedataobj.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -150,7 +152,9 @@ HEADERS  += cmainwindow.h \
     physcommon.h \
     jumpdrive/customfunctiondifferentiate.h \
     jumpdrive/customfunctionintegrate.h \
-    phystablemodel.h
+    phystablemodel.h \
+    physcalculatetimer.h \
+    phystimeslicedataobj.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \

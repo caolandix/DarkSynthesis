@@ -211,7 +211,10 @@ void CMainWindow::createSignalSlots() {
     val = connect(m_pGraphWidget, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onReorderObjNav(QGraphicsItem *)));
     val = connect(m_pGraphWidget, SIGNAL(changeItemName(const QString &, const QString &)),
                   m_pPhysObjNavigator, SLOT(onChangeItemName(const QString &, const QString &)));
-    connect(m_pPhysModNavigator, SIGNAL(setModType(int)), m_pPhysEqSolver, SLOT(onSetModType(int)));
+    val = connect(m_pPhysModNavigator, SIGNAL(setModType(int)), m_pPhysEqSolver, SLOT(onSetModType(int)));
+    val = connect(m_pPhysObjPropsNavigator, SIGNAL(updateParticleName(const QString, const QString)),
+                  m_pPhysEqSolver, SLOT(onUpdateParticleName(const QString, const QString)));
+
 }
 
 void CMainWindow::createBaseObjects() {

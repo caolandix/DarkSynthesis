@@ -8,7 +8,7 @@
 class PhysVectorDataObj : public PhysDataObj {
 public:
     PhysVectorDataObj();
-    PhysVectorDataObj(const QString str = "") : PhysDataObj(str) {}
+    PhysVectorDataObj(const QString str) : PhysDataObj(str, DT_VECTOR) {}
     PhysVectorDataObj(const QString, const QString, const QString = "", double = 0.0);
     PhysVectorDataObj(const PhysVectorDataObj &);
     PhysVectorDataObj(const PhysVectorDataObj *);

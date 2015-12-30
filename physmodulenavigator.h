@@ -10,7 +10,8 @@ class PhysModuleNavigator : public QListWidget, public PhysCommon {
     Q_OBJECT
 public:
     PhysModuleNavigator(QWidget * = NULL);
-
+signals:
+    void setModType(int);
 public slots:
 
 private:

@@ -29,6 +29,8 @@ public:
     CartesianGraphDataObj *CartesianDataObj() const { return m_pDataObj; }
 signals:
      void addPhysEqSolverRow(QList<PhysParticle *>);
+     void addTimeSliceCell(int, double);
+     void removeTimeSliceCell(int);
 public slots:
     void onSelectColor();
     void onSelectFont();
