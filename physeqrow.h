@@ -9,8 +9,7 @@
 class PhysEqRow {
 public:
 
-    typedef enum { RT_TIMESLICE = 0, RT_PARTICLE, RT_VECTOR, RT_PROPERTY } RowType;
-
+    typedef enum { RT_CARTGRAPH = 0, RT_PARTICLE, RT_VECTOR, RT_PROPERTY, RT_TIMESLICE } RowType;
     PhysEqRow(RowType type) : m_Type(type) {}
     PhysEqRow(PhysEqRowProps *pObj) : m_pRowProps(pObj) {}
     PhysEqRow(const PhysEqRow &);

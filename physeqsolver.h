@@ -24,8 +24,7 @@ public:
 private:
     void createParticleItems(int, PhysParticle *);
     void create1DKinematicItems(int, PhysParticle *);
-    QTableWidgetItem *createRowItem(PhysVectorDataObj *);
-    QTableWidgetItem *createRowItem(PhysParticleDataObj *);
+    QTableWidgetItem *createRowItem(PhysDataObj *);
     QTableWidgetItem *createTableItem(PhysDataObj *, bool = false);
 
     void createConnections();
@@ -36,18 +35,20 @@ private:
 
     void DecodeAddy(const QString, int *, int * = NULL);
     QString EncodeAddy(const int, const int = -1);
-    void addPhysDataObjCell(PhysDataObj *);
+    void createTimeSliceRow(QList<double>);
+    void addPhysDataObjCell(int row, int col, double val);
+
+    void createPhysDataObjRow(PhysDataObj *);
 public slots:
     void updateLineEdit(QTableWidgetItem *);
     void returnPressed();
     void onAddPhysEqSolverRow(QList<PhysParticle *>);
     void onCalculate();
     void onUpdateParticleName(const QString, const QString);
-    void onCreateTimeSliceRow(QList<double>);
     void onAddTimeSliceCell(int, double);
     void onRemoveTimeSliceCell(int);
     void onCartesianGraphCreated(CartesianGraphDataObj *pObj) { m_pTable ->CartesianDataObj(pObj); }
-
+    void onSetModType(int modType) {}
 signals:
 private:
     PhysEqSolverTable *m_pTable;
@@ -57,8 +58,5 @@ private:
     QList<PhysParticle *> m_lstParticles;
     PhysCalculateTimer *m_pCalcTimer;
 };
-
-void decode_pos(const QString &, int *, int *);
-QString encode_pos(int, int );
 
 #endif // PHYSEQSOLVER_H

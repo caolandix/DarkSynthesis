@@ -108,7 +108,7 @@ void PhysEqSolverTable::onSelectParticle() {
 
     foreach (PhysParticle *pObj, m_pDataObj ->Particles()) {
         if (pObj)
-            dlg.m_lstParticles->addItem(new QListWidgetItem(pObj ->Name()));
+            dlg.m_lstParticles  ->addItem(new QListWidgetItem(pObj ->Name()));
     }
     pDlg ->exec();
     if (pDlg ->result() == QDialog::Accepted) {
@@ -148,7 +148,7 @@ void PhysEqSolverTable::insertColumn() {
     model() ->insertColumn(model() ->columnCount());
     rebuildColumnHeaders();
 
-    emit addTimeSliceCell(idx, newValue);
+    emit addTimeSliceCell(m_TimeSliceValues.count() - 1, newValue);
 }
 
 void PhysEqSolverTable::removeColumn(const int idx) {

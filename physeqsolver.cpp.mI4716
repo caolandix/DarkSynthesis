@@ -9,8 +9,6 @@
 #include "physeqgrid.h"
 #include "physcalculatetimer.h"
 #include "phystimeslicedataobj.h"
-#include "physcelldataobj.h"
-#include "physeqrow.h"
 
 PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pParent) {
     m_pTable = NULL;
@@ -22,7 +20,7 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pP
     setupContextMenu();
     createConnections();
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    createTimeSliceRow(m_pTable ->TimeSliceValues());
+
 }
 
 void PhysEqSolver::createConnections() {
@@ -31,8 +29,9 @@ void PhysEqSolver::createConnections() {
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
     connect(m_pTable, SIGNAL(addPhysEqSolverRow(QList<PhysParticle *>)), this, SLOT(onAddPhysEqSolverRow(QList<PhysParticle *>)));
     connect(m_pCalcTimer ->Timer(), SIGNAL(timeout()), this, SLOT(onCalculate()));
+    connect(m_pTable, SIGNAL(createTimeSliceRow(QList<double>)), this, SLOT(onCreateTimeSliceRow(QList<double>)));
     connect(m_pTable, SIGNAL(addTimeSliceCell(int, double)), this, SLOT(onAddTimeSliceCell(int, double)));
-    connect(m_pTable, SIGNAL(removeTimeSliceCell(int)), this, SLOT(onRemoveTimeSliceCell(int)));
+    connect(m_pTable, SIGNAL(removeTimeSliceCell(int, double)), this, SLOT(onRemoveTimeSliceCell(int, double)));
 }
 
 void PhysEqSolver::onUpdateParticleName(const QString prevName, const QString name) {
@@ -83,19 +82,24 @@ QTableWidgetItem *PhysEqSolver::createTableItem(PhysDataObj *pObj, bool bAttachO
 
 
 // Creates both the initial row and the first time slice item
-void PhysEqSolver::createTimeSliceRow(QList<double> lstTimeSlices) {
+void PhysEqSolver::onCreateTimeSliceRow(QList<double> lstTimeSlices) {
 
     // Create the first row...
     PhysEqRow *pRow = new PhysEqRow(PhysEqRow::RT_TIMESLICE);
     m_lstRows.push_back(pRow);
-    pRow ->Addy(EncodeAddy(m_lstRows.count()));
+    pRow->Addy(EncodeAddy(m_lstRows.count()));
 
     // Insert the first cell in the row
     onAddTimeSliceCell(0, lstTimeSlices.at(0));
 }
 
-void PhysEqSolver::onAddTimeSliceCell(int col, double val) {
-    addPhysDataObjCell(0, col, val);
+void PhysEqSolver::onAddTimeSliceCell(int idx, double val) {
+    QString Addy = EncodeAddy(0, idx);
+    PhysEqRow *pRow = m_lstRows.at(0);
+    if (pRow) {
+        PhysEqGridCell *pCell = new PhysEqGridCell(new PhysTimeSliceDataObj(val), Addy);
+        pRow ->addCell(pCell);
+    }
 }
 
 // Need to do. Will wait for creation to work first...
@@ -103,67 +107,23 @@ void PhysEqSolver::onRemoveTimeSliceCell(int idx) {
     int row = idx, col;
 }
 
-void PhysEqSolver::addPhysDataObjCell(int row, int col, double val) {
-    QString Addy = EncodeAddy(row, col);
-    PhysEqRow *pRow = m_lstRows.at(row);
-    if (pRow) {
-        PhysEqGridCell *pCell = NULL;
-        if (pRow ->Type() == PhysEqRow::RT_TIMESLICE)
-            pCell = new PhysEqGridCell(new PhysTimeSliceDataObj(val), Addy);
-        else {
-            int type;
-            switch (pRow ->Type()) {
-            case PhysEqRow::RT_CARTGRAPH:
-                type = PhysDataObj::DT_CARTGRAPH;
-                break;
-            case PhysEqRow::RT_PARTICLE:
-                type = PhysDataObj::DT_PARTICLE;
-                break;
-            case PhysEqRow::RT_VECTOR:
-                type = PhysDataObj::DT_VECTOR;
-                break;
-            case PhysEqRow::RT_PROPERTY:
-                type = PhysDataObj::DT_PROPERTY;
-                break;
-            default:
-                qDebug("PhysEqSolver::addPhysDataObjCell(): invalid RowType: %d", pRow ->Type());
-                return;
-            }
-            pCell = new PhysEqGridCell(new PhysCellDataObj((PhysCellDataObj::DataType)type, val), Addy);
-        }
-        if (pCell)
-            pRow ->addCell(pCell);
-    }
-    else
-        qDebug("PhysEqSolver::addPhysDataObjCell(): pRow is NULL");
+void PhysEqSolver::addPhysDataObjCell(PhysDataObj *pObj) {
+
 }
 
-void PhysEqSolver::createPhysDataObjRow(PhysDataObj *pObj) {
-    int rowIdx = m_lstRows.count();
-    int numCols = m_pTable ->columnCount();
-    PhysEqRow *pRow = new PhysEqRow((PhysEqRow::RowType)pObj ->Type());
-    m_lstRows.push_back(pRow);
-    pRow ->Addy(EncodeAddy(m_lstRows.count()));
-
-    // Create the list of cells for each column
-    for (int col = 0; col < numCols; col++) {
-        addPhysDataObjCell(rowIdx, col, 0.0);
-    }
-    if (pObj ->Type() == PhysDataObj::DT_PARTICLE) {
-    }
-    else if (pObj ->Type() == PhysDataObj::DT_VECTOR) {
-
-    }
-    else if (pObj ->Type() == PhysDataObj::DT_PROPERTY) {
-    }
-    else {
-    }
-}
-
-// Visual and underlying data structure insertion
-QTableWidgetItem *PhysEqSolver::createRowItem(PhysDataObj *pObj) {
-    createPhysDataObjRow(pObj);
+// Visual insertion only
+QTableWidgetItem *PhysEqSolver::createRowItem(PhysParticleDataObj *pObj) {
     return createTableItem(pObj, true);
+}
+
+// The difference between this one and the particles is that particles do not get a PhysEqRow entry as
+// their information is not necessary for doing calculations...
+QTableWidgetItem *PhysEqSolver::createRowItem(PhysVectorDataObj *pObj) {
+    PhysEqRowProps *pRowProps = new PhysEqRowProps(pObj);
+    PhysEqRow *pRow = new PhysEqRow(pRowProps);
+    m_lstRows.push_back(pRow);
+
+    return createTableItem(pObj);
 }
 
 void PhysEqSolver::createParticleItems(int i, PhysParticle *pParticle) {

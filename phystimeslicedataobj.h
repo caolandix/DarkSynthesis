@@ -1,6 +1,7 @@
 #ifndef PHYSTIMESLICEDATAOBJ_H
 #define PHYSTIMESLICEDATAOBJ_H
 
+#include "physdataobj.h"
 
 class PhysTimeSliceDataObj : public PhysDataObj {
 public:
