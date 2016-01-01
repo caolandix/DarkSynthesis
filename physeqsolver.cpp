@@ -142,8 +142,6 @@ void PhysEqSolver::createPhysDataObjRow(PhysDataObj *pObj) {
     int rowIdx = m_lstRows.count();
     int numCols = m_pTable ->columnCount();
     PhysEqRow *pRow = NULL;
-    m_lstRows.push_back(pRow);
-    pRow ->Addy(EncodeAddy(m_lstRows.count()));
     QString variable = "";
 
 
@@ -158,6 +156,8 @@ void PhysEqSolver::createPhysDataObjRow(PhysDataObj *pObj) {
         pRow  = new PhysEqRow(PhysEqRow::RT_PROPERTY);
     else {
     }
+    m_lstRows.push_back(pRow);
+    pRow ->Addy(EncodeAddy(m_lstRows.count()));
 
     // Create the list of cells for each column
     for (int col = 0; col < numCols; col++)
@@ -231,7 +231,16 @@ void PhysEqSolver::onCalculate() {
     qDebug("PhysEqSolver::onCalculate()");
 
     if (m_pTable ->rowCount() > 0) {
-
+        foreach(PhysEqRow *pRow, m_lstRows) {
+            if (pRow ->Type() != PhysEqRow::RT_PARTICLE || pRow ->Type() != PhysEqRow::RT_CARTGRAPH) {
+                if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
+                }
+                else if (pRow ->Type() == PhysEqRow::RT_TIMESLICE) {
+                }
+                else if (pRow ->Type() == PhysEqRow::RT_PROPERTY) {
+                }
+            }
+        }
     }
 }
 
