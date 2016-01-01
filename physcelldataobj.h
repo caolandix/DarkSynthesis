@@ -10,9 +10,11 @@ public:
 
     double Data() const { return m_Data; }
     void Data(const double val) { m_Data = val; }
+    void Data(const QString str) { m_Data = str.toDouble(); }
     bool Calculated() const { return m_bCalculated; }
     void Calculated(const bool bVal) { m_bCalculated = bVal; }
     QString Variable() const { return Name(); }
+    void Variable(const QString str) { Name(str); }
 private:
     double m_Data;
     bool m_bCalculated;

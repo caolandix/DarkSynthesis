@@ -12,6 +12,8 @@
 #include "physcelldataobj.h"
 #include "physeqrow.h"
 
+#include "jumpdrive/ExpressionBuilder.h"
+
 PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pParent) {
     m_pTable = NULL;
     m_pGrid = NULL;
@@ -232,16 +234,37 @@ void PhysEqSolver::onCalculate() {
 
     if (m_pTable ->rowCount() > 0) {
         foreach(PhysEqRow *pRow, m_lstRows) {
-            if (pRow ->Type() != PhysEqRow::RT_PARTICLE || pRow ->Type() != PhysEqRow::RT_CARTGRAPH) {
-                if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
-                }
-                else if (pRow ->Type() == PhysEqRow::RT_TIMESLICE) {
-                }
-                else if (pRow ->Type() == PhysEqRow::RT_PROPERTY) {
-                }
+            if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
+                QString equation = pRow ->Equation();
+                std::string utf8_equation = equation.toUtf8().constData();
+                ExpressionBuilder exprBuilder(utf8_equation);
+                RPNExpression rpnExpr = exprBuilder.build();
+            }
+            else if (pRow ->Type() == PhysEqRow::RT_TIMESLICE) {
+            }
+            else if (pRow ->Type() == PhysEqRow::RT_PROPERTY) {
             }
         }
     }
+
+    /*
+    string strEquation = "x * y - 2, x = 1.2, y = 2.2";
+    vector<string> fields;
+    vector<double> vals;
+    split(fields, strEquation, is_any_of(","));
+    ExpressionBuilder builder(fields[0]);
+    for (vector<string>::iterator iter = fields.begin() + 1; iter != fields.end(); iter++) {
+        string str = ltrim(*iter);
+        double val;
+
+        // Split the variable from it's value
+        vector<string> tmp;
+        split(tmp, str, is_any_of("="));
+        builder.withVariable(ltrim(rtrim(tmp[0])), val = atof(ltrim(rtrim(tmp[1])).c_str()));
+        vals.push_back(val);
+    }
+    double result = builder.build().calculate(vals);
+    */
 }
 
 void PhysEqSolver::updateLineEdit(QTableWidgetItem *pItem) {
