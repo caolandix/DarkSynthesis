@@ -229,6 +229,19 @@ void PhysEqSolver::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
     m_pCalcTimer ->start();
 }
 
+QStringList PhysEqSolver::findVariablesInGrid(PhysEqRow *pRow) {
+    
+    QStringList lstVariables;
+
+    return lstVariables;
+}
+
+QList<double> PhysEqSolver::findValuesOfVariablesInGrid(PhysEqRow *pRow) {
+    QList<double> lstValues;
+
+    return lstValues;
+}
+
 void PhysEqSolver::onCalculate() {
     qDebug("PhysEqSolver::onCalculate()");
 
@@ -236,9 +249,12 @@ void PhysEqSolver::onCalculate() {
         foreach(PhysEqRow *pRow, m_lstRows) {
             if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
                 QString equation = pRow ->Equation();
-                std::string utf8_equation = equation.toUtf8().constData();
+                QStringList lstVariables = findVariablesInGrid(pRow);
+                QList<double> lstValsOfVariables = findValuesOfVariablesInGrid(pRow);
+                string utf8_equation = equation.toUtf8().constData();
                 ExpressionBuilder exprBuilder(utf8_equation);
                 RPNExpression rpnExpr = exprBuilder.build();
+                double calcedVal = rpnExpr.calculate(lstValsOfVariables);
             }
             else if (pRow ->Type() == PhysEqRow::RT_TIMESLICE) {
             }

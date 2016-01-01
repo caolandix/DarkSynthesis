@@ -33,6 +33,9 @@ private:
     void createGrid();
     void setupContextMenu();
 
+    QStringList findVariablesInGrid(PhysEqRow *);
+    QList<double> findValuesOfVariablesInGrid(PhysEqRow *);
+
     void DecodeAddy(const QString, int *, int * = NULL);
     QString EncodeAddy(const int, const int = -1);
     void createTimeSliceRow(QList<double>);
