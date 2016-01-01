@@ -57,7 +57,6 @@ SOURCES += main.cpp \
     physeqgrid.cpp \
     physeqgridcell.cpp \
     physeqrow.cpp \
-    physeqrowprops.cpp \
     physeqsolvertableheader.cpp \
     physscience.cpp \
     physdataobj.cpp \
@@ -146,7 +145,6 @@ HEADERS  += cmainwindow.h \
     physeqgrid.h \
     physeqgridcell.h \
     physeqrow.h \
-    physeqrowprops.h \
     physeqsolvertableheader.h \
     physdataobj.h \
     physdockedwidget.h \

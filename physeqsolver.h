@@ -36,7 +36,7 @@ private:
     void DecodeAddy(const QString, int *, int * = NULL);
     QString EncodeAddy(const int, const int = -1);
     void createTimeSliceRow(QList<double>);
-    void addPhysDataObjCell(int row, int col, double val);
+    void addPhysDataObjCell(const int row, const int col, const QString, const double val);
 
     void createPhysDataObjRow(PhysDataObj *);
 public slots:

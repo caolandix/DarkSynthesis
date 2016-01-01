@@ -95,7 +95,7 @@ void PhysEqSolver::createTimeSliceRow(QList<double> lstTimeSlices) {
 }
 
 void PhysEqSolver::onAddTimeSliceCell(int col, double val) {
-    addPhysDataObjCell(0, col, val);
+    addPhysDataObjCell(0, col, QString(""), val);
 }
 
 // Need to do. Will wait for creation to work first...
@@ -103,7 +103,7 @@ void PhysEqSolver::onRemoveTimeSliceCell(int idx) {
     int row = idx, col;
 }
 
-void PhysEqSolver::addPhysDataObjCell(int row, int col, double val) {
+void PhysEqSolver::addPhysDataObjCell(const int row, const int col, const QString variable, const double val) {
     QString Addy = EncodeAddy(row, col);
     PhysEqRow *pRow = m_lstRows.at(row);
     if (pRow) {
@@ -129,7 +129,7 @@ void PhysEqSolver::addPhysDataObjCell(int row, int col, double val) {
                 qDebug("PhysEqSolver::addPhysDataObjCell(): invalid RowType: %d", pRow ->Type());
                 return;
             }
-            pCell = new PhysEqGridCell(new PhysCellDataObj((PhysCellDataObj::DataType)type, val), Addy);
+            pCell = new PhysEqGridCell(new PhysCellDataObj((PhysCellDataObj::DataType)type, variable, val), Addy);
         }
         if (pCell)
             pRow ->addCell(pCell);
@@ -141,23 +141,27 @@ void PhysEqSolver::addPhysDataObjCell(int row, int col, double val) {
 void PhysEqSolver::createPhysDataObjRow(PhysDataObj *pObj) {
     int rowIdx = m_lstRows.count();
     int numCols = m_pTable ->columnCount();
-    PhysEqRow *pRow = new PhysEqRow((PhysEqRow::RowType)pObj ->Type());
+    PhysEqRow *pRow = NULL;
     m_lstRows.push_back(pRow);
     pRow ->Addy(EncodeAddy(m_lstRows.count()));
+    QString variable = "";
 
-    // Create the list of cells for each column
-    for (int col = 0; col < numCols; col++) {
-        addPhysDataObjCell(rowIdx, col, 0.0);
-    }
-    if (pObj ->Type() == PhysDataObj::DT_PARTICLE) {
-    }
+
+    if (pObj ->Type() == PhysDataObj::DT_PARTICLE)
+        pRow  = new PhysEqRow(PhysEqRow::RT_PARTICLE);
     else if (pObj ->Type() == PhysDataObj::DT_VECTOR) {
-
+        pRow  = new PhysEqRow(PhysEqRow::RT_VECTOR);
+        PhysVectorDataObj *pVectorDataObj = static_cast<PhysVectorDataObj *>(pObj);
+        variable = pVectorDataObj ->Variable();
     }
-    else if (pObj ->Type() == PhysDataObj::DT_PROPERTY) {
-    }
+    else if (pObj ->Type() == PhysDataObj::DT_PROPERTY)
+        pRow  = new PhysEqRow(PhysEqRow::RT_PROPERTY);
     else {
     }
+
+    // Create the list of cells for each column
+    for (int col = 0; col < numCols; col++)
+        addPhysDataObjCell(rowIdx, col, variable, 0.0);
 }
 
 // Visual and underlying data structure insertion
