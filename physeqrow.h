@@ -10,6 +10,7 @@ public:
 
     typedef enum { RT_CARTGRAPH = 0, RT_PARTICLE, RT_VECTOR, RT_PROPERTY, RT_TIMESLICE } RowType;
     PhysEqRow(RowType type) : m_Type(type) {}
+    PhysEqRow(RowType type, const QString eq) : m_Type(type), m_Equation(eq) {}
     PhysEqRow(const PhysEqRow &);
     PhysEqRow &operator=(const PhysEqRow &);
     ~PhysEqRow();

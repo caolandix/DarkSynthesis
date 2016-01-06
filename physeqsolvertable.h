@@ -28,6 +28,7 @@ public:
     void CartesianDataObj(CartesianGraphDataObj *pObj) { m_pDataObj = pObj; }
     CartesianGraphDataObj *CartesianDataObj() const { return m_pDataObj; }
     QList<double> TimeSliceValues() const { return m_TimeSliceValues; }
+    double TimeSlice(const  int idx) const { return m_TimeSliceValues.at(idx); }
 signals:
      void addPhysEqSolverRow(QList<PhysParticle *>);
      void addTimeSliceCell(int, double);

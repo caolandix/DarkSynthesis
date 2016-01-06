@@ -11,6 +11,7 @@
 #include "phystimeslicedataobj.h"
 #include "physcelldataobj.h"
 #include "physeqrow.h"
+#include "physshuntyardparser.h"
 
 #include "jumpdrive/ExpressionBuilder.h"
 
@@ -145,13 +146,13 @@ void PhysEqSolver::createPhysDataObjRow(PhysDataObj *pObj) {
     int numCols = m_pTable ->columnCount();
     PhysEqRow *pRow = NULL;
     QString variable = "";
-
+    PhysVectorDataObj *pVectorDataObj = NULL;
 
     if (pObj ->Type() == PhysDataObj::DT_PARTICLE)
         pRow  = new PhysEqRow(PhysEqRow::RT_PARTICLE);
     else if (pObj ->Type() == PhysDataObj::DT_VECTOR) {
-        pRow  = new PhysEqRow(PhysEqRow::RT_VECTOR);
-        PhysVectorDataObj *pVectorDataObj = static_cast<PhysVectorDataObj *>(pObj);
+        pVectorDataObj = static_cast<PhysVectorDataObj *>(pObj);
+        pRow  = new PhysEqRow(PhysEqRow::RT_VECTOR, pVectorDataObj ->Equation());
         variable = pVectorDataObj ->Variable();
     }
     else if (pObj ->Type() == PhysDataObj::DT_PROPERTY)
@@ -198,13 +199,13 @@ void PhysEqSolver::create1DKinematicItems(int i, PhysParticle *pParticle) {
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
                                         QString("Ay"), QString("diff(dy/dv)"), QString("Ay"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("Vx"), QString(""), QString("Vx"), false));
+                                           QString("Vx"), QString("16"), QString("Vx"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("Vy"), QString(""), QString("Vy"), false));
+                                           QString("Vy"), QString("12"), QString("Vy"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                               QString("X"), QString(""), QString("X"), false));
+                                               QString("X"), QString("44"), QString("X"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                               QString("Y"), QString(""), QString("Y"), false));
+                                               QString("Y"), QString("23"), QString("Y"), false));
 
     foreach(PhysVector *item, lst) {
         m_pTable ->insertRow(i);
@@ -229,11 +230,11 @@ void PhysEqSolver::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
     m_pCalcTimer ->start();
 }
 
-QStringList PhysEqSolver::findVariablesInGrid(PhysEqRow *pRow) {
-    
-    QStringList lstVariables;
+QStringList PhysEqSolver::separateEquationFromVariables(QString strEquation) {
+    QStringList lst = strEquation.split(",");
+    foreach(QString str, lst) {
 
-    return lstVariables;
+    }
 }
 
 QList<double> PhysEqSolver::findValuesOfVariablesInGrid(PhysEqRow *pRow) {
@@ -242,23 +243,107 @@ QList<double> PhysEqSolver::findValuesOfVariablesInGrid(PhysEqRow *pRow) {
     return lstValues;
 }
 
+void PhysEqSolver::setGridTextAtRowColumn(const int row, const int col, const double val) {
+    if (row != -1 && col != -1) {
+
+    }
+}
+
 void PhysEqSolver::onCalculate() {
     qDebug("PhysEqSolver::onCalculate()");
 
     if (m_pTable ->rowCount() > 0) {
-        foreach(PhysEqRow *pRow, m_lstRows) {
-            if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
-                QString equation = pRow ->Equation();
-                QStringList lstVariables = findVariablesInGrid(pRow);
-                QList<double> lstValsOfVariables = findValuesOfVariablesInGrid(pRow);
-                string utf8_equation = equation.toUtf8().constData();
-                ExpressionBuilder exprBuilder(utf8_equation);
-                RPNExpression rpnExpr = exprBuilder.build();
-                double calcedVal = rpnExpr.calculate(lstValsOfVariables);
+
+        // Now loop through each column and build a calculation set for that column.
+        // Then set the text for that grid cell in the table.
+        // NOTE: for future usage, it might be useful to use a matrix for
+        //      calculations then loop through it and just dump text.
+        double currTimeSlice, prevTimeSlice;
+        double dt;
+        for (int i = 1; i < m_pTable ->columnCount(); i++) {
+            if (i == 1) {
+                currTimeSlice = prevTimeSlice = m_pTable ->TimeSlice(0);
+                dt = 0.0;
             }
-            else if (pRow ->Type() == PhysEqRow::RT_TIMESLICE) {
+            else {
+                currTimeSlice = m_pTable ->TimeSlice(i - 1);
+                prevTimeSlice = m_pTable ->TimeSlice(i - 2);
+                dt = currTimeSlice - prevTimeSlice;
             }
-            else if (pRow ->Type() == PhysEqRow::RT_PROPERTY) {
+
+            // Set the time variable
+            QString timeVar = QString("t = %1").arg(dt);
+
+            // Loop through the rows trying to resolve the equations that are there.
+            foreach(PhysEqRow *pRow, m_lstRows) {
+                if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
+
+                    // Make sure that the row has an equation to solve for
+                    if (!(pRow ->Equation().trimmed().isEmpty())) {
+                        /*
+                        QString equation = pRow ->Equation() + QString(", ") + timeVar;
+
+                        // Split out the variables...
+                        //string utf8_equation = equation.toUtf8().constData();
+                        string str = "x * y - 2";
+                        //QStringList eqFields = separateEquationFromVariables(pRow);
+
+                        //QList<double> vals = findValuesOfVariablesInGrid(eqFields, pRow);
+                        ExpressionBuilder exprBuilder(str);
+                        RPNExpression rpnExpr = exprBuilder.build();
+                        int l = 0;  // breakpoint item
+                        */
+
+                        string strEquation = "x * y - 2, x = 1.2, y = 2.2";
+                        vector<string> fields;
+                        vector<double> vals;
+                        split(fields, strEquation, is_any_of(","));
+                        ExpressionBuilder builder(fields[0]);
+                        for (vector<string>::iterator iter = fields.begin() + 1; iter != fields.end(); iter++) {
+                                string str = ltrim(*iter);
+                                double val;
+
+                                // Split the variable from it's value
+                                vector<string> tmp;
+                                split(tmp, str, is_any_of("="));
+                                builder.withVariable(ltrim(rtrim(tmp[0])), val = atof(ltrim(rtrim(tmp[1])).c_str()));
+                                vals.push_back(val);
+                        }
+                        ValueSet result = builder.build().calculate(vals);
+                        cout << "Expression Builder Test:" << endl;
+                        cout << strEquation << endl;
+                        cout << "Result = " << result << endl;
+
+                        /*
+
+                        for (QStringList::ConstIterator iter = eqFields.begin() + 1; iter != eqFields.end(); iter++) {
+                            QString str = (*iter).trimmed().;
+                            string utf8_str = str.toUtf8().constData();
+                            double val;
+
+                            // Split the variable from it's value
+                            vector<string> tmp;
+                            split(tmp, utf8_str, is_any_of("="));
+                            builder.withVariable(ltrim(rtrim(tmp[0])), val = atof(ltrim(rtrim(tmp[1])).c_str()));
+                            vals.push_back(val);
+                        }
+                        double calcedVal = rpnExpr.calculate(vals);
+
+
+                        setGridTextAtRowColumn(m_lstRows.indexOf(pRow), i, calcedVal);
+                        */
+                    }
+                }
+                else if (pRow ->Type() == PhysEqRow::RT_TIMESLICE) {
+                }
+                else if (pRow ->Type() == PhysEqRow::RT_PROPERTY) {
+                }
+
+                // Base case dt = 0; This means that the time slices between two t_n's is 0. This should not happen because what's the point?
+                if (dt == 0) {
+
+                    continue;
+                }
             }
         }
     }
@@ -311,7 +396,7 @@ void PhysEqSolver::setupContextMenu() {
 }
 
 void PhysEqSolver::DecodeAddy(const QString addy, int *pRow, int *pCol) {
-    if (addy.isEmpty()) {
+    if (addy.trimmed().isEmpty()) {
         *pCol = -1;
         *pRow = -1;
     }
@@ -337,3 +422,36 @@ QString PhysEqSolver::EncodeAddy(const int row, const int col) {
     return QString(rowHex + ":" + columnHex);
 }
 
+// This function strips out the variables from the raw equation using the shunting algorithm found here:
+//  https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+QStringList PhysEqSolver::ShuntingYard(QString equation) {
+    const char *utf8_eq = equation.toUtf8().constData();
+    QString operators("");
+    QStringList lst;
+
+    /*
+    if (initShuntingYard()) {
+        parseShuntingYard(equation.toUtf8().constData());
+        return lst;
+    }
+    */
+
+
+    /*
+    while (*utf8_eq) {
+        char token = *utf8_eq;
+        if (token )
+
+    }
+
+    if (!init()) return 1;
+    for (i = 0; tests[i]; i++) {
+        printf("Testing string `%s'   <enter>\n", tests[i]);
+        getchar();
+
+        printf("string `%s': %s\n\n", tests[i],
+            parse(tests[i]) ? "Ok" : "Error");
+    }
+*/
+    return lst;
+}

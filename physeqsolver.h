@@ -26,6 +26,7 @@ private:
     void create1DKinematicItems(int, PhysParticle *);
     QTableWidgetItem *createRowItem(PhysDataObj *);
     QTableWidgetItem *createTableItem(PhysDataObj *, bool = false);
+    void setGridTextAtRowColumn(const int, const int, const double);
 
     void createConnections();
     void createTable(const int, const int);
@@ -33,8 +34,9 @@ private:
     void createGrid();
     void setupContextMenu();
 
-    QStringList findVariablesInGrid(PhysEqRow *);
+    QStringList separateEquationFromVariables(const QString);
     QList<double> findValuesOfVariablesInGrid(PhysEqRow *);
+    QStringList ShuntingYard(QString);
 
     void DecodeAddy(const QString, int *, int * = NULL);
     QString EncodeAddy(const int, const int = -1);
