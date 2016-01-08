@@ -5,16 +5,19 @@
 
 class PhysEqVarExtracter {
 public:
-    PhysEqVarExtracter(const QString);
-
-    typedef struct VarStruct {
-        QString var;
-        int row;
-    };
+    PhysEqVarExtracter();
 
 private:
-    QString m_Equation;
-    QList<VarStruct> m_lstVariables;
+    typedef struct {
+        VarStruct(QString var, int row) : m_Variable(var), m_row(row) {}
+        QString m_Variable;
+        int m_row;
+    } VarStruct;
+
+    void parse(const QString, const int);
+    bool isOperator(const char);
+private:
+    QList<VarStruct *> m_lstVariables;
     QString m_Operators;
 };
 

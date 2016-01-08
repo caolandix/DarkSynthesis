@@ -1,13 +1,18 @@
 #include <ctype.h>
 #include "physeqvarextracter.h"
 
-PhysEqVarExtracter::PhysEqVarExtracter(const QString equation) {
-    m_Equation = equation;
-    m_Operators = "+-*/^%()"
+PhysEqVarExtracter::PhysEqVarExtracter() {
+    m_Operators = "+-*/^%";
 }
 
-void PhysEqVarExtracter::parse() {
-    char *szEquation = m_Equation.trimmed().toUtf8().data();
+bool PhysEqVarExtracter::isOperator(const char c) {
+    if (strchr(m_Operators.toUtf8().data(), c))
+        return true;
+    return false;
+}
+
+bool PhysEqVarExtracter::parse(const QString equation, const int row) {
+    char *szEquation = equation.trimmed().toUtf8().data();
     char *szBuffer = szEquation;
     char szNumber[255] = { 0 };
     char szVariable[255] = { 0 };
@@ -18,16 +23,29 @@ void PhysEqVarExtracter::parse() {
     while (*szBuffer) {
         int c = *szBuffer;
 
-        //
+        // [a-zA-Z]+[0-9]*
         if (isalpha(c)) {
             szVariable[idxVariable++] = c;
             varFound = true;
-            // continue checking to see if it is a variable or a function
             while (*szBuffer) {
-                if (m_Operators.contains()
-                if (strchr(m_szOperators, c = *szBuffer))
-            }
+                c = *szBuffer;
 
+                // if alphanumeric or an underscore
+                if (isalnum(c) || strchr("_", c))
+                    szVariable[idxVariable++] = c;
+                else {
+                    varFound = false;
+                    if (c == '(') {
+
+                        // found a function, read until ')' or EOS
+                        while (*szBuffer && *szBuffer != ')')
+                            szBuffer++;
+                        szVariable[0] = '\0';
+                        idxVariable = 0;
+                    }
+                    break;
+                }
+            }
         }
 
         // Potential number
@@ -37,14 +55,31 @@ void PhysEqVarExtracter::parse() {
                 c = *szBuffer++;
 
                 // found a decimal
-                if (c == ".") {
+                if (c == '.') {
 
                 }
             }
 
         }
+        else if (isOperator(c)) {
+            if (varFound) {
+                szVariable[idxVariable] = '\0';
+                m_lstVariables.push_back(new VarStruct(szVariable, row));
+                varFound = false;
+                szVariable[0] = '\0';
+            }
+            else if (numFound) {
+                szNumber[idxNumber] = '\0';
+                numFound = false;
+                szNumber[0] = '\0';
+            }
+            else
+                szBuffer++;
+        }
 
-        // Check to see if it's an operator
-        else if (strchr(m_szOperators, c))
+        // something invalid in the equation
+        else
+            return false;
     }
+    return true;
 }
