@@ -1,0 +1,4 @@
+#ifndef EQEVALCOMMON_H
+#define EQEVALCOMMON_H
+
+#endif // EQEVALCOMMON_H
