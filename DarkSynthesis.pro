@@ -68,8 +68,7 @@ SOURCES += main.cpp \
     physcalculatetimer.cpp \
     phystimeslicedataobj.cpp \
     physcelldataobj.cpp \
-    physshuntyardparser.cpp \
-    physeqvarextracter.cpp
+    physshuntyardparser.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -157,8 +156,7 @@ HEADERS  += cmainwindow.h \
     physcalculatetimer.h \
     phystimeslicedataobj.h \
     physcelldataobj.h \
-    physshuntyardparser.h \
-    physeqvarextracter.h
+    physshuntyardparser.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \
