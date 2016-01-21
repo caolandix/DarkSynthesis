@@ -280,6 +280,8 @@ void PhysEqSolver::onCalculate() {
 
                     // Make sure that the row has an equation to solve for
                     if (!(pRow ->Equation().trimmed().isEmpty())) {
+                        QString equation(pRow ->Equation());
+                        Stargate7 sg7(equation);
                         /*
                         QString equation = pRow ->Equation() + QString(", ") + timeVar;
 
@@ -422,36 +424,3 @@ QString PhysEqSolver::EncodeAddy(const int row, const int col) {
     return QString(rowHex + ":" + columnHex);
 }
 
-// This function strips out the variables from the raw equation using the shunting algorithm found here:
-//  https://en.wikipedia.org/wiki/Shunting-yard_algorithm
-QStringList PhysEqSolver::ShuntingYard(QString equation) {
-    const char *utf8_eq = equation.toUtf8().constData();
-    QString operators("");
-    QStringList lst;
-
-    /*
-    if (initShuntingYard()) {
-        parseShuntingYard(equation.toUtf8().constData());
-        return lst;
-    }
-    */
-
-
-    /*
-    while (*utf8_eq) {
-        char token = *utf8_eq;
-        if (token )
-
-    }
-
-    if (!init()) return 1;
-    for (i = 0; tests[i]; i++) {
-        printf("Testing string `%s'   <enter>\n", tests[i]);
-        getchar();
-
-        printf("string `%s': %s\n\n", tests[i],
-            parse(tests[i]) ? "Ok" : "Error");
-    }
-*/
-    return lst;
-}
