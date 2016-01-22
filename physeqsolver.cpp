@@ -12,6 +12,7 @@
 #include "physcelldataobj.h"
 #include "physeqrow.h"
 #include "physshuntyardparser.h"
+#include "stargate7.h"
 
 #include "jumpdrive/ExpressionBuilder.h"
 
