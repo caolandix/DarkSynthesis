@@ -6,13 +6,17 @@
 #include <vector>
 #include <regex>
 
+using namespace std;
+
 class Stargate7 {
 public:
-    Stargate7(QString equation, QString delimiters);
+    Stargate7(QString equation, QString delimiters = "+-*/%=() ");
+    Stargate7(string equation, string delimiters = "+-*/%=() ");
 
-    bool parse(const string equation, const int row);
+    bool parse(string eq, vector<string> &);
+    bool parse(string);
 private:
-    void test(const string );
+    void test(string );
     void pass(const string );
     void fail(const string );
     void print(const string );

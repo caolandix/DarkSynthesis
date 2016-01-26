@@ -281,60 +281,63 @@ void PhysEqSolver::onCalculate() {
 
                     // Make sure that the row has an equation to solve for
                     if (!(pRow ->Equation().trimmed().isEmpty())) {
-                        QString equation(pRow ->Equation());
-                        Stargate7 sg7(equation);
-                        /*
-                        QString equation = pRow ->Equation() + QString(", ") + timeVar;
+                        string eq = pRow ->Equation().trimmed().toUtf8().data();
+                        Stargate7 sg7(pRow ->Equation());
+                        vector<string> eqTokens;
+                        if (sg7.parse(eq, eqTokens)) {
+                            /*
+                            QString equation = pRow ->Equation() + QString(", ") + timeVar;
 
-                        // Split out the variables...
-                        //string utf8_equation = equation.toUtf8().constData();
-                        string str = "x * y - 2";
-                        //QStringList eqFields = separateEquationFromVariables(pRow);
+                            // Split out the variables...
+                            //string utf8_equation = equation.toUtf8().constData();
+                            string str = "x * y - 2";
+                            //QStringList eqFields = separateEquationFromVariables(pRow);
 
-                        //QList<double> vals = findValuesOfVariablesInGrid(eqFields, pRow);
-                        ExpressionBuilder exprBuilder(str);
-                        RPNExpression rpnExpr = exprBuilder.build();
-                        int l = 0;  // breakpoint item
-                        */
+                            //QList<double> vals = findValuesOfVariablesInGrid(eqFields, pRow);
+                            ExpressionBuilder exprBuilder(str);
+                            RPNExpression rpnExpr = exprBuilder.build();
+                            int l = 0;  // breakpoint item
+                            */
 
-                        string strEquation = "x * y - 2, x = 1.2, y = 2.2";
-                        vector<string> fields;
-                        vector<double> vals;
-                        split(fields, strEquation, is_any_of(","));
-                        ExpressionBuilder builder(fields[0]);
-                        for (vector<string>::iterator iter = fields.begin() + 1; iter != fields.end(); iter++) {
-                                string str = ltrim(*iter);
+                            string strEquation = "x * y - 2, x = 1.2, y = 2.2";
+                            vector<string> fields;
+                            vector<double> vals;
+                            split(fields, strEquation, is_any_of(","));
+                            ExpressionBuilder builder(fields[0]);
+                            for (vector<string>::iterator iter = fields.begin() + 1; iter != fields.end(); iter++) {
+                                    string str = ltrim(*iter);
+                                    double val;
+
+                                    // Split the variable from it's value
+                                    vector<string> tmp;
+                                    split(tmp, str, is_any_of("="));
+                                    builder.withVariable(ltrim(rtrim(tmp[0])), val = atof(ltrim(rtrim(tmp[1])).c_str()));
+                                    vals.push_back(val);
+                            }
+                            ValueSet result = builder.build().calculate(vals);
+                            cout << "Expression Builder Test:" << endl;
+                            cout << strEquation << endl;
+                            cout << "Result = " << result << endl;
+
+                            /*
+
+                            for (QStringList::ConstIterator iter = eqFields.begin() + 1; iter != eqFields.end(); iter++) {
+                                QString str = (*iter).trimmed().;
+                                string utf8_str = str.toUtf8().constData();
                                 double val;
 
                                 // Split the variable from it's value
                                 vector<string> tmp;
-                                split(tmp, str, is_any_of("="));
+                                split(tmp, utf8_str, is_any_of("="));
                                 builder.withVariable(ltrim(rtrim(tmp[0])), val = atof(ltrim(rtrim(tmp[1])).c_str()));
                                 vals.push_back(val);
+                            }
+                            double calcedVal = rpnExpr.calculate(vals);
+
+
+                            setGridTextAtRowColumn(m_lstRows.indexOf(pRow), i, calcedVal);
+                            */
                         }
-                        ValueSet result = builder.build().calculate(vals);
-                        cout << "Expression Builder Test:" << endl;
-                        cout << strEquation << endl;
-                        cout << "Result = " << result << endl;
-
-                        /*
-
-                        for (QStringList::ConstIterator iter = eqFields.begin() + 1; iter != eqFields.end(); iter++) {
-                            QString str = (*iter).trimmed().;
-                            string utf8_str = str.toUtf8().constData();
-                            double val;
-
-                            // Split the variable from it's value
-                            vector<string> tmp;
-                            split(tmp, utf8_str, is_any_of("="));
-                            builder.withVariable(ltrim(rtrim(tmp[0])), val = atof(ltrim(rtrim(tmp[1])).c_str()));
-                            vals.push_back(val);
-                        }
-                        double calcedVal = rpnExpr.calculate(vals);
-
-
-                        setGridTextAtRowColumn(m_lstRows.indexOf(pRow), i, calcedVal);
-                        */
                     }
                 }
                 else if (pRow ->Type() == PhysEqRow::RT_TIMESLICE) {

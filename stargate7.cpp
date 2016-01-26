@@ -9,20 +9,28 @@ using namespace std;
 using boost::lexical_cast;
 using boost::bad_lexical_cast;
 
-Stargate7::Stargate7(QString equation) {
-    m_eq = equation.trimmed().toUtf8().data();
+Stargate7::Stargate7(QString equation, QString delimiters) {
+    m_eq = string(equation.trimmed().toUtf8().data());
+    m_delimiters = string(delimiters.toUtf8().data());
 }
 
-void Stargate7::test(const string str) {
-    (!parse(str, 0)) ? fail(str) : pass(str);
+Stargate7::Stargate7(string equation, string delimiters) {
+    m_eq = equation;
+    m_delimiters = delimiters;
+}
+
+void Stargate7::test(string str) {
+    (!parse(str)) ? fail(str) : pass(str);
 }
 
 void Stargate7::pass(const string str) {
     cout << str << " passed" << endl;
 }
+
 void Stargate7::fail(const string str) {
     cout << str << " failed" << endl;
 }
+
 void Stargate7::print(const string str) {
     cout << endl << str << endl;
 }
@@ -55,6 +63,7 @@ bool Stargate7::isValidVariable(string &str) {
         return false;
     return true;
 }
+
 void Stargate7::Tokenize(const string &str, vector<string> &tokens, const string &delimiters) {
 
     // Skip delimiters at beginning.
@@ -76,12 +85,15 @@ void Stargate7::Tokenize(const string &str, vector<string> &tokens, const string
     }
 }
 
-bool Stargate7::parse(const string equation, const int row) {
-    string Operators("+-*/%=() ");
+bool Stargate7::parse(string eq) {
     vector<string> pieces;
+    return parse(eq, pieces);
+}
+
+bool Stargate7::parse(string eq, vector<string> &pieces) {
 
     // Split the stream into string tokens
-    Tokenize(equation, pieces, Operators);
+    Tokenize(eq, pieces, m_delimiters);
 
     // Check for numbers.
     for (vector<string>::iterator iter = pieces.begin(); iter != pieces.end(); ++iter) {

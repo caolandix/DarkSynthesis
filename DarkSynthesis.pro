@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = DarkSynthesis
 TEMPLATE = app
@@ -69,7 +69,9 @@ SOURCES += main.cpp \
     phystimeslicedataobj.cpp \
     physcelldataobj.cpp \
     physshuntyardparser.cpp \
-    stargate7.cpp
+    stargate7.cpp \
+    xes1/physelectrostaticpropertiesdlg.cpp \
+    qcustomplot-1.3.2/qcustomplot.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -158,8 +160,11 @@ HEADERS  += cmainwindow.h \
     phystimeslicedataobj.h \
     physcelldataobj.h \
     physshuntyardparser.h \
-    stargate7.h
+    stargate7.h \
+    xes1/physelectrostaticpropertiesdlg.h \
+    qcustomplot-1.3.2/qcustomplot.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \
-    physselectparticledlg.ui
+    physselectparticledlg.ui \
+    xes1/physelectrostaticpropertiesdlg.ui
