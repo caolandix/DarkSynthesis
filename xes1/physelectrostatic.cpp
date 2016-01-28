@@ -53,12 +53,18 @@ PhysElectroStatic::~PhysElectroStatic() {
     if (m_nms) { delete [] m_esem; m_esem = NULL; }
 }
 
+bool PhysElectroStatic::Init(int *il1, int *il2, double *m, double *q, double *t, double *nm, int *vbin1, int *vbin2, double *dvb, double *vstart, int *nvbin) {
+    return init(il1, il2, m, q, t, nm, vbin1, vbin2, dvb, vstart, nvbin);
+}
+
+
 bool PhysElectroStatic::init(int *il1, int *il2, double *m, double *q, double *t,
                              double *nm, int *vbin1, int *vbin2, double *dvb, double *vstart, int *nvbin) {
     double wp = 1.0, wc = 0.0, qm = -1.0, vt1 = 0.0, vt2 = 0.0, v0 =0.0,
-        x1 = 0.0, v1 = 0.0, thetax = 0.0, thetav = 0.0, ddx, x0,
-        vmax, dv, vvnv2, vv, fv, df, xs, xsi, theta, lg, vupper,vlower;
-    int ngr, j, i1, i2, n = 128, nlg = 1, nv2 = 0, mode = 1, nbins = 100;
+        x1 = 0.0, v1 = 0.0, thetax = 0.0, thetav = 0.0;
+    double ddx, x0, vmax, dv, vvnv2, vv, fv, df, xs, xsi, theta, lg, vupper, vlower;
+    int ngr, j, i1, i2;
+    int n = 128, nlg = 1, nv2 = 0, mode = 1, nbins = 100;
     char a_char[80];
 
     // Make sure we have valid pointers

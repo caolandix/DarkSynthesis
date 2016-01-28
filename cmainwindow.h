@@ -5,6 +5,7 @@
 
 #include "graphwidget.h"
 #include "physcommon.h"
+#include "xes1/physelectrostaticview.h"
 
 class PhysObjectNavigator;
 class PhysObjectPropsNavigator;
@@ -79,6 +80,7 @@ private:
     PhysModuleNavigator *m_pPhysModNavigator;
     PhysOutputNavigator *m_pPhysOutputNavigator;
     PhysEqSolver *m_pPhysEqSolver;
+    PhysElectroStaticView *m_pPhysElectroStaticView;
 };
 
 #endif // CMAINWINDOW_H

@@ -71,7 +71,8 @@ SOURCES += main.cpp \
     physshuntyardparser.cpp \
     stargate7.cpp \
     xes1/physelectrostaticpropertiesdlg.cpp \
-    qcustomplot-1.3.2/qcustomplot.cpp
+    qcustomplot-1.3.2/qcustomplot.cpp \
+    xes1/physelectrostaticview.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -162,7 +163,8 @@ HEADERS  += cmainwindow.h \
     physshuntyardparser.h \
     stargate7.h \
     xes1/physelectrostaticpropertiesdlg.h \
-    qcustomplot-1.3.2/qcustomplot.h
+    qcustomplot-1.3.2/qcustomplot.h \
+    xes1/physelectrostaticview.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \

@@ -13,6 +13,7 @@
 #include "physeqsolver.h"
 #include "physdockedwidget.h"
 #include "phystablemodel.h"
+#include "xes1/physelectrostaticview.h"
 #include "physcommon.h"
 
 using namespace std;
@@ -199,6 +200,13 @@ void CMainWindow::createDockWindows() {
 
     m_pPhysEqSolver ->ModType(m_pPhysModNavigator ->ModType());
 
+    pDock = new PhysDockedWidget(tr("XES - Electrostatic Simulator"), this);
+    m_pPhysElectroStaticView = new PhysElectroStaticView(pDock);
+    pPhysDock -> setWidget(m_pPhysElectroStaticView);
+    pPhysDock -> setAllowedAreas(Qt::NoDockWidgetArea);
+    addDockWidget(Qt::NoDockWidgetArea, pPhysDock);
+
+    m_pPhysEqSolver ->ModType(m_pPhysModNavigator ->ModType());
 }
 
 void CMainWindow::createSignalSlots() {

@@ -10,6 +10,7 @@ public:
     PhysElectroStatic();
     ~PhysElectroStatic();
     void start(int, char *);
+    bool Init(int *, int *, double *, double *, double *, double *, int *, int *, double *, double *, int *);
 private:
 
     enum { Zero_Order = 0, First_Order, Quadratic_Spline, Cubic_Spline };
