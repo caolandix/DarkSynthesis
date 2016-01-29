@@ -1,7 +1,10 @@
-#include <QtWidgets>
-
+// C++ headers
 #include <iostream>
 
+// QT headers
+#include <QtWidgets>
+
+// DarkSynth headers
 #include "cmainwindow.h"
 #include "ui_cmainwindow.h"
 #include "cartesiangraphsettingsdlg.h"
@@ -155,8 +158,8 @@ void CMainWindow::createMenus() {
 }
 
 void CMainWindow::createToolBars() {
-    QToolBar *pToolBar = new QToolBar(tr("Main"), this);
-    pToolBar -> addSeparator();
+    //QToolBar *pToolBar = new QToolBar(tr("Main"), this);
+    //pToolBar -> addSeparator();
 }
 
 void CMainWindow::createStatusBar() {
@@ -197,16 +200,14 @@ void CMainWindow::createDockWindows() {
     pPhysDock -> setWidget(m_pPhysEqSolver);
     pPhysDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
     addDockWidget(Qt::BottomDockWidgetArea, pPhysDock);
-
     m_pPhysEqSolver ->ModType(m_pPhysModNavigator ->ModType());
 
     pDock = new PhysDockedWidget(tr("XES - Electrostatic Simulator"), this);
     m_pPhysElectroStaticView = new PhysElectroStaticView(pDock);
-    pPhysDock -> setWidget(m_pPhysElectroStaticView);
-    pPhysDock -> setAllowedAreas(Qt::NoDockWidgetArea);
-    addDockWidget(Qt::NoDockWidgetArea, pPhysDock);
-
-    m_pPhysEqSolver ->ModType(m_pPhysModNavigator ->ModType());
+    m_pPhysElectroStaticView ->sizeHint();
+    pDock -> setWidget(m_pPhysElectroStaticView);
+    pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
+    addDockWidget(Qt::LeftDockWidgetArea, pDock);
 }
 
 void CMainWindow::createSignalSlots() {

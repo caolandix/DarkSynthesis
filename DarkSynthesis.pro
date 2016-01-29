@@ -162,11 +162,12 @@ HEADERS  += cmainwindow.h \
     physcelldataobj.h \
     physshuntyardparser.h \
     stargate7.h \
-    xes1/physelectrostaticpropertiesdlg.h \
     qcustomplot-1.3.2/qcustomplot.h \
+    xes1/physelectrostaticpropertiesdlg.h \
     xes1/physelectrostaticview.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \
     physselectparticledlg.ui \
-    xes1/physelectrostaticpropertiesdlg.ui
+    xes1/physelectrostaticpropertiesdlg.ui \
+    xes1/xes1.ui
