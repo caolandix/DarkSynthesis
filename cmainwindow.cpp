@@ -202,12 +202,14 @@ void CMainWindow::createDockWindows() {
     addDockWidget(Qt::BottomDockWidgetArea, pPhysDock);
     m_pPhysEqSolver ->ModType(m_pPhysModNavigator ->ModType());
 
+    /*
     pDock = new PhysDockedWidget(tr("XES - Electrostatic Simulator"), this);
     m_pPhysElectroStaticView = new PhysElectroStaticView(pDock);
     m_pPhysElectroStaticView ->sizeHint();
     pDock -> setWidget(m_pPhysElectroStaticView);
     pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
     addDockWidget(Qt::LeftDockWidgetArea, pDock);
+    */
 }
 
 void CMainWindow::createSignalSlots() {

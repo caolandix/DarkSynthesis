@@ -3,6 +3,7 @@
 #include "ui_xes1.h"
 
 PhysElectroStaticView::PhysElectroStaticView(QWidget *pParent) : QGraphicsView(pParent) {
+/*
     m_pUI -> setupUi(this);
 
     srand(QDateTime::currentDateTime().toTime_t());
@@ -48,6 +49,7 @@ PhysElectroStaticView::PhysElectroStaticView(QWidget *pParent) : QGraphicsView(p
     // setup policy and connect slot for context menu popup:
     m_pUI -> customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_pUI -> customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
+    */
 }
 
 void PhysElectroStaticView::titleDoubleClick(QMouseEvent* event, QCPPlotTitle* title) {
