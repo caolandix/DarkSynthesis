@@ -196,17 +196,11 @@ void PhysEqSolver::create1DKinematicItems(int i, PhysParticle *pParticle) {
     //      - Magnitude, or the value of the vector
     QList<PhysVector *> lst;
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                        QString("Ax"), QString("diff(dx/dv)"), QString("Ax"), false));
+                                        QString("a"), QString("0"), QString("accel"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                        QString("Ay"), QString("diff(dy/dv)"), QString("Ay"), false));
+                                           QString("v"), QString("12"), QString("speed"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("Vx"), QString("16"), QString("Vx"), false));
-    lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("Vy"), QString("12"), QString("Vy"), false));
-    lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                               QString("X"), QString("44"), QString("X"), false));
-    lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                               QString("Y"), QString("23"), QString("Y"), false));
+                                               QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), false));
 
     foreach(PhysVector *item, lst) {
         m_pTable ->insertRow(i);
@@ -291,6 +285,10 @@ void PhysEqSolver::onCalculate() {
                         Stargate7 sg7(pRow ->Equation());
                         vector<string> eqTokens;
                         if (sg7.parse(eq, eqTokens)) {
+
+                            // eqTokens after being parsed lists out the pieces. need to
+
+                            //
                             QString variable = pRow -> Variable();
                             QString eqJumpDrive = variable + ", " + variable + "=" + pRow ->Equation();
                             ExpressionBuilder builder;

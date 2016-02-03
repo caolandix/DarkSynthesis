@@ -90,7 +90,13 @@ bool Stargate7::parse(string eq) {
     return parse(eq, pieces);
 }
 
-bool Stargate7::parse(string eq, vector<string> &pieces) {
+#include <boost/fusion/container/map.hpp>
+#include <boost/fusion/include/map.hpp>
+#include <boost/fusion/container/map/map_fwd.hpp>
+#include <boost/fusion/include/map_fwd.hpp>
+
+
+bool Stargate7::parse(string eq, vector<string> &pieces, vector<pair<string, bool>> &eqMapping) {
 
     // Split the stream into string tokens
     Tokenize(eq, pieces, m_delimiters);
@@ -99,6 +105,8 @@ bool Stargate7::parse(string eq, vector<string> &pieces) {
     for (vector<string>::iterator iter = pieces.begin(); iter != pieces.end(); ++iter) {
         string token = *iter;
         if (isValidNumber(token)) {
+            pair
+            eqMapping.push_back();
         }
         else if (isValidVariable(token)) {
         }
