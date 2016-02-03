@@ -21,6 +21,7 @@ public:
     QString Addy() const { return m_Addy; }
     QString Equation() const { return m_Equation; }
     void Equation(QString eq) { m_Equation = eq; }
+    QString Variable() const { return m_lstCells.at(0) ->Obj() ->Name(); }
 
     void addCell(PhysEqGridCell *pCell);
 private:

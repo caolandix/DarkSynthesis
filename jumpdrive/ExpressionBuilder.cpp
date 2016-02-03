@@ -56,30 +56,35 @@ ExpressionBuilder::ExpressionBuilder() {
 //
 ExpressionBuilder::ExpressionBuilder(string strEquation) {
 	string var;
-    VecStr fields;
 
-	split(fields, strEquation, is_any_of(","));
-    for (VecStr::iterator iter = fields.begin() + 1; iter != fields.end(); iter++) {
-		double val = 0.0;
-        VecStr tmp;
-
-		// Split the variable from it's value
-		split(tmp, ::trim(*iter), is_any_of("="));
-		withVariable(::trim(tmp[0]), val = atof(::trim(tmp[1]).c_str()));
-		m_eq_vals.push_back(val);
-	}
-
-	string expression = ::trim(fields[0]);
-	if (expression.length() == 0)
-		throw new IllegalArgumentException("Expression can not be empty!.");
-	m_expression = expression;
-
+    prepData(strEquation);
     if (getenv("PROPERTY_UNARY_HIGH_PRECEDENCE"))
     	var = getenv("PROPERTY_UNARY_HIGH_PRECEDENCE");
 	m_highUnaryPrecedence = (var.length() == 0 || var != "false");
 	getBuiltinFunctions();
 	getBuiltinOperators();
 	getValidOperators();
+}
+
+void ExpressionBuilder::prepData(string strEquation) {
+    VecStr fields;
+
+    split(fields, strEquation, is_any_of(","));
+    for (VecStr::iterator iter = fields.begin() + 1; iter != fields.end(); iter++) {
+        double val = 0.0;
+        VecStr tmp;
+
+        // Split the variable from it's value
+        split(tmp, ::trim(*iter), is_any_of("="));
+        withVariable(::trim(tmp[0]), val = atof(::trim(tmp[1]).c_str()));
+        m_eq_vals.push_back(val);
+    }
+
+    string expression = ::trim(fields[0]);
+    if (expression.length() == 0)
+        throw new IllegalArgumentException("Expression can not be empty!.");
+    m_expression = expression;
+
 }
 
 ValueSet ExpressionBuilder::calculate() {

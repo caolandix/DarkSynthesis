@@ -22,6 +22,7 @@ public:
     VecDblIter begin() const { return m_presultSet -> begin(); }
     VecDblIter end() const { return m_presultSet -> end(); }
     void push_back(const double val) { m_presultSet -> push_back(val); }
+    double Value() const { return m_presultSet ->at(0); }
 
 	// Friend methods
 	friend ostream &operator<<(ostream &, ValueSet const &);

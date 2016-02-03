@@ -28,9 +28,11 @@ public:
 	ExpressionBuilder();
 	ExpressionBuilder(const string expression);
 	virtual ~ExpressionBuilder();
-
+    void prepData(string strEquation);
 	RPNExpression build();
 	ValueSet calculate();
+    ValueSet EquationValues() const { return m_eq_vals; }
+
 	void withCustomFunctions(const vector<CustomFunction *> &functions);
     void withVariableNames(const VecStr &variableNames);
 	void withVariables(const map<string, double> &variableMap);
