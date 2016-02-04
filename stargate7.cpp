@@ -87,7 +87,8 @@ void Stargate7::Tokenize(const string &str, vector<string> &tokens, const string
 
 bool Stargate7::parse(string eq) {
     vector<string> pieces;
-    return parse(eq, pieces);
+    vector<pair<string, bool>> eqMapping;
+    return parse(eq, pieces, eqMapping);
 }
 
 #include <boost/fusion/container/map.hpp>
@@ -105,8 +106,10 @@ bool Stargate7::parse(string eq, vector<string> &pieces, vector<pair<string, boo
     for (vector<string>::iterator iter = pieces.begin(); iter != pieces.end(); ++iter) {
         string token = *iter;
         if (isValidNumber(token)) {
+            /*
             pair
             eqMapping.push_back();
+            */
         }
         else if (isValidVariable(token)) {
         }

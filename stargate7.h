@@ -12,8 +12,7 @@ class Stargate7 {
 public:
     Stargate7(QString equation, QString delimiters = "+-*/%=() ");
     Stargate7(string equation, string delimiters = "+-*/%=() ");
-
-    bool parse(string eq, vector<string> &);
+    bool parse(string eq, vector<string> &, vector<pair<string, bool>> &);
     bool parse(string);
 private:
     void test(string );

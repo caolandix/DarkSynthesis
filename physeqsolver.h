@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 
+#include "jumpdrive/ValueSet.h"
 #include "physeqsolvertable.h"
 #include "physeqrow.h"
 #include "physeqgrid.h"
@@ -34,6 +35,9 @@ private:
     void createGrid();
     void setupContextMenu();
 
+    bool resolveVariable(pair<string, double> &resolution, string);
+    bool resolveEquation(ValueSet &, string &);
+    void calculateRows(QList<PhysEqRow *>::Iterator &iter);
     QStringList separateEquationFromVariables(const QString);
     QList<double> findValuesOfVariablesInGrid(PhysEqRow *);
     QStringList ShuntingYard(QString);
