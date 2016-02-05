@@ -37,7 +37,7 @@ private:
 
     bool resolveVariable(pair<string, double> &resolution, string);
     bool resolveEquation(ValueSet &, string &);
-    void calculateRows(QList<PhysEqRow *>::Iterator &iter);
+    void calculateRows(QList<PhysEqRow *>::Iterator &iter, const double dt = -1);
     QStringList separateEquationFromVariables(const QString);
     QList<double> findValuesOfVariablesInGrid(PhysEqRow *);
     QStringList ShuntingYard(QString);

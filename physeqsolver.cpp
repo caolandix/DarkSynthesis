@@ -270,7 +270,7 @@ bool PhysEqSolver::resolveVariable(pair<string, double> &resolution, string vari
     return true;
 }
 
-void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter) {
+void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter, const double dt) {
     if (iter == m_lstRows.end())
         return;
     PhysEqRow *pRow = *iter;
@@ -294,6 +294,28 @@ void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter) {
 
                     // TRUE = variable, false is a constant
                     if (pairing.second) {
+                        qDebug("PhysEqSolver::calculateRows(): the token is a variable");
+
+                        // it's a variable so go look for it in the other rows and see if there is an equation that defines it or a constant
+                        if (!resolveVariable(varResolution, pairing.first))
+                            qDebug("PhysEqSolver::calculateRows(): resolveVariable() failed");
+                        else {
+                            bResolved = true;
+                        }
+                    }
+                    else {
+                        qDebug("PhysEqSolver::calculateRows(): the token is a constant");
+                    }
+                }
+
+                /*
+                for (vector<pair<string, bool>>::iterator iter = eqTokensMap.begin(); iter != eqTokensMap.end(); iter++) {
+                    pair<string, bool> pairing = *iter;
+                    pair<string, double> varResolution;
+                    bool bResolved = true;
+
+                    // TRUE = variable, false is a constant
+                    if (pairing.second) {
                         if (!resolveVariable(varResolution, pairing.first))
                             qDebug("PhysEqSolver::calculateRows(): resolveVariable() failed");
                         else
@@ -308,10 +330,7 @@ void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter) {
                         ValueSet vs;
                         string eq = eqJumpDrive.toUtf8().constData();
                         if (resolveEquation(vs, eq)) {
-                            setGridTextAtRowColumn(m_lstRows.count() - m_lstRows.indexOf(pRow), i, vs.Value());
-
-                            //bool PhysEqSolver::resolveEquation(ValueSet &vs, string &equation) {
-
+                            ; //setGridTextAtRowColumn(m_lstRows.count() - m_lstRows.indexOf(pRow), i, vs.Value());
                         }
                         else {
 
@@ -323,10 +342,11 @@ void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter) {
 
                     }
                 }
+                */
             }
         }
     }
-    calculateRows(++iter);
+    calculateRows(++iter, dt);
 }
 
 void PhysEqSolver::onCalculate() {
@@ -357,7 +377,7 @@ void PhysEqSolver::onCalculate() {
             // Loop through the rows trying to resolve the equations that are there.
             // foreach(PhysEqRow *pRow, m_lstRows) {
             QList<PhysEqRow *>::Iterator iter = m_lstRows.begin();
-            calculateRows(iter);
+            calculateRows(iter, dt);
             return;
             for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
                 PhysEqRow *pRow = *iter;

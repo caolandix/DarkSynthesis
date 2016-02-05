@@ -105,18 +105,17 @@ bool Stargate7::parse(string eq, vector<string> &pieces, vector<pair<string, boo
     // Check for numbers.
     for (vector<string>::iterator iter = pieces.begin(); iter != pieces.end(); ++iter) {
         string token = *iter;
-        if (isValidNumber(token)) {
-            /*
-            pair
-            eqMapping.push_back();
-            */
+        pair<string, bool> item = { token, false };
+        if (!isValidNumber(token)) {
+            if (isValidVariable(token)) {
+                item.second = true;
+            }
+            else {
+                cout << "ERROR: \"" << token << "\" is neither a number or a Variable.";
+                return false;
+            }
         }
-        else if (isValidVariable(token)) {
-        }
-        else {
-            cout << "ERROR: \"" << token << "\" is neither a number or a Variable.";
-            return false;
-        }
+        eqMapping.push_back(item);
     }
     return true;
 }
