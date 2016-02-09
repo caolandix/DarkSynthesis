@@ -22,10 +22,12 @@ public:
     QString Variable() const { return m_variable; }
     QString Equation() const { return m_equation; }
     void Variable(const QString str) { m_variable = str; }
-    void Equation(const QString str) { m_equation = str; }
+    QStringList EquationList() const { return m_eqList; }
+    void EquationList(QStringList eqList) { m_eqList = eqList; }
 private:
     QString m_variable;
     QString m_equation;
+    QStringList m_eqList;
     double m_magnitude;
 };
 QDataStream &operator<<(QDataStream &out, const PhysVectorDataObj &obj);

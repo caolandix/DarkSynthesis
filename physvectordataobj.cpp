@@ -49,6 +49,26 @@ bool PhysVectorDataObj::operator==(const PhysVectorDataObj &obj) {
     return true;
 }
 
+void PhysVectorDataObj::Equation(const QString str) {
+
+    // strip out whitespaces
+    str = str.simplified();
+    str.replace(" ", "");
+
+    m_equation = str;
+
+    // if list is empty, just add it
+    if (m_eqList.count() < 1)
+        m_eqList.push_back(m_equation);
+    else {
+
+        // check to see if the equation being added is already in the list
+        if (m_eqList.indexOf(str) == -1)
+            m_eqList.push_back(m_equation);
+    }
+}
+
+
 QDataStream &operator<<(QDataStream &out, const PhysVectorDataObj &obj) {
     return out;
 }
