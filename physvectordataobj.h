@@ -10,6 +10,7 @@ public:
     PhysVectorDataObj();
     PhysVectorDataObj(const QString str) : PhysDataObj(str, DT_VECTOR) {}
     PhysVectorDataObj(const QString, const QString, const QString = "", double = 0.0);
+    PhysVectorDataObj(const QString, const QStringList, const QString = "", double = 0.0);
     PhysVectorDataObj(const PhysVectorDataObj &);
     PhysVectorDataObj(const PhysVectorDataObj *);
     ~PhysVectorDataObj() {}
@@ -21,6 +22,7 @@ public:
     double Magnitude() const { return m_magnitude; }
     QString Variable() const { return m_variable; }
     QString Equation() const { return m_equation; }
+    void Equation(const QString str);
     void Variable(const QString str) { m_variable = str; }
     QStringList EquationList() const { return m_eqList; }
     void EquationList(QStringList eqList) { m_eqList = eqList; }

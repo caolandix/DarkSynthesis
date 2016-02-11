@@ -281,7 +281,7 @@ void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter, const doubl
             string eq = pRow ->Equation().trimmed().toUtf8().data();
             Stargate7 sg7(pRow ->Equation());
             vector<string> eqTokens;
-            vector<pair<string, bool>> eqTokensMap;
+            map<pair<string, bool>> eqTokensMap;
             if (sg7.parse(eq, eqTokens, eqTokensMap)) {
 
                 // eqTokens after being parsed lists out the pieces. need to
@@ -295,10 +295,28 @@ void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter, const doubl
                     // TRUE = variable, false is a constant
                     if (pairing.second) {
                         qDebug("PhysEqSolver::calculateRows(): the token is a variable");
+                        bool bOK = false;
 
-                        // it's a variable so go look for it in the other rows and see if there is an equation that defines it or a constant
-                        if (!resolveVariable(varResolution, pairing.first))
+                        // Check to see if it's dt. If so then it needs to be handled differently.
+                        if (pairing.first.compare("dt")) {
+                            bOK = true;
+                            varResolution["dt"] = dt;
+                        }
+                        else {
+
+                            // it's a variable so go look for it in the other rows and see if there is an equation that defines it or a constant
+                            foreach (PhysEqRow *pRow, m_lstRows) {
+                                if (pRow ->Variable().compare(QString(pairing.first.c_str()))) {
+                                    varResolution = { pairing.first, true };
+                                    bOK = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!bOK) {
+                        // if (!resolveVariable(varResolution, pairing.first))
                             qDebug("PhysEqSolver::calculateRows(): resolveVariable() failed");
+                        }
                         else {
                             bResolved = true;
                         }

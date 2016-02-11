@@ -9,9 +9,19 @@ PhysVectorDataObj::PhysVectorDataObj() : PhysDataObj(QString(""), DT_VECTOR) {
 
 PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QString equation, const QString name, double magnitude) : PhysDataObj(name, DT_VECTOR) {
     m_variable = variable;
-    m_equation = equation;
+    Equation(equation);
+    m_equation = m_eqList.at(0);
     m_magnitude = magnitude;
 }
+
+PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QStringList equations, const QString name, double magnitude) : PhysDataObj(name, DT_VECTOR) {
+    m_variable = variable;
+    foreach (QString eq, equations)
+        Equation(eq);
+    m_equation = m_eqList.at(0);
+    m_magnitude = magnitude;
+}
+
 
 PhysVectorDataObj::PhysVectorDataObj(const PhysVectorDataObj &obj) : PhysDataObj(obj) {
     m_variable = obj.Variable();
@@ -49,7 +59,9 @@ bool PhysVectorDataObj::operator==(const PhysVectorDataObj &obj) {
     return true;
 }
 
-void PhysVectorDataObj::Equation(const QString str) {
+void PhysVectorDataObj::Equation(const QString eq) {
+
+    QString str = eq;
 
     // strip out whitespaces
     str = str.simplified();
