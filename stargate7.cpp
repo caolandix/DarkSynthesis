@@ -97,7 +97,7 @@ bool Stargate7::parse(string eq) {
 #include <boost/fusion/include/map_fwd.hpp>
 
 
-bool Stargate7::parse(string eq, vector<string> &pieces, map<string, bool> &eqMapping) {
+bool Stargate7::parse(string eq, vector<string> &pieces, vector<pair<string, bool>> &eqMapping) {
 
     // Split the stream into string tokens
     Tokenize(eq, pieces, m_delimiters);
@@ -115,7 +115,7 @@ bool Stargate7::parse(string eq, vector<string> &pieces, map<string, bool> &eqMa
                 return false;
             }
         }
-        eqMapping.insert(item);
+        eqMapping.push_back(item);
     }
     return true;
 }

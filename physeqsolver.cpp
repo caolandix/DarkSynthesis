@@ -281,7 +281,7 @@ void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter, const doubl
             string eq = pRow ->Equation().trimmed().toUtf8().data();
             Stargate7 sg7(pRow ->Equation());
             vector<string> eqTokens;
-            map<pair<string, bool>> eqTokensMap;
+            vector<pair<string, bool>> eqTokensMap;
             if (sg7.parse(eq, eqTokens, eqTokensMap)) {
 
                 // eqTokens after being parsed lists out the pieces. need to
