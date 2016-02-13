@@ -1,4 +1,5 @@
 #include <QtWidgets>
+#include <map>
 
 #include "physeqsolver.h"
 #include "physeqsolverdelegate.h"
@@ -270,101 +271,47 @@ bool PhysEqSolver::resolveVariable(pair<string, double> &resolution, string vari
     return true;
 }
 
-void PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iter, const double dt) {
-    if (iter == m_lstRows.end())
-        return;
-    PhysEqRow *pRow = *iter;
+QString PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrRow, QString baseEq, const double dt, bool bStripConsts) {
+    if (iterCurrRow == m_lstRows.end())
+        return "";
+    PhysEqRow *pRow = *iterCurrRow;
     if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
 
         // Make sure that the row has an equation to solve for
         if (!(pRow ->Equation().trimmed().isEmpty())) {
-            string eq = pRow ->Equation().trimmed().toUtf8().data();
+            string eq = baseEq.trimmed().toUtf8().data();
             Stargate7 sg7(pRow ->Equation());
             vector<string> eqTokens;
-            vector<pair<string, bool>> eqTokensMap;
-            if (sg7.parse(eq, eqTokens, eqTokensMap)) {
+            if (sg7.parse(eq, eqTokens, m_eqTokensMap, bStripConsts)) {
 
                 // eqTokens after being parsed lists out the pieces. need to
                 // Loop through seeing what is a variable and what is a constant.
                 // If it's a variable then we need to look at it's equation and resolve that before continuing.
-                for (vector<pair<string, bool>>::iterator iter = eqTokensMap.begin(); iter != eqTokensMap.end(); iter++) {
-                    pair<string, bool> pairing = *iter;
-                    pair<string, double> varResolution;
-                    bool bResolved = true;
+                // for (vector<pair<string, bool>>::iterator iter = eqTokensMap.begin(); iter != eqTokensMap.end(); iter++) {
+                for (map<string, bool>::iterator iterTokenMap = m_eqTokensMap.begin(); iterTokenMap != m_eqTokensMap.end(); iterTokenMap++) {
+                    bool isVariable = (*iterTokenMap).second;
+                    if (isVariable) {
 
-                    // TRUE = variable, false is a constant
-                    if (pairing.second) {
-                        qDebug("PhysEqSolver::calculateRows(): the token is a variable");
-                        bool bOK = false;
-
-                        // Check to see if it's dt. If so then it needs to be handled differently.
-                        if (pairing.first.compare("dt")) {
-                            bOK = true;
-                            varResolution["dt"] = dt;
-                        }
-                        else {
-
-                            // it's a variable so go look for it in the other rows and see if there is an equation that defines it or a constant
-                            foreach (PhysEqRow *pRow, m_lstRows) {
-                                if (pRow ->Variable().compare(QString(pairing.first.c_str()))) {
-                                    varResolution = { pairing.first, true };
-                                    bOK = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!bOK) {
-                        // if (!resolveVariable(varResolution, pairing.first))
-                            qDebug("PhysEqSolver::calculateRows(): resolveVariable() failed");
-                        }
-                        else {
-                            bResolved = true;
+                        // Look for the item in the row list
+                        for (QList<PhysEqRow *>::Iterator iterRowSearch = m_lstRows.begin(); iterRowSearch != m_lstRows.end(); iterRowSearch++) {
+                            if (iterRowSearch == m_iterCurrRow)
+                                continue;
+                            PhysEqRow *pRow = *iterRowSearch;
+                            QString eq = pRow ->Equation();
+                            QString value = calculateRows(iterRowSearch, eq, dt);
+                            if (!value.isEmpty())
+                                m_strVarAssignments += ", " + pRow ->Variable() + "=" + value;
                         }
                     }
-                    else {
-                        qDebug("PhysEqSolver::calculateRows(): the token is a constant");
-                    }
+
+                    // it's an integer so return from the function
+                    else
+                        return QString::fromStdString(eq);
                 }
-
-                /*
-                for (vector<pair<string, bool>>::iterator iter = eqTokensMap.begin(); iter != eqTokensMap.end(); iter++) {
-                    pair<string, bool> pairing = *iter;
-                    pair<string, double> varResolution;
-                    bool bResolved = true;
-
-                    // TRUE = variable, false is a constant
-                    if (pairing.second) {
-                        if (!resolveVariable(varResolution, pairing.first))
-                            qDebug("PhysEqSolver::calculateRows(): resolveVariable() failed");
-                        else
-                            bResolved = true;
-                    }
-
-                    if (bResolved) {
-
-                        // Variable has been resolved or it's a constant.
-                        QString variable = pRow -> Variable();
-                        QString eqJumpDrive = variable + ", " + variable + "=" + pRow ->Equation();
-                        ValueSet vs;
-                        string eq = eqJumpDrive.toUtf8().constData();
-                        if (resolveEquation(vs, eq)) {
-                            ; //setGridTextAtRowColumn(m_lstRows.count() - m_lstRows.indexOf(pRow), i, vs.Value());
-                        }
-                        else {
-
-                        }
-                    }
-
-                    // Error case... if we cannot resolve the equation then the row should be highlighted
-                    else {
-
-                    }
-                }
-                */
             }
         }
     }
-    calculateRows(++iter, dt);
+    return "";
 }
 
 void PhysEqSolver::onCalculate() {
@@ -393,70 +340,15 @@ void PhysEqSolver::onCalculate() {
             QString timeVar = QString("t = %1").arg(dt);
 
             // Loop through the rows trying to resolve the equations that are there.
-            // foreach(PhysEqRow *pRow, m_lstRows) {
-            QList<PhysEqRow *>::Iterator iter = m_lstRows.begin();
-            calculateRows(iter, dt);
-            return;
             for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
-                PhysEqRow *pRow = *iter;
-                if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
-
-                    // Make sure that the row has an equation to solve for
-                    if (!(pRow ->Equation().trimmed().isEmpty())) {
-                        string eq = pRow ->Equation().trimmed().toUtf8().data();
-                        Stargate7 sg7(pRow ->Equation());
-                        vector<string> eqTokens;
-                        vector<pair<string, bool>> eqTokensMap;
-                        if (sg7.parse(eq, eqTokens, eqTokensMap)) {
-
-                            // eqTokens after being parsed lists out the pieces. need to
-                            // Loop through seeing what is a variable and what is a constant.
-                            // If it's a variable then we need to look at it's equation and resolve that before continuing.
-                            for (vector<pair<string, bool>>::iterator iter = eqTokensMap.begin(); iter != eqTokensMap.end(); iter++) {
-                                pair<string, bool> pairing = *iter;
-                                pair<string, double> varResolution;
-                                bool bResolved = true;
-
-                                // TRUE = variable, false is a constant
-                                if (pairing.second) {
-                                    // varResolution = resolveVariable(pairing.first);
-                                }
-
-                                if (bResolved) {
-
-                                    // Variable has been resolved or it's a constant.
-                                    QString variable = pRow -> Variable();
-                                    QString eqJumpDrive = variable + ", " + variable + "=" + pRow ->Equation();
-                                    ValueSet vs;
-                                    /*
-                                    if (resolveEquation(&vs, eqJumpDrive.toUtf8().constData())) {
-                                        setGridTextAtRowColumn(m_lstRows.count() - m_lstRows.indexOf(pRow), i, vs.Value());
-                                    }
-                                    else {
-
-                                    }
-                                    */
-
-                                }
-
-                                // Error case... if we cannot resolve the equation then the row should be highlighted
-                                else {
-
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (pRow ->Type() == PhysEqRow::RT_TIMESLICE) {
-                }
-                else if (pRow ->Type() == PhysEqRow::RT_PROPERTY) {
-                }
-
-                // Base case dt = 0; This means that the time slices between two t_n's is 0. This should not happen because what's the point?
-                if (dt == 0) {
-
-                    continue;
-                }
+                m_strVarAssignments = "";
+                m_eqJumpDrive = (*iter) ->Equation();
+                m_iterCurrRow = iter;
+                calculateRows(iter, m_eqJumpDrive, dt, true);
+                QString strJD = (*iter) ->Equation() + m_strVarAssignments + ", " + timeVar;
+                ValueSet vs;
+                if (resolveEquation(&vs, eqJumpDrive.toUtf8().constData()))
+                    setGridTextAtRowColumn(m_lstRows.count() - m_lstRows.indexOf(pRow), i, vs.Value());
             }
         }
     }

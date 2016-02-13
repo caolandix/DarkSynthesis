@@ -1,8 +1,15 @@
+#include <map>
 #include <iostream>
 #include <cstring>
 #include <vector>
-#include <boost/lexical_cast.hpp>
 #include <regex>
+
+#include <boost/lexical_cast.hpp>
+#include <boost/fusion/container/map.hpp>
+#include <boost/fusion/include/map.hpp>
+#include <boost/fusion/container/map/map_fwd.hpp>
+#include <boost/fusion/include/map_fwd.hpp>
+
 #include "stargate7.h"
 
 using namespace std;
@@ -87,35 +94,50 @@ void Stargate7::Tokenize(const string &str, vector<string> &tokens, const string
 
 bool Stargate7::parse(string eq) {
     vector<string> pieces;
-    vector<pair<string, bool>> eqMapping;
+    map<string, bool> eqMapping;
     return parse(eq, pieces, eqMapping);
 }
 
-#include <boost/fusion/container/map.hpp>
-#include <boost/fusion/include/map.hpp>
-#include <boost/fusion/container/map/map_fwd.hpp>
-#include <boost/fusion/include/map_fwd.hpp>
-
-
-bool Stargate7::parse(string eq, vector<string> &pieces, vector<pair<string, bool>> &eqMapping) {
+// bool Stargate7::parse(string eq, vector<string> &pieces, vector<pair<string, bool>> &eqMapping) {
+bool Stargate7::parse(string eq, vector<string> &pieces, map<string, bool> &eqMapping, bool bStripConsts) {
 
     // Split the stream into string tokens
     Tokenize(eq, pieces, m_delimiters);
+
+    // Strip out constants and the dt
+    for (vector<string>::iterator iter = pieces.begin(); iter != pieces.end(); ++iter) {
+        string token = *iter;
+        if (!token.compare("dt")) {
+            pieces.erase(iter);
+            iter = pieces.begin();
+            if (pieces.size() == 0)
+                break;
+            continue;
+        }
+        if (bStripConsts) {
+            if (isValidNumber(token)) {
+                pieces.erase(iter);
+                iter = pieces.begin();
+                if (pieces.size() == 0)
+                    break;
+                continue;
+            }
+        }
+    }
 
     // Check for numbers.
     for (vector<string>::iterator iter = pieces.begin(); iter != pieces.end(); ++iter) {
         string token = *iter;
         pair<string, bool> item = { token, false };
         if (!isValidNumber(token)) {
-            if (isValidVariable(token)) {
+            if (isValidVariable(token))
                 item.second = true;
-            }
             else {
                 cout << "ERROR: \"" << token << "\" is neither a number or a Variable.";
                 return false;
             }
         }
-        eqMapping.push_back(item);
+        eqMapping.insert(map<string, bool>::value_type(item.first, item.second));
     }
     return true;
 }

@@ -1,6 +1,8 @@
 #ifndef PHYSEQSOLVER_H
 #define PHYSEQSOLVER_H
 
+#include <map>
+
 #include <QtWidgets>
 
 #include "jumpdrive/ValueSet.h"
@@ -37,7 +39,7 @@ private:
 
     bool resolveVariable(pair<string, double> &resolution, string);
     bool resolveEquation(ValueSet &, string &);
-    void calculateRows(QList<PhysEqRow *>::Iterator &iter, const double dt = -1);
+    QString calculateRows(QList<PhysEqRow *>::Iterator &iter, QString, const double dt = -1, bool bStripConsts = false);
     QStringList separateEquationFromVariables(const QString);
     QList<double> findValuesOfVariablesInGrid(PhysEqRow *);
     QStringList ShuntingYard(QString);
@@ -66,6 +68,11 @@ private:
     PhysEqGrid *m_pGrid;
     QList<PhysParticle *> m_lstParticles;
     PhysCalculateTimer *m_pCalcTimer;
+    QString m_eqJumpDrive, m_strVarAssignments;
+
+    map<string, bool> m_eqTokensMap;
+    QList<PhysEqRow *>::Iterator m_iterCurrRow;
+
 };
 
 #endif // PHYSEQSOLVER_H

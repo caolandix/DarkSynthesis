@@ -1,10 +1,12 @@
 #ifndef STARGATE7_H
 #define STARGATE7_H
 
-#include <QtWidgets>
+#include <set>
 #include <cstring>
 #include <vector>
 #include <regex>
+
+#include <QtWidgets>
 
 using namespace std;
 
@@ -12,7 +14,8 @@ class Stargate7 {
 public:
     Stargate7(QString equation, QString delimiters = "+-*/%=() ");
     Stargate7(string equation, string delimiters = "+-*/%=() ");
-    bool parse(string eq, vector<string> &, vector<pair<string, bool>> &);
+    // bool parse(string eq, vector<string> &, vector<pair<string, bool>> &);
+    bool parse(string eq, vector<string> &, map<string, bool> &, bool = false);
     bool parse(string);
 private:
     void test(string );
