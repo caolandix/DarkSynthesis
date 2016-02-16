@@ -28,6 +28,7 @@ public:
 	ExpressionBuilder();
 	ExpressionBuilder(const string expression);
 	virtual ~ExpressionBuilder();
+    void seedBuiltInData();
     void prepData(string strEquation);
 	RPNExpression build();
     std::vector<double> *calculate();

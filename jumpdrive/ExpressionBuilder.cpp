@@ -44,6 +44,7 @@ string &trim(string &s) {
 //
 ExpressionBuilder::ExpressionBuilder() {
 	m_highUnaryPrecedence = false;
+    seedBuiltInData();
 }
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,9 +62,13 @@ ExpressionBuilder::ExpressionBuilder(string strEquation) {
     if (getenv("PROPERTY_UNARY_HIGH_PRECEDENCE"))
     	var = getenv("PROPERTY_UNARY_HIGH_PRECEDENCE");
 	m_highUnaryPrecedence = (var.length() == 0 || var != "false");
-	getBuiltinFunctions();
-	getBuiltinOperators();
-	getValidOperators();
+    seedBuiltInData();
+}
+
+void ExpressionBuilder::seedBuiltInData() {
+    getBuiltinFunctions();
+    getBuiltinOperators();
+    getValidOperators();
 }
 
 void ExpressionBuilder::prepData(string strEquation) {
