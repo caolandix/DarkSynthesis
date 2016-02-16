@@ -19,7 +19,7 @@ public:
 	RPNExpression(const list<Token *> &tokens, const string &expression, const map<string, double> &variables);
     virtual ~RPNExpression() {}
 
-	ValueSet calculate(const ValueSet values);
+    std::vector<double> *calculate(const ValueSet values);
     string getExpression() const { return m_expression; }
     void setVariable(string name, double value) { m_variables.insert(pair<string, double>(name, value)); }
     void print(const string &);

@@ -251,10 +251,11 @@ void PhysEqSolver::setGridTextAtRowColumn(const int row, const int col, const do
     }
 }
 
-bool PhysEqSolver::resolveEquation(ValueSet &vs, string &equation) {
+bool PhysEqSolver::resolveEquation(ValueSet &vs, const string equation) {
     ExpressionBuilder builder;
     builder.prepData(equation);
-    vs = builder.build().calculate(builder.EquationValues());
+    std::vector<double> *pResultSet = builder.build().calculate(builder.EquationValues());
+    vs.resultSet(pResultSet);
     if (vs.empty())
         return false;
     return true;
@@ -282,13 +283,13 @@ QString PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrRow, Q
             string eq = baseEq.trimmed().toUtf8().data();
             Stargate7 sg7(pRow ->Equation());
             vector<string> eqTokens;
-            if (sg7.parse(eq, eqTokens, m_eqTokensMap, bStripConsts)) {
+            map<string, bool> eqTokensMap = m_eqTokensMap;
+            if (sg7.parse(eq, eqTokens, eqTokensMap, bStripConsts)) {
 
                 // eqTokens after being parsed lists out the pieces. need to
                 // Loop through seeing what is a variable and what is a constant.
                 // If it's a variable then we need to look at it's equation and resolve that before continuing.
-                // for (vector<pair<string, bool>>::iterator iter = eqTokensMap.begin(); iter != eqTokensMap.end(); iter++) {
-                for (map<string, bool>::iterator iterTokenMap = m_eqTokensMap.begin(); iterTokenMap != m_eqTokensMap.end(); iterTokenMap++) {
+                for (map<string, bool>::iterator iterTokenMap = eqTokensMap.begin(); iterTokenMap != eqTokensMap.end(); iterTokenMap++) {
                     bool isVariable = (*iterTokenMap).second;
                     if (isVariable) {
 
@@ -299,8 +300,12 @@ QString PhysEqSolver::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrRow, Q
                             PhysEqRow *pRow = *iterRowSearch;
                             QString eq = pRow ->Equation();
                             QString value = calculateRows(iterRowSearch, eq, dt);
-                            if (!value.isEmpty())
-                                m_strVarAssignments += ", " + pRow ->Variable() + "=" + value;
+                            if (!value.isEmpty()) {
+                                if (!pRow -> isCalculated()) {
+                                    m_strVarAssignments += ", " + pRow ->Variable() + "=" + value;
+                                    pRow -> Calculated(true);
+                                }
+                            }
                         }
                     }
 
@@ -337,18 +342,23 @@ void PhysEqSolver::onCalculate() {
             }
 
             // Set the time variable
-            QString timeVar = QString("t = %1").arg(dt);
+            QString timeVar = QString("dt = %1").arg(dt);
 
             // Loop through the rows trying to resolve the equations that are there.
             for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
+                PhysEqRow *pRow = *iter;
                 m_strVarAssignments = "";
                 m_eqJumpDrive = (*iter) ->Equation();
                 m_iterCurrRow = iter;
                 calculateRows(iter, m_eqJumpDrive, dt, true);
-                QString strJD = (*iter) ->Equation() + m_strVarAssignments + ", " + timeVar;
-                ValueSet vs;
-                if (resolveEquation(&vs, eqJumpDrive.toUtf8().constData()))
-                    setGridTextAtRowColumn(m_lstRows.count() - m_lstRows.indexOf(pRow), i, vs.Value());
+                if (m_strVarAssignments.size() > 0) {
+                    QString strJD = (*iter) ->Equation() + m_strVarAssignments + ", " + timeVar;
+                    ValueSet vs;
+                    string str = strJD.toUtf8().data();
+                    if (resolveEquation(vs, str))
+                        setGridTextAtRowColumn(m_lstRows.count() - m_lstRows.indexOf(pRow), i, vs.Value());
+                }
+                pRow ->Calculated(false);
             }
         }
     }

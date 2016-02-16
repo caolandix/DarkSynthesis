@@ -12,22 +12,24 @@
 
 class ValueSet {
 public:
-    ValueSet() { m_presultSet = new VecDbl(); }
+    ValueSet() { m_pResultSet = new VecDbl(); }
     ValueSet(const VecDbl &);
-    ~ValueSet() { delete m_presultSet; }
+    ~ValueSet() { delete m_pResultSet; }
 
 	// Member methods
-    int size() const { return m_presultSet -> size(); }
-    bool empty() const { return m_presultSet -> empty(); }
-    VecDblIter begin() const { return m_presultSet -> begin(); }
-    VecDblIter end() const { return m_presultSet -> end(); }
-    void push_back(const double val) { m_presultSet -> push_back(val); }
-    double Value() const { return m_presultSet ->at(0); }
+    int size() const { return m_pResultSet -> size(); }
+    bool empty() const { return m_pResultSet -> empty(); }
+    VecDblIter begin() const { return m_pResultSet -> begin(); }
+    VecDblIter end() const { return m_pResultSet -> end(); }
+    void push_back(const double val) { m_pResultSet -> push_back(val); }
+    double Value() const { return m_pResultSet ->at(0); }
+    void resultSet(std::vector<double> *);
+    std::vector<double> *resultSet() const { return m_pResultSet; }
 
 	// Friend methods
 	friend ostream &operator<<(ostream &, ValueSet const &);
 private:
-    VecDbl *m_presultSet;
+    VecDbl *m_pResultSet;
 };
 
 #endif /* VALUESET_H_ */

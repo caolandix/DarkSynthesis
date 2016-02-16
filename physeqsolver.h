@@ -38,7 +38,7 @@ private:
     void setupContextMenu();
 
     bool resolveVariable(pair<string, double> &resolution, string);
-    bool resolveEquation(ValueSet &, string &);
+    bool resolveEquation(ValueSet &vs, const string equation);
     QString calculateRows(QList<PhysEqRow *>::Iterator &iter, QString, const double dt = -1, bool bStripConsts = false);
     QStringList separateEquationFromVariables(const QString);
     QList<double> findValuesOfVariablesInGrid(PhysEqRow *);

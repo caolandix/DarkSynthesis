@@ -14,7 +14,7 @@ RPNExpression::RPNExpression(const list<Token*> &tokens, const string &expressio
 	m_variables = variables;
 }
 
-ValueSet RPNExpression::calculate(const ValueSet values) {
+std::vector<double> *RPNExpression::calculate(const ValueSet values) {
 	if (m_variables.size() == 0 && values.size() > 0)
 		throw new IllegalArgumentException("there are no variables to set values");
     else if ((unsigned int)values.size() != m_variables.size())
@@ -54,9 +54,9 @@ ValueSet RPNExpression::calculate(const ValueSet values) {
             break;
         }
 	}
-	vector<double> eq_values;
+    vector<double> *eq_values = new vector<double>();
 	if (m_valstack.size() > 0) {
-		eq_values.push_back(m_valstack.top());
+        eq_values -> push_back(m_valstack.top());
 		m_valstack.pop();
 	}
 	return eq_values;

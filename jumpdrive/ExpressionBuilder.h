@@ -30,7 +30,7 @@ public:
 	virtual ~ExpressionBuilder();
     void prepData(string strEquation);
 	RPNExpression build();
-	ValueSet calculate();
+    std::vector<double> *calculate();
     ValueSet EquationValues() const { return m_eq_vals; }
 
 	void withCustomFunctions(const vector<CustomFunction *> &functions);

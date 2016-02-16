@@ -87,7 +87,7 @@ void ExpressionBuilder::prepData(string strEquation) {
 
 }
 
-ValueSet ExpressionBuilder::calculate() {
+std::vector<double> *ExpressionBuilder::calculate() {
 	return build().calculate(m_eq_vals);
 }
 //
