@@ -21,7 +21,6 @@ public:
     void CartesianDataObj(CartesianGraphDataObj *pObj) { m_pTable -> CartesianDataObj(pObj); }
     QList<PhysParticle *> Particles() const { return m_pTable -> CartesianDataObj() ->Particles(); }
     QList<PhysVector *> Vectors() const { return m_pTable -> CartesianDataObj() ->Vectors(); }
-
     PhysEqSolverTable *Table() const { return m_pTable; }
 
 private:
@@ -37,18 +36,12 @@ private:
     void createGrid();
     void setupContextMenu();
 
-    bool resolveVariable(pair<string, double> &resolution, string);
     bool resolveEquation(ValueSet &vs, const string equation);
     QString calculateRows(QList<PhysEqRow *>::Iterator &iter, QString, const double dt = -1, bool bStripConsts = false);
-    QStringList separateEquationFromVariables(const QString);
-    QList<double> findValuesOfVariablesInGrid(PhysEqRow *);
-    QStringList ShuntingYard(QString);
-
     void DecodeAddy(const QString, int *, int * = NULL);
     QString EncodeAddy(const int, const int = -1);
     void createTimeSliceRow(QList<double>);
     void addPhysDataObjCell(const int row, const int col, const QString, const double val);
-
     void createPhysDataObjRow(PhysDataObj *);
 public slots:
     void updateLineEdit(QTableWidgetItem *);
@@ -69,7 +62,6 @@ private:
     QList<PhysParticle *> m_lstParticles;
     PhysCalculateTimer *m_pCalcTimer;
     QString m_eqJumpDrive, m_strVarAssignments;
-
     map<string, bool> m_eqTokensMap;
     QList<PhysEqRow *>::Iterator m_iterCurrRow;
 

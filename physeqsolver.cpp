@@ -199,7 +199,7 @@ void PhysEqSolver::create1DKinematicItems(int i, PhysParticle *pParticle) {
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
                                         QString("a"), QString("0"), QString("accel"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("v"), QString("12"), QString("speed"), false));
+                                           QString("v"), QString("0"), QString("speed"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
                                                QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), false));
 
@@ -226,19 +226,6 @@ void PhysEqSolver::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
     m_pCalcTimer ->start();
 }
 
-QStringList PhysEqSolver::separateEquationFromVariables(QString strEquation) {
-    QStringList lst = strEquation.split(",");
-    foreach(QString str, lst) {
-
-    }
-}
-
-QList<double> PhysEqSolver::findValuesOfVariablesInGrid(PhysEqRow *pRow) {
-    QList<double> lstValues;
-
-    return lstValues;
-}
-
 void PhysEqSolver::setGridTextAtRowColumn(const int row, const int col, const double val) {
     if (row != -1 && col != -1) {
         QTableWidgetItem *pItem = m_pTable -> item(row, col);
@@ -258,17 +245,6 @@ bool PhysEqSolver::resolveEquation(ValueSet &vs, const string equation) {
     vs.resultSet(pResultSet);
     if (vs.empty())
         return false;
-    return true;
-}
-
-bool PhysEqSolver::resolveVariable(pair<string, double> &resolution, string variable) {
-
-    foreach (PhysEqRow *pRow, m_lstRows) {
-        if (pRow ->Variable().compare(QString(variable.c_str()))) {
-            resolution = { variable, true };
-        }
-    }
-
     return true;
 }
 
