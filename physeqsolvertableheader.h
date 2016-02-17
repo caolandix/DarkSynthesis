@@ -4,6 +4,7 @@
 
 #include <QtWidgets>
 #include "physeqsolvertable.h"
+
 class PhysEqSolverTable;
 
 class PhysEqSolverTableHeader : public QHeaderView {

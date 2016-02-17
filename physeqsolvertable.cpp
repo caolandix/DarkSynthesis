@@ -134,7 +134,7 @@ void PhysEqSolverTable::createTableHeader() {
     m_TimeSliceValues.push_back(0.0);
     setHorizontalHeader(m_pHeader = new PhysEqSolverTableHeader(m_TimeSliceValues, this));
     setHorizontalHeaderLabels(QStringList() << "" << "t0");
-    verticalHeader() ->setVisible(false);
+    horizontalHeader() ->setVisible(true);
     rebuildColumnHeaders();
 }
 
