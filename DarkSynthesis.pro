@@ -73,7 +73,114 @@ SOURCES += main.cpp \
     xes1/physelectrostaticpropertiesdlg.cpp \
     qcustomplot-1.3.2/qcustomplot.cpp \
     xes1/physelectrostaticview.cpp \
-    physeqrowdlg.cpp
+    physeqrowdlg.cpp \
+    SymbolicC++3-3.35/examples/anyset.cpp \
+    SymbolicC++3-3.35/examples/aresize.cpp \
+    SymbolicC++3-3.35/examples/asslegendre.cpp \
+    SymbolicC++3-3.35/examples/backlund.cpp \
+    SymbolicC++3-3.35/examples/bose.cpp \
+    SymbolicC++3-3.35/examples/bose1.cpp \
+    SymbolicC++3-3.35/examples/cantor.cpp \
+    SymbolicC++3-3.35/examples/chebyshev.cpp \
+    SymbolicC++3-3.35/examples/coeff1.cpp \
+    SymbolicC++3-3.35/examples/coeff2.cpp \
+    SymbolicC++3-3.35/examples/coeff3.cpp \
+    SymbolicC++3-3.35/examples/coher.cpp \
+    SymbolicC++3-3.35/examples/comm.cpp \
+    SymbolicC++3-3.35/examples/commute.cpp \
+    SymbolicC++3-3.35/examples/conser.cpp \
+    SymbolicC++3-3.35/examples/contract.cpp \
+    SymbolicC++3-3.35/examples/convertbinary.cpp \
+    SymbolicC++3-3.35/examples/cumu.cpp \
+    SymbolicC++3-3.35/examples/depend.cpp \
+    SymbolicC++3-3.35/examples/derivatv.cpp \
+    SymbolicC++3-3.35/examples/deter.cpp \
+    SymbolicC++3-3.35/examples/division.cpp \
+    SymbolicC++3-3.35/examples/elliptic.cpp \
+    SymbolicC++3-3.35/examples/expand.cpp \
+    SymbolicC++3-3.35/examples/fermi.cpp \
+    SymbolicC++3-3.35/examples/fermi1.cpp \
+    SymbolicC++3-3.35/examples/first1.cpp \
+    SymbolicC++3-3.35/examples/first2.cpp \
+    SymbolicC++3-3.35/examples/firstintegral.cpp \
+    SymbolicC++3-3.35/examples/gat.cpp \
+    SymbolicC++3-3.35/examples/gepbool.cpp \
+    SymbolicC++3-3.35/examples/gepchaos.cpp \
+    SymbolicC++3-3.35/examples/gepint.cpp \
+    SymbolicC++3-3.35/examples/gepint2.cpp \
+    SymbolicC++3-3.35/examples/ghost.cpp \
+    SymbolicC++3-3.35/examples/grass.cpp \
+    SymbolicC++3-3.35/examples/hamiltoneq.cpp \
+    SymbolicC++3-3.35/examples/hamiltonin.cpp \
+    SymbolicC++3-3.35/examples/hamiltonvar.cpp \
+    SymbolicC++3-3.35/examples/hermite.cpp \
+    SymbolicC++3-3.35/examples/hilbert.cpp \
+    SymbolicC++3-3.35/examples/hopf.cpp \
+    SymbolicC++3-3.35/examples/hyperliapunov.cpp \
+    SymbolicC++3-3.35/examples/integration.cpp \
+    SymbolicC++3-3.35/examples/interpreter.cpp \
+    SymbolicC++3-3.35/examples/invariant.cpp \
+    SymbolicC++3-3.35/examples/inverse.cpp \
+    SymbolicC++3-3.35/examples/isprime.cpp \
+    SymbolicC++3-3.35/examples/jacobi.cpp \
+    SymbolicC++3-3.35/examples/kill.cpp \
+    SymbolicC++3-3.35/examples/kronecker.cpp \
+    SymbolicC++3-3.35/examples/lag.cpp \
+    SymbolicC++3-3.35/examples/lagrange.cpp \
+    SymbolicC++3-3.35/examples/laguerre.cpp \
+    SymbolicC++3-3.35/examples/lax.cpp \
+    SymbolicC++3-3.35/examples/legendre.cpp \
+    SymbolicC++3-3.35/examples/lie.cpp \
+    SymbolicC++3-3.35/examples/lie1.cpp \
+    SymbolicC++3-3.35/examples/lie2.cpp \
+    SymbolicC++3-3.35/examples/ljapunov.cpp \
+    SymbolicC++3-3.35/examples/logistic.cpp \
+    SymbolicC++3-3.35/examples/lorenzfix.cpp \
+    SymbolicC++3-3.35/examples/lorenzliapunov.cpp \
+    SymbolicC++3-3.35/examples/mandel.cpp \
+    SymbolicC++3-3.35/examples/matrix.cpp \
+    SymbolicC++3-3.35/examples/mep.cpp \
+    SymbolicC++3-3.35/examples/mersenne.cpp \
+    SymbolicC++3-3.35/examples/metrics.cpp \
+    SymbolicC++3-3.35/examples/mycomplex.cpp \
+    SymbolicC++3-3.35/examples/mystring.cpp \
+    SymbolicC++3-3.35/examples/nambu.cpp \
+    SymbolicC++3-3.35/examples/newton.cpp \
+    SymbolicC++3-3.35/examples/pade.cpp \
+    SymbolicC++3-3.35/examples/pexample.cpp \
+    SymbolicC++3-3.35/examples/pexample2.cpp \
+    SymbolicC++3-3.35/examples/pexample3.cpp \
+    SymbolicC++3-3.35/examples/picard.cpp \
+    SymbolicC++3-3.35/examples/put.cpp \
+    SymbolicC++3-3.35/examples/rtti2.cpp \
+    SymbolicC++3-3.35/examples/ruelle.cpp \
+    SymbolicC++3-3.35/examples/sderive1.cpp \
+    SymbolicC++3-3.35/examples/sderive2.cpp \
+    SymbolicC++3-3.35/examples/setvalue.cpp \
+    SymbolicC++3-3.35/examples/sgoedel1.cpp \
+    SymbolicC++3-3.35/examples/sgoedel2.cpp \
+    SymbolicC++3-3.35/examples/spheric.cpp \
+    SymbolicC++3-3.35/examples/spicard.cpp \
+    SymbolicC++3-3.35/examples/spins3.cpp \
+    SymbolicC++3-3.35/examples/sprime.cpp \
+    SymbolicC++3-3.35/examples/squater.cpp \
+    SymbolicC++3-3.35/examples/string1.cpp \
+    SymbolicC++3-3.35/examples/stringexpr.cpp \
+    SymbolicC++3-3.35/examples/taylor1.cpp \
+    SymbolicC++3-3.35/examples/taylor2.cpp \
+    SymbolicC++3-3.35/examples/teleport.cpp \
+    SymbolicC++3-3.35/examples/tensor.cpp \
+    SymbolicC++3-3.35/examples/tokenizer.cpp \
+    SymbolicC++3-3.35/examples/tokenizer2.cpp \
+    SymbolicC++3-3.35/examples/trace.cpp \
+    SymbolicC++3-3.35/examples/transf.cpp \
+    SymbolicC++3-3.35/examples/transformation.cpp \
+    SymbolicC++3-3.35/examples/var.cpp \
+    SymbolicC++3-3.35/examples/vdpliapunov.cpp \
+    SymbolicC++3-3.35/examples/vnorm.cpp \
+    SymbolicC++3-3.35/examples/vproduct.cpp \
+    SymbolicC++3-3.35/lisp/lambda/lambda.cpp \
+    SymbolicC++3-3.35/lisp/lisprun.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -166,7 +273,45 @@ HEADERS  += cmainwindow.h \
     qcustomplot-1.3.2/qcustomplot.h \
     xes1/physelectrostaticpropertiesdlg.h \
     xes1/physelectrostaticview.h \
-    physeqrowdlg.h
+    physeqrowdlg.h \
+    SymbolicC++3-3.35/examples/asslegendre.h \
+    SymbolicC++3-3.35/examples/goedel.h \
+    SymbolicC++3-3.35/examples/legendre.h \
+    SymbolicC++3-3.35/examples/prime.h \
+    SymbolicC++3-3.35/headers/symbolic/constants.h \
+    SymbolicC++3-3.35/headers/symbolic/equation.h \
+    SymbolicC++3-3.35/headers/symbolic/functions.h \
+    SymbolicC++3-3.35/headers/symbolic/integrate.h \
+    SymbolicC++3-3.35/headers/symbolic/number.h \
+    SymbolicC++3-3.35/headers/symbolic/product.h \
+    SymbolicC++3-3.35/headers/symbolic/solve.h \
+    SymbolicC++3-3.35/headers/symbolic/sum.h \
+    SymbolicC++3-3.35/headers/symbolic/symbol.h \
+    SymbolicC++3-3.35/headers/symbolic/symbolic.h \
+    SymbolicC++3-3.35/headers/symbolic/symbolicc++.h \
+    SymbolicC++3-3.35/headers/symbolic/symerror.h \
+    SymbolicC++3-3.35/headers/symbolic/symmatrix.h \
+    SymbolicC++3-3.35/headers/array.h \
+    SymbolicC++3-3.35/headers/cloning.h \
+    SymbolicC++3-3.35/headers/derive.h \
+    SymbolicC++3-3.35/headers/identity.h \
+    SymbolicC++3-3.35/headers/matnorm.h \
+    SymbolicC++3-3.35/headers/matrix.h \
+    SymbolicC++3-3.35/headers/multinomial.h \
+    SymbolicC++3-3.35/headers/polynomial.h \
+    SymbolicC++3-3.35/headers/quatern.h \
+    SymbolicC++3-3.35/headers/rational.h \
+    SymbolicC++3-3.35/headers/symbolicc++.h \
+    SymbolicC++3-3.35/headers/vecnorm.h \
+    SymbolicC++3-3.35/headers/vector.h \
+    SymbolicC++3-3.35/headers/verylong.h \
+    SymbolicC++3-3.35/lisp/lambda/builtin_arith.h \
+    SymbolicC++3-3.35/lisp/lambda/builtin_core.h \
+    SymbolicC++3-3.35/lisp/lambda/builtin_io.h \
+    SymbolicC++3-3.35/lisp/lambda/builtin_list.h \
+    SymbolicC++3-3.35/lisp/lambda/builtin_math.h \
+    SymbolicC++3-3.35/lisp/lambda/expression.h \
+    SymbolicC++3-3.35/lisp/lisp.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \
