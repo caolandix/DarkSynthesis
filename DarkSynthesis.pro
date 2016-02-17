@@ -68,7 +68,6 @@ SOURCES += main.cpp \
     physcalculatetimer.cpp \
     phystimeslicedataobj.cpp \
     physcelldataobj.cpp \
-    physshuntyardparser.cpp \
     stargate7.cpp \
     xes1/physelectrostaticpropertiesdlg.cpp \
     qcustomplot-1.3.2/qcustomplot.cpp \
@@ -268,7 +267,6 @@ HEADERS  += cmainwindow.h \
     physcalculatetimer.h \
     phystimeslicedataobj.h \
     physcelldataobj.h \
-    physshuntyardparser.h \
     stargate7.h \
     qcustomplot-1.3.2/qcustomplot.h \
     xes1/physelectrostaticpropertiesdlg.h \
