@@ -30,6 +30,10 @@ void PhysEqSolverTable::createConnections() {
 }
 
 void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
+
+    // Check to see if the pos is inside of the first column, as that needs a different context menu
+    ... if (pos)
+
     QMenu subCtxMenu(tr("Physics Objects..."));
     QMenu subCtxMenuVectors(tr("Vectors..."));
     QMenu subCtxMenuOther(tr("Other..."));
@@ -141,8 +145,7 @@ void PhysEqSolverTable::createTableHeader() {
 void PhysEqSolverTable::insertColumn() {
 
     // When inserting a new column with the default value, it should be added to the previous column
-    int idx = m_TimeSliceValues.count() - 1;
-    double newValue = m_TimeSliceValues.at(idx) + 1.0;
+    double newValue = m_TimeSliceValues.at(m_TimeSliceValues.count() - 1) + 1.0;
     m_TimeSliceValues.push_back(newValue);
     m_pHeader ->timeSliceList(m_TimeSliceValues);
     model() ->insertColumn(model() ->columnCount());
