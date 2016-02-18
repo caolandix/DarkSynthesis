@@ -12,9 +12,7 @@
 #include "phystimeslicedataobj.h"
 #include "physcelldataobj.h"
 #include "physeqrow.h"
-#include "physshuntyardparser.h"
 #include "stargate7.h"
-
 #include "jumpdrive/ExpressionBuilder.h"
 
 PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pParent) {
