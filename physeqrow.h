@@ -22,6 +22,7 @@ public:
     QString Equation() const { return m_Equation; }
     void Equation(QString eq) { m_Equation = eq; }
     QString Variable() const { return m_lstCells.at(0) ->Obj() ->Name(); }
+    void Variable(QString var) { m_lstCells.at(0) ->Obj() ->Name(var); }
     bool isCalculated() const { return m_bCalculated; }
     void Calculated(bool bVal) { m_bCalculated = bVal; }
 

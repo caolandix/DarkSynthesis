@@ -1,17 +1,20 @@
 #include <QtWidgets>
 
-#include "ui_physselectparticledlg.h"
-
 #include "physeqsolvertable.h"
 #include "physeqsolverdelegate.h"
 #include "physeqsolvertableheader.h"
+#include "physeqsolveritem.h"
+#include "physeqsolver.h"
 #include "physparticledataobj.h"
-
+#include "ui_physselectparticledlg.h"
+#include "ui_physeqrowdlg.h"
 
 PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget *pParent) : QTableWidget(rows, columns, pParent) {
     m_pActColor = NULL;
     m_pActFont = NULL;
     m_pActClear = NULL;
+    m_pRowProperties = NULL;
+    m_pParent = pParent;
 
     createTableHeader();
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -32,58 +35,99 @@ void PhysEqSolverTable::createConnections() {
 void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
 
     // Check to see if the pos is inside of the first column, as that needs a different context menu
-    ... if (pos)
+    QModelIndex index = indexAt(pos);
+    if (index.isValid()) {
+        m_currItem.row = index.row();
+        m_currItem.column = index.column();
 
-    QMenu subCtxMenu(tr("Physics Objects..."));
-    QMenu subCtxMenuVectors(tr("Vectors..."));
-    QMenu subCtxMenuOther(tr("Other..."));
-    QMenu ctxMenu;
+        QMenu ctxMenu;
+        QMenu subCtxMenu(tr("Physics Objects..."));
+        QMenu subCtxMenuVectors(tr("Vectors..."));
+        QMenu subCtxMenuOther(tr("Other..."));
 
-    // Primary menu actions
-    QAction *pFont = new QAction(tr("Font..."), this);
-    connect(pFont, SIGNAL(triggered()), this, SLOT(onSelectFont()));
-    QAction *pColor = new QAction(QPixmap(16, 16), tr("Background &Color..."), this);
-    connect(pColor, SIGNAL(triggered()), this, SLOT(onSelectColor()));
-    QAction *pClear = new QAction(tr("Clear"), this);
-    connect(pClear, SIGNAL(triggered()), this, SLOT(onClear()));
-    ctxMenu.addAction(pFont);
-    ctxMenu.addAction(pColor);
-    ctxMenu.addAction(pClear);
+        // If in first column then we need to check and see what row it is. get that information to populate the
+        // dialog box.
+        if (m_currItem.column == 0) {
+            QAction *m_pRowProperties = new QAction(tr("Properties..."), this);
+            connect(m_pRowProperties, SIGNAL(triggered()), this, SLOT(onRowProperties()));
+            ctxMenu.addAction(m_pRowProperties);
+        }
+        else {
+            // Primary menu actions
+            QAction *pFont = new QAction(tr("Font..."), this);
+            connect(pFont, SIGNAL(triggered()), this, SLOT(onSelectFont()));
+            QAction *pColor = new QAction(QPixmap(16, 16), tr("Background &Color..."), this);
+            connect(pColor, SIGNAL(triggered()), this, SLOT(onSelectColor()));
+            QAction *pClear = new QAction(tr("Clear"), this);
+            connect(pClear, SIGNAL(triggered()), this, SLOT(onClear()));
+            ctxMenu.addAction(pFont);
+            ctxMenu.addAction(pColor);
+            ctxMenu.addAction(pClear);
 
-    // Secondary submenus
-    // Vectors
-    QAction *pVel = new QAction(tr("Velocity"), this);
-    connect(pVel, SIGNAL(triggered()), this, SLOT(onSelectVelVector()));
-    QAction *pAccel = new QAction(tr("Acceleration"), this);
-    connect(pAccel, SIGNAL(triggered()), this, SLOT(onSelectAccelVector()));
-    QAction *pGrav = new QAction(tr("Gravity"), this);
-    connect(pGrav, SIGNAL(triggered()), this, SLOT(onSelectGravVector()));
-    QAction *pDisplacement = new QAction(tr("Displacement"), this);
-    connect(pDisplacement, SIGNAL(triggered()), this, SLOT(onSelectDisplacementVector()));
+            // Secondary submenus
+            // Vectors
+            QAction *pVel = new QAction(tr("Velocity"), this);
+            connect(pVel, SIGNAL(triggered()), this, SLOT(onSelectVelVector()));
+            QAction *pAccel = new QAction(tr("Acceleration"), this);
+            connect(pAccel, SIGNAL(triggered()), this, SLOT(onSelectAccelVector()));
+            QAction *pGrav = new QAction(tr("Gravity"), this);
+            connect(pGrav, SIGNAL(triggered()), this, SLOT(onSelectGravVector()));
+            QAction *pDisplacement = new QAction(tr("Displacement"), this);
+            connect(pDisplacement, SIGNAL(triggered()), this, SLOT(onSelectDisplacementVector()));
 
-    // Particles
-    QAction *pGenPart = new QAction(tr("Particle"), this);
-    connect(pGenPart, SIGNAL(triggered()), this, SLOT(onSelectParticle()));
+            // Particles
+            QAction *pGenPart = new QAction(tr("Particle"), this);
+            connect(pGenPart, SIGNAL(triggered()), this, SLOT(onSelectParticle()));
 
-    // Vectors Submenu
-    subCtxMenuVectors.addAction(pVel);
-    subCtxMenuVectors.addAction(pAccel);
-    subCtxMenuVectors.addAction(pGrav);
-    subCtxMenuVectors.addAction(pDisplacement);
+            // Vectors Submenu
+            subCtxMenuVectors.addAction(pVel);
+            subCtxMenuVectors.addAction(pAccel);
+            subCtxMenuVectors.addAction(pGrav);
+            subCtxMenuVectors.addAction(pDisplacement);
 
-    // Particles submenu
-    subCtxMenu.addAction(pGenPart);
+            // Particles submenu
+            subCtxMenu.addAction(pGenPart);
 
-    // Other submenu
+            // Other submenu
 
-    // Connect up submenu chain
-    subCtxMenu.addMenu(&subCtxMenuOther);
-    subCtxMenu.addMenu(&subCtxMenuVectors);
+            // Connect up submenu chain
+            subCtxMenu.addMenu(&subCtxMenuOther);
+            subCtxMenu.addMenu(&subCtxMenuVectors);
 
-    ctxMenu.addMenu(&subCtxMenu);
+            ctxMenu.addMenu(&subCtxMenu);
+        }
+        ctxMenu.exec(mapToGlobal(pos));
+    }
+}
 
-    // Execute the menu
-    ctxMenu.exec(mapToGlobal(pos));
+void PhysEqSolverTable::onRowProperties() {
+    QDialog *pDlg = new QDialog(0,0);
+    Ui_PhysEqRowDlg dlg;
+    dlg.setupUi(pDlg);
+    PhysEqRow *pCurrRow = NULL;
+    PhysEqSolver *pParent = static_cast<PhysEqSolver *>(m_pParent);
+    QList<PhysEqRow *> lstRows = pParent ->Rows();
+    int i = 0;
+    foreach (PhysEqRow *pRow, lstRows) {
+        if (i == m_currItem.row) {
+            pCurrRow = pRow;
+            break;
+        }
+        i++;
+    }
+    if (pCurrRow) {
+        dlg.edtRowEq->setText(pCurrRow ->Equation());
+        dlg.edtRowVariable ->setText(pCurrRow ->Variable());
+        //dlg.edtRowLabel ->setText(pCurrRow ->Label());
+        if (pDlg ->exec() == QDialog::Accepted) {
+            QString eq = dlg.edtRowEq ->text();
+            QString label = dlg.edtRowLabel ->text();
+            QString variable = dlg.edtRowVariable ->text();
+            pCurrRow ->Variable(variable);
+            pCurrRow ->Equation(eq);
+            //pCurrRow ->Label(label);
+        }
+    }
 }
 
 void PhysEqSolverTable::onSelectVelVector() {

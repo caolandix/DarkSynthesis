@@ -35,8 +35,7 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent
 
 void PhysObjectNavigator::createContextMenu() {
     // Hook up the custom Context menu handler
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(onCustomContextMenu(const QPoint &)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 }
 
 void PhysObjectNavigator::onChangeItemName(const QString &strOld, const QString &strNew) {

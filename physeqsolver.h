@@ -22,6 +22,7 @@ public:
     QList<PhysParticle *> Particles() const { return m_pTable -> CartesianDataObj() ->Particles(); }
     QList<PhysVector *> Vectors() const { return m_pTable -> CartesianDataObj() ->Vectors(); }
     PhysEqSolverTable *Table() const { return m_pTable; }
+    QList<PhysEqRow *> Rows() const { return m_lstRows; }
 
 private:
     void createParticleItems(int, PhysParticle *);

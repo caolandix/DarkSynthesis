@@ -11,6 +11,10 @@ class PhysEqSolverTableHeader;
 class PhysEqSolverTable : public QTableWidget {
     Q_OBJECT
 public:
+    typedef struct _ctxmnuCurrItem {
+        int row, column;
+    } CurrItemStruct;
+
     PhysEqSolverTable(const int, const int, QWidget *);
 
     ~PhysEqSolverTable();
@@ -38,6 +42,7 @@ public slots:
     void onSelectFont();
     void onClear();
     void onCustomContextMenu(const QPoint &);
+    void onRowProperties();
     void onSelectVelVector();
     void onSelectAccelVector();
     void onSelectGravVector();
@@ -45,12 +50,15 @@ public slots:
     void onSelectParticle();
     void onUpdateTimeSlices(const int, const double);
 private:
+    QWidget *m_pParent;
     PhysEqSolverTableHeader *m_pHeader;
     CartesianGraphDataObj *m_pDataObj;
     QAction *m_pActColor;
     QAction *m_pActFont;
     QAction *m_pActClear;
+    QAction *m_pRowProperties;
     QList<double> m_TimeSliceValues;
+    CurrItemStruct m_currItem;
 };
 
 #endif // PHYSEQSOLVERTABLE_H
