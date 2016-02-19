@@ -204,7 +204,6 @@ void PhysEqSolverTable::removeColumn(const int idx) {
         m_TimeSliceValues.removeAt(idx);
         m_pHeader ->timeSliceList(m_TimeSliceValues);
         rebuildColumnHeaders();
-
         emit removeTimeSliceCell(idx);
     }
 }
@@ -212,13 +211,16 @@ void PhysEqSolverTable::removeColumn(const int idx) {
 QSize PhysEqSolverTable::minimumSizeHint() const {
     QSize size(QTableWidget::sizeHint());
     int width = 0;
-    for (int a = 0; a < columnCount(); ++a)
-        width += columnWidth(a);
-    size.setWidth(width + (columnCount() * 1));
     int height = horizontalHeader()->height();
-    for (int a = 0; a < rowCount(); ++a)
-        height += rowHeight(a);
+
+    for (int i = 0; i < columnCount(); ++i)
+        width += columnWidth(i);
+    size.setWidth(width + (columnCount() * 1));
+
+    for (int i = 0; i < rowCount(); ++i)
+        height += rowHeight(i);
     size.setHeight(height + (rowCount() * 1));
+
     return size;
 }
 
@@ -243,7 +245,7 @@ void PhysEqSolverTable::rebuildColumnHeaders() {
 
 void PhysEqSolverTable::onSelectColor() {
     QTableWidgetItem *pItem = currentItem();
-    QColor col = pItem ? pItem -> backgroundColor() : palette().base().color();
+    QColor col = pItem ? pItem ->backgroundColor() : palette().base().color();
     col = QColorDialog::getColor(col, this);
     if (!col.isValid())
         return;
@@ -254,7 +256,7 @@ void PhysEqSolverTable::onSelectColor() {
 
     foreach (QTableWidgetItem *pItem, items) {
         if (pItem)
-            pItem -> setBackgroundColor(col);
+            pItem ->setBackgroundColor(col);
     }
     updateColor(currentItem());
 }
@@ -264,11 +266,11 @@ void PhysEqSolverTable::onSelectFont() {
     if (items.count() == 0)
         return;
 
-    bool ok = false;
-    QFont fnt = QFontDialog::getFont(&ok, font(), this);
-
-    if (!ok)
+    bool bOK = false;
+    QFont fnt = QFontDialog::getFont(&bOK, font(), this);
+    if (!bOK)
         return;
+
     foreach (QTableWidgetItem *pItem, items) {
         if (pItem)
             pItem -> setFont(fnt);
@@ -282,22 +284,22 @@ void PhysEqSolverTable::onClear() {
 
 void PhysEqSolverTable::updateColor(QTableWidgetItem *pItem) {
     QPixmap pix(16, 16);
+    QPainter pt(&pix);
     QColor colour;
+    QColor lighter = colour.light();
+    QPoint lightFrame[] = { QPoint(0, 15), QPoint(0, 0), QPoint(15, 0) };
+    QPoint darkFrame[] = { QPoint(1, 15), QPoint(15, 15), QPoint(15, 1) };
+
     if (pItem)
         colour = pItem -> backgroundColor();
+
     if (!colour.isValid())
         colour = palette().base().color();
 
-    QPainter pt(&pix);
     pt.fillRect(0, 0, 16, 16, colour);
-
-    QColor lighter = colour.light();
     pt.setPen(lighter);
-    QPoint lightFrame[] = { QPoint(0, 15), QPoint(0, 0), QPoint(15, 0) };
     pt.drawPolyline(lightFrame, 3);
-
     pt.setPen(colour.dark());
-    QPoint darkFrame[] = { QPoint(1, 15), QPoint(15, 15), QPoint(15, 1) };
     pt.drawPolyline(darkFrame, 3);
     pt.end();
     m_pActColor -> setIcon(pix);
