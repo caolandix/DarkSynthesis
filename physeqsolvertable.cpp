@@ -304,4 +304,3 @@ void PhysEqSolverTable::updateColor(QTableWidgetItem *pItem) {
     pt.end();
     m_pActColor -> setIcon(pix);
 }
-

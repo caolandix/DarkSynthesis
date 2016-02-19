@@ -34,7 +34,6 @@ private:
     void createConnections();
     void createTable(const int, const int);
     void setupTableLookAndFeel();
-    void createGrid();
     void setupContextMenu();
 
     bool resolveEquation(ValueSet &vs, const string equation);
@@ -59,7 +58,6 @@ private:
     PhysEqSolverTable *m_pTable;
     QLineEdit *m_pFormulaInput;
     QList<PhysEqRow *> m_lstRows;
-    PhysEqGrid *m_pGrid;
     QList<PhysParticle *> m_lstParticles;
     PhysCalculateTimer *m_pCalcTimer;
     QString m_eqJumpDrive, m_strVarAssignments;

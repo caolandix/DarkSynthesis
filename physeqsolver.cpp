@@ -17,7 +17,6 @@
 
 PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pParent) {
     m_pTable = NULL;
-    m_pGrid = NULL;
     m_pFormulaInput = new QLineEdit();
     m_pCalcTimer = new PhysCalculateTimer(this, 1000);
     m_pCalcTimer ->start();
@@ -54,9 +53,6 @@ void PhysEqSolver::onUpdateParticleName(const QString prevName, const QString na
 void PhysEqSolver::createTable(const int rows, const int cols) {
     m_pTable = new PhysEqSolverTable(rows, cols, this);
     setupTableLookAndFeel();
-
-    // Creates the underlying data structure for doing calculations
-    createGrid();
 }
 
 void PhysEqSolver::setupTableLookAndFeel() {
@@ -67,10 +63,6 @@ void PhysEqSolver::setupTableLookAndFeel() {
     m_pTable -> setItem(0, 0, new PhysEqSolverItem(""));
     m_pTable -> item(0, 0) -> setBackgroundColor(titleBackground);
     m_pTable -> item(0, 0) -> setFont(titleFont);
-}
-
-void PhysEqSolver::createGrid() {
-    m_pGrid = new PhysEqGrid();
 }
 
 QTableWidgetItem *PhysEqSolver::createTableItem(PhysDataObj *pObj, bool bAttachObj) {
