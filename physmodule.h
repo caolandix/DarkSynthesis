@@ -9,7 +9,8 @@ class PhysModule : public QObject {
 public:
     int type() const;
 
-    PhysModule(const QString &);
+    PhysModule() : QObject() {}
+    PhysModule(const QString &, QObject * = NULL);
     PhysModule(const PhysModule &);
     virtual ~PhysModule();
 

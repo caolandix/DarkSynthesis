@@ -231,7 +231,11 @@ void PhysEqSolver::setGridTextAtRowColumn(const int row, const int col, const do
 bool PhysEqSolver::resolveEquation(ValueSet &vs, const string equation) {
     ExpressionBuilder builder;
     builder.prepData(equation);
-    std::vector<double> *pResultSet = builder.build().calculate(builder.EquationValues());
+    RPNExpression rpnExpr = builder.build();
+
+    vs = builder.EquationValues();
+
+    std::vector<double> *pResultSet = rpnExpr.calculate(vs);
     vs.resultSet(pResultSet);
     if (vs.empty())
         return false;

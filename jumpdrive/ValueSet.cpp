@@ -13,10 +13,21 @@ ValueSet::ValueSet(const VecDbl &results) {
         m_pResultSet -> push_back(*iter);
 }
 
+ValueSet::~ValueSet() {
+    if (m_pResultSet) {
+        m_pResultSet ->clear();
+        delete m_pResultSet;
+    }
+    m_pResultSet = NULL;
+}
+
+
 void ValueSet::resultSet(std::vector<double> *pRS) {
     if (m_pResultSet)
         delete m_pResultSet;
-    m_pResultSet = pRS;
+    m_pResultSet = new VecDbl();
+    for (VecDblIter iter = pRS ->begin(); iter != pRS ->end(); iter++)
+        m_pResultSet -> push_back(*iter);
 }
 
 

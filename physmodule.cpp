@@ -1,10 +1,10 @@
 #include "physmodule.h"
 
-PhysModule::PhysModule(const QString &str) {
+PhysModule::PhysModule(const QString &str, QObject *pParent) : QObject(pParent) {
     m_Name = str;
 }
 
-PhysModule::PhysModule(const PhysModule &obj) {
+PhysModule::PhysModule(const PhysModule &obj) : QObject() {
     m_Name = obj.Name();
 }
 

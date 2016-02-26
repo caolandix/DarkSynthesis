@@ -14,7 +14,7 @@ class ValueSet {
 public:
     ValueSet() { m_pResultSet = new VecDbl(); }
     ValueSet(const VecDbl &);
-    ~ValueSet() { delete m_pResultSet; }
+    ~ValueSet();
 
 	// Member methods
     int size() const { return m_pResultSet -> size(); }
