@@ -7,6 +7,7 @@
 // DarkSynth headers
 #include "cmainwindow.h"
 #include "ui_cmainwindow.h"
+
 #include "cartesiangraphsettingsdlg.h"
 #include "cartesiangraphdataobj.h"
 #include "physobjectnavigator.h"
@@ -21,24 +22,24 @@
 
 using namespace std;
 
-CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), PhysCommon() {
+CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::CMainWindow) , PhysCommon() {
     init();
     m_pUI -> setupUi(this);
-    m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
-    m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-    m_infoLabel -> setAlignment(Qt::AlignCenter);
-    createActions();
-    createMenus();
-    createToolBars();
-    createStatusBar();
-    createDockWindows();
+    //m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
+    //m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    //m_infoLabel -> setAlignment(Qt::AlignCenter);
+    //createActions();
+    //createMenus();
+    //createToolBars();
+    //createStatusBar();
+    //createDockWindows();
 
-    GraphWidget *pGraph = new GraphWidget();
+    //GraphWidget *pGraph = new GraphWidget();
 
-    setGraphWidget(pGraph);
-    setCentralWidget(pGraph);
-    createSignalSlots();
-    createBaseObjects();
+    //setGraphWidget(pGraph);
+    //setCentralWidget(pGraph);
+    //createSignalSlots();
+    //createBaseObjects();
     setWindowTitle(tr("The Physicist's Workbench"));
 }
 
@@ -47,7 +48,7 @@ CMainWindow::~CMainWindow() {
 }
 
 void CMainWindow::init() {
-    m_pUI = new Ui::CMainWindow();
+    //m_pUI = new Ui::CMainWindow();
     m_pFileMenu = NULL;
     m_pEditMenu = NULL;
     m_pHelpMenu = NULL;
