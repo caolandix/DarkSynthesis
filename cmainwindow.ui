@@ -85,7 +85,7 @@
    <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QDockWidget" name="ui_PhysModNavigator">
+  <widget class="QDockWidget" name="Ui_ModuleNavigator">
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>

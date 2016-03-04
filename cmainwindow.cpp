@@ -28,11 +28,11 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     //m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
     //m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     //m_infoLabel -> setAlignment(Qt::AlignCenter);
-    //createActions();
-    //createMenus();
+    // createActions();
+    // createMenus();
     //createToolBars();
     //createStatusBar();
-    //createDockWindows();
+    createDockWindows();
 
     //GraphWidget *pGraph = new GraphWidget();
 
@@ -166,9 +166,20 @@ void CMainWindow::createToolBars() {
 void CMainWindow::createStatusBar() {
 }
 
+#include "modulenavigator.h"
+
+
 void CMainWindow::createDockWindows() {
+    // Create the left side
+    ModuleNavigator *pDock = new ModuleNavigator(this);
+
+    // m_pPhysModNavigator = new PhysModuleNavigator(pDock);
+    // pDock -> setWidget(m_pPhysModNavigator);
+    // pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
+    // addDockWidget(Qt::LeftDockWidgetArea, pDock);
 
     // Create the right side
+    /*
     QDockWidget *pDock = new QDockWidget(tr("Physics Objects"), this);
     m_pPhysObjNavigator = new PhysObjectNavigator(pDock);
     pDock -> setWidget(m_pPhysObjNavigator);
@@ -180,13 +191,6 @@ void CMainWindow::createDockWindows() {
     pDock -> setWidget(m_pPhysObjPropsNavigator);
     pDock -> setAllowedAreas(Qt::RightDockWidgetArea);
     addDockWidget(Qt::RightDockWidgetArea, pDock);
-
-    // Create the left side
-    pDock = new QDockWidget(tr("Physics Modules"), this);
-    m_pPhysModNavigator = new PhysModuleNavigator(pDock);
-    pDock -> setWidget(m_pPhysModNavigator);
-    pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
-    addDockWidget(Qt::LeftDockWidgetArea, pDock);
 
     // Create the Bottom area
     pDock = new QDockWidget(tr("Output"), this);

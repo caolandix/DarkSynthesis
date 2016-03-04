@@ -1,6 +1,7 @@
 #include "physmodulenavigator.h"
 
-PhysModuleNavigator::PhysModuleNavigator(QWidget *pParent) : QListWidget(pParent), PhysCommon() {
+PhysModuleNavigator::PhysModuleNavigator(QWidget *pParent) : QListView(pParent), PhysCommon() {
+
     // PHYS-221
     m_ModuleList.push_back(new PhysModule("1D Kinematics"));
     m_ModuleList.push_back(new PhysModule("2D Kinematics"));
@@ -28,7 +29,6 @@ PhysModuleNavigator::PhysModuleNavigator(QWidget *pParent) : QListWidget(pParent
 
     // PHYS-223
     m_ModuleList.push_back(new PhysModule("Newton's Theory of Gravity"));
-    m_ModuleList.push_back(new PhysModule("Rotation of a Rigid Body"));
     m_ModuleList.push_back(new PhysModule("Oscillations"));
     m_ModuleList.push_back(new PhysModule("Fluids and Elasticity"));
     m_ModuleList.push_back(new PhysModule("A Macroscopic Description of Matter"));
@@ -62,3 +62,8 @@ PhysModuleNavigator::PhysModuleNavigator(QWidget *pParent) : QListWidget(pParent
     setCurrentIndex(model()->index(0, 0));
     ModType(SINGLEDIM_KINEMATICS);
 }
+
+PhysModuleNavigator::~PhysModuleNavigator() {
+    //delete m_pUI;
+}
+

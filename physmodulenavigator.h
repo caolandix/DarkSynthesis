@@ -6,10 +6,11 @@
 #include "physmodule.h"
 #include "physcommon.h"
 
-class PhysModuleNavigator : public QListWidget, public PhysCommon {
+class PhysModuleNavigator : public QListView, public PhysCommon {
     Q_OBJECT
 public:
     PhysModuleNavigator(QWidget * = NULL);
+    ~PhysModuleNavigator();
 signals:
     void setModType(int);
 public slots:

@@ -73,6 +73,7 @@ SOURCES += main.cpp \
     qcustomplot-1.3.2/qcustomplot.cpp \
     xes1/physelectrostaticview.cpp \
     physeqrowdlg.cpp \
+    modulenavigator.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -198,11 +199,13 @@ HEADERS  += cmainwindow.h \
     SymbolicC++3-3.35/lisp/lambda/builtin_list.h \
     SymbolicC++3-3.35/lisp/lambda/builtin_math.h \
     SymbolicC++3-3.35/lisp/lambda/expression.h \
-    SymbolicC++3-3.35/lisp/lisp.h
+    SymbolicC++3-3.35/lisp/lisp.h \
+    modulenavigator.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \
     physselectparticledlg.ui \
     xes1/physelectrostaticpropertiesdlg.ui \
     xes1/xes1.ui \
-    physeqrowdlg.ui
+    physeqrowdlg.ui \
+    modulenavigator.ui
