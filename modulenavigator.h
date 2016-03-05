@@ -4,11 +4,10 @@
 #include <QDockWidget>
 
 namespace Ui {
-class ModuleNavigator;
+    class ModuleNavigator;
 }
 
-class ModuleNavigator : public QDockWidget
-{
+class ModuleNavigator : public QDockWidget {
     Q_OBJECT
 
 public:

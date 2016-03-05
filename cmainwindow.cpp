@@ -28,8 +28,8 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     //m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
     //m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     //m_infoLabel -> setAlignment(Qt::AlignCenter);
-    // createActions();
-    // createMenus();
+    //createActions();
+    //createMenus();
     //createToolBars();
     //createStatusBar();
     createDockWindows();
