@@ -4,7 +4,6 @@
 ModuleNavigator::ModuleNavigator(QWidget *parent) : QDockWidget(parent), ui(new Ui::ModuleNavigator) {
     ui -> setupUi(this);
 
-    ui_physModuleNavigator;
 }
 
 ModuleNavigator::~ModuleNavigator() {

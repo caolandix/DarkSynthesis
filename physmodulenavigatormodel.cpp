@@ -1,7 +1,6 @@
 #include "physmodulenavigatormodel.h"
 
 PhysModuleNavigatorModel::PhysModuleNavigatorModel(QObject *parent) : QAbstractListModel(parent) {
-
     // PHYS-221
     m_ModuleList.push_back(new PhysModule("1D Kinematics"));
     m_ModuleList.push_back(new PhysModule("2D Kinematics"));
@@ -53,32 +52,61 @@ PhysModuleNavigatorModel::PhysModuleNavigatorModel(QObject *parent) : QAbstractL
     m_ModuleList.push_back(new PhysModule("Magnetohydrodynamics"));
     m_ModuleList.push_back(new PhysModule("1D Electrostatics"));
     m_ModuleList.push_back(new PhysModule("Intro to Plasma Physics"));
-
-    for (int i = 0; i < m_ModuleList.count(); i++) {
-        PhysModule *pObj = m_ModuleList[i];
-        QListWidgetItem *pItem = new QListWidgetItem(pObj -> Name(), this);
-        insertItem(i, pItem);
-    }
-    setCurrentIndex(model()->index(0, 0));
-    ModType(SINGLEDIM_KINEMATICS);
-
-}
-
-QVariant PhysModuleNavigatorModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    // FIXME: Implement me!
+    foreach(PhysModule *pObj, m_ModuleList)
+        stringList << pObj ->Name();
 }
 
 int PhysModuleNavigatorModel::rowCount(const QModelIndex &parent) const {
-    if (!parent.isValid())
-        return 0;
-    return m_ModuleList.count();
+    return stringList.count();
 }
 
 QVariant PhysModuleNavigatorModel::data(const QModelIndex &index, int role) const {
     if (!index.isValid())
         return QVariant();
-
+    if (index.row() >= stringList.size())
+        return QVariant();
     if (role == Qt::DisplayRole)
         return stringList.at(index.row());
-    return QVariant();
+    else
+        return QVariant();
+}
+
+QVariant PhysModuleNavigatorModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    if (role != Qt::DisplayRole)
+        return QVariant();
+    if (orientation == Qt::Horizontal)
+        return QString("Column %1").arg(section);
+    else
+        return QString("Row %1").arg(section);
+}
+
+Qt::ItemFlags PhysModuleNavigatorModel::flags(const QModelIndex &index) const {
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
+    return QAbstractItemModel::flags(index);
+}
+
+bool PhysModuleNavigatorModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+    if (index.isValid() && role == Qt::EditRole) {
+        stringList.replace(index.row(), value.toString());
+        emit dataChanged(index, index);
+        return true;
+    }
+    return false;
+}
+
+bool PhysModuleNavigatorModel::insertRows(int position, int rows, const QModelIndex &parent) {
+    beginInsertRows(QModelIndex(), position, position+rows-1);
+    for (int row = 0; row < rows; ++row)
+        stringList.insert(position, "");
+    endInsertRows();
+    return true;
+}
+
+bool PhysModuleNavigatorModel::removeRows(int position, int rows, const QModelIndex &parent) {
+    beginRemoveRows(QModelIndex(), position, position+rows-1);
+    for (int row = 0; row < rows; ++row)
+        stringList.removeAt(position);
+    endRemoveRows();
+    return true;
 }

@@ -9,7 +9,6 @@ namespace Ui {
 
 class ModuleNavigator : public QDockWidget {
     Q_OBJECT
-
 public:
     explicit ModuleNavigator(QWidget *parent = 0);
     ~ModuleNavigator();

@@ -167,16 +167,17 @@ void CMainWindow::createStatusBar() {
 }
 
 #include "modulenavigator.h"
-
+#include "physmodulenavigatormodel.h"
 
 void CMainWindow::createDockWindows() {
+
     // Create the left side
     ModuleNavigator *pDock = new ModuleNavigator(this);
-
-    // m_pPhysModNavigator = new PhysModuleNavigator(pDock);
-    // pDock -> setWidget(m_pPhysModNavigator);
-    // pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
-    // addDockWidget(Qt::LeftDockWidgetArea, pDock);
+    m_pPhysModNavigator = new PhysModuleNavigator(pDock);
+    m_pPhysModNavigator ->setModel(new PhysModuleNavigatorModel());
+    pDock -> setWidget(m_pPhysModNavigator);
+    pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
+    addDockWidget(Qt::LeftDockWidgetArea, pDock);
 
     // Create the right side
     /*
