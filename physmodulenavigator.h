@@ -16,7 +16,7 @@ signals:
 public slots:
 
 private:
-    QList<PhysModule *> m_ModuleList;
+
 };
 
 #endif // PHYSMODULENAVIGATOR_H

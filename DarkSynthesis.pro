@@ -74,7 +74,10 @@ SOURCES += main.cpp \
     xes1/physelectrostaticview.cpp \
     physeqrowdlg.cpp \
     modulenavigator.cpp \
-    physmodulenavigatormodel.cpp
+    physmodulenavigatormodel.cpp \
+    objectnavigator.cpp \
+    physobjectnavigatormodel.cpp \
+    treeitem.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -202,7 +205,10 @@ HEADERS  += cmainwindow.h \
     SymbolicC++3-3.35/lisp/lambda/expression.h \
     SymbolicC++3-3.35/lisp/lisp.h \
     modulenavigator.h \
-    physmodulenavigatormodel.h
+    physmodulenavigatormodel.h \
+    objectnavigator.h \
+    physobjectnavigatormodel.h \
+    treeitem.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \
@@ -210,4 +216,5 @@ FORMS    += cmainwindow.ui \
     xes1/physelectrostaticpropertiesdlg.ui \
     xes1/xes1.ui \
     physeqrowdlg.ui \
-    modulenavigator.ui
+    modulenavigator.ui \
+    objectnavigator.ui

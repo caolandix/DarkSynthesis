@@ -167,7 +167,9 @@ void CMainWindow::createStatusBar() {
 }
 
 #include "modulenavigator.h"
+#include "objectnavigator.h"
 #include "physmodulenavigatormodel.h"
+#include "physobjectnavigatormodel.h"
 
 void CMainWindow::createDockWindows() {
 
@@ -180,13 +182,14 @@ void CMainWindow::createDockWindows() {
     addDockWidget(Qt::LeftDockWidgetArea, pDock);
 
     // Create the right side
-    /*
-    QDockWidget *pDock = new QDockWidget(tr("Physics Objects"), this);
-    m_pPhysObjNavigator = new PhysObjectNavigator(pDock);
-    pDock -> setWidget(m_pPhysObjNavigator);
-    pDock -> setAllowedAreas(Qt::RightDockWidgetArea);
-    addDockWidget(Qt::RightDockWidgetArea, pDock);
+    ObjectNavigator *pObjNavDock = new ObjectNavigator(this);
+    m_pPhysObjNavigator = new PhysObjectNavigator(pObjNavDock);
+    m_pPhysObjNavigator ->setModel(new PhysObjectNavigatorModel());
+    pObjNavDock -> setWidget(m_pPhysObjNavigator);
+    pObjNavDock -> setAllowedAreas(Qt::RightDockWidgetArea);
+    addDockWidget(Qt::RightDockWidgetArea, pObjNavDock);
 
+    /*
     pDock = new QDockWidget(tr("Physics Properties"), this);
     m_pPhysObjPropsNavigator = new PhysObjectPropsNavigator(pDock);
     pDock -> setWidget(m_pPhysObjPropsNavigator);

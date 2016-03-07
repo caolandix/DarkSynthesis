@@ -1,7 +1,7 @@
 #ifndef PHYSOBJECTNAVIGATOR_H
 #define PHYSOBJECTNAVIGATOR_H
 
-#include <QTreeWidget>
+#include <QTreeView>
 #include <QGraphicsItem>
 #include <QTreeWidgetItem>
 #include <QItemSelection>
@@ -11,7 +11,7 @@
 #include "physvector.h"
 #include "physparticle.h"
 
-class PhysObjectNavigator : public QTreeWidget {
+class PhysObjectNavigator : public QTreeView {
     Q_OBJECT
 public:
     PhysObjectNavigator(QWidget * = NULL);
