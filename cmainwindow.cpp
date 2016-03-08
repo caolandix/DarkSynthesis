@@ -168,8 +168,12 @@ void CMainWindow::createStatusBar() {
 
 #include "modulenavigator.h"
 #include "objectnavigator.h"
+#include "physobjectpropsnavigatordock.h"
+#include "physequationsolverdock.h"
 #include "physmodulenavigatormodel.h"
 #include "physobjectnavigatormodel.h"
+#include "physobjectpropsnavigatormodel.h"
+#include "physoutputnavigatordock.h"
 
 void CMainWindow::createDockWindows() {
 
@@ -178,7 +182,6 @@ void CMainWindow::createDockWindows() {
     m_pPhysModNavigator = new PhysModuleNavigator(pDock);
     m_pPhysModNavigator ->setModel(new PhysModuleNavigatorModel());
     pDock -> setWidget(m_pPhysModNavigator);
-    pDock -> setAllowedAreas(Qt::LeftDockWidgetArea);
     addDockWidget(Qt::LeftDockWidgetArea, pDock);
 
     // Create the right side
@@ -186,29 +189,25 @@ void CMainWindow::createDockWindows() {
     m_pPhysObjNavigator = new PhysObjectNavigator(pObjNavDock);
     m_pPhysObjNavigator ->setModel(new PhysObjectNavigatorModel());
     pObjNavDock -> setWidget(m_pPhysObjNavigator);
-    pObjNavDock -> setAllowedAreas(Qt::RightDockWidgetArea);
     addDockWidget(Qt::RightDockWidgetArea, pObjNavDock);
 
-    /*
-    pDock = new QDockWidget(tr("Physics Properties"), this);
-    m_pPhysObjPropsNavigator = new PhysObjectPropsNavigator(pDock);
-    pDock -> setWidget(m_pPhysObjPropsNavigator);
-    pDock -> setAllowedAreas(Qt::RightDockWidgetArea);
-    addDockWidget(Qt::RightDockWidgetArea, pDock);
+    PhysObjectPropsNavigatorDock *pObjPropsNavDock = new PhysObjectPropsNavigatorDock(this);
+    m_pPhysObjPropsNavigator = new PhysObjectPropsNavigator(pObjPropsNavDock);
+    m_pPhysObjPropsNavigator ->setModel(new PhysObjectPropsNavigatorModel());
+    pObjPropsNavDock -> setWidget(m_pPhysObjPropsNavigator);
+    addDockWidget(Qt::RightDockWidgetArea, pObjPropsNavDock);
 
     // Create the Bottom area
-    pDock = new QDockWidget(tr("Output"), this);
-    m_pPhysOutputNavigator = new PhysOutputNavigator(pDock);
-    pDock -> setWidget(m_pPhysOutputNavigator);
-    pDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
-    addDockWidget(Qt::BottomDockWidgetArea, pDock);
+    PhysOutputNavigatorDock *pOutputDock = new PhysOutputNavigatorDock(this);
+    m_pPhysOutputNavigator = new PhysOutputNavigator(pOutputDock);
+    pOutputDock -> setWidget(m_pPhysOutputNavigator);
+    addDockWidget(Qt::BottomDockWidgetArea, pOutputDock);
 
-    PhysDockedWidget *pPhysDock = new PhysDockedWidget(tr("Equation Solver"), this);
-    m_pPhysEqSolver = new PhysEqSolver(1, 2, pPhysDock);
+    PhysEquationSolverDock *pEquationDock = new PhysEquationSolverDock(this);
+    m_pPhysEqSolver = new PhysEqSolver(1, 2, pEquationDock);
     m_pPhysEqSolver ->setModel(new PhysTableModel(this));
-    pPhysDock -> setWidget(m_pPhysEqSolver);
-    pPhysDock -> setAllowedAreas(Qt::BottomDockWidgetArea);
-    addDockWidget(Qt::BottomDockWidgetArea, pPhysDock);
+    pEquationDock -> setWidget(m_pPhysEqSolver);
+    addDockWidget(Qt::BottomDockWidgetArea, pEquationDock);
     m_pPhysEqSolver ->ModType(m_pPhysModNavigator ->ModType());
 
     /*

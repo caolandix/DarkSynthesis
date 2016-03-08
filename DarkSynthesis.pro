@@ -77,7 +77,11 @@ SOURCES += main.cpp \
     physmodulenavigatormodel.cpp \
     objectnavigator.cpp \
     physobjectnavigatormodel.cpp \
-    treeitem.cpp
+    treeitem.cpp \
+    physobjectpropsnavigatordock.cpp \
+    physobjectpropsnavigatormodel.cpp \
+    physequationsolverdock.cpp \
+    physoutputnavigatordock.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -208,7 +212,11 @@ HEADERS  += cmainwindow.h \
     physmodulenavigatormodel.h \
     objectnavigator.h \
     physobjectnavigatormodel.h \
-    treeitem.h
+    treeitem.h \
+    physobjectpropsnavigatordock.h \
+    physobjectpropsnavigatormodel.h \
+    physequationsolverdock.h \
+    physoutputnavigatordock.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \
@@ -217,4 +225,7 @@ FORMS    += cmainwindow.ui \
     xes1/xes1.ui \
     physeqrowdlg.ui \
     modulenavigator.ui \
-    objectnavigator.ui
+    objectnavigator.ui \
+    physobjectpropsnavigatordock.ui \
+    physequationsolverdock.ui \
+    physoutputnavigatordock.ui
