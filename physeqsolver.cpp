@@ -16,7 +16,7 @@
 #include "jumpdrive/ExpressionBuilder.h"
 
 PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pParent) {
-    m_pTable = NULL;
+    m_pTable = model();
     m_pFormulaInput = new QLineEdit();
     m_pCalcTimer = new PhysCalculateTimer(this, 1000);
     m_pCalcTimer ->start();
@@ -28,6 +28,7 @@ PhysEqSolver::PhysEqSolver(int rows, int cols, QWidget *pParent) : QTableView(pP
 }
 
 void PhysEqSolver::createConnections() {
+    /*
     connect(m_pTable, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
     connect(m_pFormulaInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
     connect(m_pTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
@@ -35,6 +36,7 @@ void PhysEqSolver::createConnections() {
     connect(m_pCalcTimer ->Timer(), SIGNAL(timeout()), this, SLOT(onCalculate()));
     connect(m_pTable, SIGNAL(addTimeSliceCell(int, double)), this, SLOT(onAddTimeSliceCell(int, double)));
     connect(m_pTable, SIGNAL(removeTimeSliceCell(int)), this, SLOT(onRemoveTimeSliceCell(int)));
+    */
 }
 
 void PhysEqSolver::onUpdateParticleName(const QString prevName, const QString name) {
