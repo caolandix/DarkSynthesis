@@ -12,13 +12,12 @@
 #include "physvector.h"
 #include "physparticle.h"
 
-PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeView(pParent) {
+PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent) {
 
-    // Initialise privates
+    // Initialize private
     m_pCurrObj = m_pPrevObj = NULL;
 
     // Setup widget
-    /*
     setColumnCount(2);
     setRootIsDecorated(true);
     setAcceptDrops(true);
@@ -32,7 +31,6 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeView(pParent) 
 
     // Setup the context Menu
     createContextMenu();
-    */
 }
 
 void PhysObjectNavigator::createContextMenu() {
@@ -41,14 +39,12 @@ void PhysObjectNavigator::createContextMenu() {
 }
 
 void PhysObjectNavigator::onChangeItemName(const QString &strOld, const QString &strNew) {
-    /*
     QList<QTreeWidgetItem *> Items = findItems(strOld, Qt::MatchExactly | Qt::MatchRecursive);
 
     if (Items.count() > 0) {
         QTreeWidgetItem *pItem = Items.at(0);
         pItem ->setText(0, strNew);
     }
-    */
 }
 
 void PhysObjectNavigator::cloneObject() {
@@ -111,7 +107,6 @@ void PhysObjectNavigator::removeObject() {
 }
 
 void PhysObjectNavigator::removeFromTreeWidgetParent(QGraphicsItem *pObj) {
-    /*
     QTreeWidgetItemIterator it(this);
     while (*it) {
         QTreeWidgetItem *pItem = (*it);
@@ -127,7 +122,6 @@ void PhysObjectNavigator::removeFromTreeWidgetParent(QGraphicsItem *pObj) {
         }
         ++it;
     }
-    */
 }
 
 void PhysObjectNavigator::resetObject() {
@@ -167,7 +161,6 @@ void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
     QModelIndex index = indexAt(pos);
 
     if (index.isValid()) {
-        /*
         QTreeWidgetItem *pItem = itemFromIndex(indexAt(pos));
         QVariant itemData = pItem ->data(0, Qt::UserRole);
         QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
@@ -192,7 +185,6 @@ void PhysObjectNavigator::onCustomContextMenu(const QPoint &pos) {
         contextMenu.addAction(m_pActResetItem);
 
         contextMenu.exec(mapToGlobal(pos));
-        */
     }
 }
 
@@ -223,7 +215,6 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
     QModelIndexList items = selected.indexes();
 
     index = items.at(0);
-    /*
     QTreeWidgetItem *pItem = itemFromIndex(index);
     if (pItem) {
         QVariant itemData = pItem ->data(0, Qt::UserRole);
@@ -232,7 +223,6 @@ void PhysObjectNavigator::selectionChanged(const QItemSelection &selected, const
         m_pCurrObj = pObj;
     }
     emit changeObj(m_pCurrObj, m_pPrevObj);
-    */
 }
 
 void PhysObjectNavigator::onReorderObjNav(QGraphicsItem *pObj) {
@@ -254,7 +244,6 @@ void PhysObjectNavigator::onReorderObjNav(QGraphicsItem *pObj) {
             qDebug("PhysObjectNavigator::onReorderObjNav: not a supported object type: %d", pObj -> type());
             break;
         }
-        /*
         QList<QTreeWidgetItem *> Items = findItems(Name, Qt::MatchExactly | Qt::MatchRecursive);
         if (Items.count() > 0) {
             if (pObj ->type() == PhysBaseItem::VectorType) {
@@ -263,13 +252,11 @@ void PhysObjectNavigator::onReorderObjNav(QGraphicsItem *pObj) {
                 insertVector(pVector);
             }
         }
-        */
     }
 }
 
 void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
     qDebug("PhysObjectNavigator::dropEvent()");
-    /*
     QTreeWidgetItem *pItem = itemFromIndex(indexAt(pEvent -> pos()));
     QVariant itemData = pItem -> data(0, Qt::UserRole);
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
@@ -284,12 +271,10 @@ void PhysObjectNavigator::dropEvent(QDropEvent *pEvent) {
         }
         QTreeWidget::dropEvent(pEvent);
     }
-    */
 }
 
 void PhysObjectNavigator::insertVector(PhysVector *pObj) {
     qDebug("PhysObjectNavigator::insertVector()");
-    /*
     QTreeWidgetItem *pParentItem = topLevelItem(0);
 
     if (pParentItem) {
@@ -320,7 +305,6 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
             m_pCurrObj = pObj;
         }
     }
-    */
 }
 
 void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
@@ -328,7 +312,6 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
 
 
     // particles are always a direct child of the CartesianGraph they're tied to
-    /*
     QTreeWidgetItem *pTopLevelItem = topLevelItem(0);
     if (pTopLevelItem) {
         QTreeWidgetItem *pChildItem = new QTreeWidgetItem(pTopLevelItem);
@@ -344,11 +327,9 @@ void PhysObjectNavigator::insertParticle(PhysParticle *pObj) {
         setCurrentItem(pChildItem);
         emit changeObj(m_pCurrObj, m_pCurrObj);
     }
-*/
 }
 
 void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {
-    /*
     QTreeWidgetItem *pTopLevelItem = topLevelItem(0);
 
     if (pTopLevelItem)
@@ -366,5 +347,4 @@ void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {
     // When 2D kinematics are supported we'll add in support for two.
     m_pCurrObj = m_pPrevObj = pObj;
     emit changeObj(pObj, NULL);
-    */
 }

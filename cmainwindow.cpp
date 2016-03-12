@@ -187,13 +187,11 @@ void CMainWindow::createDockWindows() {
     // Create the right side
     ObjectNavigator *pObjNavDock = new ObjectNavigator(this);
     m_pPhysObjNavigator = new PhysObjectNavigator(pObjNavDock);
-    m_pPhysObjNavigator ->setModel(new PhysObjectNavigatorModel());
     pObjNavDock -> setWidget(m_pPhysObjNavigator);
     addDockWidget(Qt::RightDockWidgetArea, pObjNavDock);
 
     PhysObjectPropsNavigatorDock *pObjPropsNavDock = new PhysObjectPropsNavigatorDock(this);
     m_pPhysObjPropsNavigator = new PhysObjectPropsNavigator(pObjPropsNavDock);
-    m_pPhysObjPropsNavigator ->setModel(new PhysObjectPropsNavigatorModel());
     pObjPropsNavDock -> setWidget(m_pPhysObjPropsNavigator);
     addDockWidget(Qt::RightDockWidgetArea, pObjPropsNavDock);
 

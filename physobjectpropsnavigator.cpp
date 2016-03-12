@@ -9,7 +9,7 @@
 #include "physobjectpropeditor.h"
 #include "graphwidget.h"
 
-PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows, int numCols) : QTableView(pParent) {
+PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows, int numCols) : QTableWidget(pParent) {
     m_pXaxisLabel = NULL;
     m_pYaxisLabel = NULL;
     m_pAxisTickInc = NULL;
@@ -28,13 +28,11 @@ PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows
     m_pLockYAxis = NULL;
     m_pPosition = NULL;
 
-    /*
     setShowGrid(true);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
     verticalHeader() -> setVisible(false);
     createTable(numRows, numCols);
-    */
 }
 
 void PhysObjectPropsNavigator::createTable(const int numRows, const int numCols) {

@@ -11,7 +11,7 @@
 #include "physvector.h"
 #include "physparticle.h"
 
-class PhysObjectNavigator : public QTreeView {
+class PhysObjectNavigator : public QTreeWidget {
     Q_OBJECT
 public:
     PhysObjectNavigator(QWidget * = NULL);

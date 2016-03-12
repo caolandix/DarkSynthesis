@@ -13,7 +13,7 @@
 #include "physvector.h"
 #include "physobjectpropeditor.h"
 
-class PhysObjectPropsNavigator : public QTableView {
+class PhysObjectPropsNavigator : public QTableWidget {
     Q_OBJECT
 public:
     PhysObjectPropsNavigator(QWidget * = NULL, int = 0, int = 2);
