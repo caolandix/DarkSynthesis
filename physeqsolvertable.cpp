@@ -28,7 +28,7 @@ PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget 
 
     createTableHeader();
     setContextMenuPolicy(Qt::CustomContextMenu);
-    setupContextMenu();
+    // setupContextMenu();
     setItemPrototype(item(rows - 1, columns - 1));
     setItemDelegate(new PhysEqSolverDelegate());
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
