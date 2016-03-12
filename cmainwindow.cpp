@@ -204,8 +204,7 @@ void CMainWindow::createDockWindows() {
     addDockWidget(Qt::BottomDockWidgetArea, pOutputDock);
 
     PhysEquationSolverDock *pEquationDock = new PhysEquationSolverDock(this);
-    m_pPhysEqSolver = new PhysEqSolver(1, 2, pEquationDock);
-    m_pPhysEqSolver ->setModel(new PhysTableModel(this));
+    m_pPhysEqSolver = new PhysEqSolverTable(1, 2, pEquationDock);
     pEquationDock -> setWidget(m_pPhysEqSolver);
     addDockWidget(Qt::BottomDockWidgetArea, pEquationDock);
     m_pPhysEqSolver ->ModType(m_pPhysModNavigator ->ModType());
