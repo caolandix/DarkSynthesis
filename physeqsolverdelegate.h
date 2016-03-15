@@ -2,7 +2,6 @@
 #define PHYSEQSOLVERDELEGATE_H
 
 #include <QItemDelegate>
-#include "physeqsolver.h"
 
 class PhysEqSolverDelegate : public QItemDelegate {
     Q_OBJECT

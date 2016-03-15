@@ -14,7 +14,7 @@
 #include "physmodulenavigator.h"
 #include "physoutputnavigator.h"
 #include "physobjectpropsnavigator.h"
-#include "physeqsolver.h"
+#include "physeqsolvertable.h"
 #include "physdockedwidget.h"
 #include "phystablemodel.h"
 #include "xes1/physelectrostaticview.h"

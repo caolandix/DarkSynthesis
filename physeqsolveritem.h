@@ -2,7 +2,6 @@
 #define PHYSEQSOLVERITEM_H
 
 #include <QTableWidgetItem>
-#include "physeqsolver.h"
 
 class PhysEqSolverItem : public QTableWidgetItem {
 public:

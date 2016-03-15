@@ -79,7 +79,6 @@ private:
     PhysObjectPropsNavigator *m_pPhysObjPropsNavigator;
     PhysModuleNavigator *m_pPhysModNavigator;
     PhysOutputNavigator *m_pPhysOutputNavigator;
-    //PhysEqSolver *m_pPhysEqSolver;
     PhysEqSolverTable *m_pPhysEqSolver;
     PhysElectroStaticView *m_pPhysElectroStaticView;
 };

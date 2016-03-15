@@ -30,7 +30,6 @@ SOURCES += main.cpp \
     physoutputnavigator.cpp \
     physobjectpropsnavigator.cpp \
     physmodule.cpp \
-    physeqsolver.cpp \
     physprintview.cpp \
     physeqsolverdelegate.cpp \
     physeqsolveritem.cpp \
@@ -98,7 +97,6 @@ HEADERS  += cmainwindow.h \
     physobjectpropsnavigator.h \
     physmodule.h \
     physscience.h \
-    physeqsolver.h \
     physprintview.h \
     physeqsolverdelegate.h \
     physeqsolveritem.h \
