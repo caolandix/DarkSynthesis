@@ -62,8 +62,7 @@ std::vector<double> *RPNExpression::calculate(const ValueSet values) {
 	return eq_values;
 }
 
-void RPNExpression::print(const string &) {
-#ifdef _DEBUG
+void RPNExpression::print(const string &header) {
 	cout << header << endl;
 	cout << "Expression: " << m_expression << endl;
 	cout << "List of tokens:" << endl;
@@ -76,5 +75,4 @@ void RPNExpression::print(const string &) {
 	}
 	if (!m_valstack.empty())
 		cout << "Top of Value Stack: " << m_valstack.top() << endl;
-#endif
 }

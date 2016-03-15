@@ -58,10 +58,8 @@ string RPNConverter::substituteUnaryOperators(const string &expr, map<string, Cu
 
 RPNExpression RPNConverter::toRPNExpression(const string &infix, map<string, double> &variables, map<string, CustomFunction *> &customFunctions, map<string, CustomOperator *> &operators) {
 	vector<string> variableKeySet;
-	string output;
+    string output;
 	stack<Token*> operatorStack;
-
-	cout << "RPNConverter::toRPNExpression(), infix string passed in: " << infix << endl;
 
 	for (map<string, double>::iterator iter = variables.begin(); iter != variables.end(); iter++)
 		variableKeySet.push_back((*iter).first);
@@ -107,11 +105,9 @@ RPNExpression RPNConverter::toRPNExpression(const string &infix, map<string, dou
 	}
 	// all tokens read, put the rest of the operations on the output;
 	while (!operatorStack.empty()) {
-		output += operatorStack.top() -> getValue() + " ";
-		cout << "Stack operator: " << operatorStack.top() -> getValue() << endl;
+        output += operatorStack.top() -> getValue() + " ";
 		operatorStack.pop();
 	}
-	cout << "RPNConverter::toRPNExpression(), output after mutating stack for all tokens: " << output << endl;
 	string postfix = ::trim(output);
 	tokens = tokenizer.getTokens(postfix);
 	RPNExpression rpnExpression(tokens, postfix, variables);

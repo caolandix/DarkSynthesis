@@ -4,7 +4,6 @@
 #include "physeqsolverdelegate.h"
 #include "physeqsolvertableheader.h"
 #include "physeqsolveritem.h"
-#include "physeqsolver.h"
 #include "physparticledataobj.h"
 #include "ui_physselectparticledlg.h"
 #include "ui_physeqrowdlg.h"
@@ -28,7 +27,6 @@ PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget 
 
     createTableHeader();
     setContextMenuPolicy(Qt::CustomContextMenu);
-    // setupContextMenu();
     setItemPrototype(item(rows - 1, columns - 1));
     setItemDelegate(new PhysEqSolverDelegate());
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -182,9 +180,9 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
     //      - Magnitude, or the value of the vector
     QList<PhysVector *> lst;
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                        QString("a"), QString("0"), QString("accel"), false));
+                                        QString("a"), QString("4"), QString("accel"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("v"), QString("0"), QString("speed"), false));
+                                           QString("v"), QString("12"), QString("speed"), false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
                                                QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), false));
 
@@ -352,10 +350,6 @@ void PhysEqSolverTable::returnPressed() {
     viewport() -> update(visualItemRect(pItem));
 }
 
-void PhysEqSolverTable::setupContextMenu() {
-    setContextMenuPolicy(Qt::ActionsContextMenu);
-}
-
 void PhysEqSolverTable::DecodeAddy(const QString addy, int *pRow, int *pCol) {
     if (addy.trimmed().isEmpty()) {
         *pCol = -1;
@@ -469,8 +463,7 @@ void PhysEqSolverTable::onRowProperties() {
     Ui_PhysEqRowDlg dlg;
     dlg.setupUi(pDlg);
     PhysEqRow *pCurrRow = NULL;
-    PhysEqSolver *pParent = static_cast<PhysEqSolver *>(m_pParent);
-    QList<PhysEqRow *> lstRows = pParent ->Rows();
+    QList<PhysEqRow *> lstRows = Rows();
     int i = 0;
     foreach (PhysEqRow *pRow, lstRows) {
         if (i == m_currItem.row) {

@@ -54,7 +54,6 @@ private:
     void setGridTextAtRowColumn(const int, const int, const double);
 
     void createTable(const int, const int);
-    void setupContextMenu();
 
     bool resolveEquation(ValueSet &vs, const string equation);
     QString calculateRows(QList<PhysEqRow *>::Iterator &iter, QString, const double dt = -1, bool bStripConsts = false);
