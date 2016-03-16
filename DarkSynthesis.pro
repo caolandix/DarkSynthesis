@@ -63,7 +63,6 @@ SOURCES += main.cpp \
     physcommon.cpp \
     jumpdrive/customfunctiondifferentiate.cpp \
     jumpdrive/customfunctionintegrate.cpp \
-    phystablemodel.cpp \
     physcalculatetimer.cpp \
     phystimeslicedataobj.cpp \
     physcelldataobj.cpp \
@@ -75,10 +74,8 @@ SOURCES += main.cpp \
     modulenavigator.cpp \
     physmodulenavigatormodel.cpp \
     objectnavigator.cpp \
-    physobjectnavigatormodel.cpp \
     treeitem.cpp \
     physobjectpropsnavigatordock.cpp \
-    physobjectpropsnavigatormodel.cpp \
     physequationsolverdock.cpp \
     physoutputnavigatordock.cpp
 
@@ -163,7 +160,6 @@ HEADERS  += cmainwindow.h \
     physcommon.h \
     jumpdrive/customfunctiondifferentiate.h \
     jumpdrive/customfunctionintegrate.h \
-    phystablemodel.h \
     physcalculatetimer.h \
     phystimeslicedataobj.h \
     physcelldataobj.h \
@@ -209,10 +205,8 @@ HEADERS  += cmainwindow.h \
     modulenavigator.h \
     physmodulenavigatormodel.h \
     objectnavigator.h \
-    physobjectnavigatormodel.h \
     treeitem.h \
     physobjectpropsnavigatordock.h \
-    physobjectpropsnavigatormodel.h \
     physequationsolverdock.h \
     physoutputnavigatordock.h
 

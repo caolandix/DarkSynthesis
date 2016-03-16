@@ -46,12 +46,12 @@ void GraphWidget::onChangeItemName(const QString &strOld, const QString &strNew)
 }
 
 void GraphWidget::onRepaint() {
-    qDebug("GraphWidget::onRepaint()");
+    // qDebug("GraphWidget::onRepaint()");
     repaint();
 }
 
 void GraphWidget::onReorderObjNav(QGraphicsItem *pObj) {
-    qDebug("GraphWidget::onReorderObjNav");
+    // qDebug("GraphWidget::onReorderObjNav");
     emit reorderObjNav(pObj);
 }
 
@@ -66,7 +66,7 @@ void GraphWidget::createCartesianGraph() {
 }
 
 PhysVector *GraphWidget::createVector(const QPointF &startPos) {
-    qDebug("GraphWidget::createVector()");
+    //qDebug("GraphWidget::createVector()");
     QGraphicsScene *pScene = scene();
     PhysVector *pObj = new PhysVector(m_pCartGraph, QString("Vector-%1").arg(m_pCartGraph -> DataObj() -> Vectors().length()));
 
@@ -77,7 +77,7 @@ PhysVector *GraphWidget::createVector(const QPointF &startPos) {
 }
 
 PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
-    qDebug("GraphWidget::createParticle");
+    //qDebug("GraphWidget::createParticle");
     QGraphicsScene *pScene = scene();
     PhysParticle *pObj = new PhysParticle(m_pCartGraph, startPos, QString("Particle-%1").arg(m_pCartGraph ->Particles().length()));
 
@@ -88,19 +88,19 @@ PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
 }
 
 void GraphWidget::createVector() {
-    qDebug("GraphWidget::createVector");
+    //qDebug("GraphWidget::createVector");
     m_pInfoLabel -> setText(tr("Created a new Vector"));
     createVector(m_currClickPos);
 }
 
 void GraphWidget::createParticle() {
-    qDebug("GraphWidget::createParticle");
+    //qDebug("GraphWidget::createParticle");
     m_pInfoLabel -> setText(tr("Created a new Particle"));
     createParticle(m_currClickPos);
 }
 
 void GraphWidget::onClonePhysObj(QGraphicsItem *pNewObj) {
-    qDebug("GraphWidget::onClonePhysObj()");
+    //qDebug("GraphWidget::onClonePhysObj()");
     if (!pNewObj)
         qDebug("GraphWidget::onClonePhysObj(): pNewObj is NULL");
     else {
@@ -125,7 +125,7 @@ void GraphWidget::onClonePhysObj(QGraphicsItem *pNewObj) {
 }
 
 void GraphWidget::onRemovePhysObj(QGraphicsItem *pObj) {
-    qDebug("GraphWidget::onRemovePhysObj()");
+    //qDebug("GraphWidget::onRemovePhysObj()");
     if (!pObj)
         qDebug("GraphWidget::onRemovePhysObj(): pNewObj is NULL");
     else {
@@ -215,7 +215,7 @@ void GraphWidget::showPhysObjContextMenu(QGraphicsItem *pItem, const QPoint& glo
 }
 
 void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
-    qDebug("GraphWidget::contextMenuEvent");
+    //qDebug("GraphWidget::contextMenuEvent");
     if (event) {
         QMenu menu(this);
         m_currClickPos = event -> pos();

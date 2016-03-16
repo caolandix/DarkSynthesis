@@ -16,8 +16,13 @@
 #include "physobjectpropsnavigator.h"
 #include "physeqsolvertable.h"
 #include "physdockedwidget.h"
-#include "phystablemodel.h"
 #include "xes1/physelectrostaticview.h"
+#include "modulenavigator.h"
+#include "objectnavigator.h"
+#include "physobjectpropsnavigatordock.h"
+#include "physequationsolverdock.h"
+#include "physmodulenavigatormodel.h"
+#include "physoutputnavigatordock.h"
 #include "physcommon.h"
 
 using namespace std;
@@ -48,7 +53,6 @@ CMainWindow::~CMainWindow() {
 }
 
 void CMainWindow::init() {
-    //m_pUI = new Ui::CMainWindow();
     m_pFileMenu = NULL;
     m_pEditMenu = NULL;
     m_pHelpMenu = NULL;
@@ -165,15 +169,6 @@ void CMainWindow::createToolBars() {
 
 void CMainWindow::createStatusBar() {
 }
-
-#include "modulenavigator.h"
-#include "objectnavigator.h"
-#include "physobjectpropsnavigatordock.h"
-#include "physequationsolverdock.h"
-#include "physmodulenavigatormodel.h"
-#include "physobjectnavigatormodel.h"
-#include "physobjectpropsnavigatormodel.h"
-#include "physoutputnavigatordock.h"
 
 void CMainWindow::createDockWindows() {
 

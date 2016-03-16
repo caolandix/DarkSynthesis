@@ -31,8 +31,7 @@ public:
 
     PhysVector(
             CartesianGraph *pParent, PhysParticle *pParticle,
-            const QString variable, const QString equation, const QString name,
-            const bool bDraw = true, const double angle = 0.0, const double magnitude = 0.0);
+            const QString variable, const QString equation, const QString name, const double magnitude = 0.0, const bool bDraw = true, const double angle = 0.0);
     PhysVector(CartesianGraph *, const QString, PhysParticle * = NULL, PhysParticle * = NULL);
     ~PhysVector();
 

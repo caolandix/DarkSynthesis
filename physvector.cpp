@@ -28,8 +28,7 @@ std::map<int, QString> PhysVector::m_listEditableProps = {
 
 PhysVector::PhysVector(
         CartesianGraph *pParent, PhysParticle *pParticle,
-        const QString variable, const QString equation, const QString name,
-        const bool bDraw, const double angle, const double magnitude) :
+        const QString variable, const QString equation, const QString name, const double magnitude, const bool bDraw, const double angle) :
     PhysBaseItem(), QGraphicsLineItem(pParent) {
     m_pDataObj = new PhysVectorDataObj(variable, equation, name, magnitude);
 
