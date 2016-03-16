@@ -47,11 +47,12 @@ public:
     double TimeSlice(const  int idx) const { return m_TimeSliceValues.at(idx); }
 
 private:
+    void printRow(PhysEqRow *, int i);
     void createParticleItems(int, PhysParticle *);
     void create1DKinematicItems(int, PhysParticle *);
     QTableWidgetItem *createRowItem(PhysDataObj *);
     QTableWidgetItem *createTableItem(PhysDataObj *, bool = false);
-    void setGridTextAtRowColumn(const int, const int, const double);
+    void setGridTextAtRowColumn(const int, const int, const double, const bool = true);
 
     void createTable(const int, const int);
 

@@ -155,7 +155,8 @@ void PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
 // Visual and underlying data structure insertion
 QTableWidgetItem *PhysEqSolverTable::createRowItem(PhysDataObj *pObj) {
     createPhysDataObjRow(pObj);
-    return createTableItem(pObj, true);
+    QTableWidgetItem *pItem = createTableItem(pObj, true);
+    return pItem;
 }
 
 void PhysEqSolverTable::createParticleItems(int i, PhysParticle *pParticle) {
@@ -180,15 +181,19 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
     //      - Magnitude, or the value of the vector
     QList<PhysVector *> lst;
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                        QString("a"), QString("4"), QString("accel"), false));
+                                        QString("a"), QString("4"), QString("accel"), 4.0, false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("v"), QString("12"), QString("speed"), false));
+                                           QString("v"), QString("12"), QString("speed"), 12.0, false));
     lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
-                                               QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), false));
-
+                                               QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), 0.0, false));
+    int j = i;
     foreach(PhysVector *item, lst) {
-        insertRow(i);
-        setItem(i, 0, createRowItem(item ->DataObj()));
+        insertRow(rowCount());
+        QTableWidgetItem *pRowItem = createRowItem(item ->DataObj());
+        setItem(rowCount() - 1, 0, pRowItem);
+        for (int col = 1; col < columnCount(); col++)
+            setGridTextAtRowColumn(rowCount() - 1, col, item ->Magnitude(), false);
+        j++;
     }
 }
 
@@ -199,24 +204,21 @@ void PhysEqSolverTable::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles)
 
     int i = 0;
     foreach(PhysParticle *pParticle, lstParticles) {
-        // Create entry in underlying data structure used for doing the mathematics
-
-        // Insert and populate UI row
-        insertRow(rowCount());
         setItem(i++, 0, createRowItem(pParticle ->DataObj()));
         createParticleItems(i, pParticle);
     }
     m_pCalcTimer ->start();
 }
 
-void PhysEqSolverTable::setGridTextAtRowColumn(const int row, const int col, const double val) {
+void PhysEqSolverTable::setGridTextAtRowColumn(const int row, const int col, const double val, const bool bRedraw) {
     if (row != -1 && col != -1) {
         QTableWidgetItem *pItem = item(row, col);
         if (pItem) {
             QString str;
             QTextStream(&str) << val;
             pItem -> setData(Qt::EditRole, str);
-            viewport() -> update(visualItemRect(pItem));
+            if (bRedraw)
+                viewport() -> update(visualItemRect(pItem));
         }
     }
 }
@@ -226,9 +228,7 @@ bool PhysEqSolverTable::resolveEquation(ValueSet &vs, const string equation) {
     builder.prepData(equation);
     RPNExpression rpnExpr = builder.build();
 
-    vs = builder.EquationValues();
-
-    std::vector<double> *pResultSet = rpnExpr.calculate(vs);
+    std::vector<double> *pResultSet = rpnExpr.calculate(vs = builder.EquationValues());
     vs.resultSet(pResultSet);
     if (vs.empty())
         return false;
@@ -265,7 +265,10 @@ QString PhysEqSolverTable::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrR
                             QString value = calculateRows(iterRowSearch, eq, dt);
                             if (!value.isEmpty()) {
                                 if (!pRow -> isCalculated()) {
-                                    m_strVarAssignments += ", " + pRow ->Variable() + "=" + value;
+                                    if (m_strVarAssignments.isEmpty())
+                                        m_strVarAssignments = pRow ->Variable() + "=" + value;
+                                    else
+                                        m_strVarAssignments += ", " + pRow ->Variable() + "=" + value;
                                     pRow -> Calculated(true);
                                 }
                             }
@@ -308,18 +311,20 @@ void PhysEqSolverTable::onCalculate() {
             QString timeVar = QString("dt = %1").arg(dt);
 
             // Loop through the rows trying to resolve the equations that are there.
+            int k = 0;
             for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
                 PhysEqRow *pRow = *iter;
                 m_strVarAssignments = "";
                 m_eqJumpDrive = (*iter) ->Equation();
                 m_iterCurrRow = iter;
+                printRow(pRow, k); k++;
                 calculateRows(iter, m_eqJumpDrive, dt, true);
                 if (m_strVarAssignments.size() > 0) {
                     QString strJD = (*iter) ->Equation() + m_strVarAssignments + ", " + timeVar;
                     ValueSet vs;
                     string str = strJD.toUtf8().data();
                     if (resolveEquation(vs, str))
-                        setGridTextAtRowColumn(m_lstRows.count() - m_lstRows.indexOf(pRow), i, vs.Value());
+                        setGridTextAtRowColumn(m_lstRows.indexOf(pRow) - 1, i, vs.Value());
                 }
                 pRow ->Calculated(false);
             }
@@ -619,7 +624,7 @@ void PhysEqSolverTable::onSelectColor() {
 }
 
 void PhysEqSolverTable::onSelectFont() {
-    QList<QTableWidgetItem*> items = selectedItems();
+    QList<QTableWidgetItem *> items = selectedItems();
     if (items.count() == 0)
         return;
 
@@ -660,4 +665,10 @@ void PhysEqSolverTable::updateColor(QTableWidgetItem *pItem) {
     pt.drawPolyline(darkFrame, 3);
     pt.end();
     m_pActColor -> setIcon(pix);
+}
+
+void PhysEqSolverTable::printRow(PhysEqRow *pRow, int i) {
+    qDebug("Dumping row #: %s", QString::number(i).constData());
+    qDebug("\tVariable: %s", pRow ->Variable().constData());
+    qDebug("\tEquation: %s", pRow -> Equation().constData());
 }
