@@ -16,10 +16,8 @@ bool OperatorToken::operator==(const OperatorToken &obj) {
 void OperatorToken::mutateStackForCalculation(stack<double> &valstack, const map<string, double> &) {
 	double operands[valstack.size()];
 	for (int i = 0; i < m_poperation -> operandCount(); i++) {
-        if (valstack.size()) {
-            operands[i] = valstack.top();
-            valstack.pop();
-        }
+        operands[i] = valstack.top();
+        valstack.pop();
 	}
 	double val = m_poperation -> applyOperation(operands);
 	valstack.push(val);

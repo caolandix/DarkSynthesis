@@ -179,15 +179,15 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
     //      - boolean value that determines if it is to be drawn or not
     //      - Angle at which it should be represented on the CartesianGraph (if any)
     //      - Magnitude, or the value of the vector
-    QList<PhysVector *> lst;
-    lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
+    QList<PhysVector *> vectorList;
+    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
                                         QString("a"), QString("4"), QString("accel"), 4.0, false));
-    lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
+    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
                                            QString("v"), QString("12"), QString("speed"), 12.0, false));
-    lst.push_front(new PhysVector(pParticle ->Parent(), pParticle,
+    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
                                                QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), 0.0, false));
     int j = i;
-    foreach(PhysVector *item, lst) {
+    foreach (PhysVector *item, vectorList) {
         insertRow(rowCount());
         QTableWidgetItem *pRowItem = createRowItem(item ->DataObj());
         setItem(rowCount() - 1, 0, pRowItem);
@@ -265,10 +265,7 @@ QString PhysEqSolverTable::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrR
                             QString value = calculateRows(iterRowSearch, eq, dt);
                             if (!value.isEmpty()) {
                                 if (!pRow -> isCalculated()) {
-                                    if (m_strVarAssignments.isEmpty())
-                                        m_strVarAssignments = pRow ->Variable() + "=" + value;
-                                    else
-                                        m_strVarAssignments += ", " + pRow ->Variable() + "=" + value;
+                                    m_strVarAssignments += ", " + pRow ->Variable() + "=" + value;
                                     pRow -> Calculated(true);
                                 }
                             }
@@ -294,18 +291,9 @@ void PhysEqSolverTable::onCalculate() {
         // Then set the text for that grid cell in the table.
         // NOTE: for future usage, it might be useful to use a matrix for
         //      calculations then loop through it and just dump text.
-        double currTimeSlice, prevTimeSlice;
         double dt;
         for (int i = 1; i < columnCount(); i++) {
-            if (i == 1) {
-                currTimeSlice = prevTimeSlice = TimeSlice(0);
-                dt = 0.0;
-            }
-            else {
-                currTimeSlice = TimeSlice(i - 1);
-                prevTimeSlice = TimeSlice(i - 2);
-                dt = currTimeSlice - prevTimeSlice;
-            }
+            dt = (i > 1) ? TimeSlice(i - 1) : 0.0;
 
             // Set the time variable
             QString timeVar = QString("dt = %1").arg(dt);
@@ -314,19 +302,28 @@ void PhysEqSolverTable::onCalculate() {
             int k = 0;
             for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
                 PhysEqRow *pRow = *iter;
-                m_strVarAssignments = "";
-                m_eqJumpDrive = (*iter) ->Equation();
-                m_iterCurrRow = iter;
-                printRow(pRow, k); k++;
-                calculateRows(iter, m_eqJumpDrive, dt, true);
-                if (m_strVarAssignments.size() > 0) {
-                    QString strJD = (*iter) ->Equation() + m_strVarAssignments + ", " + timeVar;
-                    ValueSet vs;
-                    string str = strJD.toUtf8().data();
-                    if (resolveEquation(vs, str))
-                        setGridTextAtRowColumn(m_lstRows.indexOf(pRow) - 1, i, vs.Value());
+                if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
+                    QString strJD;
+                    m_strVarAssignments = "";
+                    m_eqJumpDrive = pRow ->Equation();
+                    m_iterCurrRow = iter;
+                    // printRow(pRow, k); k++;
+                    calculateRows(iter, m_eqJumpDrive, dt, true);
+                    if (m_strVarAssignments.size() > 0)
+                        strJD = pRow ->Equation() + m_strVarAssignments + ", " + timeVar;
+                    else {
+                        m_strVarAssignments = pRow -> Equation();
+                        strJD = pRow ->Equation();
+                    }
+
+                    if (m_strVarAssignments.size() > 0) {
+                        ValueSet vs;
+                        string str = strJD.toUtf8().data();
+                        if (resolveEquation(vs, str))
+                            setGridTextAtRowColumn(m_lstRows.indexOf(pRow) - 1, i, vs.Value());
+                    }
+                    pRow ->Calculated(false);
                 }
-                pRow ->Calculated(false);
             }
         }
     }
@@ -668,7 +665,26 @@ void PhysEqSolverTable::updateColor(QTableWidgetItem *pItem) {
 }
 
 void PhysEqSolverTable::printRow(PhysEqRow *pRow, int i) {
-    qDebug("Dumping row #: %s", QString::number(i).constData());
-    qDebug("\tVariable: %s", pRow ->Variable().constData());
-    qDebug("\tEquation: %s", pRow -> Equation().constData());
+    qDebug() << "Dumping row #: " << QString::number(i);
+    qDebug() << "\tVariable: " << pRow ->Variable();
+    qDebug() << "\tEquation: " << pRow -> Equation();
+    QString strType;
+    switch (pRow ->Type()) {
+    case PhysEqRow::RT_VECTOR:
+        strType = "Vector";
+        break;
+    case PhysEqRow::RT_CARTGRAPH:
+        strType = "CartGraph";
+        break;
+    case PhysEqRow::RT_PARTICLE:
+        strType = "Particle";
+        break;
+    case PhysEqRow::RT_PROPERTY:
+        strType = "Property";
+        break;
+    case PhysEqRow::RT_TIMESLICE:
+        strType = "Timeslice";
+        break;
+    }
+    qDebug() << "\tType: " << strType;
 }
