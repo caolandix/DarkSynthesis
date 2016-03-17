@@ -39,10 +39,9 @@ void PhysObjectPropsNavigator::createTable(const int numRows, const int numCols)
     QStringList tableHeader;
 
     tableHeader << "Property" << "Value";
-    m_pTable = new QTableWidget(numRows, numCols, this);
-    m_pTable -> setColumnCount(2);
-    m_pTable -> setHorizontalHeaderLabels(tableHeader);
-    m_pTable -> setItemPrototype(m_pTable -> item(numRows - 1, numCols - 1));
+    setColumnCount(2);
+    setHorizontalHeaderLabels(tableHeader);
+    setItemPrototype(item(numRows - 1, numCols - 1));
 }
 
 void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *pPrevious) {
@@ -50,7 +49,7 @@ void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *p
     if (pObj != pPrevious) {
         m_pGraphicsItem = pObj;
         if (pObj) {
-            disconnect(m_pTable, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl()));
+            disconnect(this, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl()));
             switch (pObj -> type()) {
             case PhysBaseItem::VectorType:
                 buildVectorTable(static_cast<PhysVector *>(pObj), pPrevious);
@@ -65,13 +64,13 @@ void PhysObjectPropsNavigator::onChangeObj(QGraphicsItem *pObj, QGraphicsItem *p
                 qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
                 break;
             }
-            connect(m_pTable, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl()));
+            connect(this, SIGNAL(cellChanged(int, int)), this, SLOT(onUpdateControl()));
         }
     }
 }
 
 void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
-    qDebug("PhysObjectPropsNavigator::onUpdateObj()");
+    //qDebug("PhysObjectPropsNavigator::onUpdateObj()");
     if (pObj != m_pGraphicsItem) {
         m_pGraphicsItem = pObj;
         onUpdateControl();
@@ -79,7 +78,7 @@ void PhysObjectPropsNavigator::onUpdateObj(QGraphicsItem *pObj) {
 }
 
 void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
-    qDebug("PhysObjectPropsNavigator::updateVectorTable()");
+    //qDebug("PhysObjectPropsNavigator::updateVectorTable()");
     if (pObj) {
         QString str;
         if (m_pVectorMag) {
@@ -115,7 +114,7 @@ void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
 }
 
 void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
-    qDebug("PhysObjectPropsNavigator::updateParticleTable()");
+    //qDebug("PhysObjectPropsNavigator::updateParticleTable()");
     if (pObj) {
         pObj ->mass(m_pParticleMass ->text().toDouble());
 
@@ -139,7 +138,7 @@ void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
     }
 }
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
-    qDebug("PhysObjectPropsNavigator::updateCartesianGraphTable()");
+    //qDebug("PhysObjectPropsNavigator::updateCartesianGraphTable()");
     if (pObj) {
         if (m_pXaxisLabel) {
             QString str = m_pXaxisLabel ->text();
@@ -160,7 +159,7 @@ void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
 }
 
 void PhysObjectPropsNavigator::onUpdateControl() {
-    qDebug("PhysObjectPropsNavigator::onUpdateControl()");
+    //qDebug("PhysObjectPropsNavigator::onUpdateControl()");
     if (m_pGraphicsItem) {
         switch (m_pGraphicsItem ->type()) {
         case PhysBaseItem::CartesianGraphType:
@@ -181,7 +180,7 @@ void PhysObjectPropsNavigator::onUpdateControl() {
 }
 
 void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QGraphicsItem *pPrev) {
-    qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
+    //qDebug("PhysObjectPropsNavigator::buildCartesianGraphTable()");
     if (pObj) {
         if (pPrev)
             destroyPrevTable(pPrev);
@@ -189,16 +188,16 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
 
         // Column 0
         for (unsigned int i = 0; i < properties.size(); i++) {
-            m_pTable ->insertRow(i);
-            m_pTable ->setItem(i, 0, createRowItem(properties[i]));
+            insertRow(i);
+            setItem(i, 0, createRowItem(properties[i]));
         }
 
         // Column 1 specialties
-        m_pTable ->setItem(0, 1, m_pXaxisLabel = new PhysObjectPropEditor());
-        m_pTable ->setItem(1, 1, m_pYaxisLabel = new PhysObjectPropEditor());
-        m_pTable ->setItem(2, 1, m_pAxisTickInc = new PhysObjectPropEditor());
-        m_pTable ->setItem(3, 1, m_pXaxisExtent = new PhysObjectPropEditor());
-        m_pTable ->setItem(4, 1, m_pYaxisExtent = new PhysObjectPropEditor());
+        setItem(0, 1, m_pXaxisLabel = new PhysObjectPropEditor());
+        setItem(1, 1, m_pYaxisLabel = new PhysObjectPropEditor());
+        setItem(2, 1, m_pAxisTickInc = new PhysObjectPropEditor());
+        setItem(3, 1, m_pXaxisExtent = new PhysObjectPropEditor());
+        setItem(4, 1, m_pYaxisExtent = new PhysObjectPropEditor());
 
         // set data
         m_pXaxisLabel ->setText(pObj -> XAxisLabel());
@@ -210,7 +209,7 @@ void PhysObjectPropsNavigator::buildCartesianGraphTable(CartesianGraph *pObj, QG
 }
 
 void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem *pPrev) {
-    qDebug("PhysObjectPropsNavigator::buildVectorTable()");
+    //qDebug("PhysObjectPropsNavigator::buildVectorTable()");
 
     if (pObj) {
         if (pPrev)
@@ -219,16 +218,16 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
 
         // Column 0
         for (unsigned int i = 0; i < properties.size(); i++) {
-            m_pTable ->insertRow(i);
-            m_pTable ->setItem(i, 0, createRowItem(properties[i]));
+            insertRow(i);
+            setItem(i, 0, createRowItem(properties[i]));
         }
 
         // Column 1
-        m_pTable ->setItem(0, 1, m_pVectorName = new PhysObjectPropEditor(pObj ->Name()));
-        m_pTable ->setItem(1, 1, m_pVectorMag = new PhysObjectPropEditor(QString::number(pObj ->Magnitude())));
-        m_pTable ->setItem(2, 1, m_pVectorThetaAngle = new PhysObjectPropEditor(QString::number(pObj ->theta().degrees)));
-        m_pTable ->setCellWidget(3, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
-        m_pTable ->setItem(4, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
+        setItem(0, 1, m_pVectorName = new PhysObjectPropEditor(pObj ->Name()));
+        setItem(1, 1, m_pVectorMag = new PhysObjectPropEditor(QString::number(pObj ->Magnitude())));
+        setItem(2, 1, m_pVectorThetaAngle = new PhysObjectPropEditor(QString::number(pObj ->theta().degrees)));
+        setCellWidget(3, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
+        setItem(4, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
 
         // Populate the combobox control with possible values...
         QStringList items;
@@ -246,7 +245,7 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
 }
 
 void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsItem *pPrev) {
-    qDebug("PhysObjectPropsNavigator::buildParticleTable()");
+    //qDebug("PhysObjectPropsNavigator::buildParticleTable()");
 
     if (pObj) {
         if (pPrev)
@@ -255,16 +254,16 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
 
         // Column 0
         for (unsigned int i = 0; i < properties.size(); i++) {
-            m_pTable ->insertRow(i);
-            m_pTable ->setItem(i, 0, createRowItem(properties[i]));
+            insertRow(i);
+            setItem(i, 0, createRowItem(properties[i]));
         }
 
         // column 1
-        m_pTable ->setItem(0, 1, m_pParticleName = new PhysObjectPropEditor());
-        m_pTable ->setItem(1, 1, m_pParticleMass = new PhysObjectPropEditor());
-        m_pTable ->setItem(2, 1, m_pPosition = new PhysObjectPropEditor());
-        m_pTable ->setCellWidget(3, 1, m_pLockXAxis = new QComboBox());
-        m_pTable ->setCellWidget(4, 1, m_pLockYAxis = new QComboBox());
+        setItem(0, 1, m_pParticleName = new PhysObjectPropEditor());
+        setItem(1, 1, m_pParticleMass = new PhysObjectPropEditor());
+        setItem(2, 1, m_pPosition = new PhysObjectPropEditor());
+        setCellWidget(3, 1, m_pLockXAxis = new QComboBox());
+        setCellWidget(4, 1, m_pLockYAxis = new QComboBox());
 
         // Name
         m_pParticleName -> setText(pObj ->Name());
@@ -295,16 +294,16 @@ void PhysObjectPropsNavigator::buildParticleTable(PhysParticle *pObj, QGraphicsI
 }
 
 void PhysObjectPropsNavigator::destroyPrevTable(QGraphicsItem *pObj) {
-    qDebug("PhysObjectPropsNavigator::destroyPrevTable()");
+    //qDebug("PhysObjectPropsNavigator::destroyPrevTable()");
     if (!pObj) {
-        qDebug("PhysObjectPropsNavigator::destroyPrevTable() -- The pObj is NULL");
+        //qDebug("PhysObjectPropsNavigator::destroyPrevTable() -- The pObj is NULL");
         return;
     }
 
     // If there are rows in the table, clear them out
-    if (m_pTable ->rowCount()) {
-        while (m_pTable ->rowCount())
-            m_pTable ->removeRow(0);
+    if (rowCount()) {
+        while (rowCount())
+            removeRow(0);
     }
 }
 

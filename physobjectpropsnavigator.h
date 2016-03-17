@@ -61,8 +61,6 @@ private:
     QComboBox *m_pLockYAxis;
     PhysObjectPropEditor *m_pPosition;
 
-    // The QTableWidget
-    QTableWidget *m_pTable;
     QGraphicsItem *m_pGraphicsItem;
 };
 
