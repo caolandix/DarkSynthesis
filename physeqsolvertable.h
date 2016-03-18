@@ -52,7 +52,7 @@ private:
     void create1DKinematicItems(int, PhysParticle *);
     QTableWidgetItem *createRowItem(PhysDataObj *);
     QTableWidgetItem *createTableItem(PhysEqRow *, bool = false);
-    void setGridTextAtRowColumn(const int, const int, const double, const bool = true);
+    void setGridTextAtRowColumn(const int, const int, const double);
 
     void createTable(const int, const int);
 
@@ -64,9 +64,9 @@ private:
     void addPhysDataObjCell(const int row, const int col, const QString, const double val);
     PhysEqRow *createPhysDataObjRow(PhysDataObj *);
 signals:
-     void addPhysEqSolverRow(QList<PhysParticle *>);
-     void addTimeSliceCell(int, double);
-     void removeTimeSliceCell(int);
+    void addPhysEqSolverRow(QList<PhysParticle *>);
+    void addTimeSliceCell(int, double);
+    void removeTimeSliceCell(int);
 public slots:
     void onSelectColor();
     void onSelectFont();
@@ -88,7 +88,6 @@ public slots:
     void onRemoveTimeSliceCell(int);
     void onCartesianGraphCreated(CartesianGraphDataObj *pObj) { CartesianDataObj(pObj); }
     void onSetModType(int modType) {}
-
 private:
     QWidget *m_pParent;
     PhysEqSolverTableHeader *m_pHeader;

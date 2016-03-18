@@ -193,16 +193,14 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
         QTableWidgetItem *pRowItem = createRowItem(item ->DataObj());
         setItem(rowCount() - 1, 0, pRowItem);
         for (int col = 1; col < columnCount(); col++)
-            setGridTextAtRowColumn(rowCount() - 1, col, item ->Magnitude(), false);
+            setGridTextAtRowColumn(rowCount() - 1, col, item ->Magnitude());
         j++;
     }
 }
 
 void PhysEqSolverTable::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
-    qDebug("PhysEqSolver::onAddPhysEqSolverRow");
-
+    //qDebug("PhysEqSolver::onAddPhysEqSolverRow");
     m_pCalcTimer ->stop();
-
     int i = 0;
     foreach(PhysParticle *pParticle, lstParticles) {
         setItem(i++, 0, createRowItem(pParticle ->DataObj()));
@@ -211,15 +209,13 @@ void PhysEqSolverTable::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles)
     m_pCalcTimer ->start();
 }
 
-void PhysEqSolverTable::setGridTextAtRowColumn(const int row, const int col, const double val, const bool bRedraw) {
+void PhysEqSolverTable::setGridTextAtRowColumn(const int row, const int col, const double val) {
     if (row != -1 && col != -1) {
         QTableWidgetItem *pItem = item(row, col);
         if (pItem) {
             QString str;
             QTextStream(&str) << val;
             pItem -> setData(Qt::EditRole, str);
-            if (bRedraw)
-                viewport() -> update(visualItemRect(pItem));
         }
     }
 }
@@ -284,7 +280,7 @@ QString PhysEqSolverTable::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrR
 }
 
 void PhysEqSolverTable::onCalculate() {
-    qDebug("PhysEqSolver::onCalculate()");
+    //qDebug("PhysEqSolver::onCalculate()");
 
     if (rowCount() > 0) {
 
