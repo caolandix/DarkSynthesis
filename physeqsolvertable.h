@@ -51,7 +51,7 @@ private:
     void createParticleItems(int, PhysParticle *);
     void create1DKinematicItems(int, PhysParticle *);
     QTableWidgetItem *createRowItem(PhysDataObj *);
-    QTableWidgetItem *createTableItem(PhysDataObj *, bool = false);
+    QTableWidgetItem *createTableItem(PhysEqRow *, bool = false);
     void setGridTextAtRowColumn(const int, const int, const double, const bool = true);
 
     void createTable(const int, const int);
@@ -62,7 +62,7 @@ private:
     QString EncodeAddy(const int, const int = -1);
     void createTimeSliceRow(QList<double>);
     void addPhysDataObjCell(const int row, const int col, const QString, const double val);
-    void createPhysDataObjRow(PhysDataObj *);
+    PhysEqRow *createPhysDataObjRow(PhysDataObj *);
 signals:
      void addPhysEqSolverRow(QList<PhysParticle *>);
      void addTimeSliceCell(int, double);

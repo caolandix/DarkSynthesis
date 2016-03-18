@@ -59,12 +59,12 @@ void PhysEqSolverTable::setupTableLookAndFeel() {
     item(0, 0) -> setFont(titleFont);
 }
 
-QTableWidgetItem *PhysEqSolverTable::createTableItem(PhysDataObj *pObj, bool bAttachObj) {
-    QTableWidgetItem *pItem = new QTableWidgetItem(pObj ->Name());
+QTableWidgetItem *PhysEqSolverTable::createTableItem(PhysEqRow *pRow, bool bAttachObj) {
+    QTableWidgetItem *pItem = new QTableWidgetItem(pRow ->Name());
     pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     if (bAttachObj) {
         QVariant var;
-        var.setValue(pObj);
+        var.setValue(pRow);
         pItem ->setData(Qt::UserRole, var);
     }
     return pItem;
@@ -74,7 +74,7 @@ QTableWidgetItem *PhysEqSolverTable::createTableItem(PhysDataObj *pObj, bool bAt
 void PhysEqSolverTable::createTimeSliceRow(QList<double> lstTimeSlices) {
 
     // Create the first row...
-    PhysEqRow *pRow = new PhysEqRow(PhysEqRow::RT_TIMESLICE);
+    PhysEqRow *pRow = new PhysEqRow(PhysEqRow::RT_TIMESLICE, "");
     m_lstRows.push_back(pRow);
     pRow ->Addy(EncodeAddy(m_lstRows.count()));
 
@@ -126,7 +126,7 @@ void PhysEqSolverTable::addPhysDataObjCell(const int row, const int col, const Q
         qDebug("PhysEqSolver::addPhysDataObjCell(): pRow is NULL");
 }
 
-void PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
+PhysEqRow *PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
     int rowIdx = m_lstRows.count();
     int numCols = columnCount();
     PhysEqRow *pRow = NULL;
@@ -134,14 +134,14 @@ void PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
     PhysVectorDataObj *pVectorDataObj = NULL;
 
     if (pObj ->Type() == PhysDataObj::DT_PARTICLE)
-        pRow  = new PhysEqRow(PhysEqRow::RT_PARTICLE);
+        pRow  = new PhysEqRow(PhysEqRow::RT_PARTICLE, pObj ->Name());
     else if (pObj ->Type() == PhysDataObj::DT_VECTOR) {
         pVectorDataObj = static_cast<PhysVectorDataObj *>(pObj);
-        pRow  = new PhysEqRow(PhysEqRow::RT_VECTOR, pVectorDataObj ->Equation());
+        pRow  = new PhysEqRow(PhysEqRow::RT_VECTOR, pVectorDataObj ->Name(), pVectorDataObj ->Equation());
         variable = pVectorDataObj ->Variable();
     }
     else if (pObj ->Type() == PhysDataObj::DT_PROPERTY)
-        pRow  = new PhysEqRow(PhysEqRow::RT_PROPERTY);
+        pRow  = new PhysEqRow(PhysEqRow::RT_PROPERTY, pVectorDataObj ->Name());
     else {
     }
     m_lstRows.push_back(pRow);
@@ -150,12 +150,13 @@ void PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
     // Create the list of cells for each column
     for (int col = 0; col < numCols; col++)
         addPhysDataObjCell(rowIdx, col, variable, 0.0);
+    return pRow;
 }
 
 // Visual and underlying data structure insertion
 QTableWidgetItem *PhysEqSolverTable::createRowItem(PhysDataObj *pObj) {
-    createPhysDataObjRow(pObj);
-    QTableWidgetItem *pItem = createTableItem(pObj, true);
+    PhysEqRow *pRow = createPhysDataObjRow(pObj);
+    QTableWidgetItem *pItem = createTableItem(pRow, true);
     return pItem;
 }
 
@@ -464,27 +465,25 @@ void PhysEqSolverTable::onRowProperties() {
     QDialog *pDlg = new QDialog(0,0);
     Ui_PhysEqRowDlg dlg;
     dlg.setupUi(pDlg);
-    PhysEqRow *pCurrRow = NULL;
     QList<PhysEqRow *> lstRows = Rows();
-    int i = 0;
-    foreach (PhysEqRow *pRow, lstRows) {
-        if (i == m_currItem.row) {
-            pCurrRow = pRow;
-            break;
-        }
-        i++;
-    }
-    if (pCurrRow) {
-        dlg.edtRowEq->setText(pCurrRow ->Equation());
-        dlg.edtRowVariable ->setText(pCurrRow ->Variable());
-        //dlg.edtRowLabel ->setText(pCurrRow ->Label());
-        if (pDlg ->exec() == QDialog::Accepted) {
-            QString eq = dlg.edtRowEq ->text();
-            QString label = dlg.edtRowLabel ->text();
-            QString variable = dlg.edtRowVariable ->text();
-            pCurrRow ->Variable(variable);
-            pCurrRow ->Equation(eq);
-            //pCurrRow ->Label(label);
+    int row = currentRow();
+    QTableWidgetItem *pWidgetItem = item(row, 0);
+    QVariant itemData = pWidgetItem ->data(Qt::UserRole);
+    PhysEqRow *pRow = itemData.value<PhysEqRow *>();
+
+    if (pRow) {
+        if (pRow ->Type() == PhysEqRow::RT_PARTICLE || pRow ->Type() == PhysEqRow::RT_VECTOR || pRow ->Type() == PhysEqRow::RT_PROPERTY) {
+            dlg.edtRowEq ->setText(pRow ->Equation());
+            dlg.edtRowVariable ->setText(pRow ->Variable());
+            // dlg.edtRowLabel ->setText(pRow ->Label());
+            if (pDlg ->exec() == QDialog::Accepted) {
+                QString eq = dlg.edtRowEq ->text();
+                QString label = dlg.edtRowLabel ->text();
+                QString variable = dlg.edtRowVariable ->text();
+                pRow ->Variable(variable);
+                pRow ->Equation(eq);
+                // pRow ->(label);
+            }
         }
     }
 }
