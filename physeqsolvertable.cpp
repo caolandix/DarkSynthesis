@@ -187,14 +187,12 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
                                            QString("v"), QString("12"), QString("speed"), 12.0, false));
     vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
                                                QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), 0.0, false));
-    int j = i;
     foreach (PhysVector *item, vectorList) {
         insertRow(rowCount());
         QTableWidgetItem *pRowItem = createRowItem(item ->DataObj());
         setItem(rowCount() - 1, 0, pRowItem);
         for (int col = 1; col < columnCount(); col++)
-            setGridTextAtRowColumn(rowCount() - 1, col, item ->Magnitude());
-        j++;
+            setGridTextAtRowColumn(rowCount() - 1, col, item -> Magnitude());
     }
 }
 
@@ -216,6 +214,7 @@ void PhysEqSolverTable::setGridTextAtRowColumn(const int row, const int col, con
             QString str;
             QTextStream(&str) << val;
             pItem -> setData(Qt::EditRole, str);
+            // pItem ->setText(str);
         }
     }
 }
