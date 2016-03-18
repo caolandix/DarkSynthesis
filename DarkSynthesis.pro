@@ -74,7 +74,6 @@ SOURCES += main.cpp \
     modulenavigator.cpp \
     physmodulenavigatormodel.cpp \
     objectnavigator.cpp \
-    treeitem.cpp \
     physobjectpropsnavigatordock.cpp \
     physequationsolverdock.cpp \
     physoutputnavigatordock.cpp
@@ -205,7 +204,6 @@ HEADERS  += cmainwindow.h \
     modulenavigator.h \
     physmodulenavigatormodel.h \
     objectnavigator.h \
-    treeitem.h \
     physobjectpropsnavigatordock.h \
     physequationsolverdock.h \
     physoutputnavigatordock.h
