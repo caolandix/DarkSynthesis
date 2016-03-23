@@ -191,6 +191,7 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
         insertRow(rowCount());
         QTableWidgetItem *pRowItem = createRowItem(item ->DataObj());
         setItem(rowCount() - 1, 0, pRowItem);
+        setCurrentCell(rowCount() - 1, 1);
         for (int col = 1; col < columnCount(); col++)
             setGridTextAtRowColumn(rowCount() - 1, col, item -> Magnitude());
     }
@@ -214,7 +215,6 @@ void PhysEqSolverTable::setGridTextAtRowColumn(const int row, const int col, con
             QString str;
             QTextStream(&str) << val;
             pItem -> setData(Qt::EditRole, str);
-            // pItem ->setText(str);
         }
     }
 }
