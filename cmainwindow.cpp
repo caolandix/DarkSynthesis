@@ -33,8 +33,6 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
     m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     m_infoLabel -> setAlignment(Qt::AlignCenter);
-    createActions();
-    createMenus();
     createToolBars();
     createStatusBar();
     createDockWindows();
@@ -53,19 +51,6 @@ CMainWindow::~CMainWindow() {
 }
 
 void CMainWindow::init() {
-    m_pFileMenu = NULL;
-    m_pEditMenu = NULL;
-    m_pHelpMenu = NULL;
-    m_pSettingsMenu = NULL;
-    m_pcartGraphSettings = NULL;
-    m_pactNew = NULL;
-    m_pactOpen = NULL;
-    m_pactSave = NULL;
-    m_pactPrint = NULL;
-    m_pactExit = NULL;
-    m_pactAbout = NULL;
-    m_pactAboutQt = NULL;
-    m_infoLabel = NULL;
     m_pPhysObjNavigator = NULL;
     m_pPhysObjPropsNavigator = NULL;
     m_pPhysModNavigator = NULL;
@@ -94,72 +79,6 @@ void CMainWindow::cartesianGraphOptions() {
     CartesianGraphSettingsDlg dlg(m_pGraphWidget -> cartesianGraph() -> DataObj());
     if (dlg.exec() == QDialog::Accepted) {
     }
-}
-
-void CMainWindow::createActions() {
-    m_pactNew = new QAction(tr("&New"), this);
-    m_pactNew -> setShortcuts(QKeySequence::New);
-    m_pactNew -> setStatusTip(tr("Create a new file"));
-    connect(m_pactNew, SIGNAL(triggered()), this, SLOT(newFile()));
-
-    m_pactOpen = new QAction(tr("&Open..."), this);
-    m_pactOpen -> setShortcuts(QKeySequence::Open);
-    m_pactOpen -> setStatusTip(tr("Open an existing file"));
-    connect(m_pactOpen, SIGNAL(triggered()), this, SLOT(open()));
-
-    m_pactSave = new QAction(tr("&Save"), this);
-    m_pactSave -> setShortcuts(QKeySequence::Save);
-    m_pactSave -> setStatusTip(tr("Save the document to disk"));
-    connect(m_pactSave, SIGNAL(triggered()), this, SLOT(save()));
-
-    m_pactPrint = new QAction(tr("&Print..."), this);
-    m_pactPrint -> setShortcuts(QKeySequence::Print);
-    m_pactPrint -> setStatusTip(tr("Print the document"));
-    connect(m_pactPrint, SIGNAL(triggered()), this, SLOT(print()));
-
-    m_pactExit = new QAction(tr("E&xit"), this);
-    m_pactExit -> setShortcuts(QKeySequence::Quit);
-    m_pactExit -> setStatusTip(tr("Exit the application"));
-    connect(m_pactExit, SIGNAL(triggered()), this, SLOT(close()));
-
-    m_pactAbout = new QAction(tr("&About"), this);
-    m_pactAbout -> setStatusTip(tr("Show the application's About box"));
-    connect(m_pactAbout, SIGNAL(triggered()), this, SLOT(about()));
-
-    m_pactAboutQt = new QAction(tr("About &Qt"), this);
-    m_pactAboutQt -> setStatusTip(tr("Show the Qt library's About box"));
-    connect(m_pactAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-    connect(m_pactAboutQt, SIGNAL(triggered()), this, SLOT(aboutQt()));
-
-    m_pcartGraphSettings = new QAction(tr("C&artesian Graph Settings..."), this);
-    m_pcartGraphSettings -> setShortcut(tr("Ctrl+A"));
-    m_pcartGraphSettings -> setStatusTip(tr("Allows adjustment of the Cartesian Graph"));
-    connect(m_pcartGraphSettings, SIGNAL(triggered()), this, SLOT(cartesianGraphOptions()));
-}
-
-void CMainWindow::createMenus() {
-
-    // The file menu
-    m_pFileMenu = menuBar() -> addMenu(tr("&File"));
-    m_pFileMenu -> addAction(m_pactNew);
-    m_pFileMenu -> addAction(m_pactOpen);
-    m_pFileMenu -> addAction(m_pactSave);
-    m_pFileMenu -> addAction(m_pactPrint);
-    m_pFileMenu -> addSeparator();
-    m_pFileMenu -> addAction(m_pactExit);
-
-    // The Edit menu
-    m_pEditMenu = menuBar() -> addMenu(tr("&Edit"));
-
-    // The Settings menu
-    m_pSettingsMenu = menuBar() -> addMenu(tr("&Settings"));
-    m_pSettingsMenu -> addAction(m_pcartGraphSettings);
-    m_pSettingsMenu -> addSeparator();
-
-    // The Help Menu
-    m_pHelpMenu = menuBar() -> addMenu(tr("&Help"));
-    m_pHelpMenu -> addAction(m_pactAbout);
-    m_pHelpMenu -> addAction(m_pactAboutQt);
 }
 
 void CMainWindow::createToolBars() {
