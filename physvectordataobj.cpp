@@ -7,14 +7,14 @@ PhysVectorDataObj::PhysVectorDataObj() : PhysDataObj(QString(""), DT_VECTOR) {
 }
 
 
-PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QString equation, const QString name, double magnitude) : PhysDataObj(name, DT_VECTOR) {
+PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QString equation, const QString name, double magnitude, const QPoint pos) : PhysDataObj(name, DT_VECTOR, pos) {
     m_variable = variable;
     Equation(equation);
     m_equation = m_eqList.at(0);
     m_magnitude = magnitude;
 }
 
-PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QStringList equations, const QString name, double magnitude) : PhysDataObj(name, DT_VECTOR) {
+PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QStringList equations, const QString name, double magnitude, const QPoint pos) : PhysDataObj(name, DT_VECTOR, pos) {
     m_variable = variable;
     foreach (QString eq, equations)
         Equation(eq);

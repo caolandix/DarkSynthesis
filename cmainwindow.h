@@ -33,9 +33,6 @@ public:
 
     void createSignalSlots();
     void createBaseObjects();
-private:
-    Ui::CMainWindow *m_pUI;
-    GraphWidget *m_pGraphWidget;
 protected:
     void contextMenuEvent(QContextMenuEvent *) Q_DECL_OVERRIDE;
 private slots:
@@ -56,7 +53,6 @@ private:
     void createDockWindows();
     void ReadXMLFile(QXmlStreamReader &, QFile &);
     void WriteXMLFile(QXmlStreamWriter &, QFile &);
-    void connectWindowsWithPhysObjects();
 
     // properties
     QLabel *m_infoLabel;
@@ -67,6 +63,8 @@ private:
     PhysOutputNavigator *m_pPhysOutputNavigator;
     PhysEqSolverTable *m_pPhysEqSolver;
     PhysElectroStaticView *m_pPhysElectroStaticView;
+    Ui::CMainWindow *m_pUI;
+    GraphWidget *m_pGraphWidget;
 };
 
 #endif // CMAINWINDOW_H
