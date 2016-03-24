@@ -1,6 +1,6 @@
 #include "physvectordataobj.h"
 
-PhysVectorDataObj::PhysVectorDataObj() : PhysDataObj(QString(""), DT_VECTOR, QPoint(0, 0)) {
+PhysVectorDataObj::PhysVectorDataObj() : PhysDataObj(QString(""), DT_VECTOR) {
     m_variable = QString("");
     m_equation = QString("");
     m_magnitude = 0.0;
