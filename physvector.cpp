@@ -116,7 +116,7 @@ PhysVector *PhysVector::copy() {
     PhysVector *pObj = NULL;
     pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), Name());
     pObj -> theta(theta());
-    pObj ->Magnitude(Magnitude());
+    pObj -> Magnitude(Magnitude());
     pObj -> StartPoint(m_StartPoint);
     pObj -> EndPoint(m_EndPoint);
     pObj -> CurrPos(m_currPos);
@@ -292,7 +292,7 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
         if (m_Theta.axisOrientation == AXIS_HORIZ) {
             QPointF currCoordP1(aLine.p1().x(), aLine.p1().y());
             Theta = (::atan(aLine.dy() / aLine.dx()) * (180 / PhysConsts::PI));
-            qDebug("Line (x, y): (%f, %f)", currCoordP1.x(), currCoordP1.y());
+            //qDebug("Line (x, y): (%f, %f)", currCoordP1.x(), currCoordP1.y());
 
             // If we're in the Quad I (+x, +y) or Quad II (-x, +y)
             if ((currCoordP1.x() >= 0 && currCoordP1.y() >= 0) || (currCoordP1.x() < 0 && currCoordP1.y() >= 0)) {
@@ -312,7 +312,7 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
         arrowP1 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI / 3) * m_arrowSize);
         arrowP2 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
     }
-    qDebug("PhysVector::paint(): Theta: %f, realAngle: %f, drawAngle: %f", Theta, realAngle, drawAngle);
+    //qDebug("PhysVector::paint(): Theta: %f, realAngle: %f, drawAngle: %f", Theta, realAngle, drawAngle);
     m_arrowHead.clear();
     m_arrowHead << line().p1() << arrowP1 << arrowP2;
     pPainter -> drawLine(aLine);
@@ -322,9 +322,11 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
     tmpPath.addPolygon(m_arrowHead);
     pPainter -> fillPath(tmpPath, brush);
 
-    // draw a bounding rectangle
-    pPainter -> setPen(Qt::darkRed);
-    pPainter -> drawRect(boundingRect());
+    // draw a bounding rectangle if selected
+    if (isSelected()) {
+        pPainter -> setPen(Qt::darkRed);
+        pPainter -> drawRect(boundingRect());
+    }
 }
 
 void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
@@ -348,7 +350,7 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-    qDebug("PhysVector::mouseReleaseEvent()");
+    //qDebug("PhysVector::mouseReleaseEvent()");
     if (m_dragIndex == DI_VECTORLINE) {
         event -> pos();
     }
@@ -414,7 +416,7 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-    qDebug("PhysVector::mouseMoveEvent(): m_dragIndex: '%d'", m_dragIndex);
+    //qDebug("PhysVector::mouseMoveEvent(): m_dragIndex: '%d'", m_dragIndex);
     if (m_dragIndex != DI_VECTORLINE) {
 
         const QPointF anchor = (m_dragIndex == DI_VECTORHEAD) ? line().p1() : line().p2();
