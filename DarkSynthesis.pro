@@ -76,7 +76,8 @@ SOURCES += main.cpp \
     objectnavigator.cpp \
     physobjectpropsnavigatordock.cpp \
     physequationsolverdock.cpp \
-    physoutputnavigatordock.cpp
+    physoutputnavigatordock.cpp \
+    physgraphicsscene.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -206,7 +207,8 @@ HEADERS  += cmainwindow.h \
     objectnavigator.h \
     physobjectpropsnavigatordock.h \
     physequationsolverdock.h \
-    physoutputnavigatordock.h
+    physoutputnavigatordock.h \
+    physgraphicsscene.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \
