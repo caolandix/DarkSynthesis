@@ -1,10 +1,14 @@
 #ifndef PHYSGRAPHICSSCENE_H
 #define PHYSGRAPHICSSCENE_H
-
+/*
 #include "diagramitem.h"
 #include "diagramtextitem.h"
-
+*/
 #include <QGraphicsScene>
+
+#include "physdataobj.h"
+#include "cartesianlabel.h"
+#include "physparticle.h"
 
 class QGraphicsSceneMouseEvent;
 class QMenu;
@@ -31,11 +35,11 @@ public:
 
 public slots:
     void setMode(Mode mode);
-    void setItemType(DiagramItem::DiagramType type);
-    void editorLostFocus(DiagramTextItem *item);
+    void setItemType(PhysDataObj::DataType type);
+    void editorLostFocus(CartesianLabel *item);
 
 signals:
-    void itemInserted(DiagramItem *item);
+    void itemInserted(PhysParticle *item);
     void textInserted(QGraphicsTextItem *item);
     void itemSelected(QGraphicsItem *item);
 
@@ -47,14 +51,14 @@ protected:
 private:
     bool isItemChange(int type);
 
-    DiagramItem::DiagramType myItemType;
+    // DiagramItem::DiagramType myItemType;
     QMenu *myItemMenu;
     Mode myMode;
     bool leftButtonDown;
     QPointF startPoint;
     QGraphicsLineItem *line;
     QFont myFont;
-    DiagramTextItem *textItem;
+    // DiagramTextItem *textItem;
     QColor myTextColor;
     QColor myItemColor;
     QColor myLineColor;
