@@ -28,13 +28,11 @@ private:
 public:
     enum { Type = PhysBaseItem::VectorType };
     int type() const Q_DECL_OVERRIDE { return Type; }
-/*
+
     PhysVector(
             CartesianGraph *pParent, PhysParticle *pParticle,
             const QString variable, const QString equation, const QString name, const double magnitude = 0.0, const bool bDraw = true, const double angle = 0.0);
     PhysVector(CartesianGraph *, const QString, PhysParticle * = NULL, PhysParticle * = NULL);
-    */
-    PhysVector(PhysParticle *startItem, PhysParticle *endItem, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
     ~PhysVector();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -50,7 +48,6 @@ public:
     double Magnitude() const { return m_pDataObj ->Magnitude(); }
     Theta theta() const { return m_Theta; }
     QColor Color() const { return m_Color; }
-    void setColor(QColor c) { m_Color = c; }
     QPolygonF ArrowHead() const { return m_arrowHead; }
     PhysParticle *StartParticle() const { return m_pStartParticle; }
     PhysParticle *EndParticle() const { return m_pEndParticle; }

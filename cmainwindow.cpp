@@ -37,16 +37,10 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     createStatusBar();
     createDockWindows();
 
-    // GraphWidget *pGraph = new GraphWidget();
-    m_pScene = new PhysGraphicsScene(this);
-    m_pScene ->setSceneRect(QRectF(0, 0, 5000, 5000));
-    connect(m_pScene, SIGNAL(itemInserted(PhysParticle *)), this, SLOT(itemInserted(DiagramItem *)));
-    connect(m_pScene, SIGNAL(textInserted(QGraphicsTextItem *)), this, SLOT(textInserted(QGraphicsTextItem *)));
-    connect(m_pScene, SIGNAL(itemSelected(QGraphicsItem *)), this, SLOT(itemSelected(QGraphicsItem *)));
+    GraphWidget *pGraph = new GraphWidget();
 
-
-    // setGraphWidget(pGraph);
-    // setCentralWidget(pGraph);
+    setGraphWidget(pGraph);
+    setCentralWidget(pGraph);
     createSignalSlots();
     createBaseObjects();
     setWindowTitle(tr("The Physicist's Workbench"));
@@ -82,11 +76,9 @@ void CMainWindow::aboutQt() {
 }
 
 void CMainWindow::cartesianGraphOptions() {
-    /*
     CartesianGraphSettingsDlg dlg(m_pGraphWidget -> cartesianGraph() -> DataObj());
     if (dlg.exec() == QDialog::Accepted) {
     }
-    */
 }
 
 void CMainWindow::createToolBars() {
@@ -140,28 +132,25 @@ void CMainWindow::createDockWindows() {
 }
 
 void CMainWindow::createSignalSlots() {
-/*
-    connect(m_pGraphWidget, SIGNAL(createObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onCreateObj(QGraphicsItem *)));
-    connect(m_pGraphWidget, SIGNAL(cartesianGraphCreated(CartesianGraphDataObj *)), m_pPhysEqSolver, SLOT(onCartesianGraphCreated(CartesianGraphDataObj *)));
-    connect(m_pGraphWidget, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onReorderObjNav(QGraphicsItem *)));
-    connect(m_pGraphWidget, SIGNAL(changeItemName(const QString &, const QString &)), m_pPhysObjNavigator, SLOT(onChangeItemName(const QString &, const QString &)));
-  */
-/*
-    connect(m_pPhysObjNavigator, SIGNAL(changeObj(QGraphicsItem *, QGraphicsItem *)), m_pPhysObjPropsNavigator, SLOT(onChangeObj(QGraphicsItem *, QGraphicsItem *)));
-    connect(m_pPhysObjNavigator, SIGNAL(clonePhysObj(QGraphicsItem *)), m_pGraphWidget, SLOT(onClonePhysObj(QGraphicsItem *)));
-    connect(m_pPhysObjNavigator, SIGNAL(removePhysObj(QGraphicsItem *)), m_pGraphWidget, SLOT(onRemovePhysObj(QGraphicsItem *)));
-    connect(m_pPhysObjPropsNavigator, SIGNAL(repaint()), m_pGraphWidget, SLOT(onRepaint()));
-    connect(m_pPhysModNavigator, SIGNAL(setModType(int)), m_pPhysEqSolver, SLOT(onSetModType(int)));
-    connect(m_pPhysObjPropsNavigator, SIGNAL(updateParticleName(const QString, const QString)), m_pPhysEqSolver, SLOT(onUpdateParticleName(const QString, const QString)));
-*/
+    QMetaObject::Connection val = connect(m_pGraphWidget, SIGNAL(createObj(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onCreateObj(QGraphicsItem *)));
+    val = connect(m_pGraphWidget, SIGNAL(cartesianGraphCreated(CartesianGraphDataObj *)), m_pPhysEqSolver, SLOT(onCartesianGraphCreated(CartesianGraphDataObj *)));
+    val = connect(m_pPhysObjNavigator, SIGNAL(changeObj(QGraphicsItem *, QGraphicsItem *)), m_pPhysObjPropsNavigator, SLOT(onChangeObj(QGraphicsItem *, QGraphicsItem *)));
+    val = connect(m_pPhysObjNavigator, SIGNAL(clonePhysObj(QGraphicsItem *)), m_pGraphWidget, SLOT(onClonePhysObj(QGraphicsItem *)));
+    val = connect(m_pPhysObjNavigator, SIGNAL(removePhysObj(QGraphicsItem *)), m_pGraphWidget, SLOT(onRemovePhysObj(QGraphicsItem *)));
+    val = connect(m_pPhysObjPropsNavigator, SIGNAL(repaint()), m_pGraphWidget, SLOT(onRepaint()));
+    val = connect(m_pGraphWidget, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pPhysObjNavigator, SLOT(onReorderObjNav(QGraphicsItem *)));
+    val = connect(m_pGraphWidget, SIGNAL(changeItemName(const QString &, const QString &)),
+                  m_pPhysObjNavigator, SLOT(onChangeItemName(const QString &, const QString &)));
+    val = connect(m_pPhysModNavigator, SIGNAL(setModType(int)), m_pPhysEqSolver, SLOT(onSetModType(int)));
+    val = connect(m_pPhysObjPropsNavigator, SIGNAL(updateParticleName(const QString, const QString)),
+                  m_pPhysEqSolver, SLOT(onUpdateParticleName(const QString, const QString)));
+
 }
 
 void CMainWindow::createBaseObjects() {
-    /*
     if (m_pGraphWidget) {
         m_pGraphWidget -> createCartesianGraph();
     }
-    */
 }
 
 

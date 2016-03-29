@@ -7,7 +7,7 @@
 #include "physobjectpropsnavigator.h"
 #include "physobjectpropdelegate.h"
 #include "physobjectpropeditor.h"
-// #include "graphwidget.h"
+#include "graphwidget.h"
 
 PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows, int numCols) : QTableWidget(pParent) {
     m_pXaxisLabel = NULL;
@@ -154,7 +154,7 @@ void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
             pObj ->YExtent(m_pYaxisExtent ->text());
         if (m_pCartesianGraphName)
             pObj ->Name(m_pCartesianGraphName ->text());
-        //pObj ->graphWidget() -> update();
+        pObj ->graphWidget() -> update();
     }
 }
 

@@ -16,8 +16,6 @@ class PhysParticle : public PhysBaseItem, public QGraphicsPolygonItem {
     Q_OBJECT
 public:
     PhysParticle(CartesianGraph *);
-    PhysParticle(PhysDataObj::DataType itemType, QMenu *contextMenu, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
-
     PhysParticle(CartesianGraph *, const QPointF &, const QString &);
     ~PhysParticle();
 

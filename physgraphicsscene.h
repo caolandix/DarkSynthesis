@@ -1,14 +1,10 @@
 #ifndef PHYSGRAPHICSSCENE_H
 #define PHYSGRAPHICSSCENE_H
 
-/*
 #include "diagramitem.h"
 #include "diagramtextitem.h"
-*/
 
 #include <QGraphicsScene>
-#include "physparticle.h"
-#include "physdataobj.h"
 
 class QGraphicsSceneMouseEvent;
 class QMenu;
@@ -23,7 +19,7 @@ class PhysGraphicsScene : public QGraphicsScene {
 public:
     enum Mode { InsertItem, InsertLine, InsertText, MoveItem };
 
-    explicit PhysGraphicsScene(QObject *parent = 0);
+    explicit PhysGraphicsScene(QMenu *itemMenu, QObject *parent = 0);
     QFont font() const { return myFont; }
     QColor textColor() const { return myTextColor; }
     QColor itemColor() const { return myItemColor; }
@@ -35,11 +31,11 @@ public:
 
 public slots:
     void setMode(Mode mode);
-    void setItemType(PhysDataObj::DataType type);
-    void editorLostFocus(CartesianLabel *item);
+    void setItemType(DiagramItem::DiagramType type);
+    void editorLostFocus(DiagramTextItem *item);
 
 signals:
-    void itemInserted(PhysParticle *item);
+    void itemInserted(DiagramItem *item);
     void textInserted(QGraphicsTextItem *item);
     void itemSelected(QGraphicsItem *item);
 
@@ -51,15 +47,14 @@ protected:
 private:
     bool isItemChange(int type);
 
-    PhysDataObj::DataType myItemType;
+    DiagramItem::DiagramType myItemType;
     QMenu *myItemMenu;
     Mode myMode;
     bool leftButtonDown;
     QPointF startPoint;
     QGraphicsLineItem *line;
     QFont myFont;
-    // DiagramTextItem *textItem;
-    CartesianLabel *textItem;
+    DiagramTextItem *textItem;
     QColor myTextColor;
     QColor myItemColor;
     QColor myLineColor;

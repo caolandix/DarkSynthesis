@@ -58,40 +58,32 @@ void GraphWidget::onReorderObjNav(QGraphicsItem *pObj) {
 void GraphWidget::createCartesianGraph() {
 
     // Create the object
-    /*
     m_pCartGraph = new CartesianGraph(this);
     m_pCartGraph -> setPos(0, 0);
     m_pScene -> addItem(m_pCartGraph);
     emit createObj(m_pCartGraph);
     emit cartesianGraphCreated(m_pCartGraph ->DataObj());
-    */
 }
 
 PhysVector *GraphWidget::createVector(const QPointF &startPos) {
     //qDebug("GraphWidget::createVector()");
-    PhysVector *pObj;
-    /*
     QGraphicsScene *pScene = scene();
     PhysVector *pObj = new PhysVector(m_pCartGraph, QString("Vector-%1").arg(m_pCartGraph -> DataObj() -> Vectors().length()));
 
     m_pCartGraph -> DataObj() -> AddVector(pObj);
     pScene -> addItem(pObj);
     emit createObj(pObj);
-    */
     return pObj;
 }
 
 PhysParticle *GraphWidget::createParticle(const QPointF &startPos) {
     //qDebug("GraphWidget::createParticle");
-    PhysParticle *pObj;
-    /*
     QGraphicsScene *pScene = scene();
     PhysParticle *pObj = new PhysParticle(m_pCartGraph, startPos, QString("Particle-%1").arg(m_pCartGraph ->Particles().length()));
 
     m_pCartGraph -> AddParticle(pObj);
     pScene -> addItem(pObj);
     emit createObj(pObj);
-    */
     return pObj;
 }
 

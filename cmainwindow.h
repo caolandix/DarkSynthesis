@@ -3,8 +3,7 @@
 
 #include <QtWidgets>
 
-// #include "graphwidget.h"
-#include "physgraphicsscene.h"
+#include "graphwidget.h"
 #include "physcommon.h"
 #include "xes1/physelectrostaticview.h"
 
@@ -24,13 +23,13 @@ public:
     explicit CMainWindow(QWidget *parent = 0);
     ~CMainWindow();
 
-    //void setGraphWidget(GraphWidget *pObj) { m_pGraphWidget = pObj; }
+    void setGraphWidget(GraphWidget *pObj) { m_pGraphWidget = pObj; }
 
     PhysObjectNavigator *getPhysObjNavigator() const { return m_pPhysObjNavigator; }
     PhysObjectPropsNavigator *getPhysObjPropsNavigator() const { return m_pPhysObjPropsNavigator; }
     PhysModuleNavigator *getPhysModuleNavigator() const { return m_pPhysModNavigator; }
     PhysOutputNavigator *getPhysOutputNavigator() const { return m_pPhysOutputNavigator; }
-    //GraphWidget *getGraphWidget() const { return m_pGraphWidget; }
+    GraphWidget *getGraphWidget() const { return m_pGraphWidget; }
 
     void createSignalSlots();
     void createBaseObjects();
@@ -65,8 +64,7 @@ private:
     PhysEqSolverTable *m_pPhysEqSolver;
     PhysElectroStaticView *m_pPhysElectroStaticView;
     Ui::CMainWindow *m_pUI;
-    // GraphWidget *m_pGraphWidget;
-    PhysGraphicsScene *m_pScene;
+    GraphWidget *m_pGraphWidget;
 };
 
 #endif // CMAINWINDOW_H
