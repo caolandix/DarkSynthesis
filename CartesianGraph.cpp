@@ -6,7 +6,7 @@
 #include "cartesiangraphdataobj.h"
 #include "physparticle.h"
 #include "physvector.h"
-#include "graphwidget.h"
+// #include "graphwidget.h"
 
 std::map<int, QString> CartesianGraph::m_listEditableProps = {
     {0, QString("X-Axis Label")},
@@ -16,8 +16,9 @@ std::map<int, QString> CartesianGraph::m_listEditableProps = {
     {4, QString("Y-Axis Extent")}
 };
 
-CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, CartesianGraphDataObj *pDataObj)  : QGraphicsItem() {
-    m_pGraphWidget = pGraphWidget;
+CartesianGraph::CartesianGraph(PhysGraphicsScene *pScene, const QString &Name, CartesianGraphDataObj *pDataObj)  : QGraphicsItem() {
+    // m_pGraphWidget = pGraphWidget;
+    m_pScene = pScene;
     m_pDataObj = (pDataObj) ? pDataObj : new CartesianGraphDataObj(Name);
     m_borderWidth = 5;
     m_x_label = new CartesianLabel(QString("x: <Enter label>"), this);
@@ -45,7 +46,7 @@ CartesianGraph::CartesianGraph(const CartesianGraph &obj) : QGraphicsItem() {
         if (m_pDataObj)
             delete m_pDataObj;
         m_pDataObj = new CartesianGraphDataObj(obj.DataObj());
-        m_pGraphWidget = obj.graphWidget();
+        // m_pGraphWidget = obj.graphWidget();
         delete m_x_label;
         delete m_y_label;
         m_x_label = new CartesianLabel(obj.XAxisLabel(), this);
@@ -58,7 +59,7 @@ CartesianGraph::CartesianGraph(const CartesianGraph &obj) : QGraphicsItem() {
 CartesianGraph::~CartesianGraph() {
     delete m_pDataObj;
     m_pDataObj = NULL;
-    m_pGraphWidget = NULL;
+    // m_pGraphWidget = NULL;
     delete m_x_label; m_x_label = NULL;
     delete m_y_label; m_y_label = NULL;
 }
@@ -71,7 +72,7 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
         if (m_pDataObj)
             delete m_pDataObj;
         // m_pDataObj = new CartesianGraphDataObj(obj.DataObj());
-        m_pGraphWidget = obj.graphWidget();
+        // m_pGraphWidget = obj.graphWidget();
         delete m_x_label;
         delete m_y_label;
         m_x_label = new CartesianLabel(obj.XAxisLabel(), this);
@@ -87,9 +88,9 @@ void CartesianGraph::init() {
 }
 
 void CartesianGraph::createConnections() {
-    connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pGraphWidget, SLOT(onReorderObjNav(QGraphicsItem *)));
-    connect(this, SIGNAL(changeItemName(const QString &, const QString &)), m_pGraphWidget, SLOT(onChangeItemName(const QString &, const QString &)));
-    connect(this, SIGNAL(repaint()), m_pGraphWidget, SLOT(onRepaint()));
+    // connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pGraphWidget, SLOT(onReorderObjNav(QGraphicsItem *)));
+    // connect(this, SIGNAL(changeItemName(const QString &, const QString &)), m_pGraphWidget, SLOT(onChangeItemName(const QString &, const QString &)));
+    // connect(this, SIGNAL(repaint()), m_pGraphWidget, SLOT(onRepaint()));
 }
 
 void CartesianGraph::onChangeItemName(const QString &strOld, const QString &strNew) {

@@ -14,6 +14,11 @@ std::map<int, QString> PhysParticle::m_listEditableProps = {
     {4, QString("Lock Y Axis")}
 };
 
+PhysParticle(PhysDataObj::DataType itemType, QMenu *contextMenu, QGraphicsItem *parent, QGraphicsScene *scene) {
+
+}
+
+
 PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, const QString &Label) :
     PhysBaseItem(), QGraphicsPolygonItem(pParent) {
     setFlag(ItemIsMovable);

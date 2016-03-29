@@ -26,6 +26,80 @@ std::map<int, QString> PhysVector::m_listEditableProps = {
     {4, QString("Associated Particle")}
 };
 
+
+PhysVector::PhysVector(PhysParticle *startItem, PhysParticle *endItem, QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsLineItem(parent) {
+    m_pStartParticle = startItem;
+    m_pEndParticle = endItem;
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    m_Color = Qt::black;
+    setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+}
+
+QRectF PhysVector::boundingRect() const {
+    qreal extra = (pen().width() + 20) / 2.0;
+
+    return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(), line().p2().y() - line().p1().y())).normalized().adjusted(-extra, -extra, extra, extra);
+}
+
+QPainterPath PhysVector::shape() const {
+    QPainterPath path = QGraphicsLineItem::shape();
+    path.addPolygon(m_arrowHead);
+    return path;
+}
+
+void PhysVector::updatePosition() {
+    QLineF line(mapFromItem(m_pStartParticle, 0, 0), mapFromItem(m_pEndParticle, 0, 0));
+    setLine(line);
+}
+
+void PhysVector::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
+    if (m_pStartParticle ->collidesWithItem(m_pEndParticle))
+        return;
+
+    QPen myPen = pen();
+    myPen.setColor(m_Color);
+    qreal arrowSize = 20;
+    painter->setPen(myPen);
+    painter->setBrush(m_Color);
+
+    QLineF centerLine(m_pStartParticle ->pos(), m_pEndParticle ->pos());
+    QPolygonF endPolygon = m_pEndParticle ->polygon();
+    QPointF p1 = endPolygon.first() + m_pEndParticle ->pos();
+    QPointF p2;
+    QPointF intersectPoint;
+    QLineF polyLine;
+    for (int i = 1; i < endPolygon.count(); ++i) {
+        p2 = endPolygon.at(i) + m_pEndParticle ->pos();
+        polyLine = QLineF(p1, p2);
+        QLineF::IntersectType intersectType = polyLine.intersect(centerLine, &intersectPoint);
+        if (intersectType == QLineF::BoundedIntersection)
+            break;
+        p1 = p2;
+    }
+    setLine(QLineF(intersectPoint, m_pStartParticle ->pos()));
+    double angle = ::acos(line().dx() / line().length());
+
+    if (line().dy() >= 0)
+        angle = (PhysConsts::PI * 2) - angle;
+
+        QPointF arrowP1 = line().p1() + QPointF(sin(angle + PhysConsts::PI / 3) * arrowSize, cos(angle + PhysConsts::PI / 3) * arrowSize);
+        QPointF arrowP2 = line().p1() + QPointF(sin(angle + PhysConsts::PI - PhysConsts::PI / 3) * arrowSize, cos(angle + PhysConsts::PI - PhysConsts::PI / 3) * arrowSize);
+
+        m_arrowHead.clear();
+        m_arrowHead << line().p1() << arrowP1 << arrowP2;
+        painter ->drawLine(line());
+        painter ->drawPolygon(m_arrowHead);
+        if (isSelected()) {
+            painter ->setPen(QPen(m_Color, 1, Qt::DashLine));
+        QLineF myLine = line();
+        myLine.translate(0, 4.0);
+        painter ->drawLine(myLine);
+        myLine.translate(0,-8.0);
+        painter ->drawLine(myLine);
+    }
+}
+
+/*
 PhysVector::PhysVector(
         CartesianGraph *pParent, PhysParticle *pParticle,
         const QString variable, const QString equation, const QString name, const double magnitude, const bool bDraw, const double angle) :
@@ -440,3 +514,5 @@ void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     }
     update();
 }
+
+*/

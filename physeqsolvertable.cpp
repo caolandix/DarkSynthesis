@@ -181,12 +181,14 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
     //      - Angle at which it should be represented on the CartesianGraph (if any)
     //      - Magnitude, or the value of the vector
     QList<PhysVector *> vectorList;
+    /*
     vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
                                         QString("a"), QString("4"), QString("accel"), 4.0, false));
     vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
                                            QString("v"), QString("12"), QString("speed"), 12.0, false));
     vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
                                                QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), 0.0, false));
+                                               */
     foreach (PhysVector *item, vectorList) {
         insertRow(rowCount());
         QTableWidgetItem *pRowItem = createRowItem(item ->DataObj());

@@ -3,8 +3,9 @@
 
 #include <QtWidgets>
 #include "cartesiangraphdataobj.h"
+#include "physgraphicsscene.h"
 
-class GraphWidget;
+// class GraphWidget;
 class PhysVector;
 class PhysParticle;
 class CartesianGraphDataObj;
@@ -15,7 +16,8 @@ class CartesianGraph : public PhysBaseItem, public QGraphicsItem {
 public:
 
     // ctors/dtor
-    CartesianGraph(GraphWidget *, const QString & = "Cartesian Plane", CartesianGraphDataObj * = NULL);
+    // CartesianGraph(GraphWidget *, const QString & = "Cartesian Plane", CartesianGraphDataObj * = NULL);
+    CartesianGraph(PhysGraphicsScene *, const QString & = "Cartesian Plane", CartesianGraphDataObj * = NULL);
     CartesianGraph(const CartesianGraph &);
     ~CartesianGraph();
 
@@ -37,7 +39,7 @@ public:
     QList<PhysVector *> Vectors() const { return m_pDataObj -> Vectors(); }
     QList<PhysParticle *> Particles() const { return m_pDataObj -> Particles(); }
     CartesianGraphDataObj *DataObj() const { return m_pDataObj; }
-    GraphWidget *graphWidget() const { return m_pGraphWidget; }
+    //GraphWidget *graphWidget() const { return m_pGraphWidget; }
     QString XAxisLabel() const { return m_x_label -> toPlainText(); }
     QString YAxisLabel() const { return m_y_label -> toPlainText(); }
     QString Name() const { return m_pDataObj ->Name(); }
@@ -68,7 +70,8 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 private:
-    GraphWidget *m_pGraphWidget;
+    // GraphWidget *m_pGraphWidget;
+    PhysGraphicsScene *m_pScene;
     CartesianLabel *m_x_label, *m_y_label;
     CartesianLabel *m_pXMin;
     CartesianLabel *m_pXMax;
