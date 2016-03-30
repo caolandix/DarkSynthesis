@@ -5,7 +5,7 @@
 
 class PhysDataObj {
 public:
-    typedef enum { DT_CARTGRAPH = 0, DT_PARTICLE, DT_VECTOR, DT_PROPERTY, DT_TIMESLICE } DataType;
+    typedef enum { DT_UNASSIGNED = 0, DT_CARTGRAPH, DT_PARTICLE, DT_VECTOR, DT_PROPERTY, DT_TIMESLICE } DataType;
     PhysDataObj(const QString str, DataType dt, const QPointF pos) : m_Name(str), m_Type(dt), m_position(pos) {}
     PhysDataObj(const PhysDataObj &obj) : m_Name(obj.Name()) {}
     PhysDataObj(const PhysDataObj *pObj) : m_Name(pObj ->Name()) {}

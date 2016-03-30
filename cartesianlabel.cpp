@@ -1,28 +1,31 @@
-#include <QtWidgets>
-
 #include "cartesianlabel.h"
 
-CartesianLabel::CartesianLabel(const QString &text, Qt::Alignment flags, QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(text, pParent), m_Flags(flags) {
+CartesianLabel::CartesianLabel(const QString &text, Qt::Alignment flags, QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(text, pParent) {
+    m_Flags = flags;
+    init(bDraw);
+}
 
+CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(text, pParent) {
+    m_Flags = Qt::AlignTop | Qt::AlignLeft;
+    init(bDraw);
+}
+
+CartesianLabel::CartesianLabel(QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(pParent) {
+    m_Flags = Qt::AlignTop | Qt::AlignLeft;
+    init(bDraw);
+}
+
+void CartesianLabel::init(bool bDraw) {
     setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
     m_bDraw = bDraw;
 }
 
-CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(text, pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
-    setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
-    setTextInteractionFlags(Qt::NoTextInteraction);
-    m_Bounds = QGraphicsTextItem::boundingRect();
-    m_bDraw = bDraw;
-}
 
-CartesianLabel::CartesianLabel(QGraphicsItem * pParent, bool bDraw) : QGraphicsTextItem(pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
-
-    setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
-    setTextInteractionFlags(Qt::NoTextInteraction);
-    m_Bounds = QGraphicsTextItem::boundingRect();
-    m_bDraw = bDraw;
+CartesianLabel *CartesianLabel::copy() {
+    CartesianLabel *pObj = new CartesianLabel(toPlainText(), m_Flags, parentItem());
+    return pObj;
 }
 
 QRectF CartesianLabel::boundingRect() const {
@@ -50,7 +53,7 @@ void CartesianLabel::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *p
 }
 
 void CartesianLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *evt) {
-    qDebug("mouseDoubleClickEvent '%s'", this -> toPlainText().toStdString().c_str());
+    // qDebug("mouseDoubleClickEvent '%s'", this -> toPlainText().toStdString().c_str());
     if (textInteractionFlags() == Qt::TextEditorInteraction) {
 
         // if editor mode is already on: pass double click events on to the editor:
@@ -73,9 +76,8 @@ void CartesianLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *evt) {
 
 QVariant CartesianLabel::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) {
     // qDebug("CartesianLabel::itemChange()");
-    if (change == QGraphicsItem::ItemSelectedChange) {
-        qDebug("itemChange '%s', selected=%s", toPlainText().toStdString().c_str(), value.toString().toStdString().c_str());
-    }
+    if (change == QGraphicsItem::ItemSelectedChange)
+        ;// qDebug("itemChange '%s', selected=%s", toPlainText().toStdString().c_str(), value.toString().toStdString().c_str());
     if (change == QGraphicsItem::ItemSelectedChange && textInteractionFlags() != Qt::NoTextInteraction && !value.toBool()) {
 
         // item received SelectedChange event AND is in editor mode AND is about to be deselected:

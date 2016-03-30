@@ -5,7 +5,7 @@
 #include "cartesiangraph.h"
 #include "physbaseitem.h"
 
-GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
+GraphWidget::GraphWidget(PhysGraphicsScene *pScene, QWidget *pParent) : QGraphicsView(pParent) {
     m_pCartGraph = NULL;
     m_actNewVector = NULL;
     m_actNewParticle = NULL;
@@ -30,10 +30,8 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
-    m_pScene = new QGraphicsScene(this);
-    m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
-    m_pScene -> setSceneRect(-2000, -2000, 4000, 4000);
-    setScene(m_pScene);
+    // m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
+    setScene(m_pScene = pScene);
 
     // Create the actions used in the context menus
     createActions();

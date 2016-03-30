@@ -12,7 +12,7 @@ public:
     PhysBaseItem();
     ~PhysBaseItem() {}
 
-    enum { VectorType = 65536 + 1, ParticleType, CartesianGraphType } ;
+    enum { VectorType = 65536 + 1, ParticleType, CartesianGraphType, PhysTextType } ;
 
     QString TypeName(int Type) const;
 

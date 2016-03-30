@@ -3,11 +3,14 @@
 
 #include <QtWidgets>
 
+#include "darksynth.h"
+
 class CartesianLabel : public QGraphicsTextItem {
+    Q_OBJECT
 public:
-    CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem * = 0, bool = true);
-    CartesianLabel(const QString &, QGraphicsItem * = 0, bool = true);
-    CartesianLabel(QGraphicsItem * = 0, bool = true);
+    CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem * = NULL, bool = true);
+    CartesianLabel(const QString &, QGraphicsItem * = NULL, bool = true);
+    CartesianLabel(QGraphicsItem * = NULL, bool = true);
     QRectF boundingRect() const;
 
     Qt::Alignment alignment() const { return m_Flags; }
@@ -17,6 +20,14 @@ public:
     QVariant itemChange(QGraphicsItem::GraphicsItemChange, const QVariant &);
 
     void setDraw(bool bVal) { m_bDraw = bVal; }
+
+    // From PhysBaseItem
+    void init(bool);
+    CartesianLabel *copy();
+
+    // From QGraphicsTextItem
+    int type() const { return DarkSynth::PhysTextType; }
+
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget * = 0);

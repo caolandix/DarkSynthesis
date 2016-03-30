@@ -208,7 +208,8 @@ HEADERS  += cmainwindow.h \
     physobjectpropsnavigatordock.h \
     physequationsolverdock.h \
     physoutputnavigatordock.h \
-    physgraphicsscene.h
+    physgraphicsscene.h \
+    darksynth.h
 
 FORMS    += cmainwindow.ui \
     cartesiangraphsettingsdlg.ui \

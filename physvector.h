@@ -26,8 +26,7 @@ private:
     static const map<AxisOrientation, QString> createMap();
 
 public:
-    enum { Type = PhysBaseItem::VectorType };
-    int type() const Q_DECL_OVERRIDE { return Type; }
+    int type() const Q_DECL_OVERRIDE { return PhysBaseItem::VectorType; }
 
     PhysVector(
             CartesianGraph *pParent, PhysParticle *pParticle,

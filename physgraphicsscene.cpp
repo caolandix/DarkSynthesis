@@ -1,18 +1,19 @@
-#include "physgraphicsscene.h"
-#include "physvector.h"
 #include <QTextCursor>
 #include <QGraphicsSceneMouseEvent>
 
-PhysGraphicsScene::PhysGraphicsScene(QMenu *itemMenu, QObject *parent) : QGraphicsScene(parent) {
-    /*
-    myMode = MoveItem;
-    myItemType = DiagramItem::Step;
-    line = 0;
-    textItem = 0;
-    myItemColor = Qt::white;
-    myTextColor = Qt::black;
-    myLineColor = Qt::black;
-    */
+#include "physgraphicsscene.h"
+#include "physvector.h"
+
+
+PhysGraphicsScene::PhysGraphicsScene(QMenu *pItemMenu, QObject *parent) : QGraphicsScene(parent) {
+    m_currAction = MoveItem;
+    m_pItemMenu = pItemMenu;
+    m_currItemType = PhysDataObj::DT_UNASSIGNED;
+    m_pLine = NULL;
+    m_pCurrTextItem = NULL;
+    m_currItemColor = Qt::white;
+    m_currTextColor = Qt::black;
+    m_currLineColor = Qt::black;
 }
 
 void PhysGraphicsScene::setLineColor(const QColor &color) {
@@ -27,13 +28,11 @@ void PhysGraphicsScene::setLineColor(const QColor &color) {
 }
 
 void PhysGraphicsScene::setTextColor(const QColor &color) {
-    /*
-    myTextColor = color;
-    if (isItemChange(DiagramTextItem::Type)) {
-        DiagramTextItem *item = qgraphicsitem_cast<DiagramTextItem *>(selectedItems().first());
-        item->setDefaultTextColor(myTextColor);
+    m_currTextColor = color;
+    if (isItemChange(PhysBaseItem::PhysTextType)) {
+        CartesianLabel *pItem = qgraphicsitem_cast<CartesianLabel *>(selectedItems().first());
+        pItem ->setDefaultTextColor(m_currTextColor);
     }
-    */
 }
 
 void PhysGraphicsScene::setItemColor(const QColor &color) {
@@ -47,46 +46,42 @@ void PhysGraphicsScene::setItemColor(const QColor &color) {
 }
 
 void PhysGraphicsScene::setFont(const QFont &font) {
-    /*
-    myFont = font;
+    m_currFont = font;
 
-    if (isItemChange(DiagramTextItem::Type)) {
-        CartesianLabel *item = qgraphicsitem_cast<CartesianLabel *>(selectedItems().first());
+    if (isItemChange(PhysBaseItem::PhysTextType)) {
+        CartesianLabel *pItem = qgraphicsitem_cast<CartesianLabel *>(selectedItems().first());
         //At this point the selection can change so the first selected item might not be a DiagramTextItem
-        if (item)
-            item ->setFont(myFont);
+        if (pItem)
+            pItem ->setFont(m_currFont);
     }
-    */
 }
 
-void PhysGraphicsScene::setMode(Mode mode) {
-    // myMode = mode;
+void PhysGraphicsScene::setAction(Actions action) {
+    m_currAction = action;
 }
 
-void PhysGraphicsScene::setItemType(PhysDataObj::DataType type) {
-    // myItemType = type;
+void PhysGraphicsScene::setItemType(int type) {
+    m_currItemType = type;
 }
 
-void PhysGraphicsScene::editorLostFocus(CartesianLabel *item) {
-    /*
-    QTextCursor cursor = item ->textCursor();
+void PhysGraphicsScene::editorLostFocus(CartesianLabel *pItem) {
+    QTextCursor cursor = pItem ->textCursor();
     cursor.clearSelection();
-    item ->setTextCursor(cursor);
+    pItem ->setTextCursor(cursor);
 
-    if (item ->toPlainText().isEmpty()) {
-        removeItem(item);
-        item ->deleteLater();
+    if (pItem ->toPlainText().isEmpty()) {
+        removeItem(pItem);
+        pItem ->deleteLater();
     }
-    */
 }
 
 void PhysGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
-    /*
     if (mouseEvent ->button() != Qt::LeftButton)
         return;
 
-    PhysParticle *item;
-    switch (myMode) {
+    PhysParticle *pItem = NULL;
+    switch (m_currAction) {
+    /*
         case InsertItem:
             item = new PhysParticle(myItemType, myItemMenu);
             item ->setBrush(myItemColor);
@@ -95,34 +90,34 @@ void PhysGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
             emit itemInserted(item);
             break;
         case InsertLine:
-            line = new QGraphicsLineItem(QLineF(mouseEvent ->scenePos(), mouseEvent ->scenePos()));
-            line ->setPen(QPen(myLineColor, 2));
-            addItem(line);
+            m_pLine = new QGraphicsLineItem(QLineF(mouseEvent ->scenePos(), mouseEvent ->scenePos()));
+            m_pLine ->setPen(QPen(myLineColor, 2));
+            addItem(m_pLine);
             break;
+            */
         case InsertText:
-            textItem = new CartesianLabel();
-            textItem ->setFont(myFont);
-            textItem ->setTextInteractionFlags(Qt::TextEditorInteraction);
-            textItem ->setZValue(1000.0);
-            connect(textItem, SIGNAL(lostFocus(CartesianLabel *)), this, SLOT(editorLostFocus(CartesianLabel *)));
-            connect(textItem, SIGNAL(selectedChange(QGraphicsItem *)), this, SIGNAL(itemSelected(QGraphicsItem *)));
-            addItem(textItem);
-            textItem ->setDefaultTextColor(myTextColor);
-            textItem ->setPos(mouseEvent ->scenePos());
-            emit textInserted(textItem);
+            m_pCurrTextItem = new CartesianLabel();
+            m_pCurrTextItem ->setFont(m_currFont);
+            m_pCurrTextItem ->setTextInteractionFlags(Qt::TextEditorInteraction);
+            m_pCurrTextItem ->setZValue(1000.0);
+            connect(m_pCurrTextItem, SIGNAL(lostFocus(CartesianLabel *)), this, SLOT(editorLostFocus(CartesianLabel *)));
+            connect(m_pCurrTextItem, SIGNAL(selectedChange(QGraphicsItem *)), this, SIGNAL(itemSelected(QGraphicsItem *)));
+            addItem(m_pCurrTextItem);
+            m_pCurrTextItem ->setDefaultTextColor(m_currTextColor);
+            m_pCurrTextItem ->setPos(mouseEvent ->scenePos());
+            emit textInserted(m_pCurrTextItem);
     default:
         ;
     }
-    */
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
 void PhysGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 
     /*
-    if (myMode == InsertLine && line != 0) {
-        QLineF newLine(line ->line().p1(), mouseEvent ->scenePos());
-        line ->setLine(newLine);
+    if (myMode == InsertLine && m_pLine) {
+        QLineF newLine(m_pLine ->line().p1(), mouseEvent ->scenePos());
+        m_pLine ->setLine(newLine);
     }
     else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
@@ -133,16 +128,16 @@ void PhysGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 void PhysGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 
     /*
-    if (line != 0 && myMode == InsertLine) {
-        QList<QGraphicsItem *> startItems = items(line ->line().p1());
-        if (startItems.count() && startItems.first() == line)
+    if (line && myMode == InsertLine) {
+        QList<QGraphicsItem *> startItems = items(m_pLine ->line().p1());
+        if (startItems.count() && startItems.first() == m_pLine)
             startItems.removeFirst();
-        QList<QGraphicsItem *> endItems = items(line ->line().p2());
-        if (endItems.count() && endItems.first() == line)
+        QList<QGraphicsItem *> endItems = items(m_pLine ->line().p2());
+        if (endItems.count() && endItems.first() == m_pLine)
             endItems.removeFirst();
 
-        removeItem(line);
-        delete line;
+        removeItem(m_pLine);
+        delete m_pLine;
 
         if (startItems.count() > 0 && endItems.count() > 0 && startItems.first() ->type() == PhysParticle::Type &&
             endItems.first() ->type() == PhysParticle::Type && startItems.first() != endItems.first()) {
@@ -158,14 +153,14 @@ void PhysGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) 
             arrow ->updatePosition();
         }
     }
-    line = 0;
+    m_pLine = NULL;
     */
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
 
 bool PhysGraphicsScene::isItemChange(int type) {
-    foreach (QGraphicsItem *item, selectedItems()) {
-        if (item ->type() == type)
+    foreach (QGraphicsItem *pItem, selectedItems()) {
+        if (pItem ->type() == type)
             return true;
     }
     return false;

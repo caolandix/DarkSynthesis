@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include "cartesiangraph.h"
+#include "physgraphicsscene.h"
 
 class Node;
 class QAction;
@@ -15,7 +16,7 @@ class CartesianGraph;
 class GraphWidget : public QGraphicsView {
     Q_OBJECT
 public:
-    GraphWidget(QWidget *parent = NULL);
+    GraphWidget(PhysGraphicsScene *, QWidget *parent = NULL);
     void itemMoved();
     void createCartesianGraph();
 
@@ -65,7 +66,7 @@ private:
     QAction *m_actNewVector, *m_actNewParticle;
     QAction *m_actVectorProps, *m_actParticleProps;
     QLabel *m_pInfoLabel;
-    QGraphicsScene *m_pScene;
+    PhysGraphicsScene *m_pScene;
     QPointF m_currClickPos;
 };
 

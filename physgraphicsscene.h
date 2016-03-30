@@ -21,47 +21,47 @@ class QColor;
 class PhysGraphicsScene : public QGraphicsScene {
     Q_OBJECT
 public:
-    enum Mode { InsertItem, InsertLine, InsertText, MoveItem };
+    enum Actions { DeleteItem, InsertItem, DeleteLine, InsertLine, DeleteText, InsertText, MoveItem };
 
-    explicit PhysGraphicsScene(QMenu *itemMenu, QObject *parent = 0);
-    QFont font() const { return myFont; }
-    QColor textColor() const { return myTextColor; }
-    QColor itemColor() const { return myItemColor; }
-    QColor lineColor() const { return myLineColor; }
-    void setLineColor(const QColor &color);
-    void setTextColor(const QColor &color);
-    void setItemColor(const QColor &color);
-    void setFont(const QFont &font);
+    explicit PhysGraphicsScene(QMenu *, QObject * = 0);
+    QFont font() const { return m_currFont; }
+    QColor textColor() const { return m_currTextColor; }
+    QColor itemColor() const { return m_currItemColor; }
+    QColor lineColor() const { return m_currLineColor; }
+    void setLineColor(const QColor &);
+    void setTextColor(const QColor &);
+    void setItemColor(const QColor &);
+    void setFont(const QFont &);
 
 public slots:
-    void setMode(Mode mode);
-    void setItemType(PhysDataObj::DataType type);
-    void editorLostFocus(CartesianLabel *item);
+    void setAction(Actions action);
+    void setItemType(int);
+    void editorLostFocus(CartesianLabel *);
 
 signals:
-    void itemInserted(PhysParticle *item);
-    void textInserted(QGraphicsTextItem *item);
-    void itemSelected(QGraphicsItem *item);
+    void itemInserted(PhysParticle *);
+    void textInserted(QGraphicsTextItem *);
+    void itemSelected(QGraphicsItem *);
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) Q_DECL_OVERRIDE;
+    void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 
 private:
     bool isItemChange(int type);
 
-    // DiagramItem::DiagramType myItemType;
-    QMenu *myItemMenu;
-    Mode myMode;
-    bool leftButtonDown;
+    int m_currItemType;
+    QMenu *m_pItemMenu;
+    Actions m_currAction;
+    bool m_bIsleftButtonDown;
     QPointF startPoint;
-    QGraphicsLineItem *line;
-    QFont myFont;
-    // DiagramTextItem *textItem;
-    QColor myTextColor;
-    QColor myItemColor;
-    QColor myLineColor;
+    QGraphicsLineItem *m_pLine;
+    QFont m_currFont;
+    CartesianLabel *m_pCurrTextItem;
+    QColor m_currTextColor;
+    QColor m_currItemColor;
+    QColor m_currLineColor;
 };
 
 #endif // PHYSGRAPHICSSCENE_H

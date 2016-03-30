@@ -29,7 +29,7 @@ std::map<int, QString> PhysVector::m_listEditableProps = {
 PhysVector::PhysVector(
         CartesianGraph *pParent, PhysParticle *pParticle,
         const QString variable, const QString equation, const QString name, const double magnitude, const bool bDraw, const double angle) :
-    PhysBaseItem(), QGraphicsLineItem(pParent) {
+    QGraphicsLineItem(pParent), PhysBaseItem() {
     m_pDataObj = new PhysVectorDataObj(variable, equation, name, magnitude);
 
     m_pLabel = new CartesianLabel(name, this, bDraw);
@@ -61,7 +61,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QString Name, PhysParticle
     m_pDataObj ->Magnitude(50.0);
     m_bUseNewThetaAngle = false;
     m_Theta.bAboveAxis = true;
-    m_Theta.degrees = 45.0;
+    m_Theta.degrees = 123.0;
     m_Theta.axisOrientation = AXIS_HORIZ;
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
