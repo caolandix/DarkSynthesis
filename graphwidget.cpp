@@ -30,8 +30,10 @@ GraphWidget::GraphWidget(PhysGraphicsScene *pScene, QWidget *pParent) : QGraphic
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
-    // m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
-    setScene(m_pScene = pScene);
+    m_pScene = new QGraphicsScene(this);
+    m_pScene -> setSceneRect(-2000, -2000, 4000, 4000);
+    m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
+    setScene(m_pScene);
 
     // Create the actions used in the context menus
     createActions();

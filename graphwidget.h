@@ -54,7 +54,7 @@ protected:
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
-    void scaleView(qreal scaleFactor);\
+    void scaleView(qreal scaleFactor);
 
 
 private:
@@ -66,7 +66,8 @@ private:
     QAction *m_actNewVector, *m_actNewParticle;
     QAction *m_actVectorProps, *m_actParticleProps;
     QLabel *m_pInfoLabel;
-    PhysGraphicsScene *m_pScene;
+    // PhysGraphicsScene *m_pScene;
+    QGraphicsScene *m_pScene;
     QPointF m_currClickPos;
 };
 
