@@ -211,6 +211,7 @@ void PhysVector::adjust() {
 }
 
 QRectF PhysVector::boundingRect() const {
+    /*
     qreal penWidth = 1;
     qreal extra = (penWidth + m_arrowSize) / 2.0;
     QPointF pt1 = line().p1();
@@ -218,6 +219,11 @@ QRectF PhysVector::boundingRect() const {
     QRectF rcBounding(pt1, QSizeF(pt2.x() - pt1.x(), pt2.y() - pt1.y()));
 
     return rcBounding.normalized().adjusted(-extra, -extra, extra, extra);
+    */
+    qreal extra = (pen().width() + 20) / 2.0;
+
+    return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(), line().p2().y() - line().p1().y())).normalized().adjusted(-extra, -extra, extra, extra);
+
 }
 
 QPainterPath PhysVector::shape() const {
@@ -236,7 +242,6 @@ void PhysVector::updatePosition() {
 }
 
 void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOption, QWidget *) {
-    QPen myPen = pen();
     pPainter -> setPen(pen());
 
     if (!m_bDraw)

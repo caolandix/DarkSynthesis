@@ -32,7 +32,7 @@ GraphWidget::GraphWidget(PhysGraphicsScene *pScene, QWidget *pParent) : QGraphic
     // show where the vector drawing occurs and the scales defined.
     m_pScene = new QGraphicsScene(this);
     m_pScene -> setSceneRect(-2000, -2000, 4000, 4000);
-    m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
+    // m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
     setScene(m_pScene);
 
     // Create the actions used in the context menus
