@@ -20,8 +20,9 @@ GraphWidget::GraphWidget(PhysGraphicsScene *pScene, QWidget *pParent) : QGraphic
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
-    setMinimumSize(400, 400);
+    // setMinimumSize(400, 400);
     setWindowTitle(tr("Cartesian Graph"));
+
     // Setting the matrix rotates the drawing area to be a normal cartesian plane. Unfortunately
     // it also means that the original drawing has to be tweaked
     QTransform trfrm;
@@ -31,14 +32,37 @@ GraphWidget::GraphWidget(PhysGraphicsScene *pScene, QWidget *pParent) : QGraphic
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
     m_pScene = new QGraphicsScene(this);
-    m_pScene -> setSceneRect(-2000, -2000, 4000, 4000);
-    // m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
+    m_pScene -> setSceneRect(-2000, -2000, 2000, 2000);
     setScene(m_pScene);
 
     // Create the actions used in the context menus
     createActions();
 
     m_pInfoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
+}
+
+void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
+    Q_UNUSED(rect);
+
+    // Shadow
+/*
+    QRectF sceneRect = this -> sceneRect();
+    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
+    QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
+    if (rightShadow.intersects(rect) || rightShadow.contains(rect))
+        painter -> fillRect(rightShadow, Qt::darkGray);
+    if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
+        painter -> fillRect(bottomShadow, Qt::darkGray);
+
+    // Fill
+    QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
+    gradient.setColorAt(0, Qt::red);
+    gradient.setColorAt(1, Qt::lightGray);
+    painter -> fillRect(rect.intersected(sceneRect), gradient);
+    painter -> setBrush(Qt::NoBrush);
+    painter -> drawRect(sceneRect);
+
+*/
 }
 
 void GraphWidget::onChangeItemName(const QString &strOld, const QString &strNew) {
@@ -266,27 +290,6 @@ void GraphWidget::wheelEvent(QWheelEvent *event) {
     scaleView(pow((double)2, -event -> delta() / 240.0));
 }
 #endif
-
-void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
-    Q_UNUSED(rect);
-
-    // Shadow
-    QRectF sceneRect = this -> sceneRect();
-    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
-    QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
-    if (rightShadow.intersects(rect) || rightShadow.contains(rect))
-        painter -> fillRect(rightShadow, Qt::darkGray);
-    if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
-        painter -> fillRect(bottomShadow, Qt::darkGray);
-
-    // Fill
-    QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
-    gradient.setColorAt(0, Qt::red);
-    gradient.setColorAt(1, Qt::lightGray);
-    painter -> fillRect(rect.intersected(sceneRect), gradient);
-    painter -> setBrush(Qt::NoBrush);
-    painter -> drawRect(sceneRect);
-}
 
 void GraphWidget::scaleView(qreal scaleFactor) {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();

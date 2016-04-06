@@ -144,6 +144,7 @@ QPainterPath CartesianGraph::shape() const {
 }
 
 void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *) {
+    /*
     painter -> setPen(Qt::NoPen);
     painter -> setBrush(Qt::darkGray);
     painter -> setPen(QPen(Qt::black, 2));
@@ -187,6 +188,7 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter -> drawLine(QLine(rc.width(), tickDrawLength + 5, rc.width(), -tickDrawLength - 5));
     painter -> drawLine(QLine(tickDrawLength + 5, rc.y(), -tickDrawLength - 5, rc.y()));
     painter -> drawLine(QLine(tickDrawLength + 5, rc.height(), -tickDrawLength - 5, rc.height()));
+    */
 }
 
 QVariant CartesianGraph::itemChange(GraphicsItemChange change, const QVariant &value) {

@@ -95,7 +95,8 @@ void PhysVector::init() {
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    setLine(0 + Magnitude(), 0 + Magnitude(), 0, 0);
+    double length = sqrt(pow(Magnitude(), 2) + pow(Magnitude(), 2));
+    setLine(0 + length, 0 + length, 0, 0);
 }
 
 void PhysVector::createConnections() {
@@ -211,15 +212,6 @@ void PhysVector::adjust() {
 }
 
 QRectF PhysVector::boundingRect() const {
-    /*
-    qreal penWidth = 1;
-    qreal extra = (penWidth + m_arrowSize) / 2.0;
-    QPointF pt1 = line().p1();
-    QPointF pt2 = line().p2();
-    QRectF rcBounding(pt1, QSizeF(pt2.x() - pt1.x(), pt2.y() - pt1.y()));
-
-    return rcBounding.normalized().adjusted(-extra, -extra, extra, extra);
-    */
     qreal extra = (pen().width() + 20) / 2.0;
 
     return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(), line().p2().y() - line().p1().y())).normalized().adjusted(-extra, -extra, extra, extra);
