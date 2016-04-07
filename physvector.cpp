@@ -211,13 +211,6 @@ void PhysVector::adjust() {
     }
 }
 
-QRectF PhysVector::boundingRect() const {
-    qreal extra = (pen().width() + 20) / 2.0;
-
-    return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(), line().p2().y() - line().p1().y())).normalized().adjusted(-extra, -extra, extra, extra);
-
-}
-
 QPainterPath PhysVector::shape() const {
     QPainterPath path = QGraphicsLineItem::shape();
     path.addPolygon(m_arrowHead);
@@ -233,6 +226,7 @@ void PhysVector::updatePosition() {
     }
 }
 
+/*
 void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOption, QWidget *) {
     pPainter -> setPen(pen());
 
@@ -325,8 +319,10 @@ void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOpti
         pPainter -> drawRect(boundingRect());
     }
 }
+    */
 
 void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+    m_StartPoint = event ->scenePos();
     const QPointF pos = event -> pos();
     const qreal line1 = QLineF(pos, line().p1()).length();
     const qreal line2 = QLineF(pos, line().p2()).length();
@@ -347,6 +343,7 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+    m_EndPoint = event ->scenePos();
     //qDebug("PhysVector::mouseReleaseEvent()");
     if (m_dragIndex == DI_VECTORLINE) {
         event -> pos();
@@ -436,4 +433,60 @@ void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         QGraphicsItem::mouseMoveEvent(event);
     }
     update();
+}
+
+QRectF PhysVector::boundingRect() const {
+    qreal extra = (pen().width() + 20) / 2.0;
+    return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(), line().p2().y() - line().p1().y())).normalized().adjusted(-extra, -extra, extra, extra);
+}
+
+void PhysVector::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
+    const double pi = PhysConsts::PI;
+    double angle;
+    QPen myPen = pen();
+    myPen.setColor(m_Color);
+    painter ->setPen(myPen);
+    painter ->setBrush(m_Color);
+
+    if (m_pStartParticle && m_pEndParticle) {
+        if (m_pStartParticle ->collidesWithItem(m_pEndParticle))
+            return;
+        QLineF centerLine(m_pStartParticle ->pos(), m_pEndParticle ->pos());
+        QPolygonF endPolygon = m_pEndParticle ->polygon();
+        QPointF p1 = endPolygon.first() + m_pEndParticle ->pos();
+        QPointF p2;
+        QPointF intersectPoint;
+        QLineF polyLine;
+        for (int i = 1; i < endPolygon.count(); ++i) {
+            p2 = endPolygon.at(i) + m_pEndParticle ->pos();
+            polyLine = QLineF(p1, p2);
+            QLineF::IntersectType intersectType = polyLine.intersect(centerLine, &intersectPoint);
+            if (intersectType == QLineF::BoundedIntersection)
+                break;
+            p1 = p2;
+        }
+        setLine(QLineF(intersectPoint, m_pStartParticle ->pos()));
+    }
+    angle = ::acos(line().dx() / line().length());
+    if (line().dy() >= 0)
+        angle = (PhysConsts::PI * 2) - angle;
+    double mathAngle = angle * 180 / PhysConsts::PI;
+    m_Theta.degrees = mathAngle;
+    qDebug("PhysVector::paint(): angle: %f, mathAngle: %f", angle, mathAngle);
+
+    QPointF arrowP1 = line().p1() + QPointF(sin(angle + PhysConsts::PI / 3) * m_arrowSize, cos(angle + PhysConsts::PI / 3) * m_arrowSize);
+    QPointF arrowP2 = line().p1() + QPointF(sin(angle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(angle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
+    m_arrowHead.clear();
+    m_arrowHead << line().p1() << arrowP1 << arrowP2;
+    painter ->drawLine(line());
+    painter ->drawPolygon(m_arrowHead);
+
+    if (isSelected()) {
+        painter ->setPen(QPen(m_Color, 1, Qt::DashLine));
+        QLineF myLine = line();
+        myLine.translate(0, 4.0);
+        painter ->drawLine(myLine);
+        myLine.translate(0,-8.0);
+        painter ->drawLine(myLine);
+    }
 }
