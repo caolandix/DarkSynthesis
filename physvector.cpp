@@ -61,7 +61,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QString Name, PhysParticle
     m_pDataObj ->Magnitude(50.0);
     m_bUseNewThetaAngle = false;
     m_Theta.bAboveAxis = true;
-    m_Theta.degrees = 123.0;
+    m_Theta.degrees = 135.0;
     m_Theta.axisOrientation = AXIS_HORIZ;
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
@@ -181,35 +181,6 @@ QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value
     return QGraphicsItem::itemChange(change, value);
 }
 
-void PhysVector::adjust() {
-    qDebug("PhysVector::adjust()");
-    if (!m_pStartParticle || !m_pEndParticle)
-        return;
-    else {
-        if (m_pStartParticle && !m_pEndParticle) {
-
-        }
-        else if (!m_pStartParticle && m_pEndParticle) {
-
-        }
-        else {
-            // QLineF aline(mapFromItem(m_pStartParticle, 0, 0), mapFromItem(m_pEndParticle, 0, 0));
-            qreal length = line().length();
-            QLineF my_line(line().p1(), line().p2());
-            QPointF pt1 = my_line.p1(), pt2 = my_line.p2();
-            prepareGeometryChange();
-            if (length > qreal(20.0)) {
-                QPointF edgeOffset((my_line.dx() * 10) / length, (my_line.dy() * 10) / length);
-                m_StartPoint = pt1 + edgeOffset;
-                m_EndPoint = pt2 - edgeOffset;
-            }
-            else {
-                m_StartPoint = pt1;
-                m_EndPoint = pt2;
-            }
-        }
-    }
-}
 
 QPainterPath PhysVector::shape() const {
     QPainterPath path = QGraphicsLineItem::shape();
@@ -225,101 +196,6 @@ void PhysVector::updatePosition() {
     else {
     }
 }
-
-/*
-void PhysVector::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOption, QWidget *) {
-    pPainter -> setPen(pen());
-
-    if (!m_bDraw)
-        return;
-
-    // If there are two particles to attach to then draw a the vector and attach to them
-    if (m_pStartParticle && m_pEndParticle) {
-        if (m_pStartParticle -> collidesWithItem(m_pEndParticle))
-            return;
-        QLineF centerLine(m_pStartParticle -> pos(), m_pEndParticle -> pos());
-        QPolygonF endPolygon = m_pEndParticle -> polygon();
-        QPointF p1 = endPolygon.first() + m_pEndParticle -> pos();
-        QPointF p2;
-        QPointF intersectPoint;
-        QLineF polyLine;
-
-        for (int i = 1; i < endPolygon.count(); ++i) {
-            p2 = endPolygon.at(i) + m_pEndParticle -> pos();
-            polyLine = QLineF(p1, p2);
-            QLineF::IntersectType intersectType = polyLine.intersect(centerLine, &intersectPoint);
-            if (intersectType == QLineF::BoundedIntersection)
-                break;
-            p1 = p2;
-        }
-        setLine(QLineF(intersectPoint, m_pStartParticle -> pos()));
-    }
-
-    // else if there is a starting particle and no ending particle then handle
-    else if (m_pStartParticle && !m_pEndParticle) {
-    }
-
-    // likewise if there is no starting particle but an ending particle, handle
-    else if (!m_pStartParticle && m_pEndParticle) {
-
-    }
-
-    // The default case of NO particles, is just a vector. We do nothing and just drop into the vector draw
-    else {
-    }
-
-    // Draw the vector
-    QLineF aLine = line();
-    QPointF arrowP1, arrowP2;
-    double drawAngle, realAngle, Theta;
-
-    if (m_bUseNewThetaAngle) {
-        double radians = (m_Theta.degrees / 180.0 * PhysConsts::PI) / 2;
-        aLine.setAngle(radians);
-        m_bUseNewThetaAngle = false;
-    }
-    else {
-        realAngle = ::acos(aLine.dx() / aLine.length());
-        if (m_Theta.axisOrientation == AXIS_HORIZ) {
-            QPointF currCoordP1(aLine.p1().x(), aLine.p1().y());
-            Theta = (::atan(aLine.dy() / aLine.dx()) * (180 / PhysConsts::PI));
-            //qDebug("Line (x, y): (%f, %f)", currCoordP1.x(), currCoordP1.y());
-
-            // If we're in the Quad I (+x, +y) or Quad II (-x, +y)
-            if ((currCoordP1.x() >= 0 && currCoordP1.y() >= 0) || (currCoordP1.x() < 0 && currCoordP1.y() >= 0)) {
-                if (Theta < 0)
-                    Theta = -Theta;
-            }
-
-            // Quad III (-x, -y) or Quad IV (+x, -y)
-            else if ((currCoordP1.x() < 0 && currCoordP1.y() < 0) || (currCoordP1.x() >= 0 && currCoordP1.y() < 0)) {
-                if (Theta > 0)
-                    Theta = -Theta;
-            }
-        }
-        m_Theta.degrees = Theta;
-
-        drawAngle = (aLine.dy() >= 0) ? (PhysConsts::PI * 2) - realAngle : (PhysConsts::PI * 2) + realAngle;
-        arrowP1 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI / 3) * m_arrowSize);
-        arrowP2 = aLine.p1() + QPointF(sin(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(drawAngle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
-    }
-    //qDebug("PhysVector::paint(): Theta: %f, realAngle: %f, drawAngle: %f", Theta, realAngle, drawAngle);
-    m_arrowHead.clear();
-    m_arrowHead << line().p1() << arrowP1 << arrowP2;
-    pPainter -> drawLine(aLine);
-    pPainter -> drawPolygon(m_arrowHead);
-    QPainterPath tmpPath;
-    QBrush brush(m_Color);
-    tmpPath.addPolygon(m_arrowHead);
-    pPainter -> fillPath(tmpPath, brush);
-
-    // draw a bounding rectangle if selected
-    if (isSelected()) {
-        pPainter -> setPen(Qt::darkRed);
-        pPainter -> drawRect(boundingRect());
-    }
-}
-    */
 
 void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     m_StartPoint = event ->scenePos();
@@ -441,8 +317,8 @@ QRectF PhysVector::boundingRect() const {
 }
 
 void PhysVector::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
-    const double pi = PhysConsts::PI;
-    double angle;
+    if (!m_bDraw)
+        return;
     QPen myPen = pen();
     myPen.setColor(m_Color);
     painter ->setPen(myPen);
@@ -467,26 +343,31 @@ void PhysVector::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         }
         setLine(QLineF(intersectPoint, m_pStartParticle ->pos()));
     }
-    angle = ::acos(line().dx() / line().length());
-    if (line().dy() >= 0)
-        angle = (PhysConsts::PI * 2) - angle;
-    double mathAngle = angle * 180 / PhysConsts::PI;
-    m_Theta.degrees = mathAngle;
-    qDebug("PhysVector::paint(): angle: %f, mathAngle: %f", angle, mathAngle);
-
-    QPointF arrowP1 = line().p1() + QPointF(sin(angle + PhysConsts::PI / 3) * m_arrowSize, cos(angle + PhysConsts::PI / 3) * m_arrowSize);
-    QPointF arrowP2 = line().p1() + QPointF(sin(angle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(angle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
-    m_arrowHead.clear();
-    m_arrowHead << line().p1() << arrowP1 << arrowP2;
-    painter ->drawLine(line());
-    painter ->drawPolygon(m_arrowHead);
-
+    if (m_bUseNewThetaAngle) {
+        QLineF aLine = line();
+        qreal length = aLine.length();
+        aLine.setAngle(m_Theta.degrees);
+        setLine(aLine);
+        m_bUseNewThetaAngle = false;
+    }
+    else {
+        double angle = ::acos(line().dx() / line().length());
+        if (line().dy() >= 0)
+            angle = (PhysConsts::PI * 2) - angle;
+        m_Theta.degrees = angle * 180 / PhysConsts::PI;
+        QPointF arrowP1 = line().p1() + QPointF(sin(angle + PhysConsts::PI / 3) * m_arrowSize, cos(angle + PhysConsts::PI / 3) * m_arrowSize);
+        QPointF arrowP2 = line().p1() + QPointF(sin(angle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(angle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
+        m_arrowHead.clear();
+        m_arrowHead << line().p1() << arrowP1 << arrowP2;
+        painter ->drawLine(line());
+        painter ->drawPolygon(m_arrowHead);
+    }
     if (isSelected()) {
-        painter ->setPen(QPen(m_Color, 1, Qt::DashLine));
         QLineF myLine = line();
+        painter ->setPen(QPen(m_Color, 1, Qt::DashLine));
         myLine.translate(0, 4.0);
         painter ->drawLine(myLine);
-        myLine.translate(0,-8.0);
+        myLine.translate(0, -8.0);
         painter ->drawLine(myLine);
     }
 }
