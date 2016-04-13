@@ -53,6 +53,8 @@ private:
     QComboBox *m_pVectorThetaAxisOrient;
     PhysObjectPropEditor *m_pVectorAssocParticle;
     PhysObjectPropEditor *m_pVectorName;
+    PhysObjectPropEditor *m_pVectorXPos;
+    PhysObjectPropEditor *m_pVectorYPos;
 
     // PhysParticles
     PhysObjectPropEditor *m_pParticleName;

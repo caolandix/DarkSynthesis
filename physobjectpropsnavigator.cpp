@@ -95,6 +95,14 @@ void PhysObjectPropsNavigator::updateVectorTable(PhysVector *pObj) {
         if (m_pVectorAssocParticle) {
             ;
         }
+        if (m_pVectorXPos && m_pVectorYPos) {
+            QString xcoord = m_pVectorXPos ->text();
+            QString ycoord = m_pVectorYPos ->text();
+            QLineF line = pObj ->line();
+            QPointF ptTranslate(xcoord.toDouble(), ycoord.toDouble());
+            line.translate(ptTranslate);
+            pObj ->setLine(line);
+        }
 
         // NOTE: Name is put last because it uses updated values from other vars
         if (m_pVectorName) {
@@ -228,6 +236,8 @@ void PhysObjectPropsNavigator::buildVectorTable(PhysVector *pObj, QGraphicsItem 
         setItem(2, 1, m_pVectorThetaAngle = new PhysObjectPropEditor(QString::number(pObj ->theta().degrees)));
         setCellWidget(3, 1, m_pVectorThetaAxisOrient = new QComboBox(this));
         setItem(4, 1, m_pVectorAssocParticle = new PhysObjectPropEditor());
+        setItem(5, 1, m_pVectorXPos = new PhysObjectPropEditor(QString::number(pObj ->line().p2().x())));
+        setItem(6, 1, m_pVectorYPos = new PhysObjectPropEditor(QString::number(pObj ->line().p2().y())));
 
         // Populate the combobox control with possible values...
         QStringList items;

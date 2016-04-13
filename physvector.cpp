@@ -23,7 +23,9 @@ std::map<int, QString> PhysVector::m_listEditableProps = {
     {1, QString("Magnitude")},
     {2, QString("Theta - Angle")},
     {3, QString("Theta - Axis Orientation")},
-    {4, QString("Associated Particle")}
+    {4, QString("Associated Particle")},
+    {5, QString("X-Coord")},
+    {6, QString("Y-Coord")}
 };
 
 PhysVector::PhysVector(
