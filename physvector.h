@@ -43,7 +43,6 @@ public:
     double Magnitude() const { return m_pDataObj ->Magnitude(); }
     Theta theta() const { return m_Theta; }
     QColor Color() const { return m_Color; }
-    QPolygonF ArrowHead() const { return m_arrowHead; }
     PhysParticle *StartParticle() const { return m_pStartParticle; }
     PhysParticle *EndParticle() const { return m_pEndParticle; }
     QString Name() const { return m_pDataObj ->Name(); }
@@ -77,7 +76,6 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
     QRectF boundingRect() const Q_DECL_OVERRIDE;
-    QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
 
 signals:
@@ -100,8 +98,6 @@ private:
     bool m_bDraw;
     CartesianLabel *m_pLabel;
     QColor m_Color;
-    QPolygonF m_arrowHead;
-    qreal m_arrowSize;
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
     QPointF m_StartPoint;

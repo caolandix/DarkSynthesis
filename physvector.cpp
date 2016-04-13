@@ -35,7 +35,6 @@ PhysVector::PhysVector(
     m_pLabel = new CartesianLabel(name, this, bDraw);
     m_pParent = pParent;
     m_Color = Qt::black;
-    m_arrowSize = 20;
     m_dragIndex = DI_VECTORLINE;
     m_bUseNewThetaAngle = false;
     m_Theta.bAboveAxis = true;
@@ -56,7 +55,6 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QString Name, PhysParticle
     m_pParent = pParent;
     m_pDataObj = new PhysVectorDataObj(Name);
     m_Color = Qt::black;
-    m_arrowSize = 20;
     m_dragIndex = DI_VECTORLINE;
     m_pDataObj ->Magnitude(50.0);
     m_bUseNewThetaAngle = false;
@@ -179,13 +177,6 @@ QVariant PhysVector::itemChange(GraphicsItemChange change, const QVariant &value
             break;
     };
     return QGraphicsItem::itemChange(change, value);
-}
-
-
-QPainterPath PhysVector::shape() const {
-    QPainterPath path = QGraphicsLineItem::shape();
-    path.addPolygon(m_arrowHead);
-    return path;
 }
 
 void PhysVector::updatePosition() {
@@ -345,22 +336,39 @@ void PhysVector::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     }
     if (m_bUseNewThetaAngle) {
         QLineF aLine = line();
-        qreal length = aLine.length();
         aLine.setAngle(m_Theta.degrees);
         setLine(aLine);
         m_bUseNewThetaAngle = false;
     }
     else {
         double angle = ::acos(line().dx() / line().length());
+
         if (line().dy() >= 0)
             angle = (PhysConsts::PI * 2) - angle;
-        m_Theta.degrees = angle * 180 / PhysConsts::PI;
-        QPointF arrowP1 = line().p1() + QPointF(sin(angle + PhysConsts::PI / 3) * m_arrowSize, cos(angle + PhysConsts::PI / 3) * m_arrowSize);
-        QPointF arrowP2 = line().p1() + QPointF(sin(angle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize, cos(angle + PhysConsts::PI - PhysConsts::PI / 3) * m_arrowSize);
-        m_arrowHead.clear();
-        m_arrowHead << line().p1() << arrowP1 << arrowP2;
-        painter ->drawLine(line());
-        painter ->drawPolygon(m_arrowHead);
+
+        QPointF pt1 = line().p1();
+        QPointF pt2 = line().p2();
+        QLineF angleLine1(pt2, pt1);
+        QLineF angleLine2(pt2, pt1);
+
+        double arrowLen = angleLine1.length() * 0.33;
+
+        // Determine arrow lengths -- no more than 10, no less than 5
+        if (arrowLen > 10.0)
+            arrowLen = 10.0;
+        else if (arrowLen < 5.0)
+            arrowLen = 5.0;
+
+        QPointF arrow1P1 = line().p1() + QPointF(sin(angle + PhysConsts::PI / 3) * arrowLen, cos(angle + PhysConsts::PI / 3) * arrowLen);
+        QPointF arrow2P1 = line().p1() + QPointF(sin(angle + PhysConsts::PI - PhysConsts::PI / 3) * arrowLen, cos(angle + PhysConsts::PI - PhysConsts::PI / 3) * arrowLen);
+        angleLine1.setP1(arrow1P1);
+        angleLine2.setP1(arrow2P1);
+        angleLine1.setLength(arrowLen);
+        angleLine2.setLength(arrowLen);
+        painter -> drawLine(angleLine1);
+        painter -> drawLine(angleLine2);
+        painter -> drawLine(line());
+
     }
     if (isSelected()) {
         QLineF myLine = line();
