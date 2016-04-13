@@ -26,7 +26,7 @@ GraphWidget::GraphWidget(PhysGraphicsScene *pScene, QWidget *pParent) : QGraphic
     // Setting the matrix rotates the drawing area to be a normal cartesian plane. Unfortunately
     // it also means that the original drawing has to be tweaked
     QTransform trfrm;
-    trfrm.scale(-1.0, -1.0);
+    trfrm.scale(1.0, -1.0);
     setTransform(trfrm);
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to

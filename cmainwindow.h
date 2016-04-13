@@ -49,8 +49,8 @@ private:
 
     // methods
     void init();
-    void createToolBars();
-    void createStatusBar();
+    void setupToolBars();
+    void setupStatusBar();
     void createDockWindows();
     void ReadXMLFile(QXmlStreamReader &, QFile &);
     void WriteXMLFile(QXmlStreamWriter &, QFile &);

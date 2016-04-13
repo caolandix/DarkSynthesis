@@ -11,7 +11,9 @@ std::map<int, QString> PhysParticle::m_listEditableProps = {
     {1, QString("Mass")},
     {2, QString("Position")},
     {3, QString("Lock X Axis")},
-    {4, QString("Lock Y Axis")}
+    {4, QString("Lock Y Axis")},
+    {5, QString("X-Coord")},
+    {6, QString("Y-Coord")}
 };
 
 PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, const QString &Label) :

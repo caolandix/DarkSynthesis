@@ -33,8 +33,8 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
     m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     m_infoLabel -> setAlignment(Qt::AlignCenter);
-    createToolBars();
-    createStatusBar();
+    setupToolBars();
+    setupStatusBar();
     createDockWindows();
 
     // m_pScene = new PhysGraphicsScene(NULL, this);
@@ -88,12 +88,11 @@ void CMainWindow::cartesianGraphOptions() {
     }
 }
 
-void CMainWindow::createToolBars() {
-    //QToolBar *pToolBar = new QToolBar(tr("Main"), this);
-    //pToolBar -> addSeparator();
+void CMainWindow::setupToolBars() {
+    m_pUI ->ui_mainToolBar;
 }
 
-void CMainWindow::createStatusBar() {
+void CMainWindow::setupStatusBar() {
 }
 
 void CMainWindow::createDockWindows() {
