@@ -49,6 +49,7 @@ private:
 
     // methods
     void init();
+    void setupMenu();
     void setupToolBars();
     void setupStatusBar();
     void createDockWindows();

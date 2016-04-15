@@ -33,6 +33,7 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     m_infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to invoke a context menu</i>"));
     m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     m_infoLabel -> setAlignment(Qt::AlignCenter);
+    setupMenu();
     setupToolBars();
     setupStatusBar();
     createDockWindows();
@@ -86,6 +87,10 @@ void CMainWindow::cartesianGraphOptions() {
     CartesianGraphSettingsDlg dlg(m_pGraphWidget -> cartesianGraph() -> DataObj());
     if (dlg.exec() == QDialog::Accepted) {
     }
+}
+
+void CMainWindow::setupMenu() {
+    m_pUI ->ui_mainMenuBar;
 }
 
 void CMainWindow::setupToolBars() {

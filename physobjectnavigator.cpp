@@ -20,9 +20,9 @@ PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent
     // Setup widget
     setColumnCount(2);
     setRootIsDecorated(true);
-    setAcceptDrops(true);
-    setDragEnabled(true);
-    setDragDropMode(QAbstractItemView::InternalMove);
+    // setAcceptDrops(true);
+    // setDragEnabled(true);
+    // setDragDropMode(QAbstractItemView::InternalMove);
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     QStringList colLabels;
