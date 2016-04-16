@@ -138,7 +138,7 @@ void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
         QStringList strList(str.split(","));
 
         QPointF newPos(strList.at(0).toDouble(), strList.at(1).toDouble());
-        pObj ->Position(newPos);
+        pObj ->position(newPos);
 
         // Locking of the axis'
         pObj ->LockXAxis(m_pLockXAxis ->currentIndex() == 0 ? true : false);

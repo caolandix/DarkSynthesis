@@ -1,12 +1,12 @@
 #include "cartesiangraphdataobj.h"
 
-CartesianGraphDataObj::CartesianGraphDataObj(const QString Name) : PhysDataObj(Name, DT_CARTGRAPH, QPoint(0, 0)) {
+CartesianGraphDataObj::CartesianGraphDataObj(const QString Name) : PhysDataObj(Name, DT_CARTGRAPH) {
     init();
 }
 
 CartesianGraphDataObj::CartesianGraphDataObj(QPointF origin, double tickStep, double x_min,
                                              double x_max, double y_min, double y_max,
-                                             const QString Name) : PhysDataObj(Name, DT_CARTGRAPH, QPoint(0, 0)) {
+                                             const QString Name) : PhysDataObj(Name, DT_CARTGRAPH) {
     m_origin = origin;
     m_tickStep = tickStep;
     m_x_min = x_min;

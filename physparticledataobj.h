@@ -13,15 +13,12 @@ public:
 
     PhysParticleDataObj &operator=(const PhysParticleDataObj &);
 
+    QPointF Position() const { return QPoint(xcoord(), ycoord()); }
+
     double mass() const { return m_mass; }
     void mass(const double val) { m_mass = val; }
-    double xcoord() const { return m_xpos; }
-    double ycoord() const { return m_ypos; }
-    void xcoord(double val) { m_xpos = val; }
-    void ycoord(double val) { m_ypos = val; }
 private:
     double m_mass;
-    double m_xpos, m_ypos;
 };
 QDataStream &operator<<(QDataStream &out, const PhysParticleDataObj &obj);
 QDataStream &operator>>(QDataStream &in, PhysParticleDataObj &obj);

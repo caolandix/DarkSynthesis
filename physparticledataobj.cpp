@@ -2,7 +2,7 @@
 #include "physparticledataobj.h"
 #include "physscience.h"
 
-PhysParticleDataObj::PhysParticleDataObj(const QString str, const QPoint pos) : PhysDataObj(str, DT_PARTICLE, pos) {
+PhysParticleDataObj::PhysParticleDataObj(const QString str, const QPoint pos) : PhysDataObj(str, DT_PARTICLE,  pos.x(), pos.y()) {
 
     // Physical attributes
     m_mass = PhysConsts::DefaultMass; // 1kg is default
@@ -10,7 +10,8 @@ PhysParticleDataObj::PhysParticleDataObj(const QString str, const QPoint pos) : 
 
 PhysParticleDataObj::PhysParticleDataObj(const PhysParticleDataObj &obj) : PhysDataObj(obj) {
     m_mass = obj.mass();
-    m_position = obj.Position();
+    m_xpos = obj.xcoord();
+    m_ypos = obj.ycoord();
 }
 
 PhysParticleDataObj::~PhysParticleDataObj() {
@@ -19,7 +20,8 @@ PhysParticleDataObj::~PhysParticleDataObj() {
 PhysParticleDataObj &PhysParticleDataObj::operator=(const PhysParticleDataObj &obj) {
     if (this != &obj) {
         m_mass = obj.mass();
-        m_position = obj.Position();
+        m_xpos = obj.xcoord();
+        m_ypos = obj.ycoord();
     }
     return *this;
 }

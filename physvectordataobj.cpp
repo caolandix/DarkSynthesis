@@ -1,20 +1,24 @@
 #include "physvectordataobj.h"
 
-PhysVectorDataObj::PhysVectorDataObj() : PhysDataObj(QString(""), DT_VECTOR, QPoint(0, 0)) {
+PhysVectorDataObj::PhysVectorDataObj() : PhysDataObj(QString(""), DT_VECTOR) {
     m_variable = QString("");
     m_equation = QString("");
     m_magnitude = 0.0;
 }
 
 
-PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QString equation, const QString name, double magnitude, const QPoint pos) : PhysDataObj(name, DT_VECTOR, pos) {
+PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QString equation, const QString name, double magnitude, const QPoint pos) :
+    PhysDataObj(name, DT_VECTOR, pos.x(), pos.y()) {
+
     m_variable = variable;
     Equation(equation);
     m_equation = m_eqList.at(0);
     m_magnitude = magnitude;
 }
 
-PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QStringList equations, const QString name, double magnitude, const QPoint pos) : PhysDataObj(name, DT_VECTOR, pos) {
+PhysVectorDataObj::PhysVectorDataObj(const QString variable, const QStringList equations, const QString name, double magnitude, const QPoint pos) :
+    PhysDataObj(name, DT_VECTOR,  pos.x(), pos.y()) {
+
     m_variable = variable;
     foreach (QString eq, equations)
         Equation(eq);

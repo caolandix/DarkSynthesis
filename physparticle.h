@@ -39,14 +39,14 @@ public:
     void Name(const QString &str);
     double mass() const { return m_pDataObj ->mass(); }
     void mass(const double val)  { m_pDataObj ->mass(val); }
-    QPointF Position() const { return m_pDataObj ->Position(); }
-    void Position(const QPointF pos) { m_pDataObj ->Position(pos); }
     bool isXAxisLocked() const { return m_bLockXAxis; }
     bool isYAxisLocked() const { return m_bLockYAxis; }
     void LockXAxis(const bool val) { m_bLockXAxis = val; }
     void LockYAxis(const bool val) { m_bLockYAxis = val; }
     CartesianGraph *Parent() const { return m_pParent; }
     PhysParticleDataObj *DataObj() const { return m_pDataObj; }
+    void position(QPointF pos) { m_pDataObj ->updatePos(pos.x(), pos.y()); }
+    QPointF position() const { return QPointF(m_pDataObj ->xcoord(), m_pDataObj ->ycoord()); }
 
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 
