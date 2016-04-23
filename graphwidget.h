@@ -64,7 +64,7 @@ protected:
 private:
     void createActions();
     void showPhysObjContextMenu(QGraphicsItem *, const QPoint &);
-    void showWidgetContextMenu(const QPoint &);
+    void showCartesianGraphContextMenu(const QPoint &);
 private:
     CMainWindow *m_pMainWindow;
     CartesianGraph *m_pCartGraph;

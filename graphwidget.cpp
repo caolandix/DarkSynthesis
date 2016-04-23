@@ -208,11 +208,11 @@ void GraphWidget::onCustomContextMenuRequested(const QPoint &pos) {
         showPhysObjContextMenu(pItem, viewport() -> mapToGlobal(pos));
     }
     else {
-        showWidgetContextMenu(pos);
+        ;
     }
 }
 
-void GraphWidget::showWidgetContextMenu(const QPoint& globalPos) {
+void GraphWidget::showCartesianGraphContextMenu(const QPoint& globalPos) {
     QMenu menu(this);
     menu.addAction(m_actNewVector);
     menu.addAction(m_actNewParticle);
@@ -230,7 +230,7 @@ void GraphWidget::showPhysObjContextMenu(QGraphicsItem *pItem, const QPoint& glo
             menu.addAction(m_actParticleProps);
             break;
         case PhysBaseItem::CartesianGraphType:
-            showWidgetContextMenu(mapFromGlobal(globalPos));
+            showCartesianGraphContextMenu(mapFromGlobal(globalPos));
             return;
     }
     QAction *pAction = menu.exec(globalPos);
