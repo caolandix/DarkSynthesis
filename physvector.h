@@ -61,7 +61,8 @@ public:
 
     void StartPoint(const QPointF &pt) { m_StartPoint = pt; }
     void EndPoint(const QPointF &pt) { m_EndPoint = pt; }
-    void CurrPos(const QPointF &pt) { m_currPos = pt; }
+    void currPos(const QPointF &pt) { m_pDataObj ->updatePos(pt.x(), pt.y()); }
+    QPointF currPos() const { return QPointF(m_pDataObj ->xcoord(), m_pDataObj ->ycoord()); }
     void Magnitude(const double val) { m_pDataObj ->Magnitude(val); }
     void Magnitude(const QString &str) { m_pDataObj ->Magnitude(str.toDouble()); }
     void SetDraw(bool bVal) { m_bDraw = bVal; }
@@ -87,7 +88,6 @@ private:
 
 
     // Data Specific (should be pulled out into a separate DataObject like CartesianGraph has
-    QPointF m_currPos;
     static map<int, QString> m_listEditableProps;
     bool m_bUseNewThetaAngle;
     Theta m_Theta;

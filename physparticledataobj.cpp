@@ -2,7 +2,7 @@
 #include "physparticledataobj.h"
 #include "physscience.h"
 
-PhysParticleDataObj::PhysParticleDataObj(const QString str, const QPoint pos) : PhysDataObj(str, DT_PARTICLE,  pos.x(), pos.y()) {
+PhysParticleDataObj::PhysParticleDataObj(const QString str, const double x, const double y) : PhysDataObj(str, DT_PARTICLE, x, y) {
 
     // Physical attributes
     m_mass = PhysConsts::DefaultMass; // 1kg is default

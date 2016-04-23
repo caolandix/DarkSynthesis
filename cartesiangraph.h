@@ -81,10 +81,12 @@ public slots:
     void onPropChange(const QString &);
     void onReorderObjNav(QGraphicsItem *);
     void onChangeItemName(const QString &, const QString &);
+    void updateItemPos(QGraphicsItem *pObj, const QPointF &pos);
     void onRepaint();
 signals:
     void reorderObjNav(QGraphicsItem *);
     void changeItemName(const QString &, const QString &);
+    void changeItemPos(QGraphicsItem *, const QPointF &);
     void updateUI();
     void repaint();
 };

@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include "cartesiangraph.h"
+#include "cmainwindow.h"
 #include "physgraphicsscene.h"
 
 class Node;
@@ -12,15 +13,18 @@ class QLabel;
 class PhysVector;
 class PhysParticle;
 class CartesianGraph;
+class CMainWindow;
 
 class GraphWidget : public QGraphicsView {
     Q_OBJECT
 public:
-    GraphWidget(PhysGraphicsScene *, QWidget *parent = NULL);
+    GraphWidget(PhysGraphicsScene *, CMainWindow *pParent);
     void itemMoved();
     void createCartesianGraph();
 
     CartesianGraph *cartesianGraph() const { return m_pCartGraph; }
+
+    CMainWindow *MainWindow() const { return m_pMainWindow; }
 signals:
     void createObj(QGraphicsItem *);
     void removeObj(QGraphicsItem *);
@@ -62,6 +66,7 @@ private:
     void showPhysObjContextMenu(QGraphicsItem *, const QPoint &);
     void showWidgetContextMenu(const QPoint &);
 private:
+    CMainWindow *m_pMainWindow;
     CartesianGraph *m_pCartGraph;
     QAction *m_actNewVector, *m_actNewParticle;
     QAction *m_actVectorProps, *m_actParticleProps;

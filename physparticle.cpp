@@ -24,7 +24,7 @@ PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, con
     setZValue(-1);
     setPos(0, 0);
     m_pLabel = new CartesianLabel(Label, this);
-    m_pDataObj = new PhysParticleDataObj(Label);
+    m_pDataObj = new PhysParticleDataObj(Label, startPos.x(), startPos.y());
     m_pParent = pParent;
     m_bLockXAxis = false;
     m_bLockYAxis = false;
@@ -58,6 +58,9 @@ void PhysParticle::Name(const QString &str) {
 void PhysParticle::createConnections() {
     connect(this, SIGNAL(changeItemName(const QString &, const QString &)),
             m_pParent, SLOT(onChangeItemName(const QString &, const QString &)));
+
+    connect(this, SIGNAL(updateItemPos(QGraphicsItem *, const QPointF &)),
+            m_pParent, SLOT(updateItemPos(QGraphicsItem *, const QPointF &)));
 }
 
 void PhysParticle::Vectors(const QList<PhysVector *> vectorList) {
@@ -157,6 +160,7 @@ void PhysParticle::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void PhysParticle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+    emit updateItemPos(static_cast<QGraphicsItem *>(this), event ->scenePos());
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }

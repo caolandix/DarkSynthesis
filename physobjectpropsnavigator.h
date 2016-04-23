@@ -30,6 +30,7 @@ public:
 private:
     QTableWidgetItem *createRowItem(const QString &);
     void createTable(const int, const int);
+    int findObjRowInTable(QGraphicsItem *);
 signals:
     void repaint();
     void updateParticleName(const QString, const QString);
@@ -37,6 +38,7 @@ public slots:
     void onChangeObj(QGraphicsItem *, QGraphicsItem *);
     void onUpdateObj(QGraphicsItem *);
     void onUpdateControl();
+    void changeItemPos(QGraphicsItem *, const QPointF &);
 private:
 
     // CartesianGraph

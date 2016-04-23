@@ -138,13 +138,58 @@ void PhysObjectPropsNavigator::updateParticleTable(PhysParticle *pObj) {
         QStringList strList(str.split(","));
 
         QPointF newPos(strList.at(0).toDouble(), strList.at(1).toDouble());
-        pObj ->position(newPos);
+        pObj ->currPos(newPos);
 
         // Locking of the axis'
         pObj ->LockXAxis(m_pLockXAxis ->currentIndex() == 0 ? true : false);
         pObj ->LockYAxis(m_pLockYAxis ->currentIndex() == 0 ? true : false);
     }
 }
+
+int PhysObjectPropsNavigator::findObjRowInTable(QGraphicsItem *pObj) {
+    int row = -1;
+    if (pObj) {
+        switch (pObj -> type()) {
+        case PhysBaseItem::VectorType:{
+            PhysVector *pVec = static_cast<PhysVector *>(pObj);
+            }
+            break;
+        case PhysBaseItem::ParticleType: {
+            PhysParticle *pPart = static_cast<PhysParticle *>(pObj);
+        }
+            break;
+        case PhysBaseItem::CartesianGraphType: {
+            CartesianGraph *pCart = static_cast<CartesianGraph *>(pObj);
+        }
+            break;
+        default:
+            qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
+            break;
+        }
+    }
+    return -1;
+
+}
+
+
+void PhysObjectPropsNavigator::changeItemPos(QGraphicsItem *pObj, const QPointF &pos) {
+    switch (pObj -> type()) {
+    case PhysBaseItem::VectorType:
+        static_cast<PhysVector *>(pObj) ->currPos(pos);
+        updateVectorTable(static_cast<PhysVector *>(pObj));
+        break;
+    case PhysBaseItem::ParticleType:
+        static_cast<PhysParticle *>(pObj) ->currPos(pos);
+        updateParticleTable(static_cast<PhysParticle *>(pObj));
+    default:
+        qDebug("PhysObjectPropsNavigator::onChangeObj(): not a valid Object type");
+        break;
+    }
+    int row = findObjRowInTable(pObj);
+    if (row != -1)
+        selectRow(row);
+}
+
 void PhysObjectPropsNavigator::updateCartesianGraphTable(CartesianGraph *pObj) {
     //qDebug("PhysObjectPropsNavigator::updateCartesianGraphTable()");
     if (pObj) {

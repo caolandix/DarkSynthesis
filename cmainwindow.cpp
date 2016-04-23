@@ -45,7 +45,7 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     //connect(m_pScene, SIGNAL(textInserted(QGraphicsTextItem *)), this, SLOT(textInserted(QGraphicsTextItem *)));
     //connect(m_pScene, SIGNAL(itemSelected(QGraphicsItem *)), this, SLOT(itemSelected(QGraphicsItem *)));
 
-    GraphWidget *pGraph = new GraphWidget(m_pScene);
+    GraphWidget *pGraph = new GraphWidget(m_pScene, this);
 
     setGraphWidget(pGraph);
     setCentralWidget(pGraph);

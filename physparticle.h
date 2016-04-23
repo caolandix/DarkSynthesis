@@ -45,8 +45,8 @@ public:
     void LockYAxis(const bool val) { m_bLockYAxis = val; }
     CartesianGraph *Parent() const { return m_pParent; }
     PhysParticleDataObj *DataObj() const { return m_pDataObj; }
-    void position(QPointF pos) { m_pDataObj ->updatePos(pos.x(), pos.y()); }
-    QPointF position() const { return QPointF(m_pDataObj ->xcoord(), m_pDataObj ->ycoord()); }
+    void currPos(QPointF pos) { m_pDataObj ->updatePos(pos.x(), pos.y()); }
+    QPointF currPos() const { return QPointF(m_pDataObj ->xcoord(), m_pDataObj ->ycoord()); }
 
     map<int, QString> EditableProps() const { return m_listEditableProps;}
 
@@ -56,6 +56,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 signals:
     void changeItemName(const QString &, const QString &);
+    void updateItemPos(QGraphicsItem *, const QPointF &);
 private:
     CartesianLabel *m_pLabel;
     QList<PhysVector *> m_Vectors;

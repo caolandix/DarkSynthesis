@@ -120,7 +120,7 @@ PhysVector *PhysVector::copy() {
     pObj -> Magnitude(Magnitude());
     pObj -> StartPoint(m_StartPoint);
     pObj -> EndPoint(m_EndPoint);
-    pObj -> CurrPos(m_currPos);
+    pObj -> currPos(QPointF(m_pDataObj ->xcoord(), m_pDataObj ->ycoord()));
     pObj -> StartParticle(m_pStartParticle);
     pObj -> EndParticle(m_pEndParticle);
     return pObj;
@@ -203,7 +203,7 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         m_dragIndex = DI_VECTORHEAD;
     else {
         m_dragIndex = DI_VECTORLINE;
-        m_currPos = event -> pos();
+        m_pDataObj ->updatePos(event -> pos().x(), event -> pos().y());
     }
     event -> setAccepted(true);
     // qDebug("mousePressEvent m_dragIndex: '%d'", m_dragIndex);
@@ -291,14 +291,14 @@ void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     else {
         QPointF pt1 = line().p1();
         QPointF pt2 = line().p2();
-        qreal dx = event -> pos().x() - m_currPos.x();
-        qreal dy = event -> pos().y() - m_currPos.y();
+        qreal dx = event -> pos().x() - currPos().x();
+        qreal dy = event -> pos().y() - currPos().y();
         pt1.setX(pt1.x() + dx);
         pt1.setY(pt1.y() + dy);
         pt2.setX(pt2.x() + dx);
         pt2.setY(pt2.y() + dy);
         setLine(QLineF(pt1, pt2));
-        m_currPos = event -> pos();
+        currPos(event -> pos());
         QGraphicsItem::mouseMoveEvent(event);
     }
     update();

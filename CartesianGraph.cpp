@@ -7,6 +7,7 @@
 #include "physparticle.h"
 #include "physvector.h"
 #include "graphwidget.h"
+#include "physobjectpropsnavigator.h"
 
 std::map<int, QString> CartesianGraph::m_listEditableProps = {
     {0, QString("X-Axis Label")},
@@ -87,10 +88,25 @@ void CartesianGraph::init() {
 }
 
 void CartesianGraph::createConnections() {
-    connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)), m_pGraphWidget, SLOT(onReorderObjNav(QGraphicsItem *)));
-    connect(this, SIGNAL(changeItemName(const QString &, const QString &)), m_pGraphWidget, SLOT(onChangeItemName(const QString &, const QString &)));
-    connect(this, SIGNAL(repaint()), m_pGraphWidget, SLOT(onRepaint()));
+    connect(this, SIGNAL(reorderObjNav(QGraphicsItem *)),
+        m_pGraphWidget, SLOT(onReorderObjNav(QGraphicsItem *)));
+
+    connect(this, SIGNAL(changeItemName(const QString &, const QString &)),
+        m_pGraphWidget, SLOT(onChangeItemName(const QString &, const QString &)));
+
+    connect(this, SIGNAL(repaint()),
+        m_pGraphWidget, SLOT(onRepaint()));
+
+
+    PhysObjectPropsNavigator *pView = m_pGraphWidget ->MainWindow() -> getPhysObjPropsNavigator();
+    connect(this, SIGNAL(changeItemPos(QGraphicsItem *, const QPointF &)),
+        pView, SLOT(onChangeItemPos(QGraphicsItem *, const QPointF &)));
 }
+
+void CartesianGraph::updateItemPos(QGraphicsItem *pObj, const QPointF &pos) {
+    emit changeItemPos(pObj, pos);
+}
+
 
 void CartesianGraph::onChangeItemName(const QString &strOld, const QString &strNew) {
     emit changeItemName(strOld, strNew);
