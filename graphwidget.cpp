@@ -229,6 +229,9 @@ void GraphWidget::showPhysObjContextMenu(QGraphicsItem *pItem, const QPoint& glo
         case PhysBaseItem::ParticleType:
             menu.addAction(m_actParticleProps);
             break;
+        case PhysBaseItem::CartesianGraphType:
+            showWidgetContextMenu(mapFromGlobal(globalPos));
+            return;
     }
     QAction *pAction = menu.exec(globalPos);
     if (pAction) {
