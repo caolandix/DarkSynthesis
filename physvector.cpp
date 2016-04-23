@@ -34,7 +34,7 @@ PhysVector::PhysVector(
     QGraphicsLineItem(pParent), PhysBaseItem() {
     m_pDataObj = new PhysVectorDataObj(variable, equation, name, magnitude);
 
-    m_pLabel = new CartesianLabel(name, this, bDraw);
+    m_pLabel = new CartesianLabel(name, this, true, bDraw);
     m_pParent = pParent;
     m_Color = Qt::black;
     m_dragIndex = DI_VECTORLINE;
