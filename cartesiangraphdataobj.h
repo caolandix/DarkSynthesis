@@ -10,18 +10,15 @@
 class CartesianGraphDataObj : public PhysDataObj {
 public:
     CartesianGraphDataObj(const QString Name = "");
-    CartesianGraphDataObj(QPointF origin,
-                          double tickStep,
-                          double x_min,
-                          double x_max,
-                          double y_min,
-                          double y_max,
-                          const QString Name = "");
+    CartesianGraphDataObj(const QPointF origin, const double tickStep, const int tickLength, const double x_min, const double x_max, const double y_min, const double y_max, const QString Name = "");
     virtual ~CartesianGraphDataObj();
 
     // copy ctor and assignment
     CartesianGraphDataObj(const CartesianGraphDataObj &);
     CartesianGraphDataObj(const CartesianGraphDataObj *);
+    void copyData(const CartesianGraphDataObj &);
+    void copyData(const CartesianGraphDataObj *);
+
 
     // operator overloads
     CartesianGraphDataObj &operator=(const CartesianGraphDataObj &);
@@ -29,6 +26,7 @@ public:
 
     // Accessors -- get
     double tickStep() const { return m_tickStep; }
+    int tickLength() const { return m_tickLength; }
     double xMin() const { return m_x_min; }
     double yMin() const { return m_y_min; }
     double xMax() const { return m_x_max; }
@@ -38,24 +36,26 @@ public:
     QList<PhysParticle *> Particles() const { return m_Particles; }
 
     // Accessors -- set
-    void tickStep(const double data) { m_tickStep = data; }
-    void xMin(const double data) { m_x_min = data; }
-    void yMin(const double data) { m_y_min = data; }
-    void xMax(const double data) { m_x_max = data; }
-    void yMax(const double data) { m_y_max = data; }
-    void origin(const QPointF data) { m_origin = data; }
-    void Vectors(const QList<PhysVector *> &data) { m_Vectors = data; }
-    void Particles(QList<PhysParticle *> &data) { m_Particles = data; }
+    void tickStep(const double val) { m_tickStep = val; }
+    void tickLength(const int val) { m_tickLength = val; }
+    void xMin(const double val) { m_x_min = val; }
+    void yMin(const double val) { m_y_min = val; }
+    void xMax(const double val) { m_x_max = val; }
+    void yMax(const double val) { m_y_max = val; }
+    void origin(const QPointF val) { m_origin = val; }
+    void Vectors(const QList<PhysVector *> &val) { m_Vectors = val; }
+    void Particles(QList<PhysParticle *> &val) { m_Particles = val; }
 
 
     // methods
-    void AddVector(PhysVector *pobj) { m_Vectors.push_back(pobj); }
-    void AddParticle(PhysParticle *pobj) { m_Particles.push_back(pobj); }
+    void AddVector(PhysVector *pObj) { m_Vectors.push_back(pObj); }
+    void AddParticle(PhysParticle *pObj) { m_Particles.push_back(pObj); }
     void init();
 private:
     QPointF m_origin;
     double m_tickStep;
     double m_x_min, m_x_max, m_y_min, m_y_max;
+    int m_tickLength;
     QList<PhysVector *> m_Vectors;
     QList<PhysParticle *> m_Particles;
 };

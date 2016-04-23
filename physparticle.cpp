@@ -151,6 +151,12 @@ QVariant PhysParticle::itemChange(GraphicsItemChange change, const QVariant &val
     return QGraphicsItem::itemChange(change, value);
 }
 
+void PhysParticle::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+    if (event ->buttons() == Qt::LeftButton) {
+        qDebug("Coordinates: (%g, %g)", event ->pos().x(), event ->pos().y());
+    }
+}
+
 void PhysParticle::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     update();
     QGraphicsItem::mousePressEvent(event);

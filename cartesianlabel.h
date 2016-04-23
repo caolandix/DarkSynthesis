@@ -8,9 +8,9 @@
 class CartesianLabel : public QGraphicsTextItem {
     Q_OBJECT
 public:
-    CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem * = NULL, bool = true);
-    CartesianLabel(const QString &, QGraphicsItem * = NULL, bool = true);
-    CartesianLabel(QGraphicsItem * = NULL, bool = true);
+    CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem * = NULL, bool bMoveable = true, bool bDraw = true);
+    CartesianLabel(const QString &, QGraphicsItem * = NULL, bool bMoveable = true, bool bDraw = true);
+    CartesianLabel(QGraphicsItem * = NULL, bool bMoveable = true, bool bDraw = true);
     QRectF boundingRect() const;
 
     Qt::Alignment alignment() const { return m_Flags; }
@@ -22,7 +22,7 @@ public:
     void setDraw(bool bVal) { m_bDraw = bVal; }
 
     // From PhysBaseItem
-    void init(bool);
+    void init(bool, bool);
     CartesianLabel *copy();
 
     // From QGraphicsTextItem

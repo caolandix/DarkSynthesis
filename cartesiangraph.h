@@ -15,7 +15,7 @@ class CartesianGraph : public PhysBaseItem, public QGraphicsItem {
 public:
 
     // ctors/dtor
-    CartesianGraph(GraphWidget *, const QString & = "Cartesian Plane", CartesianGraphDataObj * = NULL);
+    CartesianGraph(GraphWidget *, const QString & = "Cartesian Plane", CartesianGraphDataObj * = NULL, const double = 0.0, const double = 0.0);
     CartesianGraph(const CartesianGraph &);
     ~CartesianGraph();
 
@@ -23,8 +23,11 @@ public:
     CartesianGraph &operator=(const CartesianGraph &);
 
     // overloaded inherited methods
+    enum { Type = PhysBaseItem::CartesianGraphType };
+    void init() Q_DECL_OVERRIDE;
+    int type() const Q_DECL_OVERRIDE { return Type; }
+    CartesianGraph *copy() Q_DECL_OVERRIDE;
     QRectF boundingRect() const Q_DECL_OVERRIDE;
-    QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
 
     // accessors -- get
@@ -45,7 +48,6 @@ public:
     map<int, QString> EditableProps() const { return m_listEditableProps;}
     void AddParticle(PhysParticle *pObj) { m_pDataObj ->AddParticle(pObj); }
 
-
     // accessors -- set
     void XAxisLabel(const QString &data) { m_x_label -> setPlainText(data); }
     void YAxisLabel(const QString &data) { m_y_label -> setPlainText(data); }
@@ -53,16 +55,10 @@ public:
     void tickStep(const QString &str) { m_pDataObj ->tickStep(str.toDouble()); }
     void XExtent(const QString &);
     void YExtent(const QString &);
-
-    enum { Type = PhysBaseItem::CartesianGraphType };
-    int type() const Q_DECL_OVERRIDE { return Type; }
-
-    CartesianGraph *copy();
-    void init();
+private:
+    void changeLabelPositions();
     void createConnections();
     void restructure();
-
-
 protected:
     QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
@@ -75,7 +71,7 @@ private:
     CartesianLabel *m_pYMin;
     CartesianLabel *m_pYMax;
     CartesianGraphDataObj *m_pDataObj;
-    int m_borderWidth;
+    int m_penWidth;
     static map<int, QString> m_listEditableProps;
 public slots:
     void onPropChange(const QString &);
