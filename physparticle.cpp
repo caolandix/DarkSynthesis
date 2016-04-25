@@ -23,6 +23,7 @@ PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, con
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     setPos(0, 0);
+    m_pCoordDisplay = NULL;
     m_pLabel = new CartesianLabel(Label, this);
     m_pDataObj = new PhysParticleDataObj(Label, startPos.x(), startPos.y());
     m_pParent = pParent;
@@ -156,8 +157,21 @@ QVariant PhysParticle::itemChange(GraphicsItemChange change, const QVariant &val
 
 void PhysParticle::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (event ->buttons() == Qt::LeftButton) {
-        qDebug("Coordinates: (%g, %g)", event ->pos().x(), event ->pos().y());
+        QPointF pos = mapFromScene(event ->pos());
+        qDebug() << QString("Coordinates: (") << QString::number(pos.x()) <<
+                    QString(", ") << QString::number(pos.y()) << QString(")");
+        QString str = QString("(%1, %2)").arg(QString::number(pos.x()), QString::number(pos.y()));
+        QPointF newPos(0, 0);
+        newPos.setX(pos.x() + 15); newPos.setY(pos.y() + 15);
+        if (!m_pCoordDisplay)
+            m_pCoordDisplay = new CartesianLabel(str, this);
+        else
+            m_pCoordDisplay ->setPlainText(str);
+        qDebug() << QString("Coordinates: (") << QString::number(newPos.x()) <<
+                    QString(", ") << QString::number(newPos.y()) << QString(")");
+        m_pCoordDisplay ->setPos(newPos);
     }
+    QGraphicsItem::mouseMoveEvent(event);
 }
 
 void PhysParticle::mousePressEvent(QGraphicsSceneMouseEvent *event) {
@@ -167,6 +181,7 @@ void PhysParticle::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 void PhysParticle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     emit updateItemPos(static_cast<QGraphicsItem *>(this), event ->scenePos());
+    delete m_pCoordDisplay; m_pCoordDisplay = NULL;
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }

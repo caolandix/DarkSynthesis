@@ -60,6 +60,7 @@ signals:
     void updateItemPos(QGraphicsItem *, const QPointF &);
 private:
     CartesianLabel *m_pLabel;
+    CartesianLabel *m_pCoordDisplay;
     QList<PhysVector *> m_Vectors;
     PhysParticleDataObj *m_pDataObj;
     CartesianGraph *m_pParent;
