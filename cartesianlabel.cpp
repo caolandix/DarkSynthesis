@@ -10,10 +10,6 @@ CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent, bool
     init(bDraw, bMoveable);
 }
 
-CartesianLabel::CartesianLabel(QGraphicsItem *pParent, bool bMoveable, bool bDraw) : QGraphicsTextItem(pParent) {
-    m_Flags = Qt::AlignTop | Qt::AlignLeft;
-    init(bDraw, bMoveable);
-}
 
 void CartesianLabel::init(bool bDraw, bool bMoveable) {
     if (bMoveable)

@@ -10,7 +10,6 @@ class CartesianLabel : public QGraphicsTextItem {
 public:
     CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem * = NULL, bool bMoveable = true, bool bDraw = true);
     CartesianLabel(const QString &, QGraphicsItem * = NULL, bool bMoveable = true, bool bDraw = true);
-    CartesianLabel(QGraphicsItem * = NULL, bool bMoveable = true, bool bDraw = true);
     QRectF boundingRect() const;
 
     Qt::Alignment alignment() const { return m_Flags; }

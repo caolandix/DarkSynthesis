@@ -65,7 +65,7 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QString Name, PhysParticle
     m_Theta.axisOrientation = AXIS_HORIZ;
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
-    m_pLabel = new CartesianLabel(this);
+    m_pLabel = new CartesianLabel(Name, this);
     m_bDraw = true;
 
     if (pStart)

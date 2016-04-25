@@ -96,7 +96,7 @@ void PhysGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
             break;
             */
         case InsertText:
-            m_pCurrTextItem = new CartesianLabel();
+            m_pCurrTextItem = new CartesianLabel("");
             m_pCurrTextItem ->setFont(m_currFont);
             m_pCurrTextItem ->setTextInteractionFlags(Qt::TextEditorInteraction);
             m_pCurrTextItem ->setZValue(1000.0);

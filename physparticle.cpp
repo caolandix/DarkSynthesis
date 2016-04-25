@@ -12,14 +12,15 @@ std::map<int, QString> PhysParticle::m_listEditableProps = {
     {2, QString("Position")},
     {3, QString("Lock X Axis")},
     {4, QString("Lock Y Axis")},
-    {5, QString("X-Coord")},
-    {6, QString("Y-Coord")}
 };
 
 PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, const QString &Label) :
     PhysBaseItem(), QGraphicsPolygonItem(pParent) {
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
     setFlag(ItemSendsGeometryChanges);
+    setFlag(ItemSendsScenePositionChanges);
+    setFlag(ItemIsFocusable);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     setPos(0, 0);
@@ -36,6 +37,10 @@ PhysParticle::~PhysParticle() {
     if (m_pLabel) {
         delete m_pLabel;
         m_pLabel = NULL;
+    }
+    if (m_pCoordDisplay) {
+        delete m_pCoordDisplay;
+        m_pCoordDisplay = NULL;
     }
     delete m_pDataObj;
 }
@@ -157,19 +162,19 @@ QVariant PhysParticle::itemChange(GraphicsItemChange change, const QVariant &val
 
 void PhysParticle::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (event ->buttons() == Qt::LeftButton) {
-        QPointF pos = mapFromScene(event ->pos());
+        QPointF scenePos = event ->scenePos();
+        QPointF localPos = event ->pos();
+        /*
         qDebug() << QString("Coordinates: (") << QString::number(pos.x()) <<
                     QString(", ") << QString::number(pos.y()) << QString(")");
-        QString str = QString("(%1, %2)").arg(QString::number(pos.x()), QString::number(pos.y()));
-        QPointF newPos(0, 0);
-        newPos.setX(pos.x() + 15); newPos.setY(pos.y() + 15);
-        if (!m_pCoordDisplay)
+        */
+        QString str = QString("(%1, %2)").arg(QString::number(scenePos.x()), QString::number(scenePos.y()));
+        if (!m_pCoordDisplay) {
             m_pCoordDisplay = new CartesianLabel(str, this);
+            m_pCoordDisplay ->setPos(localPos.x() + 10, localPos.y() + 10);
+        }
         else
             m_pCoordDisplay ->setPlainText(str);
-        qDebug() << QString("Coordinates: (") << QString::number(newPos.x()) <<
-                    QString(", ") << QString::number(newPos.y()) << QString(")");
-        m_pCoordDisplay ->setPos(newPos);
     }
     QGraphicsItem::mouseMoveEvent(event);
 }
