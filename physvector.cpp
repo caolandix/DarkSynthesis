@@ -82,6 +82,10 @@ PhysVector::~PhysVector() {
         delete m_pLabel;
         m_pLabel = NULL;
     }
+    if (m_pCoordDisplay) {
+        delete m_pCoordDisplay;
+        m_pCoordDisplay = NULL;
+    }
     m_pStartParticle = NULL;
     m_pEndParticle = NULL;
 }
@@ -97,6 +101,7 @@ void PhysVector::init() {
     setPen(QPen(m_Color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     double length = sqrt(pow(Magnitude(), 2) + pow(Magnitude(), 2));
     setLine(0 + length, 0 + length, 0, 0);
+    m_pCoordDisplay = NULL;
 }
 
 void PhysVector::createConnections() {
@@ -212,6 +217,8 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+    delete m_pCoordDisplay; m_pCoordDisplay = NULL;
+
     m_EndPoint = event ->scenePos();
     //qDebug("PhysVector::mouseReleaseEvent()");
     if (m_dragIndex == DI_VECTORLINE) {
@@ -300,6 +307,24 @@ void PhysVector::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         setLine(QLineF(pt1, pt2));
         currPos(event -> pos());
         QGraphicsItem::mouseMoveEvent(event);
+
+        if (event ->buttons() == Qt::LeftButton) {
+            QPointF scenePos = line().p2();
+            QPointF localPos = event ->pos();
+            /*
+            qDebug() << QString("Coordinates: (") << QString::number(pos.x()) <<
+                        QString(", ") << QString::number(pos.y()) << QString(")");
+            */
+            QString str = QString("(%1, %2)").arg(QString::number(scenePos.x()), QString::number(scenePos.y()));
+            if (!m_pCoordDisplay) {
+                m_pCoordDisplay = new CartesianLabel(str, this);
+                m_pCoordDisplay ->setPos(localPos.x() + 10, localPos.y() + 10);
+            }
+            else
+                m_pCoordDisplay ->setPlainText(str);
+        }
+        QGraphicsItem::mouseMoveEvent(event);
+
     }
     update();
 }

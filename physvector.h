@@ -96,7 +96,7 @@ private:
 
     // Drawing specific.
     bool m_bDraw;
-    CartesianLabel *m_pLabel;
+    CartesianLabel *m_pLabel, *m_pCoordDisplay;
     QColor m_Color;
     MouseClickLocale m_dragIndex;
     CartesianGraph *m_pParent;
