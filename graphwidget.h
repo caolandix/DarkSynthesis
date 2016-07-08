@@ -18,7 +18,7 @@ class CMainWindow;
 class GraphWidget : public QGraphicsView {
     Q_OBJECT
 public:
-    GraphWidget(PhysGraphicsScene *, CMainWindow *pParent);
+    GraphWidget(CMainWindow *pParent);
     void itemMoved();
     void createCartesianGraph();
 
@@ -71,7 +71,6 @@ private:
     QAction *m_actNewVector, *m_actNewParticle;
     QAction *m_actVectorProps, *m_actParticleProps;
     QLabel *m_pInfoLabel;
-    // PhysGraphicsScene *m_pScene;
     QGraphicsScene *m_pScene;
     QPointF m_currClickPos;
 };

@@ -5,7 +5,6 @@
 
 #include "graphwidget.h"
 #include "physcommon.h"
-#include "physgraphicsscene.h"
 #include "xes1/physelectrostaticview.h"
 
 class PhysObjectNavigator;
@@ -68,7 +67,6 @@ private:
     Ui::CMainWindow *m_pUI;
     GraphWidget *m_pGraphWidget;
     QGraphicsView *m_pView;
-    PhysGraphicsScene *m_pScene;
 };
 
 #endif // CMAINWINDOW_H

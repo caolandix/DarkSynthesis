@@ -38,14 +38,7 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     setupStatusBar();
     createDockWindows();
 
-    // m_pScene = new PhysGraphicsScene(NULL, this);
-    // m_pScene -> setSceneRect(-2000, -2000, 4000, 4000);
-
-    //connect(m_pScene, SIGNAL(itemInserted(PhysParticle *)), this, SLOT(itemInserted(PhysParticle *)));
-    //connect(m_pScene, SIGNAL(textInserted(QGraphicsTextItem *)), this, SLOT(textInserted(QGraphicsTextItem *)));
-    //connect(m_pScene, SIGNAL(itemSelected(QGraphicsItem *)), this, SLOT(itemSelected(QGraphicsItem *)));
-
-    GraphWidget *pGraph = new GraphWidget(m_pScene, this);
+    GraphWidget *pGraph = new GraphWidget(this);
 
     setGraphWidget(pGraph);
     setCentralWidget(pGraph);

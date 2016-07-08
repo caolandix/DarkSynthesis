@@ -1,78 +1,10 @@
-#include <QTextCursor>
 #include <QGraphicsSceneMouseEvent>
 
 #include "physgraphicsscene.h"
 #include "physvector.h"
 
 
-PhysGraphicsScene::PhysGraphicsScene(QMenu *pItemMenu, QObject *parent) : QGraphicsScene(parent) {
-    m_currAction = MoveItem;
-    m_pItemMenu = pItemMenu;
-    m_currItemType = PhysDataObj::DT_UNASSIGNED;
-    m_pLine = NULL;
-    m_pCurrTextItem = NULL;
-    m_currItemColor = Qt::white;
-    m_currTextColor = Qt::black;
-    m_currLineColor = Qt::black;
-}
-
-void PhysGraphicsScene::setLineColor(const QColor &color) {
-    /*
-    myLineColor = color;
-    if (isItemChange(Arrow::Type)) {
-        PhysVector *item = qgraphicsitem_cast<Arrow *>(selectedItems().first());
-        item ->setColor(myLineColor);
-        update();
-    }
-    */
-}
-
-void PhysGraphicsScene::setTextColor(const QColor &color) {
-    m_currTextColor = color;
-    if (isItemChange(PhysBaseItem::PhysTextType)) {
-        CartesianLabel *pItem = qgraphicsitem_cast<CartesianLabel *>(selectedItems().first());
-        pItem ->setDefaultTextColor(m_currTextColor);
-    }
-}
-
-void PhysGraphicsScene::setItemColor(const QColor &color) {
-    /*
-    myItemColor = color;
-    if (isItemChange(DiagramItem::Type)) {
-        DiagramItem *item = qgraphicsitem_cast<DiagramItem *>(selectedItems().first());
-        item->setBrush(myItemColor);
-    }
-    */
-}
-
-void PhysGraphicsScene::setFont(const QFont &font) {
-    m_currFont = font;
-
-    if (isItemChange(PhysBaseItem::PhysTextType)) {
-        CartesianLabel *pItem = qgraphicsitem_cast<CartesianLabel *>(selectedItems().first());
-        //At this point the selection can change so the first selected item might not be a DiagramTextItem
-        if (pItem)
-            pItem ->setFont(m_currFont);
-    }
-}
-
-void PhysGraphicsScene::setAction(Actions action) {
-    m_currAction = action;
-}
-
-void PhysGraphicsScene::setItemType(int type) {
-    m_currItemType = type;
-}
-
-void PhysGraphicsScene::editorLostFocus(CartesianLabel *pItem) {
-    QTextCursor cursor = pItem ->textCursor();
-    cursor.clearSelection();
-    pItem ->setTextCursor(cursor);
-
-    if (pItem ->toPlainText().isEmpty()) {
-        removeItem(pItem);
-        pItem ->deleteLater();
-    }
+PhysGraphicsScene::PhysGraphicsScene(QObject *parent) : QGraphicsScene(parent) {
 }
 
 void PhysGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
@@ -156,12 +88,4 @@ void PhysGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) 
     m_pLine = NULL;
     */
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
-}
-
-bool PhysGraphicsScene::isItemChange(int type) {
-    foreach (QGraphicsItem *pItem, selectedItems()) {
-        if (pItem ->type() == type)
-            return true;
-    }
-    return false;
 }

@@ -5,7 +5,7 @@
 #include "cartesiangraph.h"
 #include "physbaseitem.h"
 
-GraphWidget::GraphWidget(PhysGraphicsScene *pScene, CMainWindow *pParent) : QGraphicsView(static_cast<QWidget *>(pParent)) {
+GraphWidget::GraphWidget(CMainWindow *pParent) : QGraphicsView(static_cast<QWidget *>(pParent)) {
     m_pCartGraph = NULL;
     m_actNewVector = NULL;
     m_actNewParticle = NULL;

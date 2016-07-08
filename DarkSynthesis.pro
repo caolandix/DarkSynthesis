@@ -76,8 +76,7 @@ SOURCES += main.cpp \
     objectnavigator.cpp \
     physobjectpropsnavigatordock.cpp \
     physequationsolverdock.cpp \
-    physoutputnavigatordock.cpp \
-    physgraphicsscene.cpp
+    physoutputnavigatordock.cpp
 
 HEADERS  += cmainwindow.h \
     graphwidget.h \
@@ -208,7 +207,6 @@ HEADERS  += cmainwindow.h \
     physobjectpropsnavigatordock.h \
     physequationsolverdock.h \
     physoutputnavigatordock.h \
-    physgraphicsscene.h \
     darksynth.h
 
 FORMS    += cmainwindow.ui \
