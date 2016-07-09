@@ -50,6 +50,7 @@ private:
     void init();
     void setupMenu();
     void setupToolBars();
+    void createActions();
     void setupStatusBar();
     void createDockWindows();
     void ReadXMLFile(QXmlStreamReader &, QFile &);
@@ -67,6 +68,16 @@ private:
     Ui::CMainWindow *m_pUI;
     GraphWidget *m_pGraphWidget;
     QGraphicsView *m_pView;
+
+    QAction *m_pDeleteAction;
+    QAction *m_pAboutAction;
+    QAction *m_pExitAction;
+    QToolBar *m_pEditToolBar;
+    QToolBar *m_pPointerToolbar;
+
+    QToolBox *m_pToolBox;
+    QButtonGroup *m_pButtonGroup;
+    QButtonGroup *m_pPointerTypeGroup;
 };
 
 #endif // CMAINWINDOW_H

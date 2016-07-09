@@ -196,7 +196,6 @@ void PhysVector::updatePosition() {
 }
 
 void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    /*
     m_StartPoint = event ->scenePos();
     const QPointF pos = event -> pos();
     const qreal line1 = QLineF(pos, line().p1()).length();
@@ -213,10 +212,11 @@ void PhysVector::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     }
     event -> setAccepted(true);
     // qDebug("mousePressEvent m_dragIndex: '%d'", m_dragIndex);
-    */
-    QLineF newLine(m_pLine ->line().p1(), mouseEvent->scenePos());
-    m_pLine ->setLine(newLine);
 
+    /*
+    QLineF newLine(line().p1(), event ->scenePos());
+    setLine(newLine);
+*/
     QGraphicsItem::mousePressEvent(event);
     update();
 }

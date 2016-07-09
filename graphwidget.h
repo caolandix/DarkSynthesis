@@ -4,11 +4,9 @@
 #include <QtWidgets>
 #include "cartesiangraph.h"
 #include "cmainwindow.h"
-#include "physgraphicsscene.h"
 
 class Node;
 class QAction;
-class QGraphicsScene;
 class QLabel;
 class PhysVector;
 class PhysParticle;
@@ -18,6 +16,7 @@ class CMainWindow;
 class GraphWidget : public QGraphicsView {
     Q_OBJECT
 public:
+    enum Mode { InsertItem, InsertLine, InsertText, MoveItem, RotateItem };
     GraphWidget(CMainWindow *pParent);
     void itemMoved();
     void createCartesianGraph();

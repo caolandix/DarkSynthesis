@@ -34,6 +34,7 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent), m_pUI(new Ui::C
     m_infoLabel -> setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     m_infoLabel -> setAlignment(Qt::AlignCenter);
     setupMenu();
+    createActions();
     setupToolBars();
     setupStatusBar();
     createDockWindows();
@@ -86,8 +87,45 @@ void CMainWindow::setupMenu() {
     m_pUI ->ui_mainMenuBar;
 }
 
+void CMainWindow::createActions() {
+    m_pDeleteAction = new QAction(QIcon("images/delete.png"), tr("&Delete"), this);
+    m_pDeleteAction ->setShortcut(tr("Delete"));
+    m_pDeleteAction ->setStatusTip(tr("Delete item from diagram"));
+    connect(m_pDeleteAction, SIGNAL(triggered()), this, SLOT(deleteItem()));
+
+    m_pExitAction = new QAction(tr("E&xit"), this);
+    m_pExitAction ->setShortcuts(QKeySequence::Quit);
+    m_pExitAction ->setStatusTip(tr("Quit Dark Synthesis"));
+    connect(m_pExitAction, SIGNAL(triggered()), this, SLOT(close()));
+
+    m_pAboutAction = new QAction(tr("A&bout"), this);
+    m_pAboutAction ->setShortcut(tr("F1"));
+    connect(m_pAboutAction, SIGNAL(triggered()), this, SLOT(about()));
+}
+
+
 void CMainWindow::setupToolBars() {
     m_pUI ->ui_mainToolBar;
+
+    m_pEditToolBar = addToolBar(tr("Edit"));
+    m_pEditToolBar ->addAction(m_pDeleteAction);
+
+    QToolButton *pPointerButton = new QToolButton;
+    pPointerButton ->setCheckable(true);
+    pPointerButton ->setChecked(true);
+    pPointerButton ->setIcon(QIcon("images/icons/pointer.png"));
+    QToolButton *pLinePointerButton = new QToolButton;
+    pLinePointerButton ->setCheckable(true);
+    pLinePointerButton ->setIcon(QIcon("images/icons/linepointer.png"));
+
+    m_pPointerTypeGroup = new QButtonGroup(this);
+    m_pPointerTypeGroup ->addButton(pPointerButton, int(GraphWidget::MoveItem));
+    m_pPointerTypeGroup ->addButton(pLinePointerButton, int(GraphWidget::InsertLine));
+    connect(m_pPointerTypeGroup, SIGNAL(buttonClicked(int)), this, SLOT(pointerGroupClicked(int)));
+
+    m_pPointerToolbar = addToolBar(tr("Pointer type"));
+    m_pPointerToolbar ->addWidget(pPointerButton);
+    m_pPointerToolbar ->addWidget(pLinePointerButton);
 }
 
 void CMainWindow::setupStatusBar() {
