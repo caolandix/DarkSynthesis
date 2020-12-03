@@ -60,8 +60,9 @@ ExpressionBuilder::ExpressionBuilder(string strEquation) {
 	string var;
 
     prepData(strEquation);
-    if (getenv("PROPERTY_UNARY_HIGH_PRECEDENCE"))
+    if (getenv("PROPERTY_UNARY_HIGH_PRECEDENCE")) {
     	var = getenv("PROPERTY_UNARY_HIGH_PRECEDENCE");
+    }
 	m_highUnaryPrecedence = (var.length() == 0 || var != "false");
     seedBuiltInData();
 }

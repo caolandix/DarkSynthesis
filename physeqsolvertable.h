@@ -33,6 +33,9 @@ public:
     void createConnections();
     void setupTableLookAndFeel();
 
+    static void DecodeAddy(const QString, int *, int * = NULL);
+    static QString EncodeAddy(const int, const int = -1);
+
     QSize sizeHint() const Q_DECL_OVERRIDE;
     QSize minimumSizeHint() const Q_DECL_OVERRIDE;
 
@@ -58,8 +61,6 @@ private:
 
     bool resolveEquation(ValueSet &vs, const string equation);
     QString calculateRows(QList<PhysEqRow *>::Iterator &iter, QString, const double dt = -1, bool bStripConsts = false);
-    void DecodeAddy(const QString, int *, int * = NULL);
-    QString EncodeAddy(const int, const int = -1);
     void createTimeSliceRow(QList<double>);
     void addPhysDataObjCell(const int row, const int col, const QString, const double val);
     PhysEqRow *createPhysDataObjRow(PhysDataObj *);

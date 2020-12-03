@@ -13,7 +13,7 @@ TEMPLATE = app
 
 QMAKE_CXXFLAGS += -std=c++0x -Wall
 
-INCLUDEPATH = ./boost_1_59_0
+INCLUDEPATH = D:/boost_1.74.0/boost_1_74_0
 
 SOURCES += main.cpp \
     cmainwindow.cpp \

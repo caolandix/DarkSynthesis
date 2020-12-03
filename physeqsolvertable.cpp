@@ -348,6 +348,12 @@ void PhysEqSolverTable::returnPressed() {
     viewport() -> update(visualItemRect(pItem));
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// Static functions
+///
+///
 void PhysEqSolverTable::DecodeAddy(const QString addy, int *pRow, int *pCol) {
     if (addy.trimmed().isEmpty()) {
         *pCol = -1;
@@ -368,13 +374,18 @@ void PhysEqSolverTable::DecodeAddy(const QString addy, int *pRow, int *pCol) {
 QString PhysEqSolverTable::EncodeAddy(const int row, const int col) {
     QString rowHex, columnHex;
 
-    rowHex.sprintf("%x", row);
+    rowHex.asprintf("%x", row);
     if (col == -1)
         return rowHex;
-    columnHex.sprintf("%x", col);
+    columnHex.asprintf("%x", col);
     return QString(rowHex + ":" + columnHex);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief PhysEqSolverTable::onUpdateParticleName
+/// \param prevName
+/// \param name
+///
 void PhysEqSolverTable::onUpdateParticleName(const QString prevName, const QString name) {
     foreach (PhysEqRow *pRow, m_lstRows) {
         if (pRow ->Type() == PhysEqRow::RT_PARTICLE) {

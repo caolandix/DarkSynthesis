@@ -1,4 +1,5 @@
 #include "physeqsolveritem.h"
+#include "physeqsolvertable.h"
 
 PhysEqSolverItem::PhysEqSolverItem() : QTableWidgetItem(), m_isResolving(false) {
 }
@@ -101,23 +102,23 @@ QVariant PhysEqSolverItem::resolveSigFigs(const QVariant &calcResult) {
 
 QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWidget *pWidget, const QTableWidgetItem *self) {
     QVariant result;
-    // check if the s tring is actually a formula or not
+
+    // check if the string is actually a formula or not
     QStringList list = formula.split(' ');
     if (list.isEmpty() || !pWidget)
         return formula; // it is a normal string
 
     QString op = list.value(0).toLower();
-/*
     int firstRow = -1;
     int firstCol = -1;
     int secondRow = -1;
     int secondCol = -1;
 
     if (list.count() > 1)
-        decode_pos(list.value(1), &firstRow, &firstCol);
+        PhysEqSolverTable::DecodeAddy(list.value(1), &firstRow, &firstCol);
 
     if (list.count() > 2)
-        decode_pos(list.value(2), &secondRow, &secondCol);
+        PhysEqSolverTable::DecodeAddy(list.value(2), &secondRow, &secondCol);
 
     const QTableWidgetItem *pStart = pWidget ->item(firstRow, firstCol);
     const QTableWidgetItem *pEnd = pWidget ->item(secondRow, secondCol);
@@ -155,6 +156,5 @@ QVariant PhysEqSolverItem::computeFormula(const QString &formula, const QTableWi
     }
     else
         result = formula;
-        */
     return result;
 }
