@@ -64,10 +64,10 @@ private:
     void createTimeSliceRow(QList<double>);
     void addPhysDataObjCell(const int row, const int col, const QString, const double val);
     PhysEqRow *createPhysDataObjRow(PhysDataObj *);
-signals:
-    void addPhysEqSolverRow(QList<PhysParticle *>);
-    void addTimeSliceCell(int, double);
-    void removeTimeSliceCell(int);
+    PhysEqRow *getRowAtIndex(const int);
+
+    void createStandardContextMenu(QMenu *);
+
 public slots:
     void onSelectColor();
     void onSelectFont();
@@ -89,6 +89,45 @@ public slots:
     void onRemoveTimeSliceCell(int);
     void onCartesianGraphCreated(CartesianGraphDataObj *pObj) { CartesianDataObj(pObj); }
     void onSetModType(int modType) {}
+
+    void oncellActivated(int row, int column);
+    void oncellChanged(int row, int column);
+    void oncellClicked(int row, int column);
+    void oncellDoubleClicked(int row, int column);
+    void oncellEntered(int row, int column);
+    void oncellPressed(int row, int column);
+    void oncurrentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+    void oncurrentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
+    void onitemActivated(QTableWidgetItem *item);
+    void onitemChanged(QTableWidgetItem *item);
+    void onitemClicked(QTableWidgetItem *item);
+    void onitemDoubleClicked(QTableWidgetItem *item);
+    void onitemEntered(QTableWidgetItem *item);
+    void onitemPressed(QTableWidgetItem *item);
+    void onitemSelectionChanged();
+
+signals:
+    void addPhysEqSolverRow(QList<PhysParticle *>);
+    void addTimeSliceCell(int, double);
+    void removeTimeSliceCell(int);
+
+
+
+    void cellChanged(int row, int column);
+    void cellClicked(int row, int column);
+    void cellDoubleClicked(int row, int column);
+    void cellEntered(int row, int column);
+    void cellPressed(int row, int column);
+    void currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+    void currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
+    void itemActivated(QTableWidgetItem *item);
+    void itemChanged(QTableWidgetItem *item);
+    void itemClicked(QTableWidgetItem *item);
+    void itemDoubleClicked(QTableWidgetItem *item);
+    void itemEntered(QTableWidgetItem *item);
+    void itemPressed(QTableWidgetItem *item);
+    void itemSelectionChanged();
+
 private:
     QWidget *m_pParent;
     PhysEqSolverTableHeader *m_pHeader;

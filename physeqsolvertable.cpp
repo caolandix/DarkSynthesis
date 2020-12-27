@@ -21,7 +21,7 @@ PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget 
 
     m_pFormulaInput = new QLineEdit();
     m_pCalcTimer = new PhysCalculateTimer(this, 1000);
-    m_pCalcTimer ->start();
+    //m_pCalcTimer ->start();
 
     setupTableLookAndFeel();
 
@@ -38,30 +38,54 @@ PhysEqSolverTable::~PhysEqSolverTable() {
 }
 
 void PhysEqSolverTable::createConnections() {
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
-    connect(m_pHeader, SIGNAL(updateTimeSlices(const int, const double)), this, SLOT(onUpdateTimeSlices(const int, const double)));
-    connect(this, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
-    connect(m_pFormulaInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
-    connect(this, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(updateLineEdit(QTableWidgetItem *)));
-    connect(this, SIGNAL(addPhysEqSolverRow(QList<PhysParticle *>)), this, SLOT(onAddPhysEqSolverRow(QList<PhysParticle *>)));
-    connect(m_pCalcTimer ->Timer(), SIGNAL(timeout()), this, SLOT(onCalculate()));
-    connect(this, SIGNAL(addTimeSliceCell(int, double)), this, SLOT(onAddTimeSliceCell(int, double)));
-    connect(this, SIGNAL(removeTimeSliceCell(int)), this, SLOT(onRemoveTimeSliceCell(int)));
+    qDebug("PhysEqSolverTable::createConnections()");
+    connect(this, &PhysEqSolverTable::customContextMenuRequested, this, &PhysEqSolverTable::onCustomContextMenu);
+    connect(m_pHeader, &PhysEqSolverTableHeader::updateTimeSlices, this, &PhysEqSolverTable::onUpdateTimeSlices);
+    connect(this, &PhysEqSolverTable::currentItemChanged, this, &PhysEqSolverTable::updateLineEdit);
+    connect(m_pFormulaInput, &QLineEdit::returnPressed, this,  &PhysEqSolverTable::returnPressed);
+    connect(this, &PhysEqSolverTable::itemChanged, this, &PhysEqSolverTable::updateLineEdit);
+    connect(this, &PhysEqSolverTable::addPhysEqSolverRow, this, &PhysEqSolverTable::onAddPhysEqSolverRow);
+    connect(m_pCalcTimer ->Timer(), &QTimer::timeout, this, &PhysEqSolverTable::onCalculate);
+    connect(this, &PhysEqSolverTable::addTimeSliceCell, this, &PhysEqSolverTable::onAddTimeSliceCell);
+    connect(this, &PhysEqSolverTable::removeTimeSliceCell, this, &PhysEqSolverTable::onRemoveTimeSliceCell);
+
+    connect(this, &QTableWidget::cellActivated, this, &PhysEqSolverTable::oncellActivated);
+    connect(this, &QTableWidget::cellChanged, this, &PhysEqSolverTable::oncellChanged);
+    connect(this, &QTableWidget::cellClicked, this, &PhysEqSolverTable::oncellClicked);
+    connect(this, &QTableWidget::cellDoubleClicked, this, &PhysEqSolverTable::oncellDoubleClicked);
+    connect(this, &QTableWidget::cellEntered, this, &PhysEqSolverTable::oncellEntered);
+    connect(this, &QTableWidget::cellPressed, this, &PhysEqSolverTable::oncellPressed);
+    connect(this, &QTableWidget::currentCellChanged, this, &PhysEqSolverTable::oncurrentCellChanged);
+    connect(this, &QTableWidget::currentItemChanged, this, &PhysEqSolverTable::oncurrentItemChanged);
+    connect(this, &QTableWidget::itemActivated, this, &PhysEqSolverTable::onitemActivated);
+    connect(this, &QTableWidget::itemChanged, this, &PhysEqSolverTable::onitemChanged);
+    connect(this, &QTableWidget::itemClicked, this, &PhysEqSolverTable::onitemClicked);
+    connect(this, &QTableWidget::itemDoubleClicked, this, &PhysEqSolverTable::onitemDoubleClicked);
+    connect(this, &QTableWidget::itemEntered, this, &PhysEqSolverTable::onitemEntered);
+    connect(this, &QTableWidget::itemPressed, this, &PhysEqSolverTable::onitemPressed);
+    connect(this, &QTableWidget::itemSelectionChanged, this, &PhysEqSolverTable::onitemSelectionChanged);
+
 }
 
 void PhysEqSolverTable::setupTableLookAndFeel() {
+    qDebug("PhysEqSolverTable::setupTableLookAndFeel()");
     QColor titleBackground(Qt::lightGray);
     QFont titleFont = font();
     titleFont.setBold(true);
 
-    setItem(0, 0, new PhysEqSolverItem(""));
+
+    setMouseTracking(true);
+
+    //setItem(0, 0, new PhysEqSolverItem(""));
+    setItem(0, 0, new QTableWidgetItem(""));
     item(0, 0) -> setBackgroundColor(titleBackground);
     item(0, 0) -> setFont(titleFont);
 }
 
 QTableWidgetItem *PhysEqSolverTable::createTableItem(PhysEqRow *pRow, bool bAttachObj) {
+    qDebug("PhysEqSolverTable::createTableItem()");
     QTableWidgetItem *pItem = new QTableWidgetItem(pRow ->Name());
-    pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    pItem ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable);
     if (bAttachObj) {
         QVariant var;
         var.setValue(pRow);
@@ -72,6 +96,7 @@ QTableWidgetItem *PhysEqSolverTable::createTableItem(PhysEqRow *pRow, bool bAtta
 
 // Creates both the initial row and the first time slice item
 void PhysEqSolverTable::createTimeSliceRow(QList<double> lstTimeSlices) {
+    qDebug("PhysEqSolverTable::createTimeSliceRow()");
 
     // Create the first row...
     PhysEqRow *pRow = new PhysEqRow(PhysEqRow::RT_TIMESLICE, "");
@@ -83,15 +108,18 @@ void PhysEqSolverTable::createTimeSliceRow(QList<double> lstTimeSlices) {
 }
 
 void PhysEqSolverTable::onAddTimeSliceCell(int col, double val) {
+    qDebug("PhysEqSolverTable::onAddTimeSliceCell()");
     addPhysDataObjCell(0, col, QString(""), val);
 }
 
 // Need to do. Will wait for creation to work first...
 void PhysEqSolverTable::onRemoveTimeSliceCell(int idx) {
+    qDebug("PhysEqSolverTable::onRemoveTimeSliceCell()");
     int row = idx, col;
 }
 
 void PhysEqSolverTable::addPhysDataObjCell(const int row, const int col, const QString variable, const double val) {
+    qDebug("PhysEqSolverTable::addPhysDataObjCell()");
     QString Addy = EncodeAddy(row, col);
     PhysEqRow *pRow = m_lstRows.at(row);
     if (pRow) {
@@ -127,6 +155,7 @@ void PhysEqSolverTable::addPhysDataObjCell(const int row, const int col, const Q
 }
 
 PhysEqRow *PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
+    qDebug("PhysEqSolverTable::createPhysDataObjRow()");
     int rowIdx = m_lstRows.count();
     int numCols = columnCount();
     PhysEqRow *pRow = NULL;
@@ -155,12 +184,17 @@ PhysEqRow *PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
 
 // Visual and underlying data structure insertion
 QTableWidgetItem *PhysEqSolverTable::createRowItem(PhysDataObj *pObj) {
+    qDebug("PhysEqSolverTable::createRowItem()");
     PhysEqRow *pRow = createPhysDataObjRow(pObj);
     QTableWidgetItem *pItem = createTableItem(pRow, true);
     return pItem;
 }
 
+
+
+
 void PhysEqSolverTable::createParticleItems(int i, PhysParticle *pParticle) {
+    qDebug("PhysEqSolverTable::createParticleItems()");
     switch (ModType()) {
     case SINGLEDIM_KINEMATICS:
         create1DKinematicItems(i, pParticle);
@@ -172,6 +206,7 @@ void PhysEqSolverTable::createParticleItems(int i, PhysParticle *pParticle) {
 }
 
 void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
+    qDebug("PhysEqSolverTable::create1DKinematicItems()");
 
     // create the Acceleration, Velocity, Gravity, displacement vectors
     // Important parameters are:
@@ -181,12 +216,17 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
     //      - Angle at which it should be represented on the CartesianGraph (if any)
     //      - Magnitude, or the value of the vector
     QList<PhysVector *> vectorList;
-    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
-                                        QString("a"), QString("4"), QString("accel"), 4.0, false));
-    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
-                                           QString("v"), QString("12"), QString("speed"), 12.0, false));
-    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle,
-                                               QString("dx"), QString("v*dt + 0.5*a*dt*dt"), QString("displacement"), 0.0, false));
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Temparary values so I can work on the UI... They will be removed later
+    QString equation = QString("v*dt + 0.5*a*dt*dt");
+    QString v = "0.0";
+    QString a = "0.0";
+    QString dx = "0.0";
+    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle, QString("a"), a, QString("accel"), a.toDouble(), false));
+    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle, QString("v"), v, QString("speed"), v.toDouble(), false));
+    vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle, QString("dx"), equation, QString("displacement"), dx.toDouble(), false));
+
     foreach (PhysVector *item, vectorList) {
         insertRow(rowCount());
         QTableWidgetItem *pRowItem = createRowItem(item ->DataObj());
@@ -195,10 +235,11 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
         for (int col = 1; col < columnCount(); col++)
             setGridTextAtRowColumn(rowCount() - 1, col, item -> Magnitude());
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 void PhysEqSolverTable::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles) {
-    //qDebug("PhysEqSolver::onAddPhysEqSolverRow");
+    qDebug("PhysEqSolver::onAddPhysEqSolverRow");
     m_pCalcTimer ->stop();
     int i = 0;
     foreach(PhysParticle *pParticle, lstParticles) {
@@ -209,6 +250,7 @@ void PhysEqSolverTable::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles)
 }
 
 void PhysEqSolverTable::setGridTextAtRowColumn(const int row, const int col, const double val) {
+    qDebug("PhysEqSolverTable::setGridTextAtRowColumn()");
     if (row != -1 && col != -1) {
         QTableWidgetItem *pItem = item(row, col);
         if (pItem) {
@@ -220,6 +262,7 @@ void PhysEqSolverTable::setGridTextAtRowColumn(const int row, const int col, con
 }
 
 bool PhysEqSolverTable::resolveEquation(ValueSet &vs, const string equation) {
+    qDebug("PhysEqSolverTable::resolveEquation()");
     ExpressionBuilder builder;
     builder.prepData(equation);
     RPNExpression rpnExpr = builder.build();
@@ -232,6 +275,7 @@ bool PhysEqSolverTable::resolveEquation(ValueSet &vs, const string equation) {
 }
 
 QString PhysEqSolverTable::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrRow, QString baseEq, const double dt, bool bStripConsts) {
+    qDebug("PhysEqSolverTable::calculateRows()");
     if (iterCurrRow == m_lstRows.end())
         return "";
     PhysEqRow *pRow = *iterCurrRow;
@@ -277,9 +321,57 @@ QString PhysEqSolverTable::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrR
     }
     return "";
 }
+// Function Name: getRowAtIndex()
+// Purpose: returns the row in the equation grid
+//
+//
+//
+PhysEqRow *PhysEqSolverTable::getRowAtIndex(const int idx) {
+    qDebug("PhysEqSolverTable::getRowAtIndex()");
+    PhysEqRow *pItem = NULL;
+    int curr_row = 0;
+
+    for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
+        PhysEqRow *pRow = *iter;
+        if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
+            curr_row++;
+            if (curr_row == idx) {
+               pItem = pRow;
+               break;
+            }
+        }
+    }
+
+    return pItem;
+}
+// Function Name: oncellActivated()
+// Purpose: Manages the grid edit areas.
+// Note: Only the cell for t0 should be editable for values at the beginning.
+//
+//
+void PhysEqSolverTable::oncellActivated(int row, int col) {
+    qDebug("PhysEqSolverTable::oncellActivated()");
+
+    // Only col for t0  (col == 1) should be editable for values. Everything after that are calculated based on the equation
+    // associated with the row.
+    if (col != 1)
+        return;
+    //PhysEqSolverItem *pItem = static_cast<PhysEqSolverItem *>(item(row, col));
+    QTableWidgetItem *pItem = static_cast<QTableWidgetItem *>(item(row, col));
+    QVariant var = pItem ->data(Qt::EditRole);
+
+    // Get Row item that is associated with the integer value of row
+    PhysEqRow *pRow = getRowAtIndex(row);
+    if (pRow) {
+        pRow ->Equation(var.toString());
+        double val = var.toDouble();
+
+        pItem -> setData(Qt::EditRole, QString::number(val));
+    }
+}
 
 void PhysEqSolverTable::onCalculate() {
-    //qDebug("PhysEqSolver::onCalculate()");
+    qDebug("PhysEqSolver::onCalculate()");
 
     if (rowCount() > 0) {
 
@@ -326,6 +418,7 @@ void PhysEqSolverTable::onCalculate() {
 }
 
 void PhysEqSolverTable::updateLineEdit(QTableWidgetItem *pItem) {
+    qDebug("PhysEqSolverTable::updateLineEdit()");
     if (pItem) {
         if (pItem == currentItem()) {
             if (pItem)
@@ -337,12 +430,14 @@ void PhysEqSolverTable::updateLineEdit(QTableWidgetItem *pItem) {
 }
 
 void PhysEqSolverTable::returnPressed() {
+    qDebug("PhysEqSolverTable::returnPressed()");
     QString text = m_pFormulaInput -> text();
     int row = currentRow();
     int col = currentColumn();
     QTableWidgetItem *pItem = item(row, col);
     if (!pItem)
-        setItem(row, col, pItem = new PhysEqSolverItem(text));
+        // setItem(row, col, pItem = new PhysEqSolverItem(text));
+        setItem(row, col, pItem = new QTableWidgetItem(text));
     else
         pItem -> setData(Qt::EditRole, text);
     viewport() -> update(visualItemRect(pItem));
@@ -355,6 +450,7 @@ void PhysEqSolverTable::returnPressed() {
 ///
 ///
 void PhysEqSolverTable::DecodeAddy(const QString addy, int *pRow, int *pCol) {
+    qDebug("PhysEqSolverTable::DecodeAddy()");
     if (addy.trimmed().isEmpty()) {
         *pCol = -1;
         *pRow = -1;
@@ -372,6 +468,7 @@ void PhysEqSolverTable::DecodeAddy(const QString addy, int *pRow, int *pCol) {
 }
 
 QString PhysEqSolverTable::EncodeAddy(const int row, const int col) {
+    qDebug("PhysEqSolverTable::EncodeAddy()");
     QString rowHex, columnHex;
 
     rowHex.asprintf("%x", row);
@@ -387,6 +484,7 @@ QString PhysEqSolverTable::EncodeAddy(const int row, const int col) {
 /// \param name
 ///
 void PhysEqSolverTable::onUpdateParticleName(const QString prevName, const QString name) {
+    qDebug("PhysEqSolverTable::onUpdateParticleName()");
     foreach (PhysEqRow *pRow, m_lstRows) {
         if (pRow ->Type() == PhysEqRow::RT_PARTICLE) {
             /*
@@ -399,18 +497,36 @@ void PhysEqSolverTable::onUpdateParticleName(const QString prevName, const QStri
     }
 }
 
+void PhysEqSolverTable::createStandardContextMenu(QMenu *pctxMenu) {
+    qDebug("PhysEqSolverTable::createStandardContextMenu()");
+    // Primary menu actions
+    QAction *pFont = new QAction(tr("Font..."), this);
+    connect(pFont, SIGNAL(triggered()), this, SLOT(onSelectFont()));
+    QAction *pColor = new QAction(QPixmap(16, 16), tr("Background &Color..."), this);
+    connect(pColor, SIGNAL(triggered()), this, SLOT(onSelectColor()));
+    QAction *pClear = new QAction(tr("Clear"), this);
+    connect(pClear, SIGNAL(triggered()), this, SLOT(onClear()));
+    pctxMenu -> addAction(pFont);
+    pctxMenu -> addAction(pColor);
+    pctxMenu -> addAction(pClear);
+}
+
 void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
+    qDebug("PhysEqSolverTable::onCustomContextMenu()");
 
     // Check to see if the pos is inside of the first column, as that needs a different context menu
     QModelIndex index = indexAt(pos);
+    QMenu ctxMenu;
+
     if (index.isValid()) {
         m_currItem.row = index.row();
         m_currItem.column = index.column();
 
-        QMenu ctxMenu;
         QMenu subCtxMenu(tr("Physics Objects..."));
         QMenu subCtxMenuVectors(tr("Vectors..."));
         QMenu subCtxMenuOther(tr("Other..."));
+
+        createStandardContextMenu(&ctxMenu);
 
         // If in first column then we need to check and see what row it is. get that information to populate the
         // dialog box.
@@ -420,16 +536,6 @@ void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
             ctxMenu.addAction(m_pRowProperties);
         }
         else {
-            // Primary menu actions
-            QAction *pFont = new QAction(tr("Font..."), this);
-            connect(pFont, SIGNAL(triggered()), this, SLOT(onSelectFont()));
-            QAction *pColor = new QAction(QPixmap(16, 16), tr("Background &Color..."), this);
-            connect(pColor, SIGNAL(triggered()), this, SLOT(onSelectColor()));
-            QAction *pClear = new QAction(tr("Clear"), this);
-            connect(pClear, SIGNAL(triggered()), this, SLOT(onClear()));
-            ctxMenu.addAction(pFont);
-            ctxMenu.addAction(pColor);
-            ctxMenu.addAction(pClear);
 
             // Secondary submenus
             // Vectors
@@ -465,9 +571,26 @@ void PhysEqSolverTable::onCustomContextMenu(const QPoint &pos) {
         }
         ctxMenu.exec(mapToGlobal(pos));
     }
+
+    // Not right-clicking in a row or column, so bring up the "Add Row, Properties" choices
+    else {
+
+
+        QMenu subCtxMenu(tr("Add Row..."));
+
+        // Secondary submenus
+        // Vectors
+        QAction *pAddRow = new QAction(tr("Add Row"), this);
+        connect(pAddRow, SIGNAL(triggered()), this, SLOT(onAddPhysEqSolverRow(QList<PhysParticle *>)));
+
+        subCtxMenu.addAction(pAddRow);
+        ctxMenu.addMenu(&subCtxMenu);
+        ctxMenu.exec(mapToGlobal(pos));
+    }
 }
 
 void PhysEqSolverTable::onRowProperties() {
+    qDebug("PhysEqSolverTable::onRowProperties()");
     QDialog *pDlg = new QDialog(0,0);
     Ui_PhysEqRowDlg dlg;
     QVariant itemData = item(currentRow(), 0) ->data(Qt::UserRole);
@@ -532,11 +655,13 @@ void PhysEqSolverTable::onSelectParticle() {
 }
 
 void PhysEqSolverTable::onUpdateTimeSlices(const int logicalIndex, const double timeVal) {
+    qDebug("PhysEqSolverTable::onUpdateTimeSlices()");
     m_TimeSliceValues = m_pHeader ->timeSliceList();
     rebuildColumnHeaders();
 }
 
 void PhysEqSolverTable::createTableHeader() {
+    qDebug("PhysEqSolverTable::createTableHeader()");
     m_TimeSliceValues.push_back(0.0);
     setHorizontalHeader(m_pHeader = new PhysEqSolverTableHeader(m_TimeSliceValues, this));
     setHorizontalHeaderLabels(QStringList() << "" << "t0");
@@ -545,6 +670,7 @@ void PhysEqSolverTable::createTableHeader() {
 }
 
 void PhysEqSolverTable::insertColumn() {
+    qDebug("PhysEqSolverTable::insertColumn()");
 
     // When inserting a new column with the default value, it should be added to the previous column
     double newValue = m_TimeSliceValues.at(m_TimeSliceValues.count() - 1) + 1.0;
@@ -557,6 +683,7 @@ void PhysEqSolverTable::insertColumn() {
 }
 
 void PhysEqSolverTable::removeColumn(const int idx) {
+    qDebug("PhysEqSolverTable::removeColumn()");
     if (model() ->columnCount() > 2) {
         model() ->removeColumn(idx);
         m_TimeSliceValues.removeAt(idx);
@@ -567,6 +694,7 @@ void PhysEqSolverTable::removeColumn(const int idx) {
 }
 
 QSize PhysEqSolverTable::minimumSizeHint() const {
+    qDebug("PhysEqSolverTable::minimumSizeHint()");
     QSize size(QTableWidget::sizeHint());
     int width = 0;
     int height = horizontalHeader()->height();
@@ -583,10 +711,12 @@ QSize PhysEqSolverTable::minimumSizeHint() const {
 }
 
 QSize PhysEqSolverTable::sizeHint() const {
+    qDebug("PhysEqSolverTable::sizeHint()");
     return QTableWidget::sizeHint();//minimumSizeHint();
 }
 
 void PhysEqSolverTable::rebuildColumnHeaders() {
+    qDebug("PhysEqSolverTable::rebuildColumnHeaders()");
     QStringList headers;
     QList<double> lst = m_pHeader ->timeSliceList();
     int precision = 4;
@@ -602,6 +732,7 @@ void PhysEqSolverTable::rebuildColumnHeaders() {
 }
 
 void PhysEqSolverTable::onSelectColor() {
+    qDebug("PhysEqSolverTable::onSelectColor()");
     QTableWidgetItem *pItem = currentItem();
     QColor col = pItem ? pItem ->backgroundColor() : palette().base().color();
     col = QColorDialog::getColor(col, this);
@@ -620,6 +751,7 @@ void PhysEqSolverTable::onSelectColor() {
 }
 
 void PhysEqSolverTable::onSelectFont() {
+    qDebug("PhysEqSolverTable::onSelectFont()");
     QList<QTableWidgetItem *> items = selectedItems();
     if (items.count() == 0)
         return;
@@ -636,11 +768,13 @@ void PhysEqSolverTable::onSelectFont() {
 }
 
 void PhysEqSolverTable::onClear() {
+    qDebug("PhysEqSolverTable::onClear()");
     foreach (QTableWidgetItem *pItem, selectedItems())
         pItem -> setText("");
 }
 
 void PhysEqSolverTable::updateColor(QTableWidgetItem *pItem) {
+    qDebug("PhysEqSolverTable::updateColor()");
     QPixmap pix(16, 16);
     QPainter pt(&pix);
     QColor colour;
@@ -664,6 +798,7 @@ void PhysEqSolverTable::updateColor(QTableWidgetItem *pItem) {
 }
 
 void PhysEqSolverTable::printRow(PhysEqRow *pRow, int i) {
+    qDebug("PhysEqSolverTable::printRow()");
     qDebug() << "Dumping row #: " << QString::number(i);
     qDebug() << "\tVariable: " << pRow ->Variable();
     qDebug() << "\tEquation: " << pRow -> Equation();
@@ -686,4 +821,74 @@ void PhysEqSolverTable::printRow(PhysEqRow *pRow, int i) {
         break;
     }
     qDebug() << "\tType: " << strType;
+}
+
+void PhysEqSolverTable::oncellChanged(int row, int col) {
+    qDebug("PhysEqSolverTable::oncellChanged()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::oncellClicked(int row, int col) {
+    qDebug("PhysEqSolverTable::oncellClicked()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::oncellDoubleClicked(int row, int column) {
+    qDebug("PhysEqSolverTable::oncellDoubleClicked()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::oncellEntered(int row, int column) {
+    qDebug("PhysEqSolverTable::oncellEntered()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::oncellPressed(int row, int column) {
+    qDebug("PhysEqSolverTable::oncellPressed()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::oncurrentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn) {
+    qDebug("PhysEqSolverTable::oncurrentCellChanged()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::oncurrentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
+    qDebug("PhysEqSolverTable::oncurrentItemChanged()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::onitemActivated(QTableWidgetItem *item) {
+    qDebug("PhysEqSolverTable::onitemActivated()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::onitemChanged(QTableWidgetItem *item) {
+    qDebug("PhysEqSolverTable::onitemChanged()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::onitemClicked(QTableWidgetItem *item) {
+    qDebug("PhysEqSolverTable::onitemClicked()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::onitemDoubleClicked(QTableWidgetItem *item) {
+    qDebug("PhysEqSolverTable::onitemDoubleClicked()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::onitemEntered(QTableWidgetItem *item) {
+    qDebug("PhysEqSolverTable::onitemEntered()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::onitemPressed(QTableWidgetItem *item) {
+    qDebug("PhysEqSolverTable::onitemPressed()");
+    bool bVal = true;
+
+}
+void PhysEqSolverTable::onitemSelectionChanged() {
+    qDebug("PhysEqSolverTable::onitemSelectionChanged()");
+    bool bVal = true;
 }

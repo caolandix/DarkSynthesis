@@ -192,11 +192,11 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 QVariant CartesianGraph::itemChange(GraphicsItemChange change, const QVariant &value) {
     switch (change) {
         case ItemPositionHasChanged:
-            /*
-             foreach (Edge *edge, edgeList)
+        /*
+            foreach (Edge *edge, edgeList)
                 edge -> adjust();
             m_pgraphWidget -> itemMoved();
-            */
+        */
             break;
         default:
             break;

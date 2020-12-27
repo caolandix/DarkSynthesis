@@ -41,8 +41,8 @@ public:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
     void updatePosition();
 
-    PhysVector *copy();
-    void init();
+    PhysVector *copy() override;
+    void init() override;
 
     // accessors
     double Magnitude() const { return m_pDataObj ->Magnitude(); }
