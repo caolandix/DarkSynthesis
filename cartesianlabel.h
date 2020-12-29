@@ -5,9 +5,9 @@
 
 class CartesianLabel : public QGraphicsTextItem {
 public:
-    CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem * = 0, bool = true);
-    CartesianLabel(const QString &, QGraphicsItem * = 0, bool = true);
-    CartesianLabel(QGraphicsItem * = 0, bool = true);
+    CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem * = 0, bool = true, bool = false);
+    CartesianLabel(const QString &, QGraphicsItem * = 0, bool = true, bool = false);
+    CartesianLabel(QGraphicsItem * = 0, bool = true, bool = false);
     QRectF boundingRect() const;
 
     Qt::Alignment alignment() const { return m_Flags; }
@@ -24,7 +24,7 @@ protected:
 private:
     Qt::Alignment m_Flags;
     mutable QRectF m_Bounds;
-    bool m_bDraw;
+    bool m_bDraw, m_editable;
 };
 
 #endif // CARTESIANLABEL_H

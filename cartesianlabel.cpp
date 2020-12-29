@@ -2,23 +2,23 @@
 
 #include "cartesianlabel.h"
 
-CartesianLabel::CartesianLabel(const QString &text, Qt::Alignment flags, QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(text, pParent), m_Flags(flags) {
+CartesianLabel::CartesianLabel(const QString &text, Qt::Alignment flags, QGraphicsItem *pParent, bool bDraw, bool editable) : QGraphicsTextItem(text, pParent), m_Flags(flags) {
 
+    setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
+    setTextInteractionFlags(Qt::NoTextInteraction);
+    m_Bounds = QGraphicsTextItem::boundingRect();
+    m_bDraw = bDraw;
+    m_editable = editable;
+}
+
+CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent, bool bDraw, bool editable) : QGraphicsTextItem(text, pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
     setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
     m_bDraw = bDraw;
 }
 
-CartesianLabel::CartesianLabel(const QString &text, QGraphicsItem *pParent, bool bDraw) : QGraphicsTextItem(text, pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
-    setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
-    setTextInteractionFlags(Qt::NoTextInteraction);
-    m_Bounds = QGraphicsTextItem::boundingRect();
-    m_bDraw = bDraw;
-}
-
-CartesianLabel::CartesianLabel(QGraphicsItem * pParent, bool bDraw) : QGraphicsTextItem(pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
-
+CartesianLabel::CartesianLabel(QGraphicsItem * pParent, bool bDraw, bool editable) : QGraphicsTextItem(pParent), m_Flags(Qt::AlignTop | Qt::AlignLeft) {
     setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemSendsGeometryChanges);
     setTextInteractionFlags(Qt::NoTextInteraction);
     m_Bounds = QGraphicsTextItem::boundingRect();
@@ -32,12 +32,10 @@ QRectF CartesianLabel::boundingRect() const {
         offset.setX(-m_Bounds.width());
     else if (m_Flags.testFlag(Qt::AlignHCenter))
         offset.setX(-m_Bounds.width() / 2.0);
-
     if (m_Flags.testFlag(Qt::AlignBottom))
         offset.setY(m_Bounds.height());
     else if (m_Flags.testFlag(Qt::AlignVCenter))
         offset.setY(m_Bounds.height() / 2.0);
-
     m_Bounds.translate(offset);
     return m_Bounds;
 }
@@ -50,6 +48,8 @@ void CartesianLabel::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *p
 }
 
 void CartesianLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *evt) {
+    if (!m_editable)
+            return;
     qDebug("mouseDoubleClickEvent '%s'", this -> toPlainText().toStdString().c_str());
     if (textInteractionFlags() == Qt::TextEditorInteraction) {
 
