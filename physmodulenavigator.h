@@ -16,7 +16,6 @@ signals:
 public slots:
 
 private:
-
 };
 
 #endif // PHYSMODULENAVIGATOR_H

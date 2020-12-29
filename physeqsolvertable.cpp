@@ -72,12 +72,8 @@ void PhysEqSolverTable::setupTableLookAndFeel() {
     QColor titleBackground(Qt::lightGray);
     QFont titleFont = font();
     titleFont.setBold(true);
-
-
     setMouseTracking(true);
-
-    //setItem(0, 0, new PhysEqSolverItem(""));
-    setItem(0, 0, new QTableWidgetItem(""));
+    setItem(0, 0, new PhysEqSolverItem(""));
     item(0, 0) -> setBackgroundColor(titleBackground);
     item(0, 0) -> setFont(titleFont);
 }
@@ -356,8 +352,7 @@ void PhysEqSolverTable::oncellActivated(int row, int col) {
     // associated with the row.
     if (col != 1)
         return;
-    //PhysEqSolverItem *pItem = static_cast<PhysEqSolverItem *>(item(row, col));
-    QTableWidgetItem *pItem = static_cast<QTableWidgetItem *>(item(row, col));
+    PhysEqSolverItem *pItem = static_cast<PhysEqSolverItem *>(item(row, col));
     QVariant var = pItem ->data(Qt::EditRole);
 
     // Get Row item that is associated with the integer value of row
@@ -436,8 +431,7 @@ void PhysEqSolverTable::returnPressed() {
     int col = currentColumn();
     QTableWidgetItem *pItem = item(row, col);
     if (!pItem)
-        // setItem(row, col, pItem = new PhysEqSolverItem(text));
-        setItem(row, col, pItem = new QTableWidgetItem(text));
+        setItem(row, col, pItem = new PhysEqSolverItem(text));
     else
         pItem -> setData(Qt::EditRole, text);
     viewport() -> update(visualItemRect(pItem));

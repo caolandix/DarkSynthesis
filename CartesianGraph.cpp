@@ -20,10 +20,11 @@ CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, C
     m_pGraphWidget = pGraphWidget;
     m_pDataObj = (pDataObj) ? pDataObj : new CartesianGraphDataObj(Name);
     m_borderWidth = 5;
+
     m_x_label = new CartesianLabel(QString("x: <Enter label>"), this);
     m_y_label = new CartesianLabel(QString("y: <Enter label>"), this);
-    m_x_label -> setPos(QPointF(200 + m_borderWidth, 0));
-    m_y_label -> setPos(QPointF(0, 200 + m_borderWidth));
+    m_x_label -> setPos(QPointF((m_pGraphWidget ->rect().width() / 2) + m_borderWidth, 0));
+    m_y_label -> setPos(QPointF(0, (m_pGraphWidget ->rect().height() / 2) + m_borderWidth));
 
     // Draw the text for the extents
     QRectF rc = boundingRect();
@@ -50,8 +51,9 @@ CartesianGraph::CartesianGraph(const CartesianGraph &obj) : QGraphicsItem() {
         delete m_y_label;
         m_x_label = new CartesianLabel(obj.XAxisLabel(), this);
         m_y_label = new CartesianLabel(obj.YAxisLabel(), this);
-        m_x_label ->setPos(QPointF(200 + m_borderWidth, 0));
-        m_y_label ->setPos(QPointF(0, -200 - m_borderWidth));
+
+        m_x_label ->setPos(QPointF((m_pGraphWidget ->rect().width() / 2) + m_borderWidth, 0));
+        m_y_label ->setPos(QPointF(0, -(m_pGraphWidget ->rect().height() / 2) - m_borderWidth));
     }
 }
 
@@ -76,8 +78,8 @@ CartesianGraph &CartesianGraph::operator=(const CartesianGraph &obj) {
         delete m_y_label;
         m_x_label = new CartesianLabel(obj.XAxisLabel(), this);
         m_y_label = new CartesianLabel(obj.YAxisLabel(), this);
-        m_x_label ->setPos(QPointF(200 + m_borderWidth, 0));
-        m_y_label ->setPos(QPointF(0, -200 - m_borderWidth));
+        m_x_label ->setPos(QPointF((m_pGraphWidget ->rect().width() / 2) + m_borderWidth, 0));
+        m_y_label ->setPos(QPointF(0, -(m_pGraphWidget ->rect().height() / 2) - m_borderWidth));
     }
     return *this;
 }
@@ -134,7 +136,11 @@ void CartesianGraph::onPropChange(const QString &str) {
 }
 
 QRectF CartesianGraph::boundingRect() const {
-    return QRectF(-200, -200, 400, 400);
+    return QRectF(
+                -(m_pGraphWidget ->rect().width() / 2),
+                -(m_pGraphWidget ->rect().height() / 2),
+                m_pGraphWidget ->rect().width(),
+                m_pGraphWidget ->rect().height());
 }
 
 QPainterPath CartesianGraph::shape() const {
@@ -143,12 +149,18 @@ QPainterPath CartesianGraph::shape() const {
     return path;
 }
 
-void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *) {
+void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *pWidget) {
+    qDebug() << "CartesianGraphView size: " << m_pGraphWidget ->rect();
+
+    int width = m_pGraphWidget ->rect().width();
+    int height = m_pGraphWidget ->rect().height();
+
+
     painter -> setPen(Qt::NoPen);
     painter -> setBrush(Qt::darkGray);
     painter -> setPen(QPen(Qt::black, 2));
-    painter -> drawLine(QLine(0, 200, 0, -200));    // vertical axis
-    painter -> drawLine(QLine(-200, 0, 200, 0));    // horizontal axis
+    painter -> drawLine(QLine(0, height / 2, 0, -(height / 2)));    // vertical axis
+    painter -> drawLine(QLine(-(width / 2), 0, width / 2, 0));    // horizontal axis
 
     // Draw the tickmarks
     int tickDrawLength = 5;

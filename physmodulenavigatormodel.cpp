@@ -96,7 +96,7 @@ bool PhysModuleNavigatorModel::setData(const QModelIndex &index, const QVariant 
 }
 
 bool PhysModuleNavigatorModel::insertRows(int position, int rows, const QModelIndex &parent) {
-    beginInsertRows(QModelIndex(), position, position+rows-1);
+    beginInsertRows(QModelIndex(), position, position + rows - 1);
     for (int row = 0; row < rows; ++row)
         stringList.insert(position, "");
     endInsertRows();
@@ -104,7 +104,7 @@ bool PhysModuleNavigatorModel::insertRows(int position, int rows, const QModelIn
 }
 
 bool PhysModuleNavigatorModel::removeRows(int position, int rows, const QModelIndex &parent) {
-    beginRemoveRows(QModelIndex(), position, position+rows-1);
+    beginRemoveRows(QModelIndex(), position, position + rows - 1);
     for (int row = 0; row < rows; ++row)
         stringList.removeAt(position);
     endRemoveRows();

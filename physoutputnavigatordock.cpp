@@ -1,14 +1,11 @@
 #include "physoutputnavigatordock.h"
 #include "ui_physoutputnavigatordock.h"
 
-PhysOutputNavigatorDock::PhysOutputNavigatorDock(QWidget *parent) :
-    QDockWidget(parent),
-    ui(new Ui::PhysOutputNavigatorDock)
-{
+PhysOutputNavigatorDock::PhysOutputNavigatorDock(QWidget *parent) : QDockWidget(parent),
+    ui(new Ui::PhysOutputNavigatorDock) {
     ui->setupUi(this);
 }
 
-PhysOutputNavigatorDock::~PhysOutputNavigatorDock()
-{
+PhysOutputNavigatorDock::~PhysOutputNavigatorDock() {
     delete ui;
 }

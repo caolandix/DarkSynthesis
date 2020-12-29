@@ -24,15 +24,15 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     setWindowTitle(tr("Cartesian Graph"));
     // Setting the matrix rotates the drawing area to be a normal cartesian plane. Unfortunately
     // it also means that the original drawing has to be tweaked
-    QTransform trfrm;
-    trfrm.scale(1.0, -1.0);
-    setTransform(trfrm);
+    QTransform transform;
+    transform.scale(1.0, -1.0);
+    setTransform(transform);
 
     // Creation of the cartesian graph sitting in the center of the GraphWidget. It is used to
     // show where the vector drawing occurs and the scales defined.
     m_pScene = new QGraphicsScene(this);
     m_pScene -> setItemIndexMethod(QGraphicsScene::NoIndex);
-    m_pScene -> setSceneRect(-2000, -2000, 4000, 4000);
+    m_pScene -> setSceneRect(-200, -200, 400, 400);
     setScene(m_pScene);
 
     // Create the actions used in the context menus
@@ -269,23 +269,42 @@ void GraphWidget::wheelEvent(QWheelEvent *event) {
 
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     Q_UNUSED(rect);
+    QRectF sceneRect = this -> sceneRect();
 
     // Shadow
-    QRectF sceneRect = this -> sceneRect();
+    /* remove shadowing for now.
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
     QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
     if (rightShadow.intersects(rect) || rightShadow.contains(rect))
         painter -> fillRect(rightShadow, Qt::darkGray);
     if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
         painter -> fillRect(bottomShadow, Qt::darkGray);
+    */
 
-    // Fill
+    // Fill with white
+    /*
     QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
     gradient.setColorAt(0, Qt::red);
     gradient.setColorAt(1, Qt::lightGray);
     painter -> fillRect(rect.intersected(sceneRect), gradient);
+    */
+
+    // Set the brush
     painter -> setBrush(Qt::NoBrush);
     painter -> drawRect(sceneRect);
+}
+
+QRectF GraphWidget::visibleRect() {
+    QPointF tl(horizontalScrollBar() -> value(), verticalScrollBar( )-> value());
+    QPointF br = tl + viewport() -> rect().bottomRight();
+    QMatrix mat = matrix().inverted();
+    return mat.mapRect(QRectF(tl, br));
+}
+
+void GraphWidget::resizeEvent(QResizeEvent *pEvent) {
+    QRectF rectView = visibleRect();
+
+    fitInView(rectView, Qt::KeepAspectRatio);
 }
 
 void GraphWidget::scaleView(qreal scaleFactor) {

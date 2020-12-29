@@ -48,6 +48,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
     void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
@@ -60,6 +61,9 @@ private:
     void createActions();
     void showPhysObjContextMenu(QGraphicsItem *, const QPoint &);
     void showWidgetContextMenu(const QPoint &);
+
+    QRectF visibleRect();
+
 private:
     CartesianGraph *m_pCartGraph;
     QAction *m_actNewVector, *m_actNewParticle;
