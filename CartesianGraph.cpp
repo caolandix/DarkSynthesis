@@ -34,8 +34,6 @@ CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, C
     m_pYMaxLabel = new CartesianLabel(QString::number(m_pDataObj -> yMax()), this);
     m_pXMinLabel -> setPos(QPointF(rc.x() - (m_pXMinLabel -> boundingRect().width() / 2), -(m_pXMinLabel -> boundingRect().height() / 2)));
 
-    qDebug() << rc.width() - (m_pXMaxLabel -> boundingRect().width() / 2) << -(m_pXMaxLabel -> boundingRect().height() / 2);
-
     QRect viewRect = m_pGraphWidget ->rect();
 
     m_pXMaxLabel -> setPos(QPointF((viewRect.width() / 2) - (m_pXMaxLabel -> boundingRect().width() / 2), -(m_pXMaxLabel -> boundingRect().height() / 2)));
@@ -207,10 +205,8 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     // Draw the end ticks of axis' along with the extent text
     painter -> setPen(QPen(Qt::red, 4));
-    for (int i = 0; i < 4; i++) {
-        qDebug() << arrEndLines[i];
+    for (int i = 0; i < 4; i++)
         painter -> drawLine(arrEndLines[i]);
-    }
 }
 
 QVariant CartesianGraph::itemChange(GraphicsItemChange change, const QVariant &value) {
