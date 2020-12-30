@@ -172,9 +172,7 @@ void GraphWidget::createActions() {
     connect(m_actParticleProps, SIGNAL(triggered()), this, SLOT(particleProps()));
 
     // Hook up the custom Context menu handler
-    connect(this,
-            SIGNAL(customContextMenuRequested(const QPoint &)),
-            SLOT(onCustomContextMenuRequested(const QPoint &)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(onCustomContextMenuRequested(const QPoint &)));
 }
 
 void GraphWidget::onCustomContextMenuRequested(const QPoint &pos) {
@@ -271,24 +269,6 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     Q_UNUSED(rect);
     QRectF sceneRect = this -> sceneRect();
 
-    // Shadow
-    /* remove shadowing for now.
-    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
-    QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
-    if (rightShadow.intersects(rect) || rightShadow.contains(rect))
-        painter -> fillRect(rightShadow, Qt::darkGray);
-    if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
-        painter -> fillRect(bottomShadow, Qt::darkGray);
-    */
-
-    // Fill with white
-    /*
-    QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
-    gradient.setColorAt(0, Qt::red);
-    gradient.setColorAt(1, Qt::lightGray);
-    painter -> fillRect(rect.intersected(sceneRect), gradient);
-    */
-
     // Set the brush
     painter -> setBrush(Qt::NoBrush);
     painter -> drawRect(sceneRect);
@@ -302,9 +282,12 @@ QRectF GraphWidget::visibleRect() {
 }
 
 void GraphWidget::resizeEvent(QResizeEvent *pEvent) {
-    QRectF rectView = visibleRect();
+    QRectF rectView = this ->sceneRect();
+
+    qDebug() << rectView;
 
     fitInView(rectView, Qt::KeepAspectRatio);
+    QWidget::resizeEvent(pEvent);
 }
 
 void GraphWidget::scaleView(qreal scaleFactor) {
