@@ -49,7 +49,7 @@ void CartesianLabel::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *p
 
 void CartesianLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *evt) {
     if (!m_editable)
-            return;
+        return;
     qDebug("mouseDoubleClickEvent '%s'", this -> toPlainText().toStdString().c_str());
     if (textInteractionFlags() == Qt::TextEditorInteraction) {
 
