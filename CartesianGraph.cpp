@@ -28,14 +28,19 @@ CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, C
 
     // Draw the text for the extents
     QRectF rc = boundingRect();
-    m_pXMin = new CartesianLabel(QString::number(m_pDataObj -> xMin()), this);
-    m_pXMax = new CartesianLabel(QString::number(m_pDataObj -> xMax()), this);
-    m_pYMin = new CartesianLabel(QString::number(m_pDataObj -> yMin()), this);
-    m_pYMax = new CartesianLabel(QString::number(m_pDataObj -> yMax()), this);
-    m_pXMin -> setPos(QPointF(rc.x() - (m_pXMin -> boundingRect().width() / 2), -(m_pXMin -> boundingRect().height() / 2)));
-    m_pXMax -> setPos(QPointF(rc.width() - (m_pXMax -> boundingRect().width() / 2), -(m_pXMax -> boundingRect().height() / 2)));
-    m_pYMin -> setPos(QPointF(m_pYMin -> boundingRect().width() / 2, rc.y() + (m_pYMin -> boundingRect().height() / 2)));
-    m_pYMax -> setPos(QPointF(m_pYMax -> boundingRect().width() / 2, rc.height() + (m_pYMax -> boundingRect().height() / 2)));
+    m_pXMinLabel = new CartesianLabel(QString::number(m_pDataObj -> xMin()), this);
+    m_pXMaxLabel = new CartesianLabel(QString::number(m_pDataObj -> xMax()), this);
+    m_pYMinLabel = new CartesianLabel(QString::number(m_pDataObj -> yMin()), this);
+    m_pYMaxLabel = new CartesianLabel(QString::number(m_pDataObj -> yMax()), this);
+    m_pXMinLabel -> setPos(QPointF(rc.x() - (m_pXMinLabel -> boundingRect().width() / 2), -(m_pXMinLabel -> boundingRect().height() / 2)));
+
+    qDebug() << rc.width() - (m_pXMaxLabel -> boundingRect().width() / 2) << -(m_pXMaxLabel -> boundingRect().height() / 2);
+
+    QRect viewRect = m_pGraphWidget ->rect();
+
+    m_pXMaxLabel -> setPos(QPointF((viewRect.width() / 2) - (m_pXMaxLabel -> boundingRect().width() / 2), -(m_pXMaxLabel -> boundingRect().height() / 2)));
+    m_pYMinLabel -> setPos(QPointF(m_pYMinLabel -> boundingRect().width() / 2, rc.y() + (m_pYMinLabel -> boundingRect().height() / 2)));
+    m_pYMaxLabel -> setPos(QPointF(m_pYMaxLabel -> boundingRect().width() / 2, (viewRect.height() / 2) + (m_pYMaxLabel -> boundingRect().height() / 2)));
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     createConnections();
@@ -106,16 +111,16 @@ void CartesianGraph::onRepaint() {
 void CartesianGraph::XExtent(const QString &str) {
     m_pDataObj -> xMax(str.toDouble());
     m_pDataObj -> xMin(-(str.toDouble()));
-    m_pXMax ->setPlainText(QString::number(m_pDataObj -> xMax()));
-    m_pXMin ->setPlainText(QString::number(m_pDataObj -> xMin()));
+    m_pXMaxLabel ->setPlainText(QString::number(m_pDataObj -> xMax()));
+    m_pXMinLabel ->setPlainText(QString::number(m_pDataObj -> xMin()));
 }
 
 void CartesianGraph::YExtent(const QString &str) {
     m_pDataObj -> yMax(str.toDouble());
     m_pDataObj -> yMin(-(str.toDouble()));
 
-    m_pYMin ->setPlainText(QString::number(m_pDataObj -> yMin()));
-    m_pYMax ->setPlainText(QString::number(m_pDataObj -> yMax()));
+    m_pYMinLabel ->setPlainText(QString::number(m_pDataObj -> yMin()));
+    m_pYMaxLabel ->setPlainText(QString::number(m_pDataObj -> yMax()));
 }
 
 
@@ -144,28 +149,24 @@ QRectF CartesianGraph::boundingRect() const {
 }
 
 QPainterPath CartesianGraph::shape() const {
+
     QPainterPath path;
-    path.addEllipse(-10, -10, 20, 20);
+    // path.addEllipse(-10, -10, 20, 20);
     return path;
 }
 
 void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *pWidget) {
-    qDebug() << "CartesianGraphView size: " << m_pGraphWidget ->rect();
-
-    int width = m_pGraphWidget ->rect().width();
-    int height = m_pGraphWidget ->rect().height();
-
+    QRectF rc = m_pGraphWidget ->rect();
 
     painter -> setPen(Qt::NoPen);
     painter -> setBrush(Qt::darkGray);
     painter -> setPen(QPen(Qt::black, 2));
-    painter -> drawLine(QLine(0, height / 2, 0, -(height / 2)));    // vertical axis
-    painter -> drawLine(QLine(-(width / 2), 0, width / 2, 0));    // horizontal axis
+    painter -> drawLine(QLine(0, rc.height() / 2, 0, -(rc.height() / 2)));    // vertical axis
+    painter -> drawLine(QLine(-(rc.width() / 2), 0, rc.width() / 2, 0));    // horizontal axis
 
     // Draw the tickmarks
     int tickDrawLength = 5;
     double tickStep = m_pDataObj -> tickStep();
-    QRectF rc = boundingRect();
 
     // Figure out the number of ticks
     int numTicksX = (m_pDataObj -> xMax() / tickStep) * 2;    // *2 because of both sides +/- sides to axis
@@ -175,30 +176,41 @@ void CartesianGraph::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     int pxPerTickX = rc.width() / numTicksX;
 
     // The width of coordinate space between ticks - y-axis
-    int pxPerTickY = rc.width() / numTicksY;
+    int pxPerTickY = rc.height() / numTicksY;
 
-    // Do vertical lines... Draw left to right
-    int axisStartPoint = rc.x();
-    for (int i = 1; i < numTicksX; i++) {
-        if (axisStartPoint + pxPerTickX * i == 0)
-            continue;
-        painter -> drawLine(QLine(axisStartPoint + pxPerTickX * i, tickDrawLength, axisStartPoint + pxPerTickX * i, -tickDrawLength));
+    QLine arrEndLines[4];
+
+    // Do vertical lines... Draw center to right, then center to left
+    int i = 1, j = 1;
+    while (1) {
+        if (i >= numTicksX) {
+            arrEndLines[0] = QLine((pxPerTickX * numTicksX) / 2, tickDrawLength, (pxPerTickX * numTicksX) / 2, -tickDrawLength);
+            arrEndLines[1] = QLine(-((pxPerTickX * numTicksX) / 2), tickDrawLength, -((pxPerTickX * numTicksX) / 2), -tickDrawLength);
+            break;
+        }
+        painter -> drawLine(QLine(pxPerTickX * i, tickDrawLength, pxPerTickX * i, -tickDrawLength));
+        painter -> drawLine(QLine(-(pxPerTickX * i), tickDrawLength, -(pxPerTickX * i), -tickDrawLength));
+        i++;
     }
 
     // Do Horizontal lines... Draw left to right
-    axisStartPoint = rc.y();
-    for (int j = 1; j < numTicksY; j++) {
-        if (axisStartPoint + pxPerTickY * j == 0)
-            continue;
-        painter -> drawLine(QLine(tickDrawLength, axisStartPoint + pxPerTickY * j, -tickDrawLength, axisStartPoint + pxPerTickY * j));
+    while (1) {
+        if (j >= numTicksY) {
+            arrEndLines[2] = QLine(tickDrawLength, (pxPerTickY * numTicksY) / 2, -tickDrawLength, (pxPerTickY * numTicksY) / 2);
+            arrEndLines[3] = QLine(tickDrawLength, -((pxPerTickY * numTicksY) / 2), -tickDrawLength, -((pxPerTickY * numTicksY) / 2));
+            break;
+        }
+        painter -> drawLine(QLine(tickDrawLength, pxPerTickY * j, -tickDrawLength, pxPerTickY * j));
+        painter -> drawLine(QLine(tickDrawLength, -(pxPerTickY * j), -tickDrawLength, -(pxPerTickY * j)));
+        j++;
     }
 
     // Draw the end ticks of axis' along with the extent text
-    painter -> setPen(QPen(Qt::black, 4));
-    painter -> drawLine(QLine(rc.x(), tickDrawLength + 5, rc.x(), -tickDrawLength - 5));
-    painter -> drawLine(QLine(rc.width(), tickDrawLength + 5, rc.width(), -tickDrawLength - 5));
-    painter -> drawLine(QLine(tickDrawLength + 5, rc.y(), -tickDrawLength - 5, rc.y()));
-    painter -> drawLine(QLine(tickDrawLength + 5, rc.height(), -tickDrawLength - 5, rc.height()));
+    painter -> setPen(QPen(Qt::red, 4));
+    for (int i = 0; i < 4; i++) {
+        qDebug() << arrEndLines[i];
+        painter -> drawLine(arrEndLines[i]);
+    }
 }
 
 QVariant CartesianGraph::itemChange(GraphicsItemChange change, const QVariant &value) {

@@ -70,10 +70,10 @@ protected:
 private:
     GraphWidget *m_pGraphWidget;
     CartesianLabel *m_x_label, *m_y_label;
-    CartesianLabel *m_pXMin;
-    CartesianLabel *m_pXMax;
-    CartesianLabel *m_pYMin;
-    CartesianLabel *m_pYMax;
+    CartesianLabel *m_pXMinLabel;
+    CartesianLabel *m_pXMaxLabel;
+    CartesianLabel *m_pYMinLabel;
+    CartesianLabel *m_pYMaxLabel;
     CartesianGraphDataObj *m_pDataObj;
     int m_borderWidth;
     static map<int, QString> m_listEditableProps;
