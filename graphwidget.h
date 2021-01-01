@@ -35,6 +35,7 @@ public slots:
     void onRepaint();
     void onReorderObjNav(QGraphicsItem *);
     void onChangeItemName(const QString &, const QString &);
+    void onUpdateWidgetCoordinates(const QPointF &, PhysParticle *);
 private slots:
     void createVector();
     void createParticle();
@@ -45,15 +46,20 @@ private slots:
     void vectorProps();
     void onCustomContextMenuRequested(const QPoint& pos);
 protected:
-    void contextMenuEvent(QContextMenuEvent *event);
-    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void contextMenuEvent(QContextMenuEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void timerEvent(QTimerEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 #ifndef QT_NO_WHEELEVENT
-    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *event) override;
 #endif
-    void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
+    void drawBackground(QPainter *painter, const QRectF &rect) override;
     void scaleView(qreal scaleFactor);\
 
 
@@ -71,6 +77,9 @@ private:
     QLabel *m_pInfoLabel;
     QGraphicsScene *m_pScene;
     QPointF m_currClickPos;
+
+    CartesianLabel *m_pCoordLabel;
+    PhysParticle *m_pParticle;
 };
 
 #endif // GRAPHWIDGET_H

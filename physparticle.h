@@ -56,6 +56,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
 signals:
     void changeItemName(const QString &, const QString &);
+    void updateWidgetCoordinates(const QPointF &, PhysParticle *);
 private:
     CartesianLabel *m_pLabel;
     QList<PhysVector *> m_Vectors;

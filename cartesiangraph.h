@@ -64,9 +64,10 @@ public:
 
 
 protected:
-    QVariant itemChange(GraphicsItemChange, const QVariant &) Q_DECL_OVERRIDE;
-    void mousePressEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *) Q_DECL_OVERRIDE;
+    QVariant itemChange(GraphicsItemChange, const QVariant &) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *) override;
 private:
     GraphWidget *m_pGraphWidget;
     CartesianLabel *m_x_label, *m_y_label;
@@ -77,6 +78,9 @@ private:
     CartesianGraphDataObj *m_pDataObj;
     int m_borderWidth;
     static map<int, QString> m_listEditableProps;
+    CartesianLabel *m_pCoordLabel;
+
+
 public slots:
     void onPropChange(const QString &);
     void onReorderObjNav(QGraphicsItem *);

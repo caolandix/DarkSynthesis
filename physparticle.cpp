@@ -5,6 +5,7 @@
 #include "physparticle.h"
 #include "cartesianlabel.h"
 #include "cartesiangraph.h"
+#include "graphwidget.h"
 
 std::map<int, QString> PhysParticle::m_listEditableProps = {
     {0, QString("Name")},
@@ -54,8 +55,8 @@ void PhysParticle::Name(const QString &str) {
 }
 
 void PhysParticle::createConnections() {
-    connect(this, SIGNAL(changeItemName(const QString &, const QString &)),
-            m_pParent, SLOT(onChangeItemName(const QString &, const QString &)));
+    connect(this, &PhysParticle::changeItemName, m_pParent, &CartesianGraph::onChangeItemName);
+    connect(this, &PhysParticle::updateWidgetCoordinates, m_pParent->graphWidget(), &GraphWidget::onUpdateWidgetCoordinates);
 }
 
 void PhysParticle::Vectors(const QList<PhysVector *> vectorList) {
@@ -85,8 +86,8 @@ QPainterPath PhysParticle::shape() const {
 
 void PhysParticle::paint(QPainter *pPainter, const QStyleOptionGraphicsItem *pOption, QWidget *) {
     pPainter -> setPen(Qt::NoPen);
-    pPainter -> setBrush(Qt::darkGray);
-    pPainter -> drawEllipse(-7, -7, 20, 20);
+    //pPainter -> setBrush(Qt::darkGray);
+    //pPainter -> drawEllipse(-7, -7, 20, 20);
 
     QRadialGradient gradient(-3, -3, 10);
     if (pOption -> state & QStyle::State_Sunken) {
@@ -145,6 +146,8 @@ QVariant PhysParticle::itemChange(GraphicsItemChange change, const QVariant &val
                 newPos.setY(0);
             return newPos;
         }
+
+        emit updateWidgetCoordinates(newPos, this);
     }
     return QGraphicsItem::itemChange(change, value);
 }

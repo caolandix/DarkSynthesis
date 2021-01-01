@@ -13,6 +13,8 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     m_actParticleProps = NULL;
     m_pInfoLabel = NULL;
     m_pScene = NULL;
+    m_pCoordLabel = NULL;
+    m_pParticle = NULL;
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     setCacheMode(CacheBackground);
@@ -21,6 +23,10 @@ GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
+
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
     setWindowTitle(tr("Cartesian Graph"));
     // Setting the matrix rotates the drawing area to be a normal cartesian plane. Unfortunately
     // it also means that the original drawing has to be tweaked
@@ -225,6 +231,7 @@ void GraphWidget::contextMenuEvent(QContextMenuEvent *event) {
 
 
 void GraphWidget::itemMoved() {
+    qDebug() << "GraphWidget::itemMoved";
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event) {
@@ -275,6 +282,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
 }
 
 QRectF GraphWidget::visibleRect() {
+    qDebug() << "GraphWidget::visibleRect()";
     QPointF tl(horizontalScrollBar() -> value(), verticalScrollBar( )-> value());
     QPointF br = tl + viewport() -> rect().bottomRight();
     QMatrix mat = matrix().inverted();
@@ -282,12 +290,7 @@ QRectF GraphWidget::visibleRect() {
 }
 
 void GraphWidget::resizeEvent(QResizeEvent *pEvent) {
-    QRectF rectView = this ->sceneRect();
-
-    qDebug() << rectView;
-
-    fitInView(rectView, Qt::KeepAspectRatio);
-    QWidget::resizeEvent(pEvent);
+    fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
 void GraphWidget::scaleView(qreal scaleFactor) {
@@ -295,4 +298,42 @@ void GraphWidget::scaleView(qreal scaleFactor) {
     if (factor < 0.07 || factor > 100)
         return;
     scale(scaleFactor, scaleFactor);
+}
+
+
+void GraphWidget::onUpdateWidgetCoordinates(const QPointF &particlePoint, PhysParticle *pParticle) {
+    qDebug() << "GraphWidget::onUpdateWidgetCoordinates";
+
+    m_pParticle = pParticle;
+}
+
+void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event) {
+    qDebug() << "GraphWidget::mouseDoubleClickEvent";
+    QGraphicsView::mouseDoubleClickEvent(event);
+}
+
+void GraphWidget::mouseMoveEvent(QMouseEvent *event) {
+    qDebug() << "GraphWidget::mouseMoveEvent";
+
+    if (m_pCoordLabel)
+        m_pCoordLabel ->setPlainText(QString("Mouse move (%1,%2)").arg(event->pos().x()).arg(event->pos().y()));
+    update();
+
+    QGraphicsView::mouseMoveEvent(event);
+}
+void GraphWidget::mousePressEvent(QMouseEvent *event) {
+    qDebug() << "GraphWidget::mousePressEvent";
+
+    if (!m_pCoordLabel)
+        m_pCoordLabel = new CartesianLabel(QString("Mouse move (%1,%2)").arg(event->pos().x()).arg(event->pos().y()), m_pParticle);
+    QGraphicsView::mousePressEvent(event);
+}
+void GraphWidget::mouseReleaseEvent(QMouseEvent *event) {
+    qDebug() << "GraphWidget::mouseReleaseEvent";
+    if (m_pCoordLabel) {
+        delete m_pCoordLabel;
+        m_pCoordLabel = NULL;
+    }
+
+    QGraphicsView::mouseReleaseEvent(event);
 }

@@ -23,7 +23,11 @@ CartesianGraph::CartesianGraph(GraphWidget *pGraphWidget, const QString &Name, C
 
     m_x_label = new CartesianLabel(QString("x: <Enter label>"), this);
     m_y_label = new CartesianLabel(QString("y: <Enter label>"), this);
-    m_x_label -> setPos(QPointF((m_pGraphWidget ->rect().width() / 2) + m_borderWidth, 0));
+
+    QRectF rcXLabel = m_x_label->boundingRect();
+    QRectF rcYLabel = m_y_label->boundingRect();
+
+    m_x_label -> setPos(QPointF(((m_pGraphWidget ->rect().width() / 2) + m_borderWidth) - rcXLabel.width(), 0));
     m_y_label -> setPos(QPointF(0, (m_pGraphWidget ->rect().height() / 2) + m_borderWidth));
 
     // Draw the text for the extents
@@ -225,11 +229,28 @@ QVariant CartesianGraph::itemChange(GraphicsItemChange change, const QVariant &v
 }
 
 void CartesianGraph::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+    qDebug() << "CartesianGraph::mousePressEvent";
     update();
     QGraphicsItem::mousePressEvent(event);
 }
 
+void CartesianGraph::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+    qDebug() << "CartesianGraph::mouseMoveEvent";
+    if (!m_pCoordLabel) {
+        m_pCoordLabel = new CartesianLabel(QString("Mouse move (%1,%2)").arg(event->pos().x()).arg(event->pos().y()), this);
+    }
+
+    update();
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
 void CartesianGraph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+    qDebug() << "CartesianGraph::mouseReleaseEvent";
+    if (m_pCoordLabel) {
+        delete m_pCoordLabel;
+        m_pCoordLabel = NULL;
+    }
+
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }
