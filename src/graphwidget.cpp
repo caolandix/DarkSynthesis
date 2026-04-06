@@ -6,16 +6,6 @@
 #include "physbaseitem.h"
 
 GraphWidget::GraphWidget(QWidget *pParent) : QGraphicsView(pParent) {
-    m_pCartGraph = NULL;
-    m_actNewVector = NULL;
-    m_actNewParticle = NULL;
-    m_actVectorProps = NULL;
-    m_actParticleProps = NULL;
-    m_pInfoLabel = NULL;
-    m_pScene = NULL;
-    m_pCoordLabel = NULL;
-    m_pParticle = NULL;
-
     setContextMenuPolicy(Qt::CustomContextMenu);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(FullViewportUpdate);
