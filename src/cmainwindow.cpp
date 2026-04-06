@@ -51,11 +51,11 @@ CMainWindow::~CMainWindow() {
 }
 
 void CMainWindow::init() {
-    m_pPhysObjNavigator = NULL;
-    m_pPhysObjPropsNavigator = NULL;
-    m_pPhysModNavigator = NULL;
-    m_pPhysOutputNavigator = NULL;
-    m_pPhysEqSolver = NULL;
+    m_pPhysObjNavigator = nullptr;
+    m_pPhysObjPropsNavigator = nullptr;
+    m_pPhysModNavigator = nullptr;
+    m_pPhysOutputNavigator = nullptr;
+    m_pPhysEqSolver = nullptr;
 }
 
 void CMainWindow::contextMenuEvent(QContextMenuEvent *) {
