@@ -12,7 +12,7 @@ public:
 
 private:
     QString m_CellAddress;
-    PhysDataObj *m_pObj;
+    PhysDataObj *m_pObj = nullptr;
 };
 
 #endif // PHYSEQGRIDCELL_H
