@@ -12,11 +12,11 @@ class PhysObjectPropsNavigatorDock : public QDockWidget
     Q_OBJECT
 
 public:
-    explicit PhysObjectPropsNavigatorDock(QWidget *parent = 0);
+    explicit PhysObjectPropsNavigatorDock(QWidget *parent = nullptr);
     ~PhysObjectPropsNavigatorDock();
 
 private:
-    Ui::PhysObjectPropsNavigatorDock *ui;
+    Ui::PhysObjectPropsNavigatorDock *ui = nullptr;
 };
 
 #endif // PHYSOBJECTPROPSNAVIGATORDOCK_H
