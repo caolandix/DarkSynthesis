@@ -66,10 +66,10 @@ CartesianGraph::CartesianGraph(const CartesianGraph &obj) : QGraphicsItem() {
 
 CartesianGraph::~CartesianGraph() {
     delete m_pDataObj;
-    m_pDataObj = NULL;
-    m_pGraphWidget = NULL;
-    delete m_x_label; m_x_label = NULL;
-    delete m_y_label; m_y_label = NULL;
+    m_pDataObj = nullptr;
+    m_pGraphWidget = nullptr;
+    delete m_x_label; m_x_label = nullptr;
+    delete m_y_label; m_y_label = nullptr;
 }
 
 
@@ -127,7 +127,7 @@ void CartesianGraph::YExtent(const QString &str) {
 
 
 CartesianGraph *CartesianGraph::copy() {
-    CartesianGraph *pObj = NULL;
+    CartesianGraph *pObj = nullptr;
 
     return pObj;
 }
@@ -248,7 +248,7 @@ void CartesianGraph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     qDebug() << "CartesianGraph::mouseReleaseEvent";
     if (m_pCoordLabel) {
         delete m_pCoordLabel;
-        m_pCoordLabel = NULL;
+        m_pCoordLabel = nullptr;
     }
 
     update();
