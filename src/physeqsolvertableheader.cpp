@@ -4,8 +4,6 @@
 
 
 PhysEqSolverTableHeader::PhysEqSolverTableHeader(QList<double> lstTimeSlices, QWidget *pParent) : QHeaderView(Qt::Horizontal, pParent) {
-    m_pActionInsertColumn = NULL;
-    m_pActionRemoveColumn = NULL;
     m_pTable = static_cast<PhysEqSolverTable *>(pParent);
     setSectionsClickable(true);
     setContextMenuPolicy(Qt::CustomContextMenu);
