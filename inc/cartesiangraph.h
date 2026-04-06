@@ -69,16 +69,16 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *) override;
 private:
-    GraphWidget *m_pGraphWidget;
-    CartesianLabel *m_x_label, *m_y_label;
-    CartesianLabel *m_pXMinLabel;
-    CartesianLabel *m_pXMaxLabel;
-    CartesianLabel *m_pYMinLabel;
-    CartesianLabel *m_pYMaxLabel;
-    CartesianGraphDataObj *m_pDataObj;
+    GraphWidget *m_pGraphWidget = nullptr;
+    CartesianLabel *m_x_label = nullptr, *m_y_label = nullptr;
+    CartesianLabel *m_pXMinLabel = nullptr;
+    CartesianLabel *m_pXMaxLabel = nullptr;
+    CartesianLabel *m_pYMinLabel = nullptr;
+    CartesianLabel *m_pYMaxLabel = nullptr;
+    CartesianGraphDataObj *m_pDataObj = nullptr;
     int m_borderWidth;
     static map<int, QString> m_listEditableProps;
-    CartesianLabel *m_pCoordLabel;
+    CartesianLabel *m_pCoordLabel = nullptr;
 
 
 public slots:
