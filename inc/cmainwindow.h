@@ -57,14 +57,14 @@ private:
     // properties
     QLabel *m_infoLabel;
 
-    PhysObjectNavigator *m_pPhysObjNavigator;
-    PhysObjectPropsNavigator *m_pPhysObjPropsNavigator;
-    PhysModuleNavigator *m_pPhysModNavigator;
-    PhysOutputNavigator *m_pPhysOutputNavigator;
-    PhysEqSolverTable *m_pPhysEqSolver;
-    PhysElectroStaticView *m_pPhysElectroStaticView;
-    Ui::CMainWindow *m_pUI;
-    GraphWidget *m_pGraphWidget;
+    PhysObjectNavigator *m_pPhysObjNavigator = nullptr;
+    PhysObjectPropsNavigator *m_pPhysObjPropsNavigator = nullptr;
+    PhysModuleNavigator *m_pPhysModNavigator = nullptr;
+    PhysOutputNavigator *m_pPhysOutputNavigator = nullptr;
+    PhysEqSolverTable *m_pPhysEqSolver = nullptr;
+    PhysElectroStaticView *m_pPhysElectroStaticView = nullptr;
+    Ui::CMainWindow *m_pUI = nullptr;
+    GraphWidget *m_pGraphWidget = nullptr;
 };
 
 #endif // CMAINWINDOW_H
