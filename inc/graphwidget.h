@@ -15,7 +15,7 @@ class CartesianGraph;
 class GraphWidget : public QGraphicsView {
     Q_OBJECT
 public:
-    GraphWidget(QWidget *parent = NULL);
+    GraphWidget(QWidget *parent = nullptr);
     void itemMoved();
     void createCartesianGraph();
 
@@ -71,15 +71,15 @@ private:
     QRectF visibleRect();
 
 private:
-    CartesianGraph *m_pCartGraph;
-    QAction *m_actNewVector, *m_actNewParticle;
-    QAction *m_actVectorProps, *m_actParticleProps;
-    QLabel *m_pInfoLabel;
-    QGraphicsScene *m_pScene;
-    QPointF m_currClickPos;
+    CartesianGraph *m_pCartGraph = nullptr;
+    QAction *m_actNewVector = nullptr, *m_actNewParticle = nullptr;
+    QAction *m_actVectorProps = nullptr, *m_actParticleProps = nullptr;
+    QLabel *m_pInfoLabel = nullptr;
+    QGraphicsScene *m_pScene = nullptr;
+    QPointF m_currClickPos = nullptr;
 
-    CartesianLabel *m_pCoordLabel;
-    PhysParticle *m_pParticle;
+    CartesianLabel *m_pCoordLabel = nullptr;
+    PhysParticle *m_pParticle = nullptr;
 };
 
 #endif // GRAPHWIDGET_H
