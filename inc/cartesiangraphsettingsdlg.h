@@ -24,7 +24,7 @@ protected:
     void done(int);
 
 private:
-    Ui::CartesianGraphSettingsDlg *ui;
+    Ui::CartesianGraphSettingsDlg *ui = nullptr;
     CartesianGraphDataObj m_DataObj;
 };
 
