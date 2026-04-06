@@ -22,9 +22,9 @@ public slots:
     void onSectionDoubleClicked(int);
 
 private:
-    PhysEqSolverTable *m_pTable;
-    QAction *m_pActionInsertColumn;
-    QAction *m_pActionRemoveColumn;
+    PhysEqSolverTable *m_pTable = nullptr;
+    QAction *m_pActionInsertColumn = nullptr;
+    QAction *m_pActionRemoveColumn = nullptr;
     int m_hdrIdx;
     QList<double> m_lstTimeSlices;
 };
