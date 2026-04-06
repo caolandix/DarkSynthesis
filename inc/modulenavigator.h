@@ -10,11 +10,11 @@ namespace Ui {
 class ModuleNavigator : public QDockWidget {
     Q_OBJECT
 public:
-    explicit ModuleNavigator(QWidget *parent = 0);
+    explicit ModuleNavigator(QWidget *parent = nullptr);
     ~ModuleNavigator();
 
 private:
-    Ui::ModuleNavigator *ui;
+    Ui::ModuleNavigator *ui = nullptr;
 };
 
 #endif // MODULENAVIGATOR_H
