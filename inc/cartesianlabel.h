@@ -5,8 +5,8 @@
 
 class CartesianLabel : public QGraphicsTextItem {
 public:
-    CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem * = 0, bool = true, bool = false);
-    CartesianLabel(const QString &, QGraphicsItem * = 0, bool = true, bool = false);
+    CartesianLabel(const QString &, Qt::Alignment, QGraphicsItem *  = nullptr, bool = true, bool = false);
+    CartesianLabel(const QString &, QGraphicsItem * = nullptr, bool = true, bool = false);
     CartesianLabel(QGraphicsItem * = 0, bool = true, bool = false);
     QRectF boundingRect() const;
 
@@ -19,7 +19,7 @@ public:
     void setDraw(bool bVal) { m_bDraw = bVal; }
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);
-    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget * = 0);
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget * = nullptr);
 
 private:
     Qt::Alignment m_Flags;
