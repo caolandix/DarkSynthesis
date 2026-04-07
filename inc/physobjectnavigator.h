@@ -14,7 +14,7 @@
 class PhysObjectNavigator : public QTreeWidget {
     Q_OBJECT
 public:
-    PhysObjectNavigator(QWidget * = NULL);
+    PhysObjectNavigator(QWidget * = nullptr);
 
     QGraphicsItem *currObj() const { return m_pCurrObj; }
     QGraphicsItem *prevObj() const { return m_pPrevObj; }
@@ -42,8 +42,8 @@ public slots:
     void onReorderObjNav(QGraphicsItem *pObj);
     void onChangeItemName(const QString &, const QString &);
 private:
-    QGraphicsItem *m_pCurrObj, *m_pPrevObj;
-    QAction *m_pActNewItem, *m_pActCloneItem, *m_pActDeleteItem, *m_pActResetItem;
+    QGraphicsItem *m_pCurrObj = nullptr, *m_pPrevObj = nullptr;
+    QAction *m_pActNewItem = nullptr, *m_pActCloneItem = nullptr, *m_pActDeleteItem = nullptr, *m_pActResetItem = nullptr;
 
 };
 
