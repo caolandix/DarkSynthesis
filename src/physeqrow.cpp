@@ -8,7 +8,7 @@ PhysEqRow &PhysEqRow::operator=(const PhysEqRow &obj) {
 }
 
 PhysEqRow::~PhysEqRow() {
-    foreach(PhysEqGridCell *pItem, m_lstCells)
+    for (PhysEqGridCell *pItem : m_lstCells)
         delete pItem;
     m_lstCells.clear();
 }
