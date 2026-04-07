@@ -322,7 +322,7 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent *event) {
     qDebug() << "GraphWidget::mouseReleaseEvent";
     if (m_pCoordLabel) {
         delete m_pCoordLabel;
-        m_pCoordLabel = NULL;
+        m_pCoordLabel = nullptr;
     }
 
     QGraphicsView::mouseReleaseEvent(event);
