@@ -16,7 +16,7 @@
 class PhysObjectPropsNavigator : public QTableWidget {
     Q_OBJECT
 public:
-    PhysObjectPropsNavigator(QWidget * = NULL, int = 0, int = 2);
+    PhysObjectPropsNavigator(QWidget * = nullptr, int = 0, int = 2);
 
     void buildCartesianGraphTable(CartesianGraph *, QGraphicsItem *);
     void buildVectorTable(PhysVector *, QGraphicsItem *);
@@ -40,28 +40,28 @@ public slots:
 private:
 
     // CartesianGraph
-    PhysObjectPropEditor *m_pXaxisLabel;
-    PhysObjectPropEditor *m_pYaxisLabel;
-    PhysObjectPropEditor *m_pAxisTickInc;
-    PhysObjectPropEditor *m_pXaxisExtent;
-    PhysObjectPropEditor *m_pYaxisExtent;
-    PhysObjectPropEditor *m_pCartesianGraphName;
+    PhysObjectPropEditor *m_pXaxisLabel = nullptr;
+    PhysObjectPropEditor *m_pYaxisLabel = nullptr;
+    PhysObjectPropEditor *m_pAxisTickInc = nullptr;
+    PhysObjectPropEditor *m_pXaxisExtent = nullptr;
+    PhysObjectPropEditor *m_pYaxisExten = nullptrt;
+    PhysObjectPropEditor *m_pCartesianGraphName = nullptr;
 
     // PhysVectors
-    PhysObjectPropEditor *m_pVectorMag;
-    PhysObjectPropEditor *m_pVectorThetaAngle;
-    QComboBox *m_pVectorThetaAxisOrient;
-    PhysObjectPropEditor *m_pVectorAssocParticle;
-    PhysObjectPropEditor *m_pVectorName;
+    PhysObjectPropEditor *m_pVectorMag = nullptr;
+    PhysObjectPropEditor *m_pVectorThetaAngle = nullptr;
+    QComboBox *m_pVectorThetaAxisOrient = nullptr;
+    PhysObjectPropEditor *m_pVectorAssocParticle = nullptr;
+    PhysObjectPropEditor *m_pVectorName = nullptr;
 
     // PhysParticles
-    PhysObjectPropEditor *m_pParticleName;
-    PhysObjectPropEditor *m_pParticleMass;
-    QComboBox *m_pLockXAxis;
-    QComboBox *m_pLockYAxis;
-    PhysObjectPropEditor *m_pPosition;
+    PhysObjectPropEditor *m_pParticleName = nullptr;
+    PhysObjectPropEditor *m_pParticleMass = nullptr;
+    QComboBox *m_pLockXAxis = nullptr;
+    QComboBox *m_pLockYAxis = nullptr;
+    PhysObjectPropEditor *m_pPosition = nullptr;
 
-    QGraphicsItem *m_pGraphicsItem;
+    QGraphicsItem *m_pGraphicsItem = nullptr;
 };
 
 #endif // PHYSOBJECTPROPSNAVIGATOR_H
