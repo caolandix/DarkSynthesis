@@ -14,9 +14,6 @@
 
 PhysObjectNavigator::PhysObjectNavigator(QWidget *pParent) : QTreeWidget(pParent) {
 
-    // Initialize private
-    m_pCurrObj = m_pPrevObj = NULL;
-
     // Setup widget
     setColumnCount(2);
     setRootIsDecorated(true);
@@ -51,7 +48,7 @@ void PhysObjectNavigator::cloneObject() {
     QAction *pAction = qobject_cast<QAction *>(sender());
     QVariant itemData = pAction -> data();
     QGraphicsItem *pObj = itemData.value<QGraphicsItem *>();
-    QGraphicsItem *pNewObj = NULL;
+    QGraphicsItem *pNewObj = nullptr;
 
     if (!pObj)
         qDebug("PhysObjectNavigator::resetObject: PhysObject is NULL");
@@ -278,7 +275,7 @@ void PhysObjectNavigator::insertVector(PhysVector *pObj) {
     QTreeWidgetItem *pParentItem = topLevelItem(0);
 
     if (pParentItem) {
-        QTreeWidgetItem *pChildItem = NULL;
+        QTreeWidgetItem *pChildItem = nullptr;
         if (!pObj -> StartParticle() && !pObj -> EndParticle())
             pChildItem = new QTreeWidgetItem(pParentItem);
         else {
@@ -346,5 +343,5 @@ void PhysObjectNavigator::insertCartesianGraph(CartesianGraph *pObj) {
     // There are currently only one of these being created.
     // When 2D kinematics are supported we'll add in support for two.
     m_pCurrObj = m_pPrevObj = pObj;
-    emit changeObj(pObj, NULL);
+    emit changeObj(pObj, nullptr);
 }
