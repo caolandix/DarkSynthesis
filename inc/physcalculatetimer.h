@@ -5,7 +5,7 @@
 
 class PhysCalculateTimer {
 public:
-    PhysCalculateTimer(QObject * = NULL, int interval = 1000);
+    PhysCalculateTimer(QObject * = nullptr, int interval = 1000);
     ~PhysCalculateTimer() { delete m_pTimer; }
 
     QTimer *Timer() const { return m_pTimer; }
@@ -15,7 +15,7 @@ public:
     void stop() { m_pTimer ->stop(); }
 private:
     int m_Interval;
-    QTimer *m_pTimer;
+    QTimer *m_pTimer = nullptr;
 };
 
 #endif // PHYSCALCULATETIMER_H
