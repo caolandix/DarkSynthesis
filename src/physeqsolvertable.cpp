@@ -219,7 +219,7 @@ void PhysEqSolverTable::create1DKinematicItems(int i, PhysParticle *pParticle) {
     vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle, QString("v"), v, QString("speed"), v.toDouble(), false));
     vectorList.push_back(new PhysVector(pParticle ->Parent(), pParticle, QString("dx"), equation, QString("displacement"), dx.toDouble(), false));
 
-    foreach (PhysVector *item, vectorList) {
+    for (PhysVector *item : vectorList) {
         insertRow(rowCount());
         QTableWidgetItem *pRowItem = createRowItem(item ->DataObj());
         setItem(rowCount() - 1, 0, pRowItem);
@@ -234,7 +234,7 @@ void PhysEqSolverTable::onAddPhysEqSolverRow(QList<PhysParticle *> lstParticles)
     qDebug("PhysEqSolver::onAddPhysEqSolverRow");
     m_pCalcTimer ->stop();
     int i = 0;
-    foreach(PhysParticle *pParticle, lstParticles) {
+    for (PhysParticle *pParticle : lstParticles) {
         setItem(i++, 0, createRowItem(pParticle ->DataObj()));
         createParticleItems(i, pParticle);
     }
@@ -284,12 +284,12 @@ QString PhysEqSolverTable::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrR
                 // eqTokens after being parsed lists out the pieces. need to
                 // Loop through seeing what is a variable and what is a constant.
                 // If it's a variable then we need to look at it's equation and resolve that before continuing.
-                for (map<string, bool>::iterator iterTokenMap = eqTokensMap.begin(); iterTokenMap != eqTokensMap.end(); iterTokenMap++) {
+                for (auto iterTokenMap = eqTokensMap.begin(); iterTokenMap != eqTokensMap.end(); iterTokenMap++) {
                     bool isVariable = (*iterTokenMap).second;
                     if (isVariable) {
 
                         // Look for the item in the row list
-                        for (QList<PhysEqRow *>::Iterator iterRowSearch = m_lstRows.begin(); iterRowSearch != m_lstRows.end(); iterRowSearch++) {
+                        for (auto iterRowSearch = m_lstRows.begin(); iterRowSearch != m_lstRows.end(); iterRowSearch++) {
                             if (iterRowSearch == m_iterCurrRow)
                                 continue;
                             PhysEqRow *pRow = *iterRowSearch;
@@ -323,7 +323,7 @@ PhysEqRow *PhysEqSolverTable::getRowAtIndex(const int idx) {
     PhysEqRow *pItem = nullptr;
     int curr_row = 0;
 
-    for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
+    for (auto iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
         PhysEqRow *pRow = *iter;
         if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
             curr_row++;
@@ -379,7 +379,7 @@ void PhysEqSolverTable::onCalculate() {
 
             // Loop through the rows trying to resolve the equations that are there.
             int k = 0;
-            for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
+            for (auto iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
                 PhysEqRow *pRow = *iter;
                 if (pRow ->Type() == PhysEqRow::RT_VECTOR) {
                     QString strJD;
@@ -475,7 +475,7 @@ QString PhysEqSolverTable::EncodeAddy(const int row, const int col) {
 ///
 void PhysEqSolverTable::onUpdateParticleName(const QString prevName, const QString name) {
     qDebug("PhysEqSolverTable::onUpdateParticleName()");
-    foreach (PhysEqRow *pRow, m_lstRows) {
+    for (PhysEqRow *pRow : m_lstRows) {
         if (pRow ->Type() == PhysEqRow::RT_PARTICLE) {
             /*
             pRow ->DataObj() ->Name().compare(prevName)
@@ -625,16 +625,16 @@ void PhysEqSolverTable::onSelectParticle() {
     Ui_PhysSelectParticleDlg dlg;
     dlg.setupUi(pDlg);
 
-    foreach (PhysParticle *pObj, m_pDataObj ->Particles()) {
+    for (PhysParticle *pObj : m_pDataObj ->Particles()) {
         if (pObj)
             dlg.m_lstParticles ->addItem(new QListWidgetItem(pObj ->Name()));
     }
     pDlg ->exec();
     if (pDlg ->result() == QDialog::Accepted) {
         QList<PhysParticle *> lst;
-        foreach(QListWidgetItem *pItem, dlg.m_lstParticles ->selectedItems()) {
+        for (QListWidgetItem *pItem : dlg.m_lstParticles ->selectedItems()) {
             if (pItem) {
-                foreach(PhysParticle *pPart, m_pDataObj ->Particles()) {
+                for (PhysParticle *pPart : m_pDataObj ->Particles()) {
                     if (pPart ->Name().compare(pItem ->text()) == 0)
                         lst.push_back(pPart);
                 }
@@ -733,7 +733,7 @@ void PhysEqSolverTable::onSelectColor() {
     if (items.count() == 0)
         return;
 
-    foreach (QTableWidgetItem *pItem, items) {
+    for (QTableWidgetItem *pItem : items) {
         if (pItem)
             pItem ->setBackgroundColor(col);
     }
@@ -751,7 +751,7 @@ void PhysEqSolverTable::onSelectFont() {
     if (!bOK)
         return;
 
-    foreach (QTableWidgetItem *pItem, items) {
+    for (QTableWidgetItem *pItem : items) {
         if (pItem)
             pItem -> setFont(fnt);
     }
