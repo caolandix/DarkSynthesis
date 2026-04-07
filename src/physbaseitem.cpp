@@ -8,7 +8,7 @@ PhysBaseItem::PhysBaseItem() {
 }
 
 QString PhysBaseItem::TypeName(int Type) const {
-    map<int, QString>::const_iterator iter = m_Types.find(Type);
+    auto iter = m_Types.find(Type);
     QString value;
     if (iter == m_Types.end()) {
         // handle the error
