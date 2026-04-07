@@ -10,24 +10,6 @@
 #include "graphwidget.h"
 
 PhysObjectPropsNavigator::PhysObjectPropsNavigator(QWidget *pParent, int numRows, int numCols) : QTableWidget(pParent) {
-    m_pXaxisLabel = NULL;
-    m_pYaxisLabel = NULL;
-    m_pAxisTickInc = NULL;
-    m_pXaxisExtent = NULL;
-    m_pYaxisExtent = NULL;
-    m_pVectorMag = NULL;
-    m_pVectorThetaAngle = NULL;
-    m_pVectorThetaAxisOrient = NULL;
-    m_pVectorAssocParticle = NULL;
-    m_pCartesianGraphName = NULL;
-    m_pVectorName = NULL;
-    m_pParticleName = NULL;
-    m_pParticleMass = NULL;
-    m_pGraphicsItem = NULL;
-    m_pLockXAxis = NULL;
-    m_pLockYAxis = NULL;
-    m_pPosition = NULL;
-
     setShowGrid(true);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
