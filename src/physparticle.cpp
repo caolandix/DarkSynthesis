@@ -33,7 +33,7 @@ PhysParticle::PhysParticle(CartesianGraph *pParent, const QPointF &startPos, con
 PhysParticle::~PhysParticle() {
     if (m_pLabel) {
         delete m_pLabel;
-        m_pLabel = NULL;
+        m_pLabel = nullptr;
     }
     delete m_pDataObj;
 }
@@ -66,7 +66,7 @@ void PhysParticle::Vectors(const QList<PhysVector *> vectorList) {
 }
 
 PhysParticle *PhysParticle::copy() {
-    PhysParticle *pNewObj = NULL;
+    PhysParticle *pNewObj = nullptr;
     pNewObj = new PhysParticle(static_cast<CartesianGraph *>(parentItem()), pos(), Name());
     pNewObj ->Vectors(m_Vectors);
     pNewObj ->DataObj(m_pDataObj);
