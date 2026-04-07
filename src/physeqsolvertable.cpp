@@ -13,10 +13,6 @@
 #include "jumpdrive/ExpressionBuilder.h"
 
 PhysEqSolverTable::PhysEqSolverTable(const int rows, const int columns, QWidget *pParent) : QTableWidget(rows, columns, pParent) {
-    m_pActColor = NULL;
-    m_pActFont = NULL;
-    m_pActClear = NULL;
-    m_pRowProperties = NULL;
     m_pParent = pParent;
 
     m_pFormulaInput = new QLineEdit();
@@ -154,9 +150,9 @@ PhysEqRow *PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
     qDebug("PhysEqSolverTable::createPhysDataObjRow()");
     int rowIdx = m_lstRows.count();
     int numCols = columnCount();
-    PhysEqRow *pRow = NULL;
+    PhysEqRow *pRow = nullptr;
     QString variable = "";
-    PhysVectorDataObj *pVectorDataObj = NULL;
+    PhysVectorDataObj *pVectorDataObj = nullptr;
 
     if (pObj ->Type() == PhysDataObj::DT_PARTICLE)
         pRow  = new PhysEqRow(PhysEqRow::RT_PARTICLE, pObj ->Name());
@@ -324,7 +320,7 @@ QString PhysEqSolverTable::calculateRows(QList<PhysEqRow *>::Iterator &iterCurrR
 //
 PhysEqRow *PhysEqSolverTable::getRowAtIndex(const int idx) {
     qDebug("PhysEqSolverTable::getRowAtIndex()");
-    PhysEqRow *pItem = NULL;
+    PhysEqRow *pItem = nullptr;
     int curr_row = 0;
 
     for (QList<PhysEqRow *>::Iterator iter = m_lstRows.begin(); iter != m_lstRows.end(); iter++) {
