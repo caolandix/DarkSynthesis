@@ -52,7 +52,6 @@ PhysVector::PhysVector(
 
 PhysVector::PhysVector(CartesianGraph *pParent, const QString Name, PhysParticle *pStart, PhysParticle *pEnd) :
     QGraphicsLineItem(pParent), PhysBaseItem() {
-    m_pLabel = NULL;
     m_pParent = pParent;
     m_pDataObj = new PhysVectorDataObj(Name);
     m_Color = Qt::black;
@@ -63,8 +62,6 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QString Name, PhysParticle
     m_Theta.bAboveAxis = true;
     m_Theta.degrees = 45.0;
     m_Theta.axisOrientation = AXIS_HORIZ;
-    m_pStartParticle = NULL;
-    m_pEndParticle = NULL;
     m_pLabel = new CartesianLabel(this);
     m_bDraw = true;
 
@@ -80,10 +77,10 @@ PhysVector::PhysVector(CartesianGraph *pParent, const QString Name, PhysParticle
 PhysVector::~PhysVector() {
     if (m_pLabel) {
         delete m_pLabel;
-        m_pLabel = NULL;
+        m_pLabel = nullptr;
     }
-    m_pStartParticle = NULL;
-    m_pEndParticle = NULL;
+    m_pStartParticle = nullptr;
+    m_pEndParticle = nullptr;
 }
 
 void PhysVector::init() {
@@ -107,14 +104,13 @@ void PhysVector::createConnections() {
 void PhysVector::clearParticle(PhysParticle *pObj) {
     //qDebug("PhysVector::clearParticle()");
     if (m_pStartParticle == pObj)
-        m_pStartParticle = NULL;
+        m_pStartParticle = nullptr;
     if (m_pEndParticle == pObj)
-        m_pEndParticle = NULL;
+        m_pEndParticle = nullptr;
 }
 
 PhysVector *PhysVector::copy() {
-    PhysVector *pObj = NULL;
-    pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), Name());
+    PhysVector *pObj = new PhysVector(static_cast<CartesianGraph *>(parentItem()), Name());
     pObj -> theta(theta());
     pObj -> Magnitude(Magnitude());
     pObj -> StartPoint(m_StartPoint);
@@ -161,11 +157,11 @@ void PhysVector::removeFromParticles() {
     //qDebug("PhysVector::removeFromParticles()");
     if (m_pStartParticle) {
         m_pStartParticle ->removeVector(this);
-        m_pStartParticle = NULL;
+        m_pStartParticle = nullptr;
     }
     if (m_pEndParticle) {
         m_pEndParticle ->removeVector(this);
-        m_pEndParticle = NULL;
+        m_pEndParticle = nullptr;
     }
 }
 
@@ -375,7 +371,7 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
                 if (!rcLocalPart.contains(pt1)) {
                     //  No longer intersecting the start point so disconnect from the particle
                     m_pStartParticle -> removeVector(this);
-                    m_pStartParticle = NULL;
+                    m_pStartParticle = nullptr;
                 }
             }
         }
@@ -384,7 +380,7 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         else {
             if (!collidesWithItem(m_pEndParticle)) {
                 m_pEndParticle -> removeVector(this);
-                m_pEndParticle = NULL;
+                m_pEndParticle = nullptr;
             }
         }
     }
