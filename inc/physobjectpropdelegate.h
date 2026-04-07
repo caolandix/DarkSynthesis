@@ -6,7 +6,7 @@
 class PhysObjectPropDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
-    PhysObjectPropDelegate(QObject * = NULL);
+    PhysObjectPropDelegate(QObject * = nullptr);
     QWidget *createEditor(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
     void setEditorData(QWidget *, const QModelIndex &) const Q_DECL_OVERRIDE;
     void setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const Q_DECL_OVERRIDE;
