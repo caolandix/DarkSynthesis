@@ -384,7 +384,7 @@ void PhysVector::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
             }
         }
     }
-    for (QList<PhysParticle *>::Iterator iter = particles.begin(); iter != particles.end(); iter++) {
+    for (auto iter = particles.begin(); iter != particles.end(); iter++) {
         PhysParticle *pParticle = *iter;
         if (collidesWithItem(pParticle)) {
 
