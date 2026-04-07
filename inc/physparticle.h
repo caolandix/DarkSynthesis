@@ -58,10 +58,10 @@ signals:
     void changeItemName(const QString &, const QString &);
     void updateWidgetCoordinates(const QPointF &, PhysParticle *);
 private:
-    CartesianLabel *m_pLabel;
+    CartesianLabel *m_pLabel = nullptr;
     QList<PhysVector *> m_Vectors;
-    PhysParticleDataObj *m_pDataObj;
-    CartesianGraph *m_pParent;
+    PhysParticleDataObj *m_pDataObj = nullptr;
+    CartesianGraph *m_pParent = nullptr;
     bool m_bLockXAxis, m_bLockYAxis;
     static map<int, QString> m_listEditableProps;
 };
