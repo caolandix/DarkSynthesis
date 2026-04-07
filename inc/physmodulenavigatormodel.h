@@ -9,7 +9,7 @@
 class PhysModuleNavigatorModel : public QAbstractListModel {
     Q_OBJECT
 public:
-    PhysModuleNavigatorModel(QObject *parent = NULL);
+    PhysModuleNavigatorModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
