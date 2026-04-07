@@ -12,11 +12,11 @@ class PhysOutputNavigatorDock : public QDockWidget
     Q_OBJECT
 
 public:
-    explicit PhysOutputNavigatorDock(QWidget *parent = 0);
+    explicit PhysOutputNavigatorDock(QWidget *parent = nullptr);
     ~PhysOutputNavigatorDock();
 
 private:
-    Ui::PhysOutputNavigatorDock *ui;
+    Ui::PhysOutputNavigatorDock *ui = nullptr;
 };
 
 #endif // PHYSOUTPUTNAVIGATORDOCK_H
