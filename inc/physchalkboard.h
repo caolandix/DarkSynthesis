@@ -42,13 +42,13 @@ private:
     bool isItemChange(int type);
 
     //DiagramItem::DiagramType myItemType;
-    QMenu *myItemMenu;
+    QMenu *myItemMenu = nullptr;
     Mode myMode;
     bool leftButtonDown;
     QPointF startPoint;
-    QGraphicsLineItem *line;
+    QGraphicsLineItem *line = nullptr;
     QFont myFont;
-    CartesianLabel *textItem;
+    CartesianLabel *textItem = nullptr;
     QColor myTextColor;
     QColor myItemColor;
     QColor myLineColor;
