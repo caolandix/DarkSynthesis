@@ -32,7 +32,7 @@ public:
     PhysVector(
             CartesianGraph *pParent, PhysParticle *pParticle,
             const QString variable, const QString equation, const QString name, const double magnitude = 0.0, const bool bDraw = true, const double angle = 0.0);
-    PhysVector(CartesianGraph *, const QString, PhysParticle * = NULL, PhysParticle * = NULL);
+    PhysVector(CartesianGraph *, const QString, PhysParticle * = nullptr, PhysParticle * = nullptr);
     ~PhysVector();
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -95,21 +95,21 @@ private:
     static map<int, QString> m_listEditableProps;
     bool m_bUseNewThetaAngle;
     Theta m_Theta;
-    PhysParticle *m_pStartParticle;
-    PhysParticle *m_pEndParticle;
+    PhysParticle *m_pStartParticle = nullptr;
+    PhysParticle *m_pEndParticle = nullptr;
 
     // Drawing specific.
     bool m_bDraw;
-    CartesianLabel *m_pLabel;
+    CartesianLabel *m_pLabel = nullptr;
     QColor m_Color;
-    QPolygonF m_arrowHead;
+    QPolygonF m_arrowHead = nullptr;
     qreal m_arrowSize;
     MouseClickLocale m_dragIndex;
-    CartesianGraph *m_pParent;
+    CartesianGraph *m_pParent = nullptr;
     QPointF m_StartPoint;
     QPointF m_EndPoint;
 
-    PhysVectorDataObj *m_pDataObj;
+    PhysVectorDataObj *m_pDataObj = nullptr;
 };
 
 Q_DECLARE_METATYPE(PhysVector *)
