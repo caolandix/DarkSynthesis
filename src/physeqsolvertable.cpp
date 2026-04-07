@@ -115,7 +115,7 @@ void PhysEqSolverTable::addPhysDataObjCell(const int row, const int col, const Q
     QString Addy = EncodeAddy(row, col);
     PhysEqRow *pRow = m_lstRows.at(row);
     if (pRow) {
-        PhysEqGridCell *pCell = NULL;
+        PhysEqGridCell *pCell = nullptr;
         if (pRow ->Type() == PhysEqRow::RT_TIMESLICE)
             pCell = new PhysEqGridCell(new PhysTimeSliceDataObj(val), Addy);
         else {
@@ -143,7 +143,7 @@ void PhysEqSolverTable::addPhysDataObjCell(const int row, const int col, const Q
             pRow ->addCell(pCell);
     }
     else
-        qDebug("PhysEqSolver::addPhysDataObjCell(): pRow is NULL");
+        qDebug("PhysEqSolver::addPhysDataObjCell(): pRow is nullptr");
 }
 
 PhysEqRow *PhysEqSolverTable::createPhysDataObjRow(PhysDataObj *pObj) {
