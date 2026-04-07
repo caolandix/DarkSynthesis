@@ -6,7 +6,7 @@ PhysEqGrid::PhysEqGrid() {
 }
 
 PhysEqGrid::~PhysEqGrid() {
-    foreach (PhysEqRow *item, m_rowList)
+    for (PhysEqRow *item : m_rowList)
         delete item;
     m_rowList.clear();
 }
