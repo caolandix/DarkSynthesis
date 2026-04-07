@@ -8,7 +8,7 @@
 class PhysOutputNavigator : public QTabWidget {
     Q_OBJECT
 public:
-    PhysOutputNavigator(QWidget * = NULL);
+    PhysOutputNavigator(QWidget * = nullptr);
 
 signals:
 
