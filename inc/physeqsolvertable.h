@@ -129,20 +129,20 @@ signals:
     void itemSelectionChanged();
 
 private:
-    QWidget *m_pParent;
-    PhysEqSolverTableHeader *m_pHeader;
-    CartesianGraphDataObj *m_pDataObj;
-    QAction *m_pActColor;
-    QAction *m_pActFont;
-    QAction *m_pActClear;
-    QAction *m_pRowProperties;
+    QWidget *m_pParent = nullptr;
+    PhysEqSolverTableHeader *m_pHeader = nullptr;
+    CartesianGraphDataObj *m_pDataObj = nullptr;
+    QAction *m_pActColor = nullptr;
+    QAction *m_pActFont = nullptr;
+    QAction *m_pActClear = nullptr;
+    QAction *m_pRowProperties = nullptr;
     QList<double> m_TimeSliceValues;
     CurrItemStruct m_currItem;
 
-    QLineEdit *m_pFormulaInput;
+    QLineEdit *m_pFormulaInput = nullptr;
     QList<PhysEqRow *> m_lstRows;
     QList<PhysParticle *> m_lstParticles;
-    PhysCalculateTimer *m_pCalcTimer;
+    PhysCalculateTimer *m_pCalcTimer = nullptr;
     QString m_eqJumpDrive, m_strVarAssignments;
     map<string, bool> m_eqTokensMap;
     QList<PhysEqRow *>::Iterator m_iterCurrRow;
