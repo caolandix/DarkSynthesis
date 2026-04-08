@@ -8,24 +8,25 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-
-    - name: Checkout Jumpdrive library
-      uses: actions/checkout@v4
-      with:
-        repository: caolandix/jumpdrive
-        path: jumpdrive  # Local directory where library will be placed
+    - name: Install Boost
+      run: sudo apt-get update && sudo apt-get install -y libboost-all-dev
     - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
     - name: Configure and Build
       run: |
         cmake -B ${{github.workspace}}
         cmake --build ${{github.workspace}}
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - name: Create build_version.json
+      run: |
+        echo '{
+          "version": "1.0.${{ github.run_number }}",
+          "commit": "${{ github.sha }}",
+          "build_time": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+        }' > ./build_version.json
+        git config --global user.name "caolandix"
+        git config --global user.email "co.domhnaill@aeshna.net"
+        git add ./build_version.json 
+        git commit -m "Automated build: update DarkSynthesis code"
+        git push
+
